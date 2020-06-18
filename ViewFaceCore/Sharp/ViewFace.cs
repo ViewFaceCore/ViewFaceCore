@@ -121,7 +121,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         public FaceType FaceType { get; set; } = FaceType.Light;
         /// <summary>
-        /// 获取或设置人脸类型
+        /// 获取或设置人脸关键点类型
         /// <para>
         /// <listheader>此属性可影响到以下方法：</listheader><br />
         /// • <c><see cref="FaceMark(Bitmap, FaceInfo)"/></c><br />
@@ -262,7 +262,7 @@ namespace ViewFaceCore.Sharp
         }
 
         /// <summary>
-        /// 判断相似度是否为同一个人
+        /// 判断相似度是否为同一个人。
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
