@@ -1,5 +1,7 @@
 # ViewFaceCore
-超简单的人脸识别库。
+- 超简单的人脸识别库
+- C# 库
+- Nuget Pack
 
 # 使用
 
