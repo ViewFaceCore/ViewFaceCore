@@ -1,4 +1,6 @@
-﻿namespace ViewFaceCore.Sharp.Model
+﻿using System.Drawing;
+
+namespace ViewFaceCore.Sharp.Model
 {
     /// <summary>
     /// 矩形
@@ -21,5 +23,14 @@
         /// 矩形高度
         /// </summary>
         public int Height { get; set; }
+
+        /// <summary>
+        /// <see cref="FaceRect"/> 到 <see cref="Rectangle"/> 的隐式转换。
+        /// </summary>
+        /// <param name="rect"></param>
+        public static implicit operator Rectangle(FaceRect rect)
+        {
+            return new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+        }
     }
 }
