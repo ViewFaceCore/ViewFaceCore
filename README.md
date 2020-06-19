@@ -3,6 +3,9 @@
 - C# 库
 - Nuget Pack
 
+# 样例
+[WinForm 摄像头人脸检测](https://github.com/View12138/ViewFaceCoreDemo)
+
 # 使用
 
 ### 一、1 分钟在你的项目中集成人脸识别
@@ -63,7 +66,7 @@ bool IsSelf(float);
 | - | - | - |
 | ViewFace | `C++` | 基于 `SeetaFace6` 的接口封装，支持 x86、x64 |
 | ViewFaceCore | `C#` | 基于 `ViewFace` 的 C# 形势的封装，支持 AnyCPU |
-| ViewFaceTest | `C#` | 调用 `ViewFaceCore` 实现的简单的人脸识别 |
+| ViewFaceTest | `C#` | 调用 `ViewFaceCore` 实现的简单的图片人脸识别 |
 
 # 编译
 - 开发工具 : Visual Studio 2019 16.5.5
