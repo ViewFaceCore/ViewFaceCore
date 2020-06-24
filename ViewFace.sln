@@ -6,8 +6,19 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ViewFace", "ViewFace\ViewFace.vcxproj", "{D02E4767-E346-4990-A857-8084E372E85F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCore\ViewFaceCore.csproj", "{1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D02E4767-E346-4990-A857-8084E372E85F} = {D02E4767-E346-4990-A857-8084E372E85F}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceTest", "ViewFaceTest\ViewFaceTest.csproj", "{8286F760-5F52-4CE6-9D9F-E61013B65BCA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A} = {1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.MSTest", "ViewFaceCore.MSTest\ViewFaceCore.MSTest.csproj", "{1401DDAB-56CE-48FB-B36D-752FB3562873}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A} = {1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +66,18 @@ Global
 		{8286F760-5F52-4CE6-9D9F-E61013B65BCA}.Release|x64.Build.0 = Release|Any CPU
 		{8286F760-5F52-4CE6-9D9F-E61013B65BCA}.Release|x86.ActiveCfg = Release|Any CPU
 		{8286F760-5F52-4CE6-9D9F-E61013B65BCA}.Release|x86.Build.0 = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|x64.Build.0 = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Debug|x86.Build.0 = Debug|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|x64.ActiveCfg = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|x64.Build.0 = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|x86.ActiveCfg = Release|Any CPU
+		{1401DDAB-56CE-48FB-B36D-752FB3562873}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
