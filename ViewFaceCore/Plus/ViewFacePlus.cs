@@ -10,6 +10,9 @@ namespace ViewFaceCore.Plus
     /// <param name="logText"></param>
     public delegate void LogCallBack(string logText);
 
+    /// <summary>
+    /// x64 导入方法
+    /// </summary>
     class ViewFacePlus64
     {
         const string LibraryPath = @"FaceLibraries\x64\ViewFace.dll";
@@ -133,6 +136,10 @@ namespace ViewFaceCore.Plus
         [DllImport(LibraryPath, EntryPoint = "V_CalculateSimilarity", CallingConvention = CallingConvention.Cdecl)]
         public extern static float Similarity(float[] leftFeatures, float[] rightFeatures, int type = 0);
     }
+
+    /// <summary>
+    /// x86 导入方法
+    /// </summary>
     class ViewFacePlus32
     {
         const string LibraryPath = @"FaceLibraries\x86\ViewFace.dll";
