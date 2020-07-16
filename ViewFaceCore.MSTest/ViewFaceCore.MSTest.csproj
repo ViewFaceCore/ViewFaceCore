@@ -17,4 +17,27 @@
     <Folder Include="Images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ViewFaceCore\ViewFaceCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\Jay0.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Jay1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Jay2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Images\Jay3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /y &quot;$(SolutionDir)ViewFaceCore\bin\$(ConfigurationName)\netstandard2.0\FaceLibraries\x86\*.dll&quot; &quot;$(TargetDir)FaceLibraries\x86\*.dll&quot;&#xD;&#xA;&#xD;&#xA;xcopy /y &quot;$(SolutionDir)ViewFaceCore\bin\$(ConfigurationName)\netstandard2.0\FaceLibraries\x64\*.dll&quot; &quot;$(TargetDir)FaceLibraries\x64\*.dll&quot;" />
+  </Target>
+
 </Project>
