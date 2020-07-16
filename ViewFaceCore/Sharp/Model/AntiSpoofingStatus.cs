@@ -10,6 +10,10 @@ namespace ViewFaceCore.Sharp.Model
     public enum AntiSpoofingStatus
     {
         /// <summary>
+        /// 错误或没有找到指定的人脸索引处的人脸
+        /// </summary>
+        Error = -1,
+        /// <summary>
         /// 真实人脸
         /// </summary>
         Real = 0,

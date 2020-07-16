@@ -1,51 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+
 using ViewFaceCore.Plus;
+using ViewFaceCore.Sharp.Extends;
 using ViewFaceCore.Sharp.Model;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 
 namespace ViewFaceCore.Sharp
 {
-    class ImageSet
-    {
-        /// <summary>
-        /// 获取 <see cref="Bitmap"/> 的 8bit BGR <see cref="byte"/> 数组。
-        /// </summary>
-        /// <param name="bitmap">待转换图像</param>
-        /// <param name="width">图像宽度</param>
-        /// <param name="height">图像高度</param>
-        /// <param name="channels">图像扫描宽度</param>
-        /// <returns></returns>
-        public static byte[] Get24BGRFromBitmap(Bitmap bitmap, out int width, out int height, out int channels)
-        {
-            Bitmap bmp = (Bitmap)bitmap.Clone();
-            if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
-            {
-                bmp = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format24bppRgb);
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.DrawImage(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-                }
-            }
-            if (bmp.HorizontalResolution != 96 || bmp.VerticalResolution != 96)
-            { bmp.SetResolution(96, 96); }
-            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            int bytesLength = bmp.Width * bmp.Height * 3; // Get the BGR values's length.
-            width = bmp.Width;
-            height = bmp.Height;
-            channels = 3;
-            byte[] buffer = new byte[bytesLength];
-            // Copy the BGR values into the array.
-            Marshal.Copy(bmpData.Scan0, buffer, 0, bytesLength);
-            bmp.UnlockBits(bmpData);
-            bmp.Dispose();
-            return buffer;
-        }
-    }
-
     /// <summary>
     /// 人脸识别类
     /// </summary>
@@ -133,7 +95,6 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         public DetectorSetting DetectorSetting { get; set; } = new DetectorSetting();
 
-
         // public method
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
@@ -146,27 +107,36 @@ namespace ViewFaceCore.Sharp
         /// <returns></returns>
         public FaceInfo[] FaceDetector(Bitmap bitmap)
         {
-            byte[] bgr = ImageSet.Get24BGRFromBitmap(bitmap, out int width, out int height, out int channels);
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             int size;
             if (Platform64)
             { size = ViewFacePlus64.DetectorSize(bgr, width, height, channels, DetectorSetting.FaceSize, DetectorSetting.Threshold, DetectorSetting.MaxWidth, DetectorSetting.MaxHeight, (int)FaceType); }
             else
             { size = ViewFacePlus32.DetectorSize(bgr, width, height, channels, DetectorSetting.FaceSize, DetectorSetting.Threshold, DetectorSetting.MaxWidth, DetectorSetting.MaxHeight, (int)FaceType); }
+
+            if (size == -1)
+            { return new FaceInfo[0]; }
+
             float[] _socre = new float[size];
             int[] _x = new int[size];
             int[] _y = new int[size];
             int[] _width = new int[size];
             int[] _height = new int[size];
+            bool res;
             if (Platform64)
-            { _ = ViewFacePlus64.Detector(_socre, _x, _y, _width, _height); }
+            { res = ViewFacePlus64.Detector(_socre, _x, _y, _width, _height); }
             else
-            { _ = ViewFacePlus32.Detector(_socre, _x, _y, _width, _height); }
-            List<FaceInfo> infos = new List<FaceInfo>();
-            for (int i = 0; i < size; i++)
+            { res = ViewFacePlus32.Detector(_socre, _x, _y, _width, _height); }
+            if (res)
             {
-                infos.Add(new FaceInfo() { Score = _socre[i], Location = new FaceRect() { X = _x[i], Y = _y[i], Width = _width[i], Height = _height[i] } });
+                List<FaceInfo> infos = new List<FaceInfo>();
+                for (int i = 0; i < size; i++)
+                {
+                    infos.Add(new FaceInfo() { Score = _socre[i], Location = new FaceRect() { X = _x[i], Y = _y[i], Width = _width[i], Height = _height[i] } });
+                }
+                return infos.ToArray();
             }
-            return infos.ToArray();
+            else { return new FaceInfo[0]; }
         }
 
         /// <summary>
@@ -179,23 +149,27 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
         /// <param name="info">指定的人脸信息</param>
-        /// <returns></returns>
+        /// <returns>若失败，则返回结果 Length == 0</returns>
         public FaceMarkPoint[] FaceMark(Bitmap bitmap, FaceInfo info)
         {
-            byte[] bgr = ImageSet.Get24BGRFromBitmap(bitmap, out int width, out int height, out int channels);
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             int size;
             if (Platform64)
             { size = ViewFacePlus64.FaceMarkSize((int)MarkType); }
             else
             { size = ViewFacePlus32.FaceMarkSize((int)MarkType); }
+
+            if (size == -1)
+            { return new FaceMarkPoint[0]; }
+
             double[] _pointX = new double[size];
             double[] _pointY = new double[size];
-            bool val;
+            bool res;
             if (Platform64)
-            { val = ViewFacePlus64.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
+            { res = ViewFacePlus64.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
             else
-            { val = ViewFacePlus32.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
-            if (val)
+            { res = ViewFacePlus32.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
+            if (res)
             {
                 List<FaceMarkPoint> points = new List<FaceMarkPoint>();
                 for (int i = 0; i < size; i++)
@@ -203,7 +177,7 @@ namespace ViewFaceCore.Sharp
                 return points.ToArray();
             }
             else
-            { throw new Exception("人脸关键点获取失败"); }
+            { return new FaceMarkPoint[0]; }
         }
 
         /// <summary>
@@ -219,18 +193,23 @@ namespace ViewFaceCore.Sharp
         /// <returns></returns>
         public float[] Extract(Bitmap bitmap, FaceMarkPoint[] points)
         {
-            byte[] bgr = ImageSet.Get24BGRFromBitmap(bitmap, out int width, out int height, out int channels);
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             float[] features;
             if (Platform64)
             { features = new float[ViewFacePlus64.ExtractSize((int)FaceType)]; }
             else
             { features = new float[ViewFacePlus32.ExtractSize((int)FaceType)]; }
 
+
+            bool res;
             if (Platform64)
-            { ViewFacePlus64.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
+            { res = ViewFacePlus64.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
             else
-            { ViewFacePlus32.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
-            return features;
+            { res = ViewFacePlus32.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
+            if (res)
+            { return features; }
+            else
+            { return new float[0]; }
         }
 
         /// <summary>
@@ -296,13 +275,51 @@ namespace ViewFaceCore.Sharp
         /// <returns></returns>
         public AntiSpoofingStatus AntiSpoofing(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global)
         {
-            byte[] bgr = ImageSet.Get24BGRFromBitmap(bitmap, out int width, out int height, out int channels);
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
 
             if (Platform64)
             { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
             else
             { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+        }
+
+        /// <summary>
+        /// 活体检测器。
+        /// <para>
+        /// 视频帧图片，局部检测<br />
+        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// </para>
+        /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="info"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public AntiSpoofingStatus AntiSpoofingVideo(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points) => AntiSpoofingVideo(bitmap, info, points, false);
+        /// <summary>
+        /// 活体检测器。
+        /// <para>
+        /// 视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// </para>
+        /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="info"></param>
+        /// <param name="points"></param>
+        /// <param name="global">是否启用全局检测能力</param>
+        /// <returns></returns>
+        public AntiSpoofingStatus AntiSpoofingVideo(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+
+            if (Platform64)
+            { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+            else
+            { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
         }
 
         /// <summary>

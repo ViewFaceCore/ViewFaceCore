@@ -151,9 +151,31 @@ namespace ViewFaceCore.Plus
         /// <param name="fHeight"></param>
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测</param>
-        /// <returns></returns>
+        /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofing(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+        /// <summary>
+        /// 活体检测器
+        /// <para>视频帧</para>
+        /// </summary>
+        /// <param name="imgData"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="channels"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="fWidth"></param>
+        /// <param name="fHeight"></param>
+        /// <param name="points"></param>
+        /// <param name="global">是否启用全局检测</param>
+        /// <returns>
+        /// <para>
+        /// 单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/>、<see cref="AntiSpoofingStatus.Fuzzy"/> 或 <see cref="AntiSpoofingStatus.Detecting"/><br />
+        /// 在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="AntiSpoofingStatus.Detecting"/>
+        /// </para>
+        /// </returns>
+        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
     }
 
     /// <summary>
@@ -296,8 +318,30 @@ namespace ViewFaceCore.Plus
         /// <param name="fHeight"></param>
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测</param>
-        /// <returns></returns>
+        /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofing(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+        /// <summary>
+        /// 活体检测器
+        /// <para>视频帧</para>
+        /// </summary>
+        /// <param name="imgData"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="channels"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="fWidth"></param>
+        /// <param name="fHeight"></param>
+        /// <param name="points"></param>
+        /// <param name="global">是否启用全局检测</param>
+        /// <returns>
+        /// <para>
+        /// 单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/>、<see cref="AntiSpoofingStatus.Fuzzy"/> 或 <see cref="AntiSpoofingStatus.Detecting"/><br />
+        /// 在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="AntiSpoofingStatus.Detecting"/>
+        /// </para>
+        /// </returns>
+        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
     }
 }

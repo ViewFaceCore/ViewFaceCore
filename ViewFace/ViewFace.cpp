@@ -309,8 +309,9 @@ View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, 
 	}
 }
 
+// 活体检测器
 seeta::FaceAntiSpoofing* v_faceAntiSpoofing = NULL;
-
+// 活体检测 - 单帧
 View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
 {
 	try
@@ -335,6 +336,41 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int c
 		}
 
 		auto status = v_faceAntiSpoofing->Predict(img, face, points);
+
+		WriteRunTime(__FUNCDNAME__, start);
+		return status;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError(__FUNCDNAME__, e);
+		return -1;
+	}
+}
+// 活体检测 - 视频
+View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
+{
+	try
+	{
+		clock_t start = clock();
+
+		SeetaImageData img = { width, height, channels, imgData };
+		SeetaRect face = { x, y, fWidth, fHeight };
+		if (v_faceAntiSpoofing == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "fas_first.csta";
+			setting.append(modelPath + modelName);
+			if (global) { // 启用全局检测能力
+				modelName = "fas_second.csta";
+				setting.append(modelPath + modelName);
+				WriteModelName(__FUNCDNAME__, modelName);
+			}
+			WriteModelName(__FUNCDNAME__, modelName);
+			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
+		}
+
+		auto status = v_faceAntiSpoofing->PredictVideo(img, face, points);
 
 		WriteRunTime(__FUNCDNAME__, start);
 		return status;
