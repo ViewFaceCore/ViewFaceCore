@@ -65,7 +65,7 @@ bool IsSelf(float);
 | 项目 | 语言 | 说明 |
 | - | - | - |
 | ViewFace | `C++` | 基于 `SeetaFace6` 的接口封装，支持 x86、x64 |
-| ViewFaceCore | `C#` | 基于 `ViewFace` 的 C# 形势的封装，支持 AnyCPU |
+| ViewFaceCore | `C#` | 基于 `ViewFace` 的 C# 形式的封装，支持 AnyCPU |
 | ViewFaceTest | `C#` | 调用 `ViewFaceCore` 实现的简单的图片人脸识别 |
 
 # 编译
