@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
+
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Plus
@@ -135,6 +136,24 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_CalculateSimilarity", CallingConvention = CallingConvention.Cdecl)]
         public extern static float Similarity(float[] leftFeatures, float[] rightFeatures, int type = 0);
+
+        /// <summary>
+        /// 活体检测器
+        /// <para>单帧检测</para>
+        /// </summary>
+        /// <param name="imgData"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="channels"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="fWidth"></param>
+        /// <param name="fHeight"></param>
+        /// <param name="points"></param>
+        /// <param name="global">是否启用全局检测</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AntiSpoofing(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
     }
 
     /// <summary>
@@ -262,5 +281,23 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_CalculateSimilarity", CallingConvention = CallingConvention.Cdecl)]
         public extern static float Similarity(float[] leftFeatures, float[] rightFeatures, int type = 0);
+
+        /// <summary>
+        /// 活体检测器
+        /// <para>单帧检测</para>
+        /// </summary>
+        /// <param name="imgData"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="channels"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="fWidth"></param>
+        /// <param name="fHeight"></param>
+        /// <param name="points"></param>
+        /// <param name="global">是否启用全局检测</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AntiSpoofing(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
     }
 }

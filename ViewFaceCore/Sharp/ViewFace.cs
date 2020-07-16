@@ -269,6 +269,43 @@ namespace ViewFaceCore.Sharp
         public bool IsSelf(float similarity) => similarity > Face.Threshold[FaceType];
 
         /// <summary>
+        /// 活体检测器。
+        /// <para>
+        /// 单帧图片，局部检测 <br />
+        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="info"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public AntiSpoofingStatus AntiSpoofing(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points) => AntiSpoofing(bitmap, info, points, false);
+        /// <summary>
+        /// 活体检测器。
+        /// <para>
+        /// 单帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="info"></param>
+        /// <param name="points"></param>
+        /// <param name="global"></param>
+        /// <returns></returns>
+        public AntiSpoofingStatus AntiSpoofing(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global)
+        {
+            byte[] bgr = ImageSet.Get24BGRFromBitmap(bitmap, out int width, out int height, out int channels);
+
+
+            if (Platform64)
+            { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+            else
+            { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         ~ViewFace()
