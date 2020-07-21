@@ -19,35 +19,33 @@ void WriteLog(string str) { if (logger != NULL) { logger(str.c_str()); } }
 
 void WriteMessage(string fanctionName, string message) { WriteLog(fanctionName + "\t Message:" + message); }
 void WriteModelName(string fanctionName, string modelName) { WriteLog(fanctionName + "\t Model.Name:" + modelName); }
-void WriteRunTime(string fanctionName, int start) { WriteLog(fanctionName + "\t Run.Time:" + to_string(clock() - start) + " ms"); }
+void WriteRunTime(string fanctionName, clock_t start) { WriteLog(fanctionName + "\t Run.Time:" + to_string(clock() - start) + " ms"); }
 void WriteError(string fanctionName, const std::exception& e) { WriteLog(fanctionName + "\t Error:" + e.what()); }
 
 // 注册日志回调函数
 View_Api void V_SetLogFunction(LogCallBack writeLog)
 {
 	logger = writeLog;
-	WriteMessage(__FUNCDNAME__, "Successed.");
+	WriteMessage("SetLogFunction", "Successed.");
 }
 
 // 设置人脸模型目录
 View_Api void V_SetModelPath(const char* path)
 {
 	modelPath = path;
-	WriteMessage(__FUNCDNAME__, "Model.Path:" + modelPath);
+	WriteMessage("SetModelPath", "Model.Path:" + modelPath);
 }
 // 获取人脸模型目录
 View_Api bool V_GetModelPath(char** path)
 {
 	try
 	{
-#pragma warning(disable:4996)
 		strcpy(*path, modelPath.c_str());
-
 		return true;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("GetModelPath", e);
 		return false;
 	}
 }
@@ -67,12 +65,9 @@ View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int c
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_detector.csta";
-			switch (type)
-			{
-			case 1: modelName = "mask_detector.csta"; break;
-			}
+			if (type == 1) { modelName = "mask_detector.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("DetectorSize", modelName);
 			v_faceDetector = new seeta::FaceDetector(setting);
 		}
 
@@ -84,12 +79,12 @@ View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int c
 		auto infos = v_faceDetector->detect(img);
 		detectorInfos = infos;
 
-		WriteRunTime("V_Detector", start); // 此方法已经是人脸检测的全过程，故计时器显示为 人脸识别方法
+		WriteRunTime("Detector", start); // 此方法已经是人脸检测的全过程，故计时器显示为 人脸识别方法
 		return infos.size;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("DetectorSize", e);
 		return -1;
 	}
 }
@@ -117,14 +112,18 @@ View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("Detector", e);
 		return false;
 	}
 }
 
 
 seeta::FaceLandmarker* v_faceLandmarker = NULL;
-// 人脸关键点数量
+/// <summary>
+/// 人脸关键点数量
+/// </summary>
+/// <param name="type">模型类型。0：68个关键点；1：5个关键点[戴口罩]；2：5个关键点。</param>
+/// <returns></returns>
 View_Api int V_FaceMarkSize(int type = 0)
 {
 	try
@@ -135,23 +134,20 @@ View_Api int V_FaceMarkSize(int type = 0)
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_landmarker_pts68.csta";
-			switch (type)
-			{
-			case 1: modelName = "face_landmarker_mask_pts5.csta"; break;
-			case 2: modelName = "face_landmarker_pts5.csta"; break;
-			}
+			if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
+			if (type == 2) { modelName = "face_landmarker_pts5.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("FaceMarkSize", modelName);
 			v_faceLandmarker = new seeta::FaceLandmarker(setting);
 		}
 		int size = v_faceLandmarker->number();
 
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteRunTime("FaceMarkSize", start);
 		return size;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("FaceMarkSize", e);
 		return -1;
 	}
 }
@@ -168,13 +164,10 @@ View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int chan
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_landmarker_pts68.csta";
-			switch (type)
-			{
-			case 1: modelName = "face_landmarker_mask_pts5.csta"; break;
-			case 2: modelName = "face_landmarker_pts5.csta"; break;
-			}
+			if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
+			if (type == 2) { modelName = "face_landmarker_pts5.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("FaceMark", modelName);
 			v_faceLandmarker = new seeta::FaceLandmarker(setting);
 		}
 		std::vector<SeetaPointF> _points = v_faceLandmarker->mark(img, face);
@@ -188,14 +181,14 @@ View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int chan
 				pointY++;
 			}
 
-			WriteRunTime(__FUNCDNAME__, start);
+			WriteRunTime("FaceMark", start);
 			return true;
 		}
 		else { return false; }
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("FaceMark", e);
 		return false;
 	}
 }
@@ -213,23 +206,20 @@ View_Api int V_ExtractSize(int type = 0)
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_recognizer.csta";
-			switch (type)
-			{
-			case 1: modelName = "face_recognizer_mask.csta"; break;
-			case 2: modelName = "face_recognizer_light.csta"; break;
-			}
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("ExtractSize", modelName);
 			v_faceRecognizer = new seeta::FaceRecognizer(setting);
 		}
 		int length = v_faceRecognizer->GetExtractFeatureSize();
 
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteRunTime("ExtractSize", start);
 		return length;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("ExtractSize", e);
 		return -1;
 	}
 }
@@ -246,13 +236,10 @@ View_Api bool V_Extract(unsigned char* imgData, int width, int height, int chann
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_recognizer.csta";
-			switch (type)
-			{
-			case 1: modelName = "face_recognizer_mask.csta"; break;
-			case 2: modelName = "face_recognizer_light.csta"; break;
-			}
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("Extract", modelName);
 			v_faceRecognizer = new seeta::FaceRecognizer(setting);
 		}
 		int length = v_faceRecognizer->GetExtractFeatureSize();
@@ -265,13 +252,13 @@ View_Api bool V_Extract(unsigned char* imgData, int width, int height, int chann
 			features++;
 		}
 
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteRunTime("Extract", start);
 		return true;
 
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("Extract", e);
 		return false;
 	}
 }
@@ -287,24 +274,21 @@ View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, 
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_recognizer.csta";
-			switch (type)
-			{
-			case 1: modelName = "face_recognizer_mask.csta"; break;
-			case 2: modelName = "face_recognizer_light.csta"; break;
-			}
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
 			setting.append(modelPath + modelName);
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("CalculateSimilarity", modelName);
 			v_faceRecognizer = new seeta::FaceRecognizer(setting);
 		}
 
 		auto similarity = v_faceRecognizer->CalculateSimilarity(leftFeatures, rightFeatures);
-		WriteMessage(__FUNCDNAME__, "Similarity = " + to_string(similarity));
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteMessage("CalculateSimilarity", "Similarity = " + to_string(similarity));
+		WriteRunTime("CalculateSimilarity", start);
 		return similarity;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("CalculateSimilarity", e);
 		return -1;
 	}
 }
@@ -329,20 +313,20 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int c
 			if (global) { // 启用全局检测能力
 				modelName = "fas_second.csta";
 				setting.append(modelPath + modelName);
-				WriteModelName(__FUNCDNAME__, modelName);
+				WriteModelName("AntiSpoofing", modelName);
 			}
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("AntiSpoofing", modelName);
 			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
 		}
 
 		auto status = v_faceAntiSpoofing->Predict(img, face, points);
 
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteRunTime("AntiSpoofing", start);
 		return status;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("AntiSpoofing", e);
 		return -1;
 	}
 }
@@ -364,20 +348,20 @@ View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, 
 			if (global) { // 启用全局检测能力
 				modelName = "fas_second.csta";
 				setting.append(modelPath + modelName);
-				WriteModelName(__FUNCDNAME__, modelName);
+				WriteModelName("AntiSpoofingVideo", modelName);
 			}
-			WriteModelName(__FUNCDNAME__, modelName);
+			WriteModelName("AntiSpoofingVideo", modelName);
 			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
 		}
 
 		auto status = v_faceAntiSpoofing->PredictVideo(img, face, points);
 
-		WriteRunTime(__FUNCDNAME__, start);
+		WriteRunTime("AntiSpoofingVideo", start);
 		return status;
 	}
 	catch (const std::exception& e)
 	{
-		WriteError(__FUNCDNAME__, e);
+		WriteError("AntiSpoofingVideo", e);
 		return -1;
 	}
 }
