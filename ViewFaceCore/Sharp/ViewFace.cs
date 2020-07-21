@@ -13,10 +13,13 @@ namespace ViewFaceCore.Sharp
     /// </summary>
     public class ViewFace
     {
-        bool Platform64 { get; set; } = false;
-        // <para>需要模型：<see langword=""/></para>
+        // Field
+        /// <summary>
+        /// 获取一个值，指示当前运行的处理器是否是 64位
+        /// </summary>
+        static bool Platform64 { get; } = IntPtr.Size == 8;
 
-        // ctor
+        // Constructor
         /// <summary>
         /// 使用默认的模型目录初始化人脸识别类
         /// </summary>
@@ -27,7 +30,6 @@ namespace ViewFaceCore.Sharp
         /// <param name="modelPath">模型目录</param>
         public ViewFace(string modelPath)
         {
-            Platform64 = IntPtr.Size == 8;
             if (Platform64)
             { ViewFacePlus64.SetModelPath(modelPath); }
             else
@@ -51,7 +53,7 @@ namespace ViewFaceCore.Sharp
             { ViewFacePlus32.SetLogFunction(action); }
         }
 
-        // public property
+        // Public Property
         /// <summary>
         /// 获取或设置模型路径
         /// </summary>
@@ -95,7 +97,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         public DetectorSetting DetectorSetting { get; set; } = new DetectorSetting();
 
-        // public method
+        // Public Method
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
         /// <para>
@@ -254,6 +256,9 @@ namespace ViewFaceCore.Sharp
         /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
         /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
         /// </para>
+        /// <para>
+        /// 需要模型：<see langword="fas_first.csta"/><br/>
+        /// </para>
         /// </summary>
         /// <param name="bitmap"></param>
         /// <param name="info"></param>
@@ -294,6 +299,9 @@ namespace ViewFaceCore.Sharp
         /// 视频帧图片，局部检测<br />
         /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
         /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// </para>
+        /// <para>
+        /// 需要模型：<see langword="fas_first.csta"/><br/>
         /// </para>
         /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
         /// </summary>
