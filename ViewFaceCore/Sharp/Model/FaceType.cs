@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ViewFaceCore.Sharp.Model
 {
@@ -20,21 +19,5 @@ namespace ViewFaceCore.Sharp.Model
         /// 轻量级人脸识别模型。
         /// </summary>
         Light,
-    }
-
-    /// <summary>
-    /// 人脸相似度阈值
-    /// </summary>
-    public class Face
-    {
-        /// <summary>
-        /// 人脸相似度阈值
-        /// </summary>
-        public static Dictionary<FaceType, float> Threshold { get; } = new Dictionary<FaceType, float>()
-        {
-            { FaceType.Normal,0.62f },
-            { FaceType.Mask,0.48f },
-            { FaceType.Light,0.55f },
-        };
     }
 }

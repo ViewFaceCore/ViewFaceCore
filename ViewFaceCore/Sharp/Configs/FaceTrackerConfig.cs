@@ -1,12 +1,16 @@
-﻿namespace ViewFaceCore.Sharp
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ViewFaceCore.Sharp.Configs
 {
     /// <summary>
-    /// 人脸检测器设置
+    /// 人脸跟踪器配置
     /// </summary>
-    public class DetectorSetting
+    public class FaceTrackerConfig
     {
         /// <summary>
-        /// 最小人脸。
+        /// 设置可检测的人脸大小，为人脸宽和高乘积的二次根值。
         /// <para>
         /// 最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。<br />
         /// 最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。<see langword="SeetaFace"/> 采用的是 <c><see langword="BindingBox Regresion"/></c> 的方式训练的检测器。
@@ -20,14 +24,15 @@
         /// </summary>
         public double Threshold { get; set; } = 0.9;
         /// <summary>
-        /// 可检测的图像最大宽度。
-        /// <para>默认值2000。</para>
+        /// 是否进行检测结果的帧间平滑，使得检测结果从视觉上更好一些。
         /// </summary>
-        public double MaxWidth { get; set; } = 2000;
+        public bool Stable { get; set; } = false;
         /// <summary>
-        /// 可检测的图像最大高度。
-        /// <para>默认值2000。</para>
+        /// 检测间隔
+        /// <para>
+        /// 间隔默认值为10。这里跟踪间隔是为了发现新增PID的间隔。检测器会通过整张图像检测人脸去发现是否有新增的PID，所以这个值太小会导致跟踪速度变慢（不断做全局检测）；这个值太大会导致画面中新增加的人脸不会立马被跟踪到。
+        /// </para>
         /// </summary>
-        public double MaxHeight { get; set; } = 2000;
+        public int Interval { get; set; } = 10;
     }
 }

@@ -2,12 +2,12 @@
 
 using ViewFaceCore.Sharp.Model;
 
-namespace ViewFaceCore.Sharp.Extends
+namespace ViewFaceCore.Sharp.Extensions
 {
     /// <summary>
     /// <see cref="ViewFace"/> 的扩展方法类
     /// </summary>
-    public static class ViewFaceExtend
+    public static class ViewFaceExtension
     {
         /// <summary>
         /// 活体检测器。
@@ -42,6 +42,23 @@ namespace ViewFaceCore.Sharp.Extends
             { return result; }
             else
             { return AntiSpoofingStatus.Error; }
+        }
+
+        /// <summary>
+        /// 计算人脸特征值相似度。
+        /// </summary>
+        /// <param name="viewFace"></param>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
+        public static float Compare(this ViewFace viewFace, float[] lhs, float[] rhs)
+        {
+            float sum = 0;
+            for (int i = 0; i < lhs.Length; i++)
+            {
+                sum += lhs[i] * rhs[i];
+            }
+            return sum;
         }
     }
 }

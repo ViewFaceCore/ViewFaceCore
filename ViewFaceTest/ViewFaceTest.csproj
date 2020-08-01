@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ViewFaceCore" Version="0.2.0" />
+    <ProjectReference Include="..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
 
 </Project>

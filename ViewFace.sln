@@ -8,9 +8,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCore\ViewFaceCore.csproj", "{1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceTest", "ViewFaceTest\ViewFaceTest.csproj", "{8286F760-5F52-4CE6-9D9F-E61013B65BCA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A} = {1F7CD1A5-AF69-4F8B-AF45-59271BADDC9A}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.MSTest", "ViewFaceCore.MSTest\ViewFaceCore.MSTest.csproj", "{1401DDAB-56CE-48FB-B36D-752FB3562873}"
 	ProjectSection(ProjectDependencies) = postProject

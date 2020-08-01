@@ -66,7 +66,7 @@ namespace ViewFaceCore.Plus
         /// <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
         /// <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
         /// <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
-        /// <param name="type"></param>
+        /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_DetectorSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int DetectorSize(byte[] imgData, int width, int height, int channels, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0);
@@ -86,46 +86,48 @@ namespace ViewFaceCore.Plus
         /// <summary>
         /// 人脸关键点数量
         /// </summary>
+        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceMarkSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int FaceMarkSize(int type = 0);
         /// <summary>
-        /// 人脸关键点
+        /// 获取人脸关键点
         /// </summary>
-        /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="fWidth"></param>
-        /// <param name="fHeight"></param>
-        /// <param name="pointX"></param>
-        /// <param name="pointY"></param>
-        /// <param name="type"></param>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="x">人脸位置 X</param>
+        /// <param name="y">人脸位置 Y</param>
+        /// <param name="fWidth">人脸大小 width</param>
+        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="pointX">存储关键点 x 坐标的 数组</param>
+        /// <param name="pointY">存储关键点 y 坐标的 数组</param>
+        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceMark", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool FaceMark(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, double[] pointX, double[] pointY, int type = 0);
 
         /// <summary>
-        /// 提取特征值
+        /// 获取人脸特征值长度
         /// </summary>
-        /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="points"></param>
-        /// <param name="features"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool Extract(byte[] imgData, int width, int height, int channels, FaceMarkPoint[] points, float[] features, int type = 0);
-        /// <summary>
-        /// 特征值大小
-        /// </summary>
+        /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_ExtractSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int ExtractSize(int type = 0);
+        /// <summary>
+        /// 提取人脸特征值
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="features">人脸特征值 数组</param>
+        /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool Extract(byte[] imgData, int width, int height, int channels, FaceMarkPoint[] points, float[] features, int type = 0);
 
         /// <summary>
         /// 计算相似度
@@ -176,6 +178,33 @@ namespace ViewFaceCore.Plus
         /// </returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+
+        /// <summary>
+        /// 获取跟踪的人脸个数
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="videoWidth">视频宽度</param>
+        /// <param name="videoHeight">视频高度</param>
+        /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int FaceTrackSize(byte[] imgData, int width, int height, int channels, bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0);
+
+        /// <summary>
+        /// 人脸跟踪信息
+        /// </summary>
+        /// <param name="score">人脸置信度分数 数组</param>
+        /// <param name="PID">人脸标识ID 数组</param>
+        /// <param name="x">人脸位置 x 数组</param>
+        /// <param name="y">人脸位置 y 数组</param>
+        /// <param name="width">人脸大小 width 数组</param>
+        /// <param name="height">人脸大小 height 数组</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_FaceTrack", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool FaceTrack(float[] score, int[] PID, int[] x, int[] y, int[] width, int[] height);
     }
 
     /// <summary>
@@ -233,7 +262,7 @@ namespace ViewFaceCore.Plus
         /// <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
         /// <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
         /// <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
-        /// <param name="type"></param>
+        /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_DetectorSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int DetectorSize(byte[] imgData, int width, int height, int channels, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0);
@@ -253,46 +282,48 @@ namespace ViewFaceCore.Plus
         /// <summary>
         /// 人脸关键点数量
         /// </summary>
+        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceMarkSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int FaceMarkSize(int type = 0);
         /// <summary>
-        /// 人脸关键点
+        /// 获取人脸关键点
         /// </summary>
-        /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="fWidth"></param>
-        /// <param name="fHeight"></param>
-        /// <param name="pointX"></param>
-        /// <param name="pointY"></param>
-        /// <param name="type"></param>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="x">人脸位置 X</param>
+        /// <param name="y">人脸位置 Y</param>
+        /// <param name="fWidth">人脸大小 width</param>
+        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="pointX">存储关键点 x 坐标的 数组</param>
+        /// <param name="pointY">存储关键点 y 坐标的 数组</param>
+        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceMark", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool FaceMark(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, double[] pointX, double[] pointY, int type = 0);
 
         /// <summary>
-        /// 提取特征值
+        /// 获取人脸特征值长度
         /// </summary>
-        /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="points"></param>
-        /// <param name="features"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool Extract(byte[] imgData, int width, int height, int channels, FaceMarkPoint[] points, float[] features, int type = 0);
-        /// <summary>
-        /// 特征值大小
-        /// </summary>
+        /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_ExtractSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int ExtractSize(int type = 0);
+        /// <summary>
+        /// 提取人脸特征值
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="features">人脸特征值 数组</param>
+        /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool Extract(byte[] imgData, int width, int height, int channels, FaceMarkPoint[] points, float[] features, int type = 0);
 
         /// <summary>
         /// 计算相似度
@@ -343,5 +374,32 @@ namespace ViewFaceCore.Plus
         /// </returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+
+        /// <summary>
+        /// 获取跟踪的人脸个数
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="width">图像 宽度</param>
+        /// <param name="height">图像 高度</param>
+        /// <param name="channels">图像 通道数</param>
+        /// <param name="videoWidth">视频宽度</param>
+        /// <param name="videoHeight">视频高度</param>
+        /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int FaceTrackSize(byte[] imgData, int width, int height, int channels, bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0);
+
+        /// <summary>
+        /// 人脸跟踪信息
+        /// </summary>
+        /// <param name="score">人脸置信度分数 数组</param>
+        /// <param name="PID">人脸标识ID 数组</param>
+        /// <param name="x">人脸位置 x 数组</param>
+        /// <param name="y">人脸位置 y 数组</param>
+        /// <param name="width">人脸大小 width 数组</param>
+        /// <param name="height">人脸大小 height 数组</param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_FaceTrack", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool FaceTrack(float[] score, int[] PID, int[] x, int[] y, int[] width, int[] height);
     }
 }

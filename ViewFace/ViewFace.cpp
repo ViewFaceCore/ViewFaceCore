@@ -2,6 +2,7 @@
 #include "seeta/FaceLandmarker.h"
 #include "seeta/FaceRecognizer.h"
 #include "seeta/FaceAntiSpoofing.h"
+#include "seeta/FaceTracker.h"
 
 #include <time.h>
 
@@ -16,26 +17,42 @@ LogCallBack logger = NULL; // 日志回调函数
 
 // 打印日志
 void WriteLog(string str) { if (logger != NULL) { logger(str.c_str()); } }
-
+// 打印指定函数产生的一般消息
 void WriteMessage(string fanctionName, string message) { WriteLog(fanctionName + "\t Message:" + message); }
+// 打印指定函数产生的模型名称
 void WriteModelName(string fanctionName, string modelName) { WriteLog(fanctionName + "\t Model.Name:" + modelName); }
+// 打印指定函数产生的运行时间
 void WriteRunTime(string fanctionName, clock_t start) { WriteLog(fanctionName + "\t Run.Time:" + to_string(clock() - start) + " ms"); }
+// 打印指定函数产生的错误消息
 void WriteError(string fanctionName, const std::exception& e) { WriteLog(fanctionName + "\t Error:" + e.what()); }
 
+/***************************************************************************************************************/
 // 注册日志回调函数
+/// <summary>
+/// 注册日志回调函数
+/// </summary>
+/// <param name="writeLog">回调函数</param>
 View_Api void V_SetLogFunction(LogCallBack writeLog)
 {
 	logger = writeLog;
 	WriteMessage("SetLogFunction", "Successed.");
 }
-
 // 设置人脸模型目录
+/// <summary>
+/// 设置人脸模型目录
+/// </summary>
+/// <param name="path">人脸模型目录</param>
 View_Api void V_SetModelPath(const char* path)
 {
 	modelPath = path;
 	WriteMessage("SetModelPath", "Model.Path:" + modelPath);
 }
 // 获取人脸模型目录
+/// <summary>
+/// 获取人脸模型目录
+/// </summary>
+/// <param name="path"></param>
+/// <returns></returns>
 View_Api bool V_GetModelPath(char** path)
 {
 	try
@@ -50,11 +67,25 @@ View_Api bool V_GetModelPath(char** path)
 	}
 }
 
+/***************************************************************************************************************/
+// 人脸检测器
 seeta::FaceDetector* v_faceDetector = NULL;
-
 // 人脸检测结果
 static SeetaFaceInfoArray detectorInfos;
-// 人脸数量检测器
+// 获取人脸数量
+/// <summary>
+/// 获取人脸数量
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="faceSize">最小人脸尺寸</param>
+/// <param name="threshold">人脸置信度</param>
+/// <param name="maxWidth">可检测的最大宽度</param>
+/// <param name="maxHeight">可检测的最大高度</param>
+/// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+/// <returns></returns>
 View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int channels, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
 {
 	try {
@@ -71,10 +102,10 @@ View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int c
 			v_faceDetector = new seeta::FaceDetector(setting);
 		}
 
-		if (faceSize != 20) { v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize); }
-		if (threshold != 0.9) { v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_THRESHOLD, threshold); }
-		if (maxWidth != 2000) { v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth); }
-		if (maxHeight != 2000) { v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight); }
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
 
 		auto infos = v_faceDetector->detect(img);
 		detectorInfos = infos;
@@ -89,6 +120,15 @@ View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int c
 	}
 }
 // 人脸检测器
+/// <summary>
+/// 人脸检测器
+/// </summary>
+/// <param name="score">人脸置信度分数 数组</param>
+/// <param name="x">人脸位置 x 数组</param>
+/// <param name="y">人脸位置 y 数组</param>
+/// <param name="width">人脸大小 width 数组</param>
+/// <param name="height">人脸大小 height 数组</param>
+/// <returns></returns>
 View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
 {
 	try
@@ -117,12 +157,14 @@ View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
 	}
 }
 
-
+/***************************************************************************************************************/
+// 人脸关键点器
 seeta::FaceLandmarker* v_faceLandmarker = NULL;
+// 人脸关键点数量
 /// <summary>
 /// 人脸关键点数量
 /// </summary>
-/// <param name="type">模型类型。0：68个关键点；1：5个关键点[戴口罩]；2：5个关键点。</param>
+/// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
 /// <returns></returns>
 View_Api int V_FaceMarkSize(int type = 0)
 {
@@ -151,7 +193,22 @@ View_Api int V_FaceMarkSize(int type = 0)
 		return -1;
 	}
 }
-// 人脸关键点
+// 获取人脸关键点
+/// <summary>
+/// 获取人脸关键点
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="x">人脸位置 X</param>
+/// <param name="y">人脸位置 Y</param>
+/// <param name="fWidth">人脸大小 width</param>
+/// <param name="fHeight">人脸大小 height</param>
+/// <param name="pointX">存储关键点 x 坐标的 数组</param>
+/// <param name="pointY">存储关键点 y 坐标的 数组</param>
+/// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+/// <returns></returns>
 View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, double* pointX, double* pointY, int type = 0)
 {
 	try
@@ -193,8 +250,15 @@ View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int chan
 	}
 }
 
+/***************************************************************************************************************/
+// 人脸特征值器
 seeta::FaceRecognizer* v_faceRecognizer = NULL;
 // 获取人脸特征值长度
+/// <summary>
+/// 获取人脸特征值长度
+/// </summary>
+/// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+/// <returns></returns>
 View_Api int V_ExtractSize(int type = 0)
 {
 	try
@@ -224,6 +288,17 @@ View_Api int V_ExtractSize(int type = 0)
 	}
 }
 // 提取人脸特征值
+/// <summary>
+/// 提取人脸特征值
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="points">人脸关键点 数组</param>
+/// <param name="features">人脸特征值 数组</param>
+/// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+/// <returns></returns>
 View_Api bool V_Extract(unsigned char* imgData, int width, int height, int channels, SeetaPointF* points, float* features, int type = 0)
 {
 	try
@@ -293,9 +368,24 @@ View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, 
 	}
 }
 
+/***************************************************************************************************************/
 // 活体检测器
 seeta::FaceAntiSpoofing* v_faceAntiSpoofing = NULL;
 // 活体检测 - 单帧
+/// <summary>
+/// 活体检测 - 单帧
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="x">人脸坐标 x</param>
+/// <param name="y">人脸坐标 y</param>
+/// <param name="fWidth">人脸大小 width</param>
+/// <param name="fHeight">人脸大小 height</param>
+/// <param name="points">人脸关键点 数组</param>
+/// <param name="global">是否启用全局检测能力</param>
+/// <returns></returns>
 View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
 {
 	try
@@ -331,6 +421,20 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int c
 	}
 }
 // 活体检测 - 视频
+/// <summary>
+/// 活体检测 - 视频
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="x">人脸坐标 x</param>
+/// <param name="y">人脸坐标 y</param>
+/// <param name="fWidth">人脸大小 width</param>
+/// <param name="fHeight">人脸大小 height</param>
+/// <param name="points">人脸关键点 数组</param>
+/// <param name="global">是否启用全局检测能力</param>
+/// <returns></returns>
 View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
 {
 	try
@@ -366,6 +470,92 @@ View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, 
 	}
 }
 
+/***************************************************************************************************************/
+// 人脸跟踪器
+seeta::FaceTracker* v_faceTracker = NULL;
+static SeetaTrackingFaceInfoArray trackingInfos;
+/// <summary>
+/// 获取跟踪的人脸个数
+/// </summary>
+/// <param name="imgData">图像 BGR 数据</param>
+/// <param name="width">图像 宽度</param>
+/// <param name="height">图像 高度</param>
+/// <param name="channels">图像 通道数</param>
+/// <param name="videoWidth">视频宽度</param>
+/// <param name="videoHeight">视频高度</param>
+/// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+/// <returns></returns>
+View_Api int V_FaceTrackSize(unsigned char* imgData, int width, int height, int channels, bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		SeetaImageData img = { width, height, channels, imgData };
+		if (v_faceTracker == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_detector.csta";
+			if (type == 1) { modelName = "mask_detector.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("DetectorSize", modelName);
+			v_faceTracker = new seeta::FaceTracker(setting, width, height);
+		}
+
+		v_faceTracker->SetVideoStable(stable);
+		v_faceTracker->SetMinFaceSize(faceSize);
+		v_faceTracker->SetThreshold(threshold);
+		v_faceTracker->SetInterval(interval);
+
+		auto faceInfos = v_faceTracker->Track(img);
+		trackingInfos = faceInfos;
+
+		WriteRunTime("FaceTrackSize", start);
+		return faceInfos.size;
+
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceTrackSize", e);
+		return -1;
+	}
+}
+/// <summary>
+/// 人脸跟踪信息
+/// </summary>
+/// <param name="score">人脸置信度分数 数组</param>
+/// <param name="PID">人脸标识ID 数组</param>
+/// <param name="x">人脸位置 x 数组</param>
+/// <param name="y">人脸位置 y 数组</param>
+/// <param name="width">人脸大小 width 数组</param>
+/// <param name="height">人脸大小 height 数组</param>
+/// <returns></returns>
+View_Api bool V_FaceTrack(float* score, int* PID, int* x, int* y, int* width, int* height)
+{
+	try
+	{
+		for (int i = 0; i < trackingInfos.size; i++)
+		{
+			*score = trackingInfos.data->score;
+			*PID = trackingInfos.data->PID;
+			*x = trackingInfos.data->pos.x;
+			*y = trackingInfos.data->pos.y;
+			*width = trackingInfos.data->pos.width;
+			*height = trackingInfos.data->pos.height;
+		}
+
+		trackingInfos.data = NULL;
+		trackingInfos.size = NULL;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceTrack", e);
+		return false;
+	}
+}
+
 // 释放资源
 View_Api void V_Dispose()
 {
@@ -373,4 +563,5 @@ View_Api void V_Dispose()
 	if (v_faceLandmarker != NULL) delete v_faceLandmarker;
 	if (v_faceRecognizer != NULL) delete v_faceRecognizer;
 	if (v_faceAntiSpoofing != NULL) delete v_faceAntiSpoofing;
+	if (v_faceTracker != NULL) delete v_faceTracker;
 }

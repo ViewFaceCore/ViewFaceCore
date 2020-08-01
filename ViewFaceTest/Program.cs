@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using ViewFaceCore.Sharp;
+using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceTest
@@ -11,7 +12,7 @@ namespace ViewFaceTest
         static void Main()
         {
             ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
-            viewFace.DetectorSetting = new DetectorSetting() { FaceSize = 20, MaxWidth = 2000, MaxHeight = 2000, Threshold = 0.5 };
+            viewFace.DetectorSetting = new FaceDetectorConfig() { FaceSize = 20, MaxWidth = 2000, MaxHeight = 2000, Threshold = 0.5 };
 
             // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
             viewFace.FaceType = FaceType.Normal;
@@ -20,7 +21,7 @@ namespace ViewFaceTest
 
             #region 识别老照片
             float[] oldEigenValues;
-            Bitmap oldImg = (Bitmap)Image.FromFile(@"C:\Users\yangw\OneDrive\图片\Camera Roll\IMG_20181103_142707.jpg"/*老图片路径*/); // 从文件中加载照片 // 或者视频帧等
+            Bitmap oldImg = (Bitmap)Image.FromFile(@"C:/Users/yangw/OneDrive/桌面/image/董建华.jpg"/*老图片路径*/); // 从文件中加载照片 // 或者视频帧等
             var oldFaces = viewFace.FaceDetector(oldImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
             if (oldFaces.Length > 0) //识别到人脸
             {
@@ -37,11 +38,12 @@ namespace ViewFaceTest
                 oldEigenValues = viewFace.Extract(oldImg, oldPoints); // 获取 指定的关键点 的特征值。
             }
             else { oldEigenValues = new float[0]; /*未识别到人脸*/ }
+            var trackFaces = viewFace.FaceTrack(oldImg);
             #endregion
 
             #region 识别新照片
             float[] newEigenValues;
-            Bitmap newImg = (Bitmap)Image.FromFile(@"C:\Users\yangw\OneDrive\图片\Camera Roll\IMG_20181129_224339.jpg"/*新图片路径*/); // 从文件中加载照片 // 或者视频帧等
+            Bitmap newImg = (Bitmap)Image.FromFile(@"C:/Users/yangw/OneDrive/桌面/image/董丽华.jpg"/*新图片路径*/); // 从文件中加载照片 // 或者视频帧等
             var newFaces = viewFace.FaceDetector(newImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
             if (newFaces.Length > 0) //识别到人脸
             {
@@ -63,7 +65,7 @@ namespace ViewFaceTest
             try
             {
                 float similarity = viewFace.Similarity(oldEigenValues, newEigenValues); // 对比两张照片上的数据，确认是否是同一个人。
-                Console.WriteLine($"阈值 = {Face.Threshold[viewFace.FaceType]}\t相似度 = {similarity}");
+                Console.WriteLine($"阈值 = {FaceCompareConfig.GetThreshold(viewFace.FaceType)}\t相似度 = {similarity}");
                 Console.WriteLine($"是否是同一个人：{viewFace.IsSelf(similarity)}");
             }
             catch (Exception e)

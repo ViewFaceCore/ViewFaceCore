@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using ViewFaceCore.Plus;
-using ViewFaceCore.Sharp.Extends;
+using ViewFaceCore.Sharp.Configs;
+using ViewFaceCore.Sharp.Exceptions;
+using ViewFaceCore.Sharp.Extensions;
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Sharp
@@ -75,12 +77,13 @@ namespace ViewFaceCore.Sharp
             }
         }
         /// <summary>
-        /// 获取或设置人脸类型
+        /// 获取或设置人脸类型。
         /// <para>
         /// <listheader>此属性可影响到以下方法：</listheader><br />
-        /// • <c><see cref="FaceDetector(Bitmap)"/></c><br />
-        /// • <c><see cref="Extract(Bitmap, FaceMarkPoint[])"/></c><br />
-        /// • <c><see cref="Similarity(float[], float[])"/></c><br />
+        /// • <c><see cref="FaceDetector"/></c><br />
+        /// • <c><see cref="Extract"/></c><br />
+        /// • <c><see cref="Similarity"/></c><br />
+        /// • <c><see cref="IsSelf" /></c><br />
         /// </para>
         /// </summary>
         public FaceType FaceType { get; set; } = FaceType.Light;
@@ -93,20 +96,27 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         public MarkType MarkType { get; set; } = MarkType.Light;
         /// <summary>
-        /// 获取或设置人脸检测器设置
+        /// 获取或设置人脸检测器配置
         /// </summary>
-        public DetectorSetting DetectorSetting { get; set; } = new DetectorSetting();
+        public FaceDetectorConfig DetectorSetting { get; set; } = new FaceDetectorConfig();
+        /// <summary>
+        /// 获取或设置人脸跟踪器的配置
+        /// </summary>
+        public FaceTrackerConfig TrackerConfig { get; set; } = new FaceTrackerConfig();
 
         // Public Method
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
+        /// <para>
+        /// 可以通过 <see cref="DetectorSetting"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+        /// </para>
         /// <para>
         /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
         /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
-        /// <returns></returns>
+        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorSetting"/> 重新检测。</returns>
         public FaceInfo[] FaceDetector(Bitmap bitmap)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
@@ -151,6 +161,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
         /// <param name="info">指定的人脸信息</param>
+        /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
         public FaceMarkPoint[] FaceMark(Bitmap bitmap, FaceInfo info)
         {
@@ -179,7 +190,7 @@ namespace ViewFaceCore.Sharp
                 return points.ToArray();
             }
             else
-            { return new FaceMarkPoint[0]; }
+            { throw new MarkException("人脸关键点获取失败"); }
         }
 
         /// <summary>
@@ -192,6 +203,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="bitmap"></param>
         /// <param name="points"></param>
+        /// <exception cref="ExtractException"/>
         /// <returns></returns>
         public float[] Extract(Bitmap bitmap, FaceMarkPoint[] points)
         {
@@ -211,7 +223,7 @@ namespace ViewFaceCore.Sharp
             if (res)
             { return features; }
             else
-            { return new float[0]; }
+            { throw new ExtractException("人脸特征值提取失败"); }
         }
 
         /// <summary>
@@ -247,7 +259,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
-        public bool IsSelf(float similarity) => similarity > Face.Threshold[FaceType];
+        public bool IsSelf(float similarity) => similarity > FaceCompareConfig.GetThreshold(FaceType);
 
         /// <summary>
         /// 活体检测器。
@@ -336,6 +348,53 @@ namespace ViewFaceCore.Sharp
             { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
             else
             { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+        }
+
+        /// <summary>
+        /// 识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
+        /// <para>
+        /// 可以通过 <see cref="TrackerConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+        /// </para>
+        /// <para>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">包含人脸的图片</param>
+        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
+        public FaceTrackInfo[] FaceTrack(Bitmap bitmap)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            int size;
+            if (Platform64)
+            { size = ViewFacePlus64.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType); }
+            else
+            { size = ViewFacePlus32.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType); }
+
+            if (size == -1)
+            { return new FaceTrackInfo[0]; }
+
+            float[] _socre = new float[size];
+            int[] _pid = new int[size];
+            int[] _x = new int[size];
+            int[] _y = new int[size];
+            int[] _width = new int[size];
+            int[] _height = new int[size];
+            bool res;
+            if (Platform64)
+            { res = ViewFacePlus64.FaceTrack(_socre, _pid, _x, _y, _width, _height); }
+            else
+            { res = ViewFacePlus32.FaceTrack(_socre, _pid, _x, _y, _width, _height); }
+            if (res)
+            {
+                List<FaceTrackInfo> infos = new List<FaceTrackInfo>();
+                for (int i = 0; i < size; i++)
+                {
+                    infos.Add(new FaceTrackInfo() { Score = _socre[i], Pid = _pid[i], Location = new FaceRect() { X = _x[i], Y = _y[i], Width = _width[i], Height = _height[i] } });
+                }
+                return infos.ToArray();
+            }
+            else { return new FaceTrackInfo[0]; }
         }
 
         /// <summary>
