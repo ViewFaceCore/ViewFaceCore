@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+using View.Drawing.Extensions;
 using ViewFaceCore.Plus;
 using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Exceptions;
@@ -15,12 +15,6 @@ namespace ViewFaceCore.Sharp
     /// </summary>
     public class ViewFace
     {
-        // Field
-        /// <summary>
-        /// 获取一个值，指示当前运行的处理器是否是 64位
-        /// </summary>
-        static bool Platform64 { get; } = IntPtr.Size == 8;
-
         // Constructor
         /// <summary>
         /// 使用默认的模型目录初始化人脸识别类
@@ -30,13 +24,7 @@ namespace ViewFaceCore.Sharp
         /// 使用指定的模型目录初始化人脸识别类
         /// </summary>
         /// <param name="modelPath">模型目录</param>
-        public ViewFace(string modelPath)
-        {
-            if (Platform64)
-            { ViewFacePlus64.SetModelPath(modelPath); }
-            else
-            { ViewFacePlus32.SetModelPath(modelPath); }
-        }
+        public ViewFace(string modelPath) => ModelPath = modelPath;
         /// <summary>
         /// 使用指定的日志回调函数初始化人脸识别类
         /// </summary>
@@ -47,35 +35,19 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="modelPath">模型目录</param>
         /// <param name="action">日志回调函数</param>
-        public ViewFace(string modelPath, LogCallBack action) : this(modelPath)
-        {
-            if (Platform64)
-            { ViewFacePlus64.SetLogFunction(action); }
-            else
-            { ViewFacePlus32.SetLogFunction(action); }
-        }
+        public ViewFace(string modelPath, LogCallBack action) : this(modelPath) => ViewFacePlus.SetLogFunction(action);
+
+        /// <summary>
+        /// 显示 ViewFace 当前运行的 CPU 类型。
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => $"处理器:{(ViewFacePlus.Platform64 ? "x64" : "x86")} {base.ToString()}";
 
         // Public Property
         /// <summary>
         /// 获取或设置模型路径
         /// </summary>
-        public string ModelPath
-        {
-            get
-            {
-                if (Platform64)
-                { return ViewFacePlus64.GetModelPath(); }
-                else
-                { return ViewFacePlus32.GetModelPath(); }
-            }
-            set
-            {
-                if (Platform64)
-                { ViewFacePlus64.SetModelPath(value); }
-                else
-                { ViewFacePlus32.SetModelPath(value); }
-            }
-        }
+        public string ModelPath { get => ViewFacePlus.ModelPath; set => ViewFacePlus.ModelPath = value; }
         /// <summary>
         /// 获取或设置人脸类型。
         /// <para>
@@ -86,7 +58,7 @@ namespace ViewFaceCore.Sharp
         /// • <c><see cref="IsSelf" /></c><br />
         /// </para>
         /// </summary>
-        public FaceType FaceType { get; set; } = FaceType.Light;
+        public FaceType FaceType { get; set; } = FaceType.Normal;
         /// <summary>
         /// 获取或设置人脸关键点类型
         /// <para>
@@ -98,17 +70,21 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 获取或设置人脸检测器配置
         /// </summary>
-        public FaceDetectorConfig DetectorSetting { get; set; } = new FaceDetectorConfig();
+        public FaceDetectorConfig DetectorConfig { get; set; } = new FaceDetectorConfig();
         /// <summary>
         /// 获取或设置人脸跟踪器的配置
         /// </summary>
         public FaceTrackerConfig TrackerConfig { get; set; } = new FaceTrackerConfig();
+        /// <summary>
+        /// 获取或设置质量评估器的配置
+        /// </summary>
+        public QualityConfig QualityConfig { get; set; } = new QualityConfig();
 
         // Public Method
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
         /// <para>
-        /// 可以通过 <see cref="DetectorSetting"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+        /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
         /// <para>
         /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
@@ -116,15 +92,11 @@ namespace ViewFaceCore.Sharp
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorSetting"/> 重新检测。</returns>
+        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
         public FaceInfo[] FaceDetector(Bitmap bitmap)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size;
-            if (Platform64)
-            { size = ViewFacePlus64.DetectorSize(bgr, width, height, channels, DetectorSetting.FaceSize, DetectorSetting.Threshold, DetectorSetting.MaxWidth, DetectorSetting.MaxHeight, (int)FaceType); }
-            else
-            { size = ViewFacePlus32.DetectorSize(bgr, width, height, channels, DetectorSetting.FaceSize, DetectorSetting.Threshold, DetectorSetting.MaxWidth, DetectorSetting.MaxHeight, (int)FaceType); }
+            int size = ViewFacePlus.DetectorSize(bgr, width, height, channels, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
 
             if (size == -1)
             { return new FaceInfo[0]; }
@@ -134,12 +106,8 @@ namespace ViewFaceCore.Sharp
             int[] _y = new int[size];
             int[] _width = new int[size];
             int[] _height = new int[size];
-            bool res;
-            if (Platform64)
-            { res = ViewFacePlus64.Detector(_socre, _x, _y, _width, _height); }
-            else
-            { res = ViewFacePlus32.Detector(_socre, _x, _y, _width, _height); }
-            if (res)
+
+            if (ViewFacePlus.Detector(_socre, _x, _y, _width, _height))
             {
                 List<FaceInfo> infos = new List<FaceInfo>();
                 for (int i = 0; i < size; i++)
@@ -166,23 +134,15 @@ namespace ViewFaceCore.Sharp
         public FaceMarkPoint[] FaceMark(Bitmap bitmap, FaceInfo info)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size;
-            if (Platform64)
-            { size = ViewFacePlus64.FaceMarkSize((int)MarkType); }
-            else
-            { size = ViewFacePlus32.FaceMarkSize((int)MarkType); }
+            int size = ViewFacePlus.FaceMarkSize((int)MarkType);
 
             if (size == -1)
             { return new FaceMarkPoint[0]; }
 
             double[] _pointX = new double[size];
             double[] _pointY = new double[size];
-            bool res;
-            if (Platform64)
-            { res = ViewFacePlus64.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
-            else
-            { res = ViewFacePlus32.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType); }
-            if (res)
+
+            if (ViewFacePlus.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType))
             {
                 List<FaceMarkPoint> points = new List<FaceMarkPoint>();
                 for (int i = 0; i < size; i++)
@@ -208,19 +168,9 @@ namespace ViewFaceCore.Sharp
         public float[] Extract(Bitmap bitmap, FaceMarkPoint[] points)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            float[] features;
-            if (Platform64)
-            { features = new float[ViewFacePlus64.ExtractSize((int)FaceType)]; }
-            else
-            { features = new float[ViewFacePlus32.ExtractSize((int)FaceType)]; }
+            float[] features = new float[ViewFacePlus.ExtractSize((int)FaceType)];
 
-
-            bool res;
-            if (Platform64)
-            { res = ViewFacePlus64.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
-            else
-            { res = ViewFacePlus32.Extract(bgr, width, height, channels, points, features, (int)FaceType); }
-            if (res)
+            if (ViewFacePlus.Extract(bgr, width, height, channels, points, features, (int)FaceType))
             { return features; }
             else
             { throw new ExtractException("人脸特征值提取失败"); }
@@ -247,11 +197,7 @@ namespace ViewFaceCore.Sharp
             if (leftFeatures.Length != rightFeatures.Length)
                 throw new ArgumentException("两个参数长度不一致");
 
-
-            if (Platform64)
-            { return ViewFacePlus64.Similarity(leftFeatures, rightFeatures, (int)FaceType); }
-            else
-            { return ViewFacePlus32.Similarity(leftFeatures, rightFeatures, (int)FaceType); }
+            return ViewFacePlus.Similarity(leftFeatures, rightFeatures, (int)FaceType);
         }
 
         /// <summary>
@@ -298,11 +244,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
-
-            if (Platform64)
-            { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
-            else
-            { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global);
         }
 
         /// <summary>
@@ -344,10 +286,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
-            if (Platform64)
-            { return (AntiSpoofingStatus)ViewFacePlus64.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
-            else
-            { return (AntiSpoofingStatus)ViewFacePlus32.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global); }
+            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global);
         }
 
         /// <summary>
@@ -365,11 +304,7 @@ namespace ViewFaceCore.Sharp
         public FaceTrackInfo[] FaceTrack(Bitmap bitmap)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size;
-            if (Platform64)
-            { size = ViewFacePlus64.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType); }
-            else
-            { size = ViewFacePlus32.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType); }
+            int size = ViewFacePlus.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
 
             if (size == -1)
             { return new FaceTrackInfo[0]; }
@@ -380,12 +315,8 @@ namespace ViewFaceCore.Sharp
             int[] _y = new int[size];
             int[] _width = new int[size];
             int[] _height = new int[size];
-            bool res;
-            if (Platform64)
-            { res = ViewFacePlus64.FaceTrack(_socre, _pid, _x, _y, _width, _height); }
-            else
-            { res = ViewFacePlus32.FaceTrack(_socre, _pid, _x, _y, _width, _height); }
-            if (res)
+
+            if (ViewFacePlus.FaceTrack(_socre, _pid, _x, _y, _width, _height))
             {
                 List<FaceTrackInfo> infos = new List<FaceTrackInfo>();
                 for (int i = 0; i < size; i++)
@@ -398,14 +329,79 @@ namespace ViewFaceCore.Sharp
         }
 
         /// <summary>
+        /// 人脸质量评估
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="info"></param>
+        /// <param name="points"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public QualityResult FaceQuality(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            int level = 0; float score = 0; bool res = false;
+
+            switch (type)
+            {
+                case QualityType.Brightness:
+                    res = ViewFacePlus.QualityOfBrightness(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.Brightness.V0, QualityConfig.Brightness.V1, QualityConfig.Brightness.V2, QualityConfig.Brightness.V3);
+                    break;
+                case QualityType.Clarity:
+                    res = ViewFacePlus.QualityOfClarity(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.Clarity.Low, QualityConfig.Clarity.High);
+                    break;
+                case QualityType.Integrity:
+                    res = ViewFacePlus.QualityOfIntegrity(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.Integrity.Low, QualityConfig.Integrity.High);
+                    break;
+                case QualityType.Pose:
+                    res = ViewFacePlus.QualityOfPose(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score);
+                    break;
+                case QualityType.PoseEx:
+                    res = ViewFacePlus.QualityOfPoseEx(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.PoseEx.YawLow, QualityConfig.PoseEx.YawHigh,
+                        QualityConfig.PoseEx.PitchLow, QualityConfig.PoseEx.PitchHigh,
+                        QualityConfig.PoseEx.RollLow, QualityConfig.PoseEx.RollHigh);
+                    break;
+                case QualityType.Resolution:
+                    res = ViewFacePlus.QualityOfResolution(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.Resolution.Low, QualityConfig.Resolution.High);
+                    break;
+                case QualityType.ClarityEx:
+                    res = ViewFacePlus.QualityOfClarityEx(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score,
+                        QualityConfig.ClarityEx.BlurThresh);
+                    break;
+                case QualityType.Structure:
+                    res = ViewFacePlus.QualityOfNoMask(bgr, width, height, channels,
+                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                        ref level, ref score);
+                    break;
+            }
+
+            if (res)
+            { return new QualityResult() { Level = (QualityLevel)level, Score = score }; }
+            else
+            { return new QualityResult() { Level = QualityLevel.Error, Score = -1 }; }
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
-        ~ViewFace()
-        {
-            if (Platform64)
-            { ViewFacePlus64.ViewDispose(); }
-            else
-            { ViewFacePlus32.ViewDispose(); }
-        }
+        ~ViewFace() => ViewFacePlus.ViewDispose();
     }
 }

@@ -13,10 +13,19 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\seetaEx">
+      <UniqueIdentifier>{a1999f3e-542c-44f3-a92e-f83b23cf0128}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ViewFace.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="seetaEx\QualityOfClarityEx.cpp">
+      <Filter>源文件\seetaEx</Filter>
+    </ClCompile>
+    <ClCompile Include="seetaEx\QualityOfNoMask.cpp">
+      <Filter>源文件\seetaEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

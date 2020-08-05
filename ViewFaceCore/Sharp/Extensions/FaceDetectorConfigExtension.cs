@@ -18,6 +18,7 @@ namespace ViewFaceCore.Sharp.Extensions
         /// 如果最小人脸参数设置为 <see langword="80"/> 的话，从检测能力上，可以将原图缩小的原来的 <see langword="1/4"/> ，这样从计算复杂度上，能够比最小人脸设置为 <see langword="20"/> 时，提速到 <see langword="16"/> 倍。
         /// </para>
         /// </summary>
+        /// <param name="faceDetector"></param>
         /// <param name="facesize"></param>
         /// <returns></returns>
         public static FaceDetectorConfig SetFaceSize(this FaceDetectorConfig faceDetector, double facesize)
@@ -29,6 +30,9 @@ namespace ViewFaceCore.Sharp.Extensions
         /// 设置检测器阈值。
         /// <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
         /// </summary>
+        /// <param name="faceDetector"></param>
+        /// <param name="threshold"></param>
+        /// <returns></returns>
         public static FaceDetectorConfig SetThreshold(this FaceDetectorConfig faceDetector, double threshold)
         {
             faceDetector.Threshold = threshold;
@@ -38,6 +42,9 @@ namespace ViewFaceCore.Sharp.Extensions
         /// 设置可检测的图像最大高度。
         /// <para>默认值2000。</para>
         /// </summary>
+        /// <param name="faceDetector"></param>
+        /// <param name="maxWidth"></param>
+        /// <returns></returns>
         public static FaceDetectorConfig SetMaxWidth(this FaceDetectorConfig faceDetector, double maxWidth)
         {
             faceDetector.MaxWidth = maxWidth;
@@ -47,6 +54,9 @@ namespace ViewFaceCore.Sharp.Extensions
         /// 设置可检测的图像最大高度。
         /// <para>默认值2000。</para>
         /// </summary>
+        /// <param name="faceDetector"></param>
+        /// <param name="maxHeight"></param>
+        /// <returns></returns>
         public static FaceDetectorConfig SetMaxHeight(this FaceDetectorConfig faceDetector, double maxHeight)
         {
             faceDetector.MaxHeight = maxHeight;

@@ -207,6 +207,8 @@
     </BuildLog>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="seetaEx\QualityOfClarityEx.cpp" />
+    <ClCompile Include="seetaEx\QualityOfNoMask.cpp" />
     <ClCompile Include="ViewFace.cpp" />
   </ItemGroup>
   <ItemGroup>
