@@ -32,6 +32,7 @@ namespace ViewFaceTest
             float[] oldEigenValues;
             Bitmap oldImg = (Bitmap)Image.FromFile(oldImgPath); // 从文件中加载照片 // 或者视频帧等
             var oldFaceInfos = viewFace.FaceDetector(oldImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
+            oldFaceInfos = viewFace.FaceDetectorAsync(oldImg).GetAwaiter().GetResult(); // 异步检测图片中的人脸信息
             if (oldFaceInfos.Length > 0) //识别到人脸
             {
                 { // 打印人脸信息
