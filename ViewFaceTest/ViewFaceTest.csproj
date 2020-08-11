@@ -5,6 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="xcopy /Y &quot;C:\vclib\seeta\lib\x86\*.dll&quot; &quot;$(ProjectDir)$(OutDir)FaceLibraries\x86\*.dll&quot;&#xD;&#xA;xcopy /Y &quot;C:\vclib\seeta\lib\x64\*.dll&quot; &quot;$(ProjectDir)$(OutDir)FaceLibraries\x64\*.dll&quot;&#xD;&#xA;&#xD;&#xA;copy /Y &quot;$(SolutionDir)ViewFace\bin\Release\x86\ViewFace.dll&quot; &quot;$(ProjectDir)$(OutDir)FaceLibraries\x86\ViewFace.dll&quot;&#xD;&#xA;copy /Y &quot;$(SolutionDir)ViewFace\bin\Release\x64\ViewFace.dll&quot; &quot;$(ProjectDir)$(OutDir)FaceLibraries\x64\ViewFace.dll&quot;&#xD;&#xA;" />
+  </Target>
+
   <ItemGroup>
     <ProjectReference Include="..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
