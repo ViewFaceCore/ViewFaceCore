@@ -97,12 +97,12 @@ static SeetaFaceInfoArray detectorInfos;
 /// <param name="maxHeight">可检测的最大高度</param>
 /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：face_detector。</param>
 /// <returns></returns>
-View_Api int V_DetectorSize(unsigned char* imgData, int width, int height, int channels, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
+View_Api int V_DetectorSize(unsigned char* imgData, SeetaImageData& img, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
 {
 	try {
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
+		img.data = imgData;
 		if (v_faceDetector == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -220,14 +220,13 @@ View_Api int V_FaceMarkSize(int type = 0)
 /// <param name="pointY">存储关键点 y 坐标的 数组</param>
 /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
 /// <returns></returns>
-View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, double* pointX, double* pointY, int type = 0)
+View_Api bool V_FaceMark(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, double* pointX, double* pointY, int type = 0)
 {
 	try
 	{
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (v_faceLandmarker == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -238,7 +237,7 @@ View_Api bool V_FaceMark(unsigned char* imgData, int width, int height, int chan
 			WriteModelName("FaceMark", modelName);
 			v_faceLandmarker = new seeta::FaceLandmarker(setting);
 		}
-		std::vector<SeetaPointF> _points = v_faceLandmarker->mark(img, face);
+		std::vector<SeetaPointF> _points = v_faceLandmarker->mark(img, faceRect);
 
 		if (!_points.empty()) {
 			for (auto iter = _points.begin(); iter != _points.end(); iter++)
@@ -310,13 +309,13 @@ View_Api int V_ExtractSize(int type = 0)
 /// <param name="features">人脸特征值 数组</param>
 /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
 /// <returns></returns>
-View_Api bool V_Extract(unsigned char* imgData, int width, int height, int channels, SeetaPointF* points, float* features, int type = 0)
+View_Api bool V_Extract(unsigned char* imgData, SeetaImageData& img, SeetaPointF* points, float* features, int type = 0)
 {
 	try
 	{
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
+		img.data = imgData;
 		if (v_faceRecognizer == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
@@ -397,14 +396,13 @@ seeta::FaceAntiSpoofing* v_faceAntiSpoofing = NULL;
 /// <param name="points">人脸关键点 数组</param>
 /// <param name="global">是否启用全局检测能力</param>
 /// <returns></returns>
-View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
+View_Api int V_AntiSpoofing(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
 {
 	try
 	{
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (v_faceAntiSpoofing == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
@@ -420,7 +418,7 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int c
 			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
 		}
 
-		auto status = v_faceAntiSpoofing->Predict(img, face, points);
+		auto status = v_faceAntiSpoofing->Predict(img, faceRect, points);
 
 		WriteRunTime("AntiSpoofing", start);
 		return status;
@@ -446,14 +444,13 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, int width, int height, int c
 /// <param name="points">人脸关键点 数组</param>
 /// <param name="global">是否启用全局检测能力</param>
 /// <returns></returns>
-View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, int channels, int x, int y, int fWidth, int fHeight, SeetaPointF* points, bool global)
+View_Api int V_AntiSpoofingVideo(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
 {
 	try
 	{
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (v_faceAntiSpoofing == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
@@ -469,7 +466,7 @@ View_Api int V_AntiSpoofingVideo(unsigned char* imgData, int width, int height, 
 			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
 		}
 
-		auto status = v_faceAntiSpoofing->PredictVideo(img, face, points);
+		auto status = v_faceAntiSpoofing->PredictVideo(img, faceRect, points);
 
 		WriteRunTime("AntiSpoofingVideo", start);
 		return status;
@@ -496,13 +493,14 @@ static SeetaTrackingFaceInfoArray trackingInfos;
 /// <param name="videoHeight">视频高度</param>
 /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
 /// <returns></returns>
-View_Api int V_FaceTrackSize(unsigned char* imgData, int width, int height, int channels, bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0)
+View_Api int V_FaceTrackSize(unsigned char* imgData, SeetaImageData& img,
+	bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0)
 {
 	try
 	{
 		clock_t start = clock();
 
-		SeetaImageData img = { width, height, channels, imgData };
+		img.data = imgData;
 		if (v_faceTracker == NULL) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -510,7 +508,7 @@ View_Api int V_FaceTrackSize(unsigned char* imgData, int width, int height, int 
 			if (type == 1) { modelName = "mask_detector.csta"; }
 			setting.append(modelPath + modelName);
 			WriteModelName("FaceTrackSize", modelName);
-			v_faceTracker = new seeta::FaceTracker(setting, width, height);
+			v_faceTracker = new seeta::FaceTracker(setting, img.width, img.height);
 		}
 
 		v_faceTracker->SetVideoStable(stable);
@@ -573,20 +571,19 @@ View_Api bool V_FaceTrack(float* score, int* PID, int* x, int* y, int* width, in
 // 亮度评估器
 seeta::QualityOfBrightness* V_Quality_Brightness = NULL;
 // 亮度评估
-View_Api bool V_QualityOfBrightness(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfBrightness(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_Brightness == NULL)
 		{
 			V_Quality_Brightness = new seeta::QualityOfBrightness(v0, v1, v2, v3);
 		}
-		auto result = V_Quality_Brightness->check(img, face, points, pointsLength);
+		auto result = V_Quality_Brightness->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -603,20 +600,19 @@ View_Api bool V_QualityOfBrightness(unsigned char* imgData, int width, int heigh
 // 清晰度评估器
 seeta::QualityOfClarity* V_Quality_Clarity = NULL;
 // 清晰度评估
-View_Api bool V_QualityOfClarity(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfClarity(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float low = 0.1f, float high = 0.2f)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_Clarity == NULL)
 		{
 			V_Quality_Clarity = new seeta::QualityOfClarity(low, high);
 		}
-		auto result = V_Quality_Clarity->check(img, face, points, pointsLength);
+		auto result = V_Quality_Clarity->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -633,21 +629,20 @@ View_Api bool V_QualityOfClarity(unsigned char* imgData, int width, int height, 
 // 完整度评估器
 seeta::QualityOfIntegrity* V_Quality_Integrity = NULL;
 // 完整度评估
-View_Api bool V_QualityOfIntegrity(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfIntegrity(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float low = 10, float high = 1.5f)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_Integrity == NULL)
 		{
 			WriteMessage("QualityOfIntegrity", "low:" + to_string(low) + " - high:" + to_string(high));
 			V_Quality_Integrity = new seeta::QualityOfIntegrity(low, high);
 		}
-		auto result = V_Quality_Integrity->check(img, face, points, pointsLength);
+		auto result = V_Quality_Integrity->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -664,19 +659,18 @@ View_Api bool V_QualityOfIntegrity(unsigned char* imgData, int width, int height
 // 姿态评估器
 seeta::QualityOfPose* V_Quality_Pose = NULL;
 // 姿态评估
-View_Api bool V_QualityOfPose(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfPose(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_Pose == NULL)
 		{
 			V_Quality_Pose = new seeta::QualityOfPose();
 		}
-		auto result = V_Quality_Pose->check(img, face, points, pointsLength);
+		auto result = V_Quality_Pose->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -693,15 +687,14 @@ View_Api bool V_QualityOfPose(unsigned char* imgData, int width, int height, int
 // 姿态 (深度)评估器
 seeta::QualityOfPoseEx* V_Quality_PoseEx = NULL;
 // 姿态 (深度)评估
-View_Api bool V_QualityOfPoseEx(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfPoseEx(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_PoseEx == NULL)
 		{
 			seeta::ModelSetting setting;
@@ -718,7 +711,7 @@ View_Api bool V_QualityOfPoseEx(unsigned char* imgData, int width, int height, i
 		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::ROLL_LOW_THRESHOLD, rollLow);
 		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::ROLL_HIGH_THRESHOLD, rollHigh);
 
-		auto result = V_Quality_PoseEx->check(img, face, points, pointsLength);
+		auto result = V_Quality_PoseEx->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -735,20 +728,19 @@ View_Api bool V_QualityOfPoseEx(unsigned char* imgData, int width, int height, i
 // 分辨率评估器
 seeta::QualityOfResolution* V_Quality_Resolution = NULL;
 // 分辨率评估
-View_Api bool V_QualityOfResolution(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfResolution(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float low = 80, float high = 120)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_Resolution == NULL)
 		{
 			V_Quality_Resolution = new seeta::QualityOfResolution(low, high);
 		}
-		auto result = V_Quality_Resolution->check(img, face, points, pointsLength);
+		auto result = V_Quality_Resolution->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -765,20 +757,19 @@ View_Api bool V_QualityOfResolution(unsigned char* imgData, int width, int heigh
 // 清晰度 (深度)评估器
 seeta::QualityOfClarityEx* V_Quality_ClarityEx = NULL;
 // 清晰度 (深度)评估
-View_Api bool V_QualityOfClarityEx(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfClarityEx(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score,
 	float blur_thresh = 0.8f)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_ClarityEx == NULL)
 		{
 			V_Quality_ClarityEx = new seeta::QualityOfClarityEx(blur_thresh, modelPath);
 		}
-		auto result = V_Quality_ClarityEx->check(img, face, points, pointsLength);
+		auto result = V_Quality_ClarityEx->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -795,19 +786,18 @@ View_Api bool V_QualityOfClarityEx(unsigned char* imgData, int width, int height
 // 遮挡评估器
 seeta::QualityOfNoMask* V_Quality_NoMask = NULL;
 // 遮挡评估
-View_Api bool V_QualityOfNoMask(unsigned char* imgData, int width, int height, int channels,
-	int x, int y, int fWidth, int fHeight, SeetaPointF* points, int pointsLength,
+View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
 	int* level, float* score)
 {
 	try
 	{
-		SeetaImageData img = { width, height, channels, imgData };
-		SeetaRect face = { x, y, fWidth, fHeight };
+		img.data = imgData;
 		if (V_Quality_NoMask == NULL)
 		{
 			V_Quality_NoMask = new seeta::QualityOfNoMask(modelPath);
 		}
-		auto result = V_Quality_NoMask->check(img, face, points, pointsLength);
+		auto result = V_Quality_NoMask->check(img, faceRect, points, pointsLength);
 
 		*level = result.level;
 		*score = result.score;
@@ -822,6 +812,9 @@ View_Api bool V_QualityOfNoMask(unsigned char* imgData, int width, int height, i
 }
 
 /***************************************************************************************************************/
+
+/***************************************************************************************************************/
+
 // 释放资源
 View_Api void V_Dispose()
 {
