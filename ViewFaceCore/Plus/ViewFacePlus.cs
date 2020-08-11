@@ -69,9 +69,7 @@ namespace ViewFaceCore.Plus
         /// 人脸检测器检测到的人脸数量
         /// </summary>
         /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
         /// <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
         /// </param>
@@ -80,17 +78,17 @@ namespace ViewFaceCore.Plus
         /// <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        public static int DetectorSize(byte[] imgData, int width, int height, int channels,
+        public static int DetectorSize(byte[] imgData, ref FaceImage img,
             double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
         {
             if (Platform64)
-            { return ViewFacePlus64.DetectorSize(imgData, width, height, channels, faceSize, threshold, maxWidth, maxHeight, type); }
+            { return ViewFacePlus64.DetectorSize(imgData, ref img, faceSize, threshold, maxWidth, maxHeight, type); }
             else
-            { return ViewFacePlus32.DetectorSize(imgData, width, height, channels, faceSize, threshold, maxWidth, maxHeight, type); }
+            { return ViewFacePlus32.DetectorSize(imgData, ref img, faceSize, threshold, maxWidth, maxHeight, type); }
         }
         /// <summary>
         /// 人脸检测器
-        /// <para>调用此方法前必须先调用 <see cref="DetectorSize(byte[], int, int, int, double, double, double, double, int)"/></para>
+        /// <para>调用此方法前必须先调用 <see cref="DetectorSize(byte[], ref FaceImage, double, double, double, double, int)"/></para>
         /// </summary>
         /// <param name="score">人脸置信度集合</param>
         /// <param name="x">人脸位置集合</param>
@@ -122,24 +120,19 @@ namespace ViewFaceCore.Plus
         /// 获取人脸关键点
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="pointX">存储关键点 x 坐标的 数组</param>
         /// <param name="pointY">存储关键点 y 坐标的 数组</param>
         /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
-        public static bool FaceMark(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, double[] pointX, double[] pointY, int type = 0)
+        public static bool FaceMark(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, double[] pointX, double[] pointY, int type = 0)
         {
             if (Platform64)
-            { return ViewFacePlus64.FaceMark(imgData, width, height, channels, x, y, fWidth, fHeight, pointX, pointY, type); }
+            { return ViewFacePlus64.FaceMark(imgData, ref img, faceRect, pointX, pointY, type); }
             else
-            { return ViewFacePlus32.FaceMark(imgData, width, height, channels, x, y, fWidth, fHeight, pointX, pointY, type); }
+            { return ViewFacePlus32.FaceMark(imgData, ref img, faceRect, pointX, pointY, type); }
         }
 
         /// <summary>
@@ -158,20 +151,18 @@ namespace ViewFaceCore.Plus
         /// 提取人脸特征值
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="features">人脸特征值 数组</param>
         /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
-        public static bool Extract(byte[] imgData, int width, int height, int channels,
+        public static bool Extract(byte[] imgData, ref FaceImage img,
             FaceMarkPoint[] points, float[] features, int type = 0)
         {
             if (Platform64)
-            { return ViewFacePlus64.Extract(imgData, width, height, channels, points, features, type); }
+            { return ViewFacePlus64.Extract(imgData, ref img, points, features, type); }
             else
-            { return ViewFacePlus32.Extract(imgData, width, height, channels, points, features, type); }
+            { return ViewFacePlus32.Extract(imgData, ref img, points, features, type); }
         }
 
         /// <summary>
@@ -194,36 +185,26 @@ namespace ViewFaceCore.Plus
         /// <para>单帧检测</para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
-        public static int AntiSpoofing(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global)
+        public static int AntiSpoofing(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, bool global)
         {
             if (Platform64)
-            { return ViewFacePlus64.AntiSpoofing(imgData, width, height, channels, x, y, fWidth, fHeight, points, global); }
+            { return ViewFacePlus64.AntiSpoofing(imgData, ref img, faceRect, points, global); }
             else
-            { return ViewFacePlus32.AntiSpoofing(imgData, width, height, channels, x, y, fWidth, fHeight, points, global); }
+            { return ViewFacePlus32.AntiSpoofing(imgData, ref img, faceRect, points, global); }
         }
         /// <summary>
         /// 活体检测器
         /// <para>视频帧</para>
         /// </summary>
         /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="fWidth"></param>
-        /// <param name="fHeight"></param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>
@@ -232,36 +213,34 @@ namespace ViewFaceCore.Plus
         /// 在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="AntiSpoofingStatus.Detecting"/>
         /// </para>
         /// </returns>
-        public static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global)
+        public static int AntiSpoofingVideo(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, bool global)
         {
             if (Platform64)
-            { return ViewFacePlus64.AntiSpoofingVideo(imgData, width, height, channels, x, y, fWidth, fHeight, points, global); }
+            { return ViewFacePlus64.AntiSpoofingVideo(imgData, ref img, faceRect, points, global); }
             else
-            { return ViewFacePlus32.AntiSpoofingVideo(imgData, width, height, channels, x, y, fWidth, fHeight, points, global); }
+            { return ViewFacePlus32.AntiSpoofingVideo(imgData, ref img, faceRect, points, global); }
         }
 
         /// <summary>
         /// 获取跟踪的人脸个数
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="stable"></param>
         /// <param name="interval"></param>
         /// <param name="faceSize"></param>
         /// <param name="threshold"></param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        public static int FaceTrackSize(byte[] imgData, int width, int height, int channels,
+        public static int FaceTrackSize(byte[] imgData, ref FaceImage img,
             bool stable = false, int interval = 10,
             double faceSize = 20, double threshold = 0.9, int type = 0)
         {
             if (Platform64)
-            { return ViewFacePlus64.FaceTrackSize(imgData, width, height, channels, stable, interval, faceSize, threshold, type); }
+            { return ViewFacePlus64.FaceTrackSize(imgData, ref img, stable, interval, faceSize, threshold, type); }
             else
-            { return ViewFacePlus32.FaceTrackSize(imgData, width, height, channels, stable, interval, faceSize, threshold, type); }
+            { return ViewFacePlus32.FaceTrackSize(imgData, ref img, stable, interval, faceSize, threshold, type); }
         }
 
         /// <summary>
@@ -294,13 +273,8 @@ namespace ViewFaceCore.Plus
         /// <para><see langword="{v0, v1, v2, v3}"/> 的默认值为 <see langword="{70, 100, 210, 230}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -310,14 +284,14 @@ namespace ViewFaceCore.Plus
         /// <param name="v2"></param>
         /// <param name="v3"></param>
         /// <returns></returns>
-        public static bool QualityOfBrightness(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfBrightness(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230)
         {
             if (Platform64)
-            { return ViewFacePlus64.QualityOfBrightness(imgData, width, height, channels, x, y, fWidth, fHeight, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
+            { return ViewFacePlus64.QualityOfBrightness(imgData, ref img, faceRect, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
             else
-            { return ViewFacePlus32.QualityOfBrightness(imgData, width, height, channels, x, y, fWidth, fHeight, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
+            { return ViewFacePlus32.QualityOfBrightness(imgData, ref img, faceRect, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
         }
 
         /// <summary>
@@ -332,13 +306,8 @@ namespace ViewFaceCore.Plus
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -346,20 +315,20 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        public static bool QualityOfClarity(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfClarity(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 0.1f, float high = 0.2f)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfClarity(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus64.QualityOfClarity(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
             else
             {
-                return ViewFacePlus32.QualityOfClarity(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus32.QualityOfClarity(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
         }
@@ -376,13 +345,8 @@ namespace ViewFaceCore.Plus
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -390,20 +354,20 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        public static bool QualityOfIntegrity(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfIntegrity(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 10, float high = 1.5f)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfIntegrity(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus64.QualityOfIntegrity(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
             else
             {
-                return ViewFacePlus32.QualityOfIntegrity(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus32.QualityOfIntegrity(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
         }
@@ -413,30 +377,25 @@ namespace ViewFaceCore.Plus
         /// <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
-        public static bool QualityOfPose(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
+        public static bool QualityOfPose(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfPose(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score);
+                return ViewFacePlus64.QualityOfPose(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score);
             }
             else
             {
-                return ViewFacePlus32.QualityOfPose(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score);
+                return ViewFacePlus32.QualityOfPose(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score);
             }
         }
 
@@ -448,13 +407,8 @@ namespace ViewFaceCore.Plus
         /// </para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -466,20 +420,20 @@ namespace ViewFaceCore.Plus
         /// <param name="rollLow">roll 方向低分数阈值</param>
         /// <param name="rollHigh">roll 方向高分数阈值</param>
         /// <returns></returns>
-        public static bool QualityOfPoseEx(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfPoseEx(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfPoseEx(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus64.QualityOfPoseEx(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   yawLow, yawHigh, pitchLow, pitchHigh, rollLow, rollHigh);
             }
             else
             {
-                return ViewFacePlus32.QualityOfPoseEx(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus32.QualityOfPoseEx(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   yawLow, yawHigh, pitchLow, pitchHigh, rollLow, rollHigh);
             }
         }
@@ -496,13 +450,8 @@ namespace ViewFaceCore.Plus
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -510,20 +459,20 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        public  static bool QualityOfResolution(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfResolution(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 80, float high = 120)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfResolution(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus64.QualityOfResolution(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
             else
             {
-                return ViewFacePlus32.QualityOfResolution(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus32.QualityOfResolution(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   low, high);
             }
         }
@@ -537,33 +486,28 @@ namespace ViewFaceCore.Plus
         /// <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <param name="blur_thresh"></param>
         /// <returns></returns>
-        public  static bool QualityOfClarityEx(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public static bool QualityOfClarityEx(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float blur_thresh = 0.8f)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfClarityEx(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus64.QualityOfClarityEx(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   blur_thresh);
             }
             else
             {
-                return ViewFacePlus32.QualityOfClarityEx(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score,
+                return ViewFacePlus32.QualityOfClarityEx(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score,
                   blur_thresh);
             }
         }
@@ -576,30 +520,25 @@ namespace ViewFaceCore.Plus
         /// </para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
-        public static bool QualityOfNoMask(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
+        public static bool QualityOfNoMask(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
         {
             if (Platform64)
             {
-                return ViewFacePlus64.QualityOfNoMask(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score);
+                return ViewFacePlus64.QualityOfNoMask(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score);
             }
             else
             {
-                return ViewFacePlus32.QualityOfNoMask(imgData, width, height, channels,
-                  x, y, fWidth, fHeight, points, pointsLength, ref level, ref score);
+                return ViewFacePlus32.QualityOfNoMask(imgData, ref img,
+                  faceRect, points, pointsLength, ref level, ref score);
             }
         }
     }

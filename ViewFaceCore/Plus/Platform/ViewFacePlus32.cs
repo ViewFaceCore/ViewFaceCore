@@ -1,6 +1,5 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
-
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Plus.Platform
@@ -11,6 +10,7 @@ namespace ViewFaceCore.Plus.Platform
     class ViewFacePlus32
     {
         const string LibraryPath = @"FaceLibraries\x86\ViewFace.dll";
+
         /// <summary>
         /// 设置日志回调函数(用于日志打印)
         /// </summary>
@@ -31,12 +31,6 @@ namespace ViewFaceCore.Plus.Platform
         public static void SetModelPath(string path) => SetModelPath(Encoding.UTF8.GetBytes(path));
 
         /// <summary>
-        /// 释放使用的资源
-        /// </summary>
-        [DllImport(LibraryPath, EntryPoint = "V_Dispose", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void ViewDispose();
-
-        /// <summary>
         /// 获取人脸模型的目录
         /// </summary>
         /// <param name="path"></param>
@@ -48,12 +42,16 @@ namespace ViewFaceCore.Plus.Platform
         public static string GetModelPath() { string path = string.Empty; GetModelPathEx(ref path); return path; }
 
         /// <summary>
+        /// 释放使用的资源
+        /// </summary>
+        [DllImport(LibraryPath, EntryPoint = "V_Dispose", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void ViewDispose();
+
+        /// <summary>
         /// 人脸检测器检测到的人脸数量
         /// </summary>
         /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
         /// <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
         /// </param>
@@ -63,11 +61,11 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_DetectorSize", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int DetectorSize(byte[] imgData, int width, int height, int channels, 
+        public extern static int DetectorSize(byte[] imgData, ref FaceImage img,
             double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0);
         /// <summary>
         /// 人脸检测器
-        /// <para>调用此方法前必须先调用 <see cref="DetectorSize(byte[], int, int, int, double, double, double, double, int)"/></para>
+        /// <para>调用此方法前必须先调用 <see cref="DetectorSize"/></para>
         /// </summary>
         /// <param name="score">人脸置信度集合</param>
         /// <param name="x">人脸位置集合</param>
@@ -89,20 +87,15 @@ namespace ViewFaceCore.Plus.Platform
         /// 获取人脸关键点
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="pointX">存储关键点 x 坐标的 数组</param>
         /// <param name="pointY">存储关键点 y 坐标的 数组</param>
         /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceMark", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool FaceMark(byte[] imgData, int width, int height, int channels, 
-            int x, int y, int fWidth, int fHeight, double[] pointX, double[] pointY, int type = 0);
+        public extern static bool FaceMark(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, double[] pointX, double[] pointY, int type = 0);
 
         /// <summary>
         /// 获取人脸特征值长度
@@ -115,15 +108,13 @@ namespace ViewFaceCore.Plus.Platform
         /// 提取人脸特征值
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="features">人脸特征值 数组</param>
         /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool Extract(byte[] imgData, int width, int height, int channels, 
+        public extern static bool Extract(byte[] imgData, ref FaceImage img,
             FaceMarkPoint[] points, float[] features, int type = 0);
 
         /// <summary>
@@ -140,32 +131,22 @@ namespace ViewFaceCore.Plus.Platform
         /// 活体检测器
         /// <para>单帧检测</para>
         /// </summary>
-        /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="fWidth"></param>
-        /// <param name="fHeight"></param>
-        /// <param name="points"></param>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
+        /// <param name="points">人脸关键点 数组</param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofing(byte[] imgData, int width, int height, int channels, 
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+        public extern static int AntiSpoofing(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, bool global);
         /// <summary>
         /// 活体检测器
         /// <para>视频帧</para>
         /// </summary>
         /// <param name="imgData"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="channels"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="fWidth"></param>
-        /// <param name="fHeight"></param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>
@@ -175,16 +156,14 @@ namespace ViewFaceCore.Plus.Platform
         /// </para>
         /// </returns>
         [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofingVideo(byte[] imgData, int width, int height, int channels, 
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, bool global);
+        public extern static int AntiSpoofingVideo(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, bool global);
 
         /// <summary>
         /// 获取跟踪的人脸个数
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
+        /// <param name="img">图像宽高通道信息</param>
         /// <param name="stable"></param>
         /// <param name="interval"></param>
         /// <param name="faceSize"></param>
@@ -192,8 +171,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int FaceTrackSize(byte[] imgData, int width, int height, int channels,
-            bool stable = false, int interval = 10, 
+        public extern static int FaceTrackSize(byte[] imgData, ref FaceImage img,
+            bool stable = false, int interval = 10,
             double faceSize = 20, double threshold = 0.9, int type = 0);
 
         /// <summary>
@@ -221,13 +200,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <para><see langword="{v0, v1, v2, v3}"/> 的默认值为 <see langword="{70, 100, 210, 230}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -238,8 +212,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="v3"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfBrightness", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfBrightness(byte[] imgData, int width, int height, int channels, 
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score, 
+        public extern static bool QualityOfBrightness(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230);
 
         /// <summary>
@@ -254,13 +228,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -269,8 +238,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="high"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfClarity", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfClarity(byte[] imgData, int width, int height, int channels, 
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score, 
+        public extern static bool QualityOfClarity(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 0.1f, float high = 0.2f);
 
         /// <summary>
@@ -285,13 +254,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -300,8 +264,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="high"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfIntegrity", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfIntegrity(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public extern static bool QualityOfIntegrity(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 10f, float high = 1.5f);
 
         /// <summary>
@@ -309,21 +273,16 @@ namespace ViewFaceCore.Plus.Platform
         /// <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfPose", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfPose(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+        public extern static bool QualityOfPose(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
         /// <summary>
         /// 姿态评估 (深度)。
@@ -333,13 +292,8 @@ namespace ViewFaceCore.Plus.Platform
         /// </para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -352,8 +306,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="rollHigh">roll 方向高分数阈值</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfPoseEx", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfPoseEx(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public extern static bool QualityOfPoseEx(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f);
 
         /// <summary>
@@ -368,13 +322,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -383,8 +332,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="high"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfResolution", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfResolution(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public extern static bool QualityOfResolution(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 80, float high = 120);
 
         /// <summary>
@@ -396,13 +345,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
@@ -410,8 +354,8 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="blur_thresh"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfClarityEx", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfClarityEx(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+        public extern static bool QualityOfClarityEx(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float blur_thresh = 0.8f);
 
         /// <summary>
@@ -419,21 +363,15 @@ namespace ViewFaceCore.Plus.Platform
         /// <para>判断人脸部分的分辨率。</para>
         /// </summary>
         /// <param name="imgData">图像 BGR 数据</param>
-        /// <param name="width">图像 宽度</param>
-        /// <param name="height">图像 高度</param>
-        /// <param name="channels">图像 通道数</param>
-        /// <param name="x">人脸位置 X</param>
-        /// <param name="y">人脸位置 Y</param>
-        /// <param name="fWidth">人脸大小 width</param>
-        /// <param name="fHeight">人脸大小 height</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="faceRect">人脸位置信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool QualityOfNoMask(byte[] imgData, int width, int height, int channels,
-            int x, int y, int fWidth, int fHeight, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
-
+        public extern static bool QualityOfNoMask(byte[] imgData, ref FaceImage img,
+            FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
     }
 }

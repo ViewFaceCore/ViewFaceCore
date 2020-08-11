@@ -6,7 +6,6 @@ using View.Drawing.Extensions;
 using ViewFaceCore.Plus;
 using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Exceptions;
-using ViewFaceCore.Sharp.Extensions;
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Sharp
@@ -97,7 +96,8 @@ namespace ViewFaceCore.Sharp
         public FaceInfo[] FaceDetector(Bitmap bitmap)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size = ViewFacePlus.DetectorSize(bgr, width, height, channels, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
+            FaceImage img = new FaceImage(width, height, channels);
+            int size = ViewFacePlus.DetectorSize(bgr, ref img, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
 
             if (size == -1)
             { return new FaceInfo[0]; }
@@ -158,7 +158,8 @@ namespace ViewFaceCore.Sharp
             double[] _pointX = new double[size];
             double[] _pointY = new double[size];
 
-            if (ViewFacePlus.FaceMark(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, _pointX, _pointY, (int)MarkType))
+            FaceImage img = new FaceImage(width, height, channels);
+            if (ViewFacePlus.FaceMark(bgr, ref img, info.Location, _pointX, _pointY, (int)MarkType))
             {
                 List<FaceMarkPoint> points = new List<FaceMarkPoint>();
                 for (int i = 0; i < size; i++)
@@ -201,7 +202,8 @@ namespace ViewFaceCore.Sharp
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             float[] features = new float[ViewFacePlus.ExtractSize((int)FaceType)];
 
-            if (ViewFacePlus.Extract(bgr, width, height, channels, points, features, (int)FaceType))
+            FaceImage img = new FaceImage(width, height, channels);
+            if (ViewFacePlus.Extract(bgr, ref img, points, features, (int)FaceType))
             { return features; }
             else
             { throw new ExtractException("人脸特征值提取失败"); }
@@ -291,7 +293,8 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
-            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofing(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global);
+            FaceImage img = new FaceImage(width, height, channels);
+            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofing(bgr, ref img, info.Location, points, global);
         }
         /// <summary>
         /// 活体检测器。
@@ -336,7 +339,8 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
-            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofingVideo(bgr, width, height, channels, info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, global);
+            FaceImage img = new FaceImage(width, height, channels);
+            return (AntiSpoofingStatus)ViewFacePlus.AntiSpoofingVideo(bgr, ref img, info.Location, points, global);
         }
         /// <summary>
         /// 活体检测器。
@@ -375,7 +379,8 @@ namespace ViewFaceCore.Sharp
         public FaceTrackInfo[] FaceTrack(Bitmap bitmap)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size = ViewFacePlus.FaceTrackSize(bgr, width, height, channels, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
+            FaceImage img = new FaceImage(width, height, channels);
+            int size = ViewFacePlus.FaceTrackSize(bgr, ref img, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
 
             if (size == -1)
             { return new FaceTrackInfo[0]; }
@@ -425,56 +430,49 @@ namespace ViewFaceCore.Sharp
         public QualityResult FaceQuality(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            FaceImage img = new FaceImage(width, height, channels);
             int level = 0; float score = 0; bool res = false;
 
             switch (type)
             {
                 case QualityType.Brightness:
-                    res = ViewFacePlus.QualityOfBrightness(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfBrightness(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Brightness.V0, QualityConfig.Brightness.V1, QualityConfig.Brightness.V2, QualityConfig.Brightness.V3);
                     break;
                 case QualityType.Clarity:
-                    res = ViewFacePlus.QualityOfClarity(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfClarity(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Clarity.Low, QualityConfig.Clarity.High);
                     break;
                 case QualityType.Integrity:
-                    res = ViewFacePlus.QualityOfIntegrity(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfIntegrity(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Integrity.Low, QualityConfig.Integrity.High);
                     break;
                 case QualityType.Pose:
-                    res = ViewFacePlus.QualityOfPose(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfPose(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score);
                     break;
                 case QualityType.PoseEx:
-                    res = ViewFacePlus.QualityOfPoseEx(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfPoseEx(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.PoseEx.YawLow, QualityConfig.PoseEx.YawHigh,
                         QualityConfig.PoseEx.PitchLow, QualityConfig.PoseEx.PitchHigh,
                         QualityConfig.PoseEx.RollLow, QualityConfig.PoseEx.RollHigh);
                     break;
                 case QualityType.Resolution:
-                    res = ViewFacePlus.QualityOfResolution(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfResolution(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Resolution.Low, QualityConfig.Resolution.High);
                     break;
                 case QualityType.ClarityEx:
-                    res = ViewFacePlus.QualityOfClarityEx(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfClarityEx(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.ClarityEx.BlurThresh);
                     break;
                 case QualityType.Structure:
-                    res = ViewFacePlus.QualityOfNoMask(bgr, width, height, channels,
-                        info.Location.X, info.Location.Y, info.Location.Width, info.Location.Height, points, points.Length,
+                    res = ViewFacePlus.QualityOfNoMask(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score);
                     break;
             }
