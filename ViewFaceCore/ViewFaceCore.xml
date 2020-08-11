@@ -4,67 +4,717 @@
         <name>ViewFaceCore</name>
     </assembly>
     <members>
+        <member name="T:ViewFaceCore.Plus.Platform.ViewFacePlus32">
+            <summary>
+            x86 导入方法
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.SetLogFunction(ViewFaceCore.Plus.LogCallBack)">
+            <summary>
+            设置日志回调函数(用于日志打印)
+            </summary>
+            <param name="writeLog"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.SetModelPath(System.Byte[])">
+            <summary>
+            设置人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.SetModelPath(System.String)">
+            <summary>
+            设置人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.GetModelPathEx(System.String@)">
+            <summary>
+            获取人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.GetModelPath">
+            <summary>
+            获取人脸模型的目录
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.ViewDispose">
+            <summary>
+            释放使用的资源
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)">
+            <summary>
+            人脸检测器检测到的人脸数量
+            </summary>
+            <param name="imgData"></param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
+            <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
+            </param>
+            <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
+            <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
+            <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.Detector(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
+            <summary>
+            人脸检测器
+            <para>调用此方法前必须先调用 <see cref="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)"/></para>
+            </summary>
+            <param name="score">人脸置信度集合</param>
+            <param name="x">人脸位置集合</param>
+            <param name="y">人脸位置集合</param>
+            <param name="width">人脸大小集合</param>
+            <param name="height">人脸大小集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.FaceMarkSize(System.Int32)">
+            <summary>
+            人脸关键点数量
+            </summary>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.FaceMark(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,System.Double[],System.Double[],System.Int32)">
+            <summary>
+            获取人脸关键点
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="pointX">存储关键点 x 坐标的 数组</param>
+            <param name="pointY">存储关键点 y 坐标的 数组</param>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.ExtractSize(System.Int32)">
+            <summary>
+            获取人脸特征值长度
+            </summary>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.Extract(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Single[],System.Int32)">
+            <summary>
+            提取人脸特征值
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="features">人脸特征值 数组</param>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.Similarity(System.Single[],System.Single[],System.Int32)">
+            <summary>
+            计算相似度
+            </summary>
+            <param name="leftFeatures"></param>
+            <param name="rightFeatures"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.AntiSpoofing(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器
+            <para>单帧检测</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="global">是否启用全局检测</param>
+            <returns>单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.AntiSpoofingVideo(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器
+            <para>视频帧</para>
+            </summary>
+            <param name="imgData"></param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points"></param>
+            <param name="global">是否启用全局检测</param>
+            <returns>
+            <para>
+            单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/><br />
+            在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>
+            </para>
+            </returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.FaceTrackSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Boolean,System.Int32,System.Double,System.Double,System.Int32)">
+            <summary>
+            获取跟踪的人脸个数
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="stable"></param>
+            <param name="interval"></param>
+            <param name="faceSize"></param>
+            <param name="threshold"></param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.FaceTrack(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
+            <summary>
+            人脸跟踪信息
+            </summary>
+            <param name="score">人脸置信度分数 数组</param>
+            <param name="PID">人脸标识ID 数组</param>
+            <param name="x">人脸位置 x 数组</param>
+            <param name="y">人脸位置 y 数组</param>
+            <param name="width">人脸大小 width 数组</param>
+            <param name="height">人脸大小 height 数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfBrightness(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            亮度评估。
+            <para>亮度评估就是评估人脸区域内的亮度值是否均匀正常，存在部分或全部的过亮和过暗都会是评价为LOW。</para>
+            <para>
+            评估器会将综合的亮度从灰度值映射到level，其映射关系为： <br />
+            • [0, v0), [v3, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [v0, v1), [v2, v3) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [v1, v2) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{v0, v1, v2, v3}"/> 的默认值为 <see langword="{70, 100, 210, 230}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="v0"></param>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="v3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfClarity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            清晰度评估。
+            <para>清晰度这里是传统方式通过二次模糊后图像信息损失程度统计的清晰度。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfIntegrity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            完整度评估。
+            <para>完整度评估是朴素的判断人来是否因为未完全进入摄像头而造成的不完整的情况。该方法不适用于判断遮挡造成的不完整。</para>
+            <para>
+            映射关系为： <br />
+            • 人脸外扩 high 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            • 人脸外扩 low 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • 其他 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfPose(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            姿态评估。
+            <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfPoseEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            姿态评估 (深度)。
+            <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
+            <para>
+            需要模型 <see langword="pose_estimation.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="yawLow">yaw 方向低分数阈值</param>
+            <param name="yawHigh">yaw 方向高分数阈值</param>
+            <param name="pitchLow">pitch 方向低分数阈值</param>
+            <param name="pitchHigh">pitch 方向高分数阈值</param>
+            <param name="rollLow">roll 方向低分数阈值</param>
+            <param name="rollHigh">roll 方向高分数阈值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfResolution(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            分辨率评估。
+            <para>判断人脸部分的分辨率。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfClarityEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single)">
+            <summary>
+            清晰度 (深度)评估。
+            <para>
+            需要模型 <see langword="quality_lbn.csta"/> <br />
+            需要模型 <see langword="face_landmarker_pts68.csta"/> 
+            </para>
+            <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="blur_thresh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.QualityOfNoMask(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            遮挡评估。
+            <para>判断人脸部分的分辨率。</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="T:ViewFaceCore.Plus.Platform.ViewFacePlus64">
+            <summary>
+            x64 导入方法
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.SetLogFunction(ViewFaceCore.Plus.LogCallBack)">
+            <summary>
+            设置日志回调函数(用于日志打印)
+            </summary>
+            <param name="writeLog"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.SetModelPath(System.Byte[])">
+            <summary>
+            设置人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.SetModelPath(System.String)">
+            <summary>
+            设置人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.GetModelPathEx(System.String@)">
+            <summary>
+            获取人脸模型的目录
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.GetModelPath">
+            <summary>
+            获取人脸模型的目录
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.ViewDispose">
+            <summary>
+            释放使用的资源
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)">
+            <summary>
+            人脸检测器检测到的人脸数量
+            </summary>
+            <param name="imgData"></param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
+            <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
+            </param>
+            <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
+            <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
+            <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.Detector(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
+            <summary>
+            人脸检测器
+            <para>调用此方法前必须先调用 <see cref="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)"/></para>
+            </summary>
+            <param name="score">人脸置信度集合</param>
+            <param name="x">人脸位置集合</param>
+            <param name="y">人脸位置集合</param>
+            <param name="width">人脸大小集合</param>
+            <param name="height">人脸大小集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.FaceMarkSize(System.Int32)">
+            <summary>
+            人脸关键点数量
+            </summary>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.FaceMark(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,System.Double[],System.Double[],System.Int32)">
+            <summary>
+            获取人脸关键点
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="pointX">存储关键点 x 坐标的 数组</param>
+            <param name="pointY">存储关键点 y 坐标的 数组</param>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.ExtractSize(System.Int32)">
+            <summary>
+            获取人脸特征值长度
+            </summary>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.Extract(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Single[],System.Int32)">
+            <summary>
+            提取人脸特征值
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="features">人脸特征值 数组</param>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.Similarity(System.Single[],System.Single[],System.Int32)">
+            <summary>
+            计算相似度
+            </summary>
+            <param name="leftFeatures"></param>
+            <param name="rightFeatures"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.AntiSpoofing(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器
+            <para>单帧检测</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="global">是否启用全局检测</param>
+            <returns>单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.AntiSpoofingVideo(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器
+            <para>视频帧</para>
+            </summary>
+            <param name="imgData"></param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points"></param>
+            <param name="global">是否启用全局检测</param>
+            <returns>
+            <para>
+            单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/><br />
+            在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>
+            </para>
+            </returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.FaceTrackSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Boolean,System.Int32,System.Double,System.Double,System.Int32)">
+            <summary>
+            获取跟踪的人脸个数
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="stable"></param>
+            <param name="interval"></param>
+            <param name="faceSize"></param>
+            <param name="threshold"></param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.FaceTrack(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
+            <summary>
+            人脸跟踪信息
+            </summary>
+            <param name="score">人脸置信度分数 数组</param>
+            <param name="PID">人脸标识ID 数组</param>
+            <param name="x">人脸位置 x 数组</param>
+            <param name="y">人脸位置 y 数组</param>
+            <param name="width">人脸大小 width 数组</param>
+            <param name="height">人脸大小 height 数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfBrightness(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            亮度评估。
+            <para>亮度评估就是评估人脸区域内的亮度值是否均匀正常，存在部分或全部的过亮和过暗都会是评价为LOW。</para>
+            <para>
+            评估器会将综合的亮度从灰度值映射到level，其映射关系为： <br />
+            • [0, v0), [v3, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [v0, v1), [v2, v3) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [v1, v2) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{v0, v1, v2, v3}"/> 的默认值为 <see langword="{70, 100, 210, 230}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="v0"></param>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="v3"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfClarity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            清晰度评估。
+            <para>清晰度这里是传统方式通过二次模糊后图像信息损失程度统计的清晰度。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfIntegrity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            完整度评估。
+            <para>完整度评估是朴素的判断人来是否因为未完全进入摄像头而造成的不完整的情况。该方法不适用于判断遮挡造成的不完整。</para>
+            <para>
+            映射关系为： <br />
+            • 人脸外扩 high 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            • 人脸外扩 low 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • 其他 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfPose(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            姿态评估。
+            <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfPoseEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            姿态评估 (深度)。
+            <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
+            <para>
+            需要模型 <see langword="pose_estimation.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="yawLow">yaw 方向低分数阈值</param>
+            <param name="yawHigh">yaw 方向高分数阈值</param>
+            <param name="pitchLow">pitch 方向低分数阈值</param>
+            <param name="pitchHigh">pitch 方向高分数阈值</param>
+            <param name="rollLow">roll 方向低分数阈值</param>
+            <param name="rollHigh">roll 方向高分数阈值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfResolution(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            分辨率评估。
+            <para>判断人脸部分的分辨率。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfClarityEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single)">
+            <summary>
+            清晰度 (深度)评估。
+            <para>
+            需要模型 <see langword="quality_lbn.csta"/> <br />
+            需要模型 <see langword="face_landmarker_pts68.csta"/> 
+            </para>
+            <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="blur_thresh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.QualityOfNoMask(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            遮挡评估。
+            <para>判断人脸部分的分辨率。</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
         <member name="T:ViewFaceCore.Plus.LogCallBack">
             <summary>
             日志回调函数
             </summary>
             <param name="logText"></param>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.SetLogFunction(ViewFaceCore.Plus.LogCallBack)">
+        <member name="T:ViewFaceCore.Plus.ViewFacePlus">
+            <summary>
+            适用于 Any CPU 的 ViewFacePlus
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Plus.ViewFacePlus.Platform64">
+            <summary>
+            获取一个值，指示当前运行的处理器是否是 64位
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.SetLogFunction(ViewFaceCore.Plus.LogCallBack)">
             <summary>
             设置日志回调函数(用于日志打印)
             </summary>
             <param name="writeLog"></param>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.SetModelPath(System.Byte[])">
+        <member name="P:ViewFaceCore.Plus.ViewFacePlus.ModelPath">
             <summary>
-            设置人脸模型的目录
+            获取或设置人脸模型目录
             </summary>
-            <param name="path"></param>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.SetModelPath(System.String)">
-            <summary>
-            设置人脸模型的目录
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.ViewDispose">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.ViewDispose">
             <summary>
             释放使用的资源
             </summary>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.GetModelPathEx(System.String@)">
-            <summary>
-            获取人脸模型的目录
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.GetModelPath">
-            <summary>
-            获取人脸模型的目录
-            </summary>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.DetectorSize(System.Byte[],System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)">
             <summary>
             人脸检测器检测到的人脸数量
             </summary>
             <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
+            <param name="img">图像宽高通道信息</param>
             <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
             <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
             </param>
             <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
             <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
             <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
-            <param name="type"></param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.Detector(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.Detector(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
             <summary>
             人脸检测器
-            <para>调用此方法前必须先调用 <see cref="M:ViewFaceCore.Plus.ViewFacePlus64.DetectorSize(System.Byte[],System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Int32)"/></para>
+            <para>调用此方法前必须先调用 <see cref="M:ViewFaceCore.Plus.ViewFacePlus.DetectorSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Double,System.Double,System.Double,System.Double,System.Int32)"/></para>
             </summary>
             <param name="score">人脸置信度集合</param>
             <param name="x">人脸位置集合</param>
@@ -73,49 +723,44 @@
             <param name="height">人脸大小集合</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.FaceMarkSize(System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.FaceMarkSize(System.Int32)">
             <summary>
             人脸关键点数量
             </summary>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.FaceMark(System.Byte[],System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double[],System.Double[],System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.FaceMark(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,System.Double[],System.Double[],System.Int32)">
             <summary>
-            人脸关键点
+            获取人脸关键点
             </summary>
-            <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
-            <param name="x"></param>
-            <param name="y"></param>
-            <param name="fWidth"></param>
-            <param name="fHeight"></param>
-            <param name="pointX"></param>
-            <param name="pointY"></param>
-            <param name="type"></param>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="pointX">存储关键点 x 坐标的 数组</param>
+            <param name="pointY">存储关键点 y 坐标的 数组</param>
+            <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.Extract(System.Byte[],System.Int32,System.Int32,System.Int32,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Single[],System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.ExtractSize(System.Int32)">
             <summary>
-            提取特征值
+            获取人脸特征值长度
             </summary>
-            <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
-            <param name="points"></param>
-            <param name="features"></param>
-            <param name="type"></param>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.ExtractSize(System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.Extract(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Single[],System.Int32)">
             <summary>
-            特征值大小
+            提取人脸特征值
             </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="features">人脸特征值 数组</param>
+            <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus64.Similarity(System.Single[],System.Single[],System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.Similarity(System.Single[],System.Single[],System.Int32)">
             <summary>
             计算相似度
             </summary>
@@ -124,128 +769,272 @@
             <param name="type"></param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.SetLogFunction(ViewFaceCore.Plus.LogCallBack)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.AntiSpoofing(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
             <summary>
-            设置日志回调函数(用于日志打印)
+            活体检测器
+            <para>单帧检测</para>
             </summary>
-            <param name="writeLog"></param>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="global">是否启用全局检测</param>
+            <returns>单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.SetModelPath(System.Byte[])">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.AntiSpoofingVideo(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
             <summary>
-            设置人脸模型的目录
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.SetModelPath(System.String)">
-            <summary>
-            设置人脸模型的目录
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.ViewDispose">
-            <summary>
-            释放使用的资源
-            </summary>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.GetModelPathEx(System.String@)">
-            <summary>
-            获取人脸模型的目录
-            </summary>
-            <param name="path"></param>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.GetModelPath">
-            <summary>
-            获取人脸模型的目录
-            </summary>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.DetectorSize(System.Byte[],System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Int32)">
-            <summary>
-            人脸检测器检测到的人脸数量
+            活体检测器
+            <para>视频帧</para>
             </summary>
             <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
-            <param name="faceSize">最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。
-            <para>最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。SeetaFace采用的是BindingBox Regresion的方式训练的检测器。如果最小人脸参数设置为80的话，从检测能力上，可以将原图缩小的原来的1/4，这样从计算复杂度上，能够比最小人脸设置为20时，提速到16倍。</para>
-            </param>
-            <param name="threshold">检测器阈值默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高</param>
-            <param name="maxWidth">可检测的图像最大宽度。默认值2000。</param>
-            <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.Detector(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
-            <summary>
-            人脸检测器
-            <para>调用此方法前必须先调用 <see cref="M:ViewFaceCore.Plus.ViewFacePlus32.DetectorSize(System.Byte[],System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Int32)"/></para>
-            </summary>
-            <param name="score">人脸置信度集合</param>
-            <param name="x">人脸位置集合</param>
-            <param name="y">人脸位置集合</param>
-            <param name="width">人脸大小集合</param>
-            <param name="height">人脸大小集合</param>
-            <returns></returns>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.FaceMarkSize(System.Int32)">
-            <summary>
-            人脸关键点数量
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.FaceMark(System.Byte[],System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Double[],System.Double[],System.Int32)">
-            <summary>
-            人脸关键点
-            </summary>
-            <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
-            <param name="x"></param>
-            <param name="y"></param>
-            <param name="fWidth"></param>
-            <param name="fHeight"></param>
-            <param name="pointX"></param>
-            <param name="pointY"></param>
-            <param name="type"></param>
-            <returns></returns>
-        </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.Extract(System.Byte[],System.Int32,System.Int32,System.Int32,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Single[],System.Int32)">
-            <summary>
-            提取特征值
-            </summary>
-            <param name="imgData"></param>
-            <param name="width"></param>
-            <param name="height"></param>
-            <param name="channels"></param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
             <param name="points"></param>
-            <param name="features"></param>
-            <param name="type"></param>
+            <param name="global">是否启用全局检测</param>
+            <returns>
+            <para>
+            单帧识别返回值会是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof"/>、<see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy"/> 或 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/><br />
+            在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>
+            </para>
+            </returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.FaceTrackSize(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,System.Boolean,System.Int32,System.Double,System.Double,System.Int32)">
+            <summary>
+            获取跟踪的人脸个数
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="stable"></param>
+            <param name="interval"></param>
+            <param name="faceSize"></param>
+            <param name="threshold"></param>
+            <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.ExtractSize(System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.FaceTrack(System.Single[],System.Int32[],System.Int32[],System.Int32[],System.Int32[],System.Int32[])">
             <summary>
-            特征值大小
+            人脸跟踪信息
             </summary>
+            <param name="score">人脸置信度分数 数组</param>
+            <param name="PID">人脸标识ID 数组</param>
+            <param name="x">人脸位置 x 数组</param>
+            <param name="y">人脸位置 y 数组</param>
+            <param name="width">人脸大小 width 数组</param>
+            <param name="height">人脸大小 height 数组</param>
             <returns></returns>
         </member>
-        <member name="M:ViewFaceCore.Plus.ViewFacePlus32.Similarity(System.Single[],System.Single[],System.Int32)">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfBrightness(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single)">
             <summary>
-            计算相似度
+            亮度评估。
+            <para>亮度评估就是评估人脸区域内的亮度值是否均匀正常，存在部分或全部的过亮和过暗都会是评价为LOW。</para>
+            <para>
+            评估器会将综合的亮度从灰度值映射到level，其映射关系为： <br />
+            • [0, v0), [v3, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [v0, v1), [v2, v3) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [v1, v2) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{v0, v1, v2, v3}"/> 的默认值为 <see langword="{70, 100, 210, 230}"/></para>
             </summary>
-            <param name="leftFeatures"></param>
-            <param name="rightFeatures"></param>
-            <param name="type"></param>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="v0"></param>
+            <param name="v1"></param>
+            <param name="v2"></param>
+            <param name="v3"></param>
             <returns></returns>
         </member>
-        <member name="T:ViewFaceCore.Sharp.DetectorSetting">
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfClarity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
             <summary>
-            人脸检测器设置
+            清晰度评估。
+            <para>清晰度这里是传统方式通过二次模糊后图像信息损失程度统计的清晰度。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfIntegrity(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            完整度评估。
+            <para>完整度评估是朴素的判断人来是否因为未完全进入摄像头而造成的不完整的情况。该方法不适用于判断遮挡造成的不完整。</para>
+            <para>
+            映射关系为： <br />
+            • 人脸外扩 high 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            • 人脸外扩 low 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • 其他 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfPose(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            姿态评估。
+            <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfPoseEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            姿态评估 (深度)。
+            <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
+            <para>
+            需要模型 <see langword="pose_estimation.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="yawLow">yaw 方向低分数阈值</param>
+            <param name="yawHigh">yaw 方向高分数阈值</param>
+            <param name="pitchLow">pitch 方向低分数阈值</param>
+            <param name="pitchHigh">pitch 方向高分数阈值</param>
+            <param name="rollLow">roll 方向低分数阈值</param>
+            <param name="rollHigh">roll 方向高分数阈值</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfResolution(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single,System.Single)">
+            <summary>
+            分辨率评估。
+            <para>判断人脸部分的分辨率。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="low"></param>
+            <param name="high"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfClarityEx(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@,System.Single)">
+            <summary>
+            清晰度 (深度)评估。
+            <para>
+            需要模型 <see langword="quality_lbn.csta"/> <br />
+            需要模型 <see langword="face_landmarker_pts68.csta"/> 
+            </para>
+            <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <param name="blur_thresh"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.QualityOfNoMask(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceRect,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Single@)">
+            <summary>
+            遮挡评估。
+            <para>
+            判断人脸部分的分辨率。 <br />
+            需要模型 <see langword="face_landmarker_mask_pts5.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="faceRect">人脸位置信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="level">存储 等级</param>
+            <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.FaceCompareConfig">
+            <summary>
+            人脸对比阈值配置
             </summary>
         </member>
-        <member name="P:ViewFaceCore.Sharp.DetectorSetting.FaceSize">
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceCompareConfig.Threshold">
             <summary>
-            最小人脸。
+            人脸相似度阈值
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Configs.FaceCompareConfig.GetThreshold(ViewFaceCore.Sharp.Model.FaceType)">
+            <summary>
+            获取指定人脸识别模型的相似度阈值。
+            <para>
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> 的默认相似度阈值为 <see langword="0.62"/> <br />
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/> 的默认相似度阈值为 <see langword="0.48"/> <br />
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/> 的默认相似度阈值为 <see langword="0.55"/> <br />
+            </para>
+            </summary>
+            <param name="type">指定的人脸识别模型</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Configs.FaceCompareConfig.SetThreshold(ViewFaceCore.Sharp.Model.FaceType,System.Single)">
+            <summary>
+            设置指定人脸识别模型的相似度阈值。
+            <para>
+            默认阈值是一般场景使用的推荐阈值。一般来说1比1的场景下，该阈值会对应偏低，1比N场景会对应偏高。
+            </para>
+            <para>
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> 的默认相似度阈值为 <see langword="0.62"/> <br />
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/> 的默认相似度阈值为 <see langword="0.48"/> <br />
+            • <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/> 的默认相似度阈值为 <see langword="0.55"/> <br />
+            </para>
+            </summary>
+            <param name="type">指定的人脸识别模型</param>
+            <param name="score">相似度阈值</param>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.FaceDetectorConfig">
+            <summary>
+            人脸检测器配置
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceDetectorConfig.FaceSize">
+            <summary>
+            设置最小人脸。
             <para>
             最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。<br />
             最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。<see langword="SeetaFace"/> 采用的是 <c><see langword="BindingBox Regresion"/></c> 的方式训练的检测器。
@@ -253,22 +1042,419 @@
             </para>
             </summary>
         </member>
-        <member name="P:ViewFaceCore.Sharp.DetectorSetting.Threshold">
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceDetectorConfig.Threshold">
             <summary>
             检测器阈值。
             <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
             </summary>
         </member>
-        <member name="P:ViewFaceCore.Sharp.DetectorSetting.MaxWidth">
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceDetectorConfig.MaxWidth">
             <summary>
             可检测的图像最大宽度。
             <para>默认值2000。</para>
             </summary>
         </member>
-        <member name="P:ViewFaceCore.Sharp.DetectorSetting.MaxHeight">
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceDetectorConfig.MaxHeight">
             <summary>
             可检测的图像最大高度。
             <para>默认值2000。</para>
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.FaceTrackerConfig">
+            <summary>
+            人脸跟踪器配置
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceTrackerConfig.FaceSize">
+            <summary>
+            设置可检测的人脸大小，为人脸宽和高乘积的二次根值。
+            <para>
+            最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。<br />
+            最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。<see langword="SeetaFace"/> 采用的是 <c><see langword="BindingBox Regresion"/></c> 的方式训练的检测器。
+            如果最小人脸参数设置为 <see langword="80"/> 的话，从检测能力上，可以将原图缩小的原来的 <see langword="1/4"/> ，这样从计算复杂度上，能够比最小人脸设置为 <see langword="20"/> 时，提速到 <see langword="16"/> 倍。
+            </para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceTrackerConfig.Threshold">
+            <summary>
+            检测器阈值。
+            <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceTrackerConfig.Stable">
+            <summary>
+            是否进行检测结果的帧间平滑，使得检测结果从视觉上更好一些。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.FaceTrackerConfig.Interval">
+            <summary>
+            检测间隔
+            <para>
+            间隔默认值为10。这里跟踪间隔是为了发现新增PID的间隔。检测器会通过整张图像检测人脸去发现是否有新增的PID，所以这个值太小会导致跟踪速度变慢（不断做全局检测）；这个值太大会导致画面中新增加的人脸不会立马被跟踪到。
+            </para>
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfig">
+            <summary>
+            质量评估配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.Brightness">
+            <summary>
+            获取或设置亮度评估配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.Clarity">
+            <summary>
+            获取或设置清晰度评估配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.Integrity">
+            <summary>
+            获取或设置完整度评估配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.PoseEx">
+            <summary>
+            获取或设置姿态评估 (深度)配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.Resolution">
+            <summary>
+            获取或设置分辨率评估配置。
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfig.ClarityEx">
+            <summary>
+            获取或设置清晰度 (深度)评估配置。
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.BrightnessConfig">
+            <summary>
+            亮度评估器配置。
+            <para>
+            评估器会将综合的亮度从灰度值映射到 <see cref="T:ViewFaceCore.Sharp.Model.QualityLevel"/>，其映射关系为： <br />
+            • [0, v0), [v3, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [v0, v1), [v2, v3) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [v1, v2) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.BrightnessConfig.V0">
+            <summary>
+            默认值为 70
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.BrightnessConfig.V1">
+            <summary>
+            默认值为 100
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.BrightnessConfig.V2">
+            <summary>
+            默认值为 210
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.BrightnessConfig.V3">
+            <summary>
+            默认值为 230
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.ClarityConfig">
+            <summary>
+            清晰度评估器配置。
+            <para>清晰度这里是传统方式通过二次模糊后图像信息损失程度统计的清晰度。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{0.1, 0.2}"/></para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.ClarityConfig.Low">
+            <summary>
+            默认值为 0.1
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.ClarityConfig.High">
+            <summary>
+            默认值为 0.2
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.ClarityExConfig">
+            <summary>
+            清晰度 (深度)评估。
+            <para>
+            需要模型 <see langword="quality_lbn.csta"/> <br />
+            需要模型 <see langword="face_landmarker_pts68.csta"/> 
+            </para>
+            <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.ClarityExConfig.BlurThresh">
+            <summary>
+            评估对应分值超过选项之后就认为是模糊图片
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.IntegrityConfig">
+            <summary>
+            完整度评估器配置。
+            <para>完整度评估是朴素的判断人来是否因为未完全进入摄像头而造成的不完整的情况。该方法不适用于判断遮挡造成的不完整。</para>
+            <para>
+            映射关系为： <br />
+            • 人脸外扩 high 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            • 人脸外扩 low 倍数没有超出图像 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • 其他 => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{10, 1.5}"/></para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.IntegrityConfig.Low">
+            <summary>
+            默认值为 10
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.IntegrityConfig.High">
+            <summary>
+            默认值为 1.5
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig">
+            <summary>
+            姿态评估 (深度) 配置。
+            <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.YawLow">
+            <summary>
+            Yaw 方向低分数阈值。
+            <para>默认值为 25</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.YawHigh">
+            <summary>
+            Yaw 方向高分数阈值。
+            <para>默认值为 10</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.PitchLow">
+            <summary>
+            Pitch 方向低分数阈值。
+            <para>默认值为 20</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.PitchHigh">
+            <summary>
+            Pitch 方向高分数阈值。
+            <para>默认值为 10</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.RollLow">
+            <summary>
+            Roll 方向低分数阈值。
+            <para>默认值为 33.33</para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.PoseExConfig.RollHigh">
+            <summary>
+            Roll 方向高分数阈值。
+            <para>默认值为 16.67</para>
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Configs.QualityConfigs.ResolutionConfig">
+            <summary>
+            分辨率评估。
+            <para>判断人脸部分的分辨率。</para>
+            <para>
+            映射关系为： <br />
+            • [0, low) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Low"/> <br />
+            • [low, high) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium"/> <br />
+            • [high, ~) => <see cref="F:ViewFaceCore.Sharp.Model.QualityLevel.High"/> <br />
+            </para> <br />
+            <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.ResolutionConfig.Low">
+            <summary>
+            默认值为 80
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Configs.QualityConfigs.ResolutionConfig.High">
+            <summary>
+            默认值为 120
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Exceptions.ExtractException">
+            <summary>
+            提取人脸特征值失败时引发的异常。
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Exceptions.ExtractException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message">错误信息</param>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Exceptions.MarkException">
+            <summary>
+            获取人脸关键点失败时引发的异常
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Exceptions.MarkException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message">错误信息</param>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Exceptions.QualityException">
+            <summary>
+            质量评估失败时引发的异常
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Exceptions.QualityException.#ctor(System.String,ViewFaceCore.Sharp.Model.QualityType)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+            <param name="type"></param>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Exceptions.QualityException.Type">
+            <summary>
+            产生错误的质量评估模块类型
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Extensions.FaceDetectorConfigExtension">
+            <summary>
+            <see cref="T:ViewFaceCore.Sharp.Configs.FaceDetectorConfig"/> 扩展。
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.FaceDetectorConfigExtension.SetFaceSize(ViewFaceCore.Sharp.Configs.FaceDetectorConfig,System.Double)">
+            <summary>
+            设置最小人脸。
+            <para>
+            最小人脸是人脸检测器常用的一个概念，默认值为20，单位像素。<br />
+            最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。<see langword="SeetaFace"/> 采用的是 <c><see langword="BindingBox Regresion"/></c> 的方式训练的检测器。
+            如果最小人脸参数设置为 <see langword="80"/> 的话，从检测能力上，可以将原图缩小的原来的 <see langword="1/4"/> ，这样从计算复杂度上，能够比最小人脸设置为 <see langword="20"/> 时，提速到 <see langword="16"/> 倍。
+            </para>
+            </summary>
+            <param name="faceDetector"></param>
+            <param name="facesize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.FaceDetectorConfigExtension.SetThreshold(ViewFaceCore.Sharp.Configs.FaceDetectorConfig,System.Double)">
+            <summary>
+            设置检测器阈值。
+            <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
+            </summary>
+            <param name="faceDetector"></param>
+            <param name="threshold"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.FaceDetectorConfigExtension.SetMaxWidth(ViewFaceCore.Sharp.Configs.FaceDetectorConfig,System.Double)">
+            <summary>
+            设置可检测的图像最大高度。
+            <para>默认值2000。</para>
+            </summary>
+            <param name="faceDetector"></param>
+            <param name="maxWidth"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.FaceDetectorConfigExtension.SetMaxHeight(ViewFaceCore.Sharp.Configs.FaceDetectorConfig,System.Double)">
+            <summary>
+            设置可检测的图像最大高度。
+            <para>默认值2000。</para>
+            </summary>
+            <param name="faceDetector"></param>
+            <param name="maxHeight"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Extensions.ViewFaceExtension">
+            <summary>
+            <see cref="T:ViewFaceCore.Sharp.ViewFace"/> 的扩展方法类
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.ViewFaceExtension.AntiSpoofingVideo(ViewFaceCore.Sharp.ViewFace,System.Drawing.Bitmap[],System.Int32,System.Boolean)">
+            <summary>
+            活体检测器。
+            <para>
+            视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+            </para>
+            <para>如果返回结果为 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
+            </summary>
+            <param name="viewFace"></param>
+            <param name="bitmaps">一组图片，即视频帧的 <see cref="T:System.Drawing.Bitmap"/> 数组</param>
+            <param name="faceIndex">指定要识别的人脸索引</param>
+            <param name="global">是否启用全局检测能力</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Extensions.ViewFaceExtension.Compare(ViewFaceCore.Sharp.ViewFace,System.Single[],System.Single[])">
+            <summary>
+            计算人脸特征值相似度。
+            </summary>
+            <param name="viewFace"></param>
+            <param name="lhs"></param>
+            <param name="rhs"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.AntiSpoofingStatus">
+            <summary>
+            活体检测状态
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Error">
+            <summary>
+            错误或没有找到指定的人脸索引处的人脸
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Real">
+            <summary>
+            真实人脸
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Spoof">
+            <summary>
+            攻击人脸（假人脸）
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Fuzzy">
+            <summary>
+            无法判断（人脸成像质量不好）
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting">
+            <summary>
+            正在检测
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.FaceImage">
+            <summary>
+            人脸图像信息数据
+            <para>图像 data 直接使用 byte[] 传送，在 ViewFace 内部进行组装</para>
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Model.FaceImage.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            构造器
+            </summary>
+            <param name="width">人脸图像宽度</param>
+            <param name="height">人脸图像高度</param>
+            <param name="channels">人脸图像通道数</param>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceImage.Width">
+            <summary>
+            获取或设置宽度
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceImage.Height">
+            <summary>
+            获取或设置高度
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceImage.Channels">
+            <summary>
+            获取或设置通道数
             </summary>
         </member>
         <member name="T:ViewFaceCore.Sharp.Model.FaceInfo">
@@ -301,6 +1487,12 @@
             纵坐标
             </summary>
         </member>
+        <member name="M:ViewFaceCore.Sharp.Model.FaceMarkPoint.op_Implicit(ViewFaceCore.Sharp.Model.FaceMarkPoint)~System.Drawing.PointF">
+            <summary>
+            <see cref="T:ViewFaceCore.Sharp.Model.FaceMarkPoint"/> 到 <see cref="T:System.Drawing.PointF"/> 的隐式转换。
+            </summary>
+            <param name="point"></param>
+        </member>
         <member name="T:ViewFaceCore.Sharp.Model.FaceRect">
             <summary>
             矩形
@@ -326,6 +1518,32 @@
             矩形高度
             </summary>
         </member>
+        <member name="M:ViewFaceCore.Sharp.Model.FaceRect.op_Implicit(ViewFaceCore.Sharp.Model.FaceRect)~System.Drawing.Rectangle">
+            <summary>
+            <see cref="T:ViewFaceCore.Sharp.Model.FaceRect"/> 到 <see cref="T:System.Drawing.Rectangle"/> 的隐式转换。
+            </summary>
+            <param name="rect"></param>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.FaceTrackInfo">
+            <summary>
+            人脸跟踪信息
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceTrackInfo.Location">
+            <summary>
+            人脸位置
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceTrackInfo.Score">
+            <summary>
+            人脸置信度
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.FaceTrackInfo.Pid">
+            <summary>
+            人脸标识Id
+            </summary>
+        </member>
         <member name="T:ViewFaceCore.Sharp.Model.FaceType">
             <summary>
             人脸类型
@@ -344,16 +1562,6 @@
         <member name="F:ViewFaceCore.Sharp.Model.FaceType.Light">
             <summary>
             轻量级人脸识别模型。
-            </summary>
-        </member>
-        <member name="T:ViewFaceCore.Sharp.Model.Face">
-            <summary>
-            人脸相似度阈值
-            </summary>
-        </member>
-        <member name="F:ViewFaceCore.Sharp.Model.Face.Threshold">
-            <summary>
-            人脸相似度阈值
             </summary>
         </member>
         <member name="T:ViewFaceCore.Sharp.Model.MarkType">
@@ -376,15 +1584,107 @@
             5个关键点。
             </summary>
         </member>
-        <member name="M:ViewFaceCore.Sharp.ImageSet.Get24BGRFromBitmap(System.Drawing.Bitmap,System.Int32@,System.Int32@,System.Int32@)">
+        <member name="T:ViewFaceCore.Sharp.Model.QualityLevel">
             <summary>
-            获取 <see cref="T:System.Drawing.Bitmap"/> 的 8bit BGR <see cref="T:System.Byte"/> 数组。
+            质量评估等级
             </summary>
-            <param name="bitmap">待转换图像</param>
-            <param name="width">图像宽度</param>
-            <param name="height">图像高度</param>
-            <param name="channels">图像扫描宽度</param>
-            <returns></returns>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityLevel.Error">
+            <summary>
+            错误
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityLevel.Low">
+            <summary>
+            质量差
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityLevel.Medium">
+            <summary>
+            质量一般
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityLevel.High">
+            <summary>
+            质量高
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.QualityResult">
+            <summary>
+            质量评估结果
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.QualityResult.Level">
+            <summary>
+            质量评估等级
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.QualityResult.Score">
+            <summary>
+            质量评估分数
+            <para>越大越好，没有范围限制</para>
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.QualityType">
+            <summary>
+            质量评估类型
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Brightness">
+            <summary>
+            亮度评估
+            <para>亮度评估就是评估人脸区域内的亮度值是否均匀正常，存在部分或全部的过亮和过暗都会是评价为LOW。</para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Clarity">
+            <summary>
+            清晰度评估
+            <para>清晰度这里是传统方式通过二次模糊后图像信息损失程度统计的清晰度。</para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Integrity">
+            <summary>
+            完整度评估
+            <para>完整度评估是朴素的判断人脸是否因为未完全进入摄像头而造成的不完整的情况。该方法不适用于判断遮挡造成的不完整。</para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Pose">
+            <summary>
+            姿态评估
+            <para>此姿态评估器是传统方式，通过人脸5点坐标值来判断姿态是否为正面。</para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.PoseEx">
+            <summary>
+            姿态评估（深度）
+            <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
+            <para>
+            需要模型 <see langword="pose_estimation.csta"/> 
+            </para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Resolution">
+            <summary>
+            分辨率评估
+            <para>判断人脸部分的分辨率。</para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.ClarityEx">
+            <summary>
+            清晰度评估（深度）
+            <para>
+            需要模型 <see langword="quality_lbn.csta"/> <br />
+            需要模型 <see langword="face_landmarker_pts68.csta"/> 
+            </para>
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.QualityType.Structure">
+            <summary>
+            遮挡评估
+            <para>
+            需要模型 <see langword="face_landmarker_mask_pts5.csta"/> 
+            </para>
+            </summary>
         </member>
         <member name="T:ViewFaceCore.Sharp.ViewFace">
             <summary>
@@ -415,6 +1715,12 @@
             <param name="modelPath">模型目录</param>
             <param name="action">日志回调函数</param>
         </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.ToString">
+            <summary>
+            显示 ViewFace 当前运行的 CPU 类型。
+            </summary>
+            <returns></returns>
+        </member>
         <member name="P:ViewFaceCore.Sharp.ViewFace.ModelPath">
             <summary>
             获取或设置模型路径
@@ -422,39 +1728,68 @@
         </member>
         <member name="P:ViewFaceCore.Sharp.ViewFace.FaceType">
             <summary>
-            获取或设置人脸类型
+            获取或设置人脸类型。
             <para>
             <listheader>此属性可影响到以下方法：</listheader><br />
             • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/></c><br />
             • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.Extract(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])"/></c><br />
             • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.Similarity(System.Single[],System.Single[])"/></c><br />
+            • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.IsSelf(System.Single)" /></c><br />
             </para>
             </summary>
         </member>
         <member name="P:ViewFaceCore.Sharp.ViewFace.MarkType">
             <summary>
-            获取或设置人脸类型
+            获取或设置人脸关键点类型
             <para>
             <listheader>此属性可影响到以下方法：</listheader><br />
             • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/></c><br />
             </para>
             </summary>
         </member>
-        <member name="P:ViewFaceCore.Sharp.ViewFace.DetectorSetting">
+        <member name="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig">
             <summary>
-            获取或设置人脸检测器设置
+            获取或设置人脸检测器配置
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig">
+            <summary>
+            获取或设置人脸跟踪器的配置
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.ViewFace.QualityConfig">
+            <summary>
+            获取或设置质量评估器的配置
             </summary>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)">
             <summary>
             识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
             <para>
+            可以通过 <see cref="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+            </para>
+            <para>
             当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> <see langword="||"/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
             当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
             </para>
             </summary>
             <param name="bitmap">包含人脸的图片</param>
-            <returns></returns>
+            <returns>人脸信息集合。若 <see cref="P:System.Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig"/> 重新检测。</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceDetectorAsync(System.Drawing.Bitmap)">
+            <summary>
+            识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/> 的异步版本。</para>
+            <para>
+            可以通过 <see cref="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+            </para>
+            <para>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> <see langword="||"/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+            </para>
+            </summary>
+            <param name="bitmap">包含人脸的图片</param>
+            <returns>人脸信息集合。若 <see cref="P:System.Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig"/> 重新检测。</returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)">
             <summary>
@@ -467,7 +1802,23 @@
             </summary>
             <param name="bitmap">包含人脸的图片</param>
             <param name="info">指定的人脸信息</param>
-            <returns></returns>
+            <exception cref="T:ViewFaceCore.Sharp.Exceptions.MarkException"/>
+            <returns>若失败，则返回结果 Length == 0</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceMarkAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)">
+            <summary>
+            识别 <paramref name="bitmap"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/> 的异步版本。</para>
+            <para>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> 时， 需要模型：<see langword="face_landmarker_pts68.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/> 时， 需要模型：<see langword="face_landmarker_mask_pts5.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/> 时， 需要模型：<see langword="face_landmarker_pts5.csta"/><br/>
+            </para>
+            </summary>
+            <param name="bitmap">包含人脸的图片</param>
+            <param name="info">指定的人脸信息</param>
+            <exception cref="T:ViewFaceCore.Sharp.Exceptions.MarkException"/>
+            <returns>若失败，则返回结果 Length == 0</returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.Extract(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
             <summary>
@@ -480,6 +1831,22 @@
             </summary>
             <param name="bitmap"></param>
             <param name="points"></param>
+            <exception cref="T:ViewFaceCore.Sharp.Exceptions.ExtractException"/>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.ExtractAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            提取人脸特征值。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.Extract(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])"/> 的异步版本。</para>
+            <para>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> 时， 需要模型：<see langword="face_recognizer.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/> 时， 需要模型：<see langword="face_recognizer_mask.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/> 时， 需要模型：<see langword="face_recognizer_light.csta"/><br/>
+            </para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="points"></param>
+            <exception cref="T:ViewFaceCore.Sharp.Exceptions.ExtractException"/>
             <returns></returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.Similarity(System.Single[],System.Single[])">
@@ -498,11 +1865,158 @@
             <param name="rightFeatures"></param>
             <returns></returns>
         </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.SimilarityAsync(System.Single[],System.Single[])">
+            <summary>
+            计算特征值相似度。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.Similarity(System.Single[],System.Single[])"/> 的异步版本。</para>
+            <para>只能计算相同 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> 计算出的特征值</para>
+            <para>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> 时， 需要模型：<see langword="face_recognizer.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/> 时， 需要模型：<see langword="face_recognizer_mask.csta"/><br/>
+            当 <see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/> 时， 需要模型：<see langword="face_recognizer_light.csta"/><br/>
+            </para>
+            </summary>
+            <exception cref="T:System.ArgumentException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+            <param name="leftFeatures"></param>
+            <param name="rightFeatures"></param>
+            <returns></returns>
+        </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.IsSelf(System.Single)">
             <summary>
-            判断相似度是否为同一个人
+            判断相似度是否为同一个人。
             </summary>
             <param name="similarity">相似度</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofing(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器。
+            <para>
+            单帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+            需通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+            通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+            </para>
+            <para>
+            当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
+            当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
+            </para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="global"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofingAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofing(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)"/> 的异步版本。</para>
+            <para>
+            单帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+            需通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+            通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+            </para>
+            <para>
+            当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
+            当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
+            </para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="global"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofingVideo(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器。
+            <para>
+            视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+            需通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+            通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+            </para>
+            <para>
+            当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
+            当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
+            </para>
+            <para>如果返回结果为 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="global">是否启用全局检测能力</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofingVideoAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)">
+            <summary>
+            活体检测器。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.AntiSpoofingVideo(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Boolean)"/> 的异步版本。</para>
+            <para>
+            视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
+            需通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceDetector(System.Drawing.Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
+            通过 <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+            </para>
+            <para>
+            当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
+            当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
+            </para>
+            <para>如果返回结果为 <see cref="F:ViewFaceCore.Sharp.Model.AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="global">是否启用全局检测能力</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceTrack(System.Drawing.Bitmap)">
+            <summary>
+            识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
+            <para>
+            可以通过 <see cref="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+            </para>
+            <para>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> <see langword="||"/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+            </para>
+            </summary>
+            <param name="bitmap">包含人脸的图片</param>
+            <returns>人脸信息集合。若 <see cref="P:System.Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig"/> 重新检测。</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceTrackAsync(System.Drawing.Bitmap)">
+            <summary>
+            识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceTrack(System.Drawing.Bitmap)"/> 的异步版本。</para>
+            <para>
+            可以通过 <see cref="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+            </para>
+            <para>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Normal"/> <see langword="||"/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
+            当 <c><see cref="P:ViewFaceCore.Sharp.ViewFace.FaceType"/> <see langword="="/> <see cref="F:ViewFaceCore.Sharp.Model.FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+            </para>
+            </summary>
+            <param name="bitmap">包含人脸的图片</param>
+            <returns>人脸信息集合。若 <see cref="P:System.Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig"/> 重新检测。</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceQuality(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],ViewFaceCore.Sharp.Model.QualityType)">
+            <summary>
+            人脸质量评估
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceQualityAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],ViewFaceCore.Sharp.Model.QualityType)">
+            <summary>
+            人脸质量评估
+            <para><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceQuality(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo,ViewFaceCore.Sharp.Model.FaceMarkPoint[],ViewFaceCore.Sharp.Model.QualityType)"/> 的异步版本。</para>
+            </summary>
+            <param name="bitmap"></param>
+            <param name="info"></param>
+            <param name="points"></param>
+            <param name="type"></param>
             <returns></returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.Finalize">

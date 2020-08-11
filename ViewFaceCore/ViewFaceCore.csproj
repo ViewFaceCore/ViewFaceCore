@@ -11,8 +11,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Users\yangw\source\repos\ViewFace\ViewFaceCore\ViewFaceCore.xml</DocumentationFile>
+    <DocumentationFile>C:\Project\view\dotnet\View.Face\ViewFaceCore\ViewFaceCore.xml</DocumentationFile>
     <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Project\view\dotnet\View.Face\ViewFaceCore\ViewFaceCore.xml</DocumentationFile>
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
