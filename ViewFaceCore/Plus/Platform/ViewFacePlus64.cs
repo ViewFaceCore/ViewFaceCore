@@ -384,5 +384,30 @@ namespace ViewFaceCore.Plus.Platform
         /// <returns>-1 则为失败，否则为预测年龄</returns>
         [DllImport(LibraryPath, EntryPoint = "V_AgePredictor", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AgePredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
+
+        /// <summary>
+        /// 人脸性别预测。
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        [DllImport(LibraryPath, EntryPoint = "V_GenderPredictor", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int GenderPredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
+
+        /// <summary>
+        /// 眼睛状态检测。
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <param name="left_eye"></param>
+        /// <param name="right_eye"></param>
+        /// <returns></returns>
+        [DllImport(LibraryPath, EntryPoint = "V_EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
+            ref int left_eye, ref int right_eye);
     }
 }

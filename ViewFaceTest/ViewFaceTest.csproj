@@ -10,6 +10,10 @@
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="View.Core" Version="0.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
 

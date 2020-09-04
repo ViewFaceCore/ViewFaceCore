@@ -560,5 +560,47 @@ namespace ViewFaceCore.Plus
             else
             { return ViewFacePlus32.AgePredictor(imgData, ref img, points, pointsLength); }
         }
+
+        /// <summary>
+        /// 性别预测。
+        /// <para>
+        /// 需要模型 <see langword="gender_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <returns></returns>
+        public static int GenderPredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength)
+        {
+            if (Platform64)
+            { return ViewFacePlus64.GenderPredictor(imgData, ref img, points, pointsLength); }
+            else
+            { return ViewFacePlus32.GenderPredictor(imgData, ref img, points, pointsLength); }
+        }
+
+
+        /// <summary>
+        /// 眼睛状态检测。
+        /// <para>
+        /// 需要模型 <see langword="eye_state.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <param name="left_eye"></param>
+        /// <param name="right_eye"></param>
+        /// <returns></returns>
+        public static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
+            ref int left_eye, ref int right_eye)
+        {
+            if (Platform64)
+            { return ViewFacePlus64.EyeStateDetector(imgData, ref img, points, pointsLength, ref left_eye, ref right_eye); }
+            else
+            { return ViewFacePlus32.EyeStateDetector(imgData, ref img, points, pointsLength, ref left_eye, ref right_eye); }
+        }
     }
 }

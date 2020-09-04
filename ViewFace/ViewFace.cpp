@@ -16,6 +16,7 @@
 
 #include "seeta/AgePredictor.h"
 #include "seeta/GenderPredictor.h"
+#include "seeta/EyeStateDetector.h"
 
 #include <time.h>
 
@@ -840,8 +841,66 @@ View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
 	}
 	catch (const std::exception& e)
 	{
-		WriteError("QualityOfNoMask", e);
+		WriteError("AgePredictor", e);
 		return -1;
+	}
+}
+
+// 年龄预测器
+seeta::GenderPredictor* V_Gender_Predictor = NULL;
+// 年龄预测
+View_Api int V_GenderPredictor(unsigned char* imgData, SeetaImageData& img,
+	SeetaPointF* points, int pointsLength)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Gender_Predictor == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "gender_predictor.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("GenderPredictor", modelName);
+			V_Gender_Predictor = new seeta::GenderPredictor(setting);
+		}
+		seeta::GenderPredictor::GENDER gender = (seeta::GenderPredictor::GENDER)0;
+		auto result = V_Gender_Predictor->PredictGenderWithCrop(img, points, gender);
+		if (result)
+			return gender;
+		else return -1;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("GenderPredictor", e);
+		return -1;
+	}
+}
+
+// 年龄预测器
+seeta::EyeStateDetector* V_EyeState_Detector = NULL;
+// 年龄预测
+View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, SeetaPointF* points, int pointsLength, 
+	seeta::EyeStateDetector::EYE_STATE& left_eye, seeta::EyeStateDetector::EYE_STATE& right_eye)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_EyeState_Detector == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "eye_state.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("EyeStateDetector", modelName);
+			V_EyeState_Detector = new seeta::EyeStateDetector(setting);
+		}
+
+		V_EyeState_Detector->Detect(img, points, left_eye, right_eye);
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("EyeStateDetector", e);
+		return false;
 	}
 }
 /***************************************************************************************************************/

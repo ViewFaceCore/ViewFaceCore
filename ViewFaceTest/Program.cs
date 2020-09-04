@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using View.Core.Extensions;
 using View.Drawing.Extensions;
 using ViewFaceCore.Sharp;
 using ViewFaceCore.Sharp.Configs;
@@ -18,7 +19,7 @@ namespace ViewFaceTest
         static void Main()
         {
             // 老图片路径
-            string oldImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/0.jpg";
+            string oldImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/5.jpg";
             string newImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/1.jpg";
 
             ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
@@ -77,6 +78,11 @@ namespace ViewFaceTest
                 #region 人脸属性
                 var age = viewFace.FaceAgePredictor(oldImg, oldPoints);
                 Console.WriteLine($"人脸预测年龄:{age}");
+                var gender = viewFace.FaceGenderPredictor(oldImg, oldPoints);
+                Console.WriteLine($"人脸预测性别:{gender.ToDescription()}");
+                var eyeStateResult = viewFace.FaceEyeStateDetector(oldImg, oldPoints);
+                Console.WriteLine($"左眼状态:{eyeStateResult.LeftEyeState.ToDescription()}");
+                Console.WriteLine($"右眼状态:{eyeStateResult.RightEyeState.ToDescription()}");
                 #endregion
             }
             else { oldEigenValues = new float[0]; /*未识别到人脸*/ }

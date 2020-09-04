@@ -512,6 +512,41 @@ namespace ViewFaceCore.Sharp
         }
 
         /// <summary>
+        /// 性别预测。
+        /// <para>
+        /// 需要模型 <see langword="gender_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns>性别枚举，<see cref="Gender.Unknown"/> 代表识别失败</returns>
+        public Gender FaceGenderPredictor(Bitmap bitmap, FaceMarkPoint[] points)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            FaceImage img = new FaceImage(width, height, channels);
+            return (Gender)ViewFacePlus.GenderPredictor(bgr, ref img, points, points.Length);
+        }
+
+        /// <summary>
+        /// 眼睛状态检测。
+        /// <para>
+        /// 眼睛的左右是相对图片内容而言的左右 <br />
+        /// 需要模型 <see langword="eye_state.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns></returns>
+        public EyeStateResult FaceEyeStateDetector(Bitmap bitmap, FaceMarkPoint[] points)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            FaceImage img = new FaceImage(width, height, channels);
+            int left_eye = 0, right_eye = 0;
+            ViewFacePlus.EyeStateDetector(bgr, ref img, points, points.Length, ref left_eye, ref right_eye);
+            return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
+        }
+
+        /// <summary>
         /// 释放资源
         /// </summary>
         ~ViewFace() => ViewFacePlus.ViewDispose();

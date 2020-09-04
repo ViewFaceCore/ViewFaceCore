@@ -344,6 +344,28 @@
             <param name="pointsLength">人脸关键点 数组长度</param>
             <returns>-1 则为失败，否则为预测年龄</returns>
         </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.GenderPredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            人脸性别预测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns>-1 则为失败，否则为预测年龄</returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.EyeStateDetector(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            眼睛状态检测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="left_eye"></param>
+            <param name="right_eye"></param>
+            <returns></returns>
+        </member>
         <member name="T:ViewFaceCore.Plus.Platform.ViewFacePlus64">
             <summary>
             x64 导入方法
@@ -684,6 +706,28 @@
             <param name="pointsLength">人脸关键点 数组长度</param>
             <returns>-1 则为失败，否则为预测年龄</returns>
         </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.GenderPredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            人脸性别预测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns>-1 则为失败，否则为预测年龄</returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.EyeStateDetector(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            眼睛状态检测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="left_eye"></param>
+            <param name="right_eye"></param>
+            <returns></returns>
+        </member>
         <member name="T:ViewFaceCore.Plus.LogCallBack">
             <summary>
             日志回调函数
@@ -1021,6 +1065,34 @@
             <param name="img">图像宽高通道信息</param>
             <param name="points">人脸关键点 数组</param>
             <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.GenderPredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            性别预测。
+            <para>
+            需要模型 <see langword="gender_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.EyeStateDetector(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32,System.Int32@,System.Int32@)">
+            <summary>
+            眼睛状态检测。
+            <para>
+            需要模型 <see langword="eye_state.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <param name="left_eye"></param>
+            <param name="right_eye"></param>
             <returns></returns>
         </member>
         <member name="T:ViewFaceCore.Sharp.Configs.FaceCompareConfig">
@@ -1461,6 +1533,58 @@
             正在检测
             </summary>
         </member>
+        <member name="T:ViewFaceCore.Sharp.Model.EyeState">
+            <summary>
+            眼睛状态
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.EyeState.Close">
+            <summary>
+            眼睛闭合
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.EyeState.Open">
+            <summary>
+            眼睛张开
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.EyeState.Random">
+            <summary>
+            不是眼睛区域
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.EyeState.Unknown">
+            <summary>
+            状态无法判断
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.EyeStateResult">
+            <summary>
+            眼睛状态结果
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Model.EyeStateResult.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.Model.EyeStateResult.#ctor(ViewFaceCore.Sharp.Model.EyeState,ViewFaceCore.Sharp.Model.EyeState)">
+            <summary>
+            使用双眼的状态初始化结果
+            </summary>
+            <param name="leftEyeState">左眼状态</param>
+            <param name="rightEyeState">右眼状态</param>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.EyeStateResult.LeftEyeState">
+            <summary>
+            左眼状态
+            </summary>
+        </member>
+        <member name="P:ViewFaceCore.Sharp.Model.EyeStateResult.RightEyeState">
+            <summary>
+            右眼状态
+            </summary>
+        </member>
         <member name="T:ViewFaceCore.Sharp.Model.FaceImage">
             <summary>
             人脸图像信息数据
@@ -1595,6 +1719,26 @@
         <member name="F:ViewFaceCore.Sharp.Model.FaceType.Light">
             <summary>
             轻量级人脸识别模型。
+            </summary>
+        </member>
+        <member name="T:ViewFaceCore.Sharp.Model.Gender">
+            <summary>
+            人脸性别
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.Gender.Unknown">
+            <summary>
+            未知 或 识别失败。
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.Gender.Male">
+            <summary>
+            男性
+            </summary>
+        </member>
+        <member name="F:ViewFaceCore.Sharp.Model.Gender.Female">
+            <summary>
+            女性
             </summary>
         </member>
         <member name="T:ViewFaceCore.Sharp.Model.MarkType">
@@ -2062,6 +2206,28 @@
             <param name="bitmap">待识别的图像</param>
             <param name="points">人脸关键点 数组</param>
             <returns>-1 则为失败，否则为预测年龄</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceGenderPredictor(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            性别预测。
+            <para>
+            需要模型 <see langword="gender_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns>性别枚举，<see cref="F:ViewFaceCore.Sharp.Model.Gender.Unknown"/> 代表识别失败</returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceEyeStateDetector(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            眼睛状态检测。
+            <para>
+            需要模型 <see langword="eye_state.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns></returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.Finalize">
             <summary>
