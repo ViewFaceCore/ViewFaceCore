@@ -494,6 +494,23 @@ namespace ViewFaceCore.Sharp
         public async Task<QualityResult> FaceQualityAsync(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
             => await Task.Run(() => FaceQuality(bitmap, info, points, type));
 
+
+        /// <summary>
+        /// 年龄预测。
+        /// <para>
+        /// 需要模型 <see langword="age_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        public int FaceAgePredictor(Bitmap bitmap, FaceMarkPoint[] points)
+        {
+            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            FaceImage img = new FaceImage(width, height, channels);
+            return ViewFacePlus.AgePredictor(bgr, ref img, points, points.Length);
+        }
+
         /// <summary>
         /// 释放资源
         /// </summary>

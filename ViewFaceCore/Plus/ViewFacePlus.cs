@@ -541,5 +541,24 @@ namespace ViewFaceCore.Plus
                   faceRect, points, pointsLength, ref level, ref score);
             }
         }
+
+        /// <summary>
+        /// 年龄预测。
+        /// <para>
+        /// 需要模型 <see langword="age_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <returns></returns>
+        public static int AgePredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength)
+        {
+            if (Platform64)
+            { return ViewFacePlus64.AgePredictor(imgData, ref img, points, pointsLength); }
+            else
+            { return ViewFacePlus32.AgePredictor(imgData, ref img, points, pointsLength); }
+        }
     }
 }

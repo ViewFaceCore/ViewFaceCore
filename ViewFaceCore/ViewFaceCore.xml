@@ -334,6 +334,16 @@
             <param name="score">存储 分数</param>
             <returns></returns>
         </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus32.AgePredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            人脸年龄预测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns>-1 则为失败，否则为预测年龄</returns>
+        </member>
         <member name="T:ViewFaceCore.Plus.Platform.ViewFacePlus64">
             <summary>
             x64 导入方法
@@ -664,6 +674,16 @@
             <param name="score">存储 分数</param>
             <returns></returns>
         </member>
+        <member name="M:ViewFaceCore.Plus.Platform.ViewFacePlus64.AgePredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            人脸年龄预测。
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
+            <returns>-1 则为失败，否则为预测年龄</returns>
+        </member>
         <member name="T:ViewFaceCore.Plus.LogCallBack">
             <summary>
             日志回调函数
@@ -988,6 +1008,19 @@
             <param name="pointsLength">人脸关键点 数组长度</param>
             <param name="level">存储 等级</param>
             <param name="score">存储 分数</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Plus.ViewFacePlus.AgePredictor(System.Byte[],ViewFaceCore.Sharp.Model.FaceImage@,ViewFaceCore.Sharp.Model.FaceMarkPoint[],System.Int32)">
+            <summary>
+            年龄预测。
+            <para>
+            需要模型 <see langword="age_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="imgData">图像 BGR 数据</param>
+            <param name="img">图像宽高通道信息</param>
+            <param name="points">人脸关键点 数组</param>
+            <param name="pointsLength">人脸关键点 数组长度</param>
             <returns></returns>
         </member>
         <member name="T:ViewFaceCore.Sharp.Configs.FaceCompareConfig">
@@ -2018,6 +2051,17 @@
             <param name="points"></param>
             <param name="type"></param>
             <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceAgePredictor(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            年龄预测。
+            <para>
+            需要模型 <see langword="age_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns>-1 则为失败，否则为预测年龄</returns>
         </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.Finalize">
             <summary>

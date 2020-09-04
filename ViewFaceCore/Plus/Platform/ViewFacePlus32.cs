@@ -373,5 +373,16 @@ namespace ViewFaceCore.Plus.Platform
         [DllImport(LibraryPath, EntryPoint = "V_QualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfNoMask(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+
+        /// <summary>
+        /// 人脸年龄预测。
+        /// </summary>
+        /// <param name="imgData">图像 BGR 数据</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        [DllImport(LibraryPath, EntryPoint = "V_AgePredictor", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int AgePredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
     }
 }

@@ -51,8 +51,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,3,3,0
- PRODUCTVERSION 0,3,3,0
+ FILEVERSION 0,3,3,1
+ PRODUCTVERSION 0,3,3,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,12 +69,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "View"
             VALUE "FileDescription", "ViewFace »ù´¡¿â"
-            VALUE "FileVersion", "0.3.3.0"
+            VALUE "FileVersion", "0.3.3.1"
             VALUE "InternalName", "ViewFace.dll"
             VALUE "LegalCopyright", "Copyright (C) 2020"
             VALUE "OriginalFilename", "ViewFace.dll"
             VALUE "ProductName", "ViewFace"
-            VALUE "ProductVersion", "0.3.3.0"
+            VALUE "ProductVersion", "0.3.3.1"
         END
     END
     BLOCK "VarFileInfo"

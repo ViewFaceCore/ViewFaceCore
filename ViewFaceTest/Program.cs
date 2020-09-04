@@ -15,12 +15,11 @@ namespace ViewFaceTest
 {
     class Program
     {
-
         static void Main()
         {
             // 老图片路径
-            string oldImgPath = @"C:/Users/yangw/OneDrive/桌面/image/0.jpg";
-            string newImgPath = @"C:/Users/yangw/OneDrive/桌面/image/1.jpg";
+            string oldImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/0.jpg";
+            string newImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/1.jpg";
 
             ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
             // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
@@ -72,7 +71,12 @@ namespace ViewFaceTest
                 Console.WriteLine($"遮挡:Level [{qualityStructure.Level}] - Score [{qualityStructure.Score}]");
                 var qualityClarityEx = viewFace.FaceQuality(oldImg, oldFaceInfos[0], oldPoints, QualityType.ClarityEx);
                 Console.WriteLine($"清晰度 (深度):Level [{qualityClarityEx.Level}] - Score [{qualityClarityEx.Score}]");
+                #endregion
 
+                Console.WriteLine();
+                #region 人脸属性
+                var age = viewFace.FaceAgePredictor(oldImg, oldPoints);
+                Console.WriteLine($"人脸预测年龄:{age}");
                 #endregion
             }
             else { oldEigenValues = new float[0]; /*未识别到人脸*/ }

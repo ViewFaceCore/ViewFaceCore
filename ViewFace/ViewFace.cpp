@@ -14,6 +14,9 @@
 #include "seetaEx/QualityOfClarityEx.cpp"
 #include "seetaEx/QualityOfNoMask.cpp"
 
+#include "seeta/AgePredictor.h"
+#include "seeta/GenderPredictor.h"
+
 #include <time.h>
 
 #define View_Api extern "C" __declspec(dllexport)
@@ -811,8 +814,36 @@ View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
 	}
 }
 
-/***************************************************************************************************************/
-
+/******人脸属性***********************************************************************************************/
+// 年龄预测器
+seeta::AgePredictor* V_Age_Predictor = NULL;
+// 年龄预测
+View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
+	SeetaPointF* points, int pointsLength)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Age_Predictor == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "age_predictor.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("AgePredictor", modelName);
+			V_Age_Predictor = new seeta::AgePredictor(setting);
+		}
+		int age = 0;
+		auto result = V_Age_Predictor->PredictAgeWithCrop(img, points, age);
+		if (result)
+			return age;
+		else return -1;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfNoMask", e);
+		return -1;
+	}
+}
 /***************************************************************************************************************/
 
 // 释放资源
