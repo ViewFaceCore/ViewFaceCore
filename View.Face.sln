@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceTest", "ViewFaceTest\ViewFaceTest.csproj", "{8286F760-5F52-4CE6-9D9F-E61013B65BCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceTestPackage", "ViewFaceTestPackage\ViewFaceTestPackage.csproj", "{8AD0171A-E515-4F8F-BCB2-B9B8AA0D1B15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceTestPackage", "ViewFaceTestPackage\ViewFaceTestPackage.csproj", "{8AD0171A-E515-4F8F-BCB2-B9B8AA0D1B15}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DAC7014C-CE2E-4CDA-89D7-496A53AAEBBC}"
+	ProjectSection(SolutionItems) = preProject
+		ReBuild.bat = ReBuild.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2222,6 +2222,7 @@
             <summary>
             眼睛状态检测。
             <para>
+            眼睛的左右是相对图片内容而言的左右 <br />
             需要模型 <see langword="eye_state.csta"/> 
             </para>
             </summary>
