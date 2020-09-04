@@ -1898,6 +1898,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig">
+            <summary>
+            获取或设置人脸检测器配置
+            </summary>
+        </member>
         <member name="P:ViewFaceCore.Sharp.ViewFace.ModelPath">
             <summary>
             获取或设置模型路径
@@ -1922,11 +1927,6 @@
             <listheader>此属性可影响到以下方法：</listheader><br />
             • <c><see cref="M:ViewFaceCore.Sharp.ViewFace.FaceMark(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceInfo)"/></c><br />
             </para>
-            </summary>
-        </member>
-        <member name="P:ViewFaceCore.Sharp.ViewFace.DetectorConfig">
-            <summary>
-            获取或设置人脸检测器配置
             </summary>
         </member>
         <member name="P:ViewFaceCore.Sharp.ViewFace.TrackerConfig">
@@ -2207,6 +2207,18 @@
             <param name="points">人脸关键点 数组</param>
             <returns>-1 则为失败，否则为预测年龄</returns>
         </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceAgePredictorAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            年龄预测。
+            <para>
+            <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceAgePredictor(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])"/> 的异步版本。<br />
+            需要模型 <see langword="age_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns></returns>
+        </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.FaceGenderPredictor(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
             <summary>
             性别预测。
@@ -2218,10 +2230,35 @@
             <param name="points">人脸关键点 数组</param>
             <returns>性别枚举，<see cref="F:ViewFaceCore.Sharp.Model.Gender.Unknown"/> 代表识别失败</returns>
         </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceGenderPredictorAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            性别预测。
+            <para>
+            <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceGenderPredictor(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])"/> 的异步版本。<br />
+            需要模型 <see langword="gender_predictor.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns></returns>
+        </member>
         <member name="M:ViewFaceCore.Sharp.ViewFace.FaceEyeStateDetector(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
             <summary>
             眼睛状态检测。
             <para>
+            眼睛的左右是相对图片内容而言的左右 <br />
+            需要模型 <see langword="eye_state.csta"/> 
+            </para>
+            </summary>
+            <param name="bitmap">待识别的图像</param>
+            <param name="points">人脸关键点 数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:ViewFaceCore.Sharp.ViewFace.FaceEyeStateDetectorAsync(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])">
+            <summary>
+            眼睛状态检测。
+            <para>
+            <see cref="M:ViewFaceCore.Sharp.ViewFace.FaceEyeStateDetector(System.Drawing.Bitmap,ViewFaceCore.Sharp.Model.FaceMarkPoint[])"/> 的异步版本。<br />
             眼睛的左右是相对图片内容而言的左右 <br />
             需要模型 <see langword="eye_state.csta"/> 
             </para>
