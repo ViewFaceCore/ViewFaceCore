@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>AnyCPU</Platforms>
     <Authors>View</Authors>
-    <Version>0.3.3</Version>
+    <Version>0.3.4</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <OutputType>Library</OutputType>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
