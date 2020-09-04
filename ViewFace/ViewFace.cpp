@@ -922,4 +922,8 @@ View_Api void V_Dispose()
 	if (V_Quality_Resolution != NULL) delete V_Quality_Resolution;
 	if (V_Quality_ClarityEx != NULL) delete V_Quality_ClarityEx;
 	if (V_Quality_NoMask != NULL) delete V_Quality_NoMask;
+
+	if (V_Age_Predictor != NULL) delete V_Age_Predictor;
+	if (V_Gender_Predictor != NULL) delete V_Gender_Predictor;
+	if (V_EyeState_Detector != NULL) delete V_EyeState_Detector;
 }
