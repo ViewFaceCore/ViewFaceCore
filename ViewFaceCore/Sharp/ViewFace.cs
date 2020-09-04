@@ -45,6 +45,10 @@ namespace ViewFaceCore.Sharp
 
         // Public Property
         /// <summary>
+        /// 获取或设置人脸检测器配置
+        /// </summary>
+        public FaceDetectorConfig DetectorConfig { get; set; } = new FaceDetectorConfig();
+        /// <summary>
         /// 获取或设置模型路径
         /// </summary>
         public string ModelPath { get => ViewFacePlus.ModelPath; set => ViewFacePlus.ModelPath = value; }
@@ -67,10 +71,6 @@ namespace ViewFaceCore.Sharp
         /// </para>
         /// </summary>
         public MarkType MarkType { get; set; } = MarkType.Light;
-        /// <summary>
-        /// 获取或设置人脸检测器配置
-        /// </summary>
-        public FaceDetectorConfig DetectorConfig { get; set; } = new FaceDetectorConfig();
         /// <summary>
         /// 获取或设置人脸跟踪器的配置
         /// </summary>
@@ -510,6 +510,18 @@ namespace ViewFaceCore.Sharp
             FaceImage img = new FaceImage(width, height, channels);
             return ViewFacePlus.AgePredictor(bgr, ref img, points, points.Length);
         }
+        /// <summary>
+        /// 年龄预测。
+        /// <para>
+        /// <see cref="FaceAgePredictor(Bitmap, FaceMarkPoint[])"/> 的异步版本。<br />
+        /// 需要模型 <see langword="age_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns></returns>
+        public async Task<int> FaceAgePredictorAsync(Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => FaceAgePredictor(bitmap, points));
 
         /// <summary>
         /// 性别预测。
@@ -526,6 +538,18 @@ namespace ViewFaceCore.Sharp
             FaceImage img = new FaceImage(width, height, channels);
             return (Gender)ViewFacePlus.GenderPredictor(bgr, ref img, points, points.Length);
         }
+        /// <summary>
+        /// 性别预测。
+        /// <para>
+        /// <see cref="FaceGenderPredictor(Bitmap, FaceMarkPoint[])"/> 的异步版本。<br />
+        /// 需要模型 <see langword="gender_predictor.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns></returns>
+        public async Task<Gender> FaceGenderPredictorAsync(Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => FaceGenderPredictor(bitmap, points));
 
         /// <summary>
         /// 眼睛状态检测。
@@ -545,6 +569,19 @@ namespace ViewFaceCore.Sharp
             ViewFacePlus.EyeStateDetector(bgr, ref img, points, points.Length, ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
         }
+        /// <summary>
+        /// 眼睛状态检测。
+        /// <para>
+        /// <see cref="FaceEyeStateDetector(Bitmap, FaceMarkPoint[])"/> 的异步版本。<br />
+        /// 眼睛的左右是相对图片内容而言的左右 <br />
+        /// 需要模型 <see langword="eye_state.csta"/> 
+        /// </para>
+        /// </summary>
+        /// <param name="bitmap">待识别的图像</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns></returns>
+        public async Task<EyeStateResult> FaceEyeStateDetectorAsync(Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => FaceEyeStateDetector(bitmap, points));
 
         /// <summary>
         /// 释放资源
