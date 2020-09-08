@@ -54,3 +54,4 @@
 3. 编译流程 (Release) ：
    1. 分别编译 x86 和 x64 模式的 `ViewFace` 项目。
    2. 切换到 AnyCPU ，并编译 `ViewFaceCore` 项目。
+   > 或者使用 ReBuild.bat 自动编译。
