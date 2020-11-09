@@ -41,7 +41,7 @@ namespace ViewFaceCore.Sharp
         /// 显示 ViewFace 当前运行的 CPU 类型。
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => $"处理器:{(ViewFacePlus.Platform64 ? "x64" : "x86")} {base.ToString()}";
+        public override string ToString() => $"处理器:{(ViewFacePlus.Is64BitProcess ? "x64" : "x86")} {base.ToString()}";
 
         // Public Property
         /// <summary>
