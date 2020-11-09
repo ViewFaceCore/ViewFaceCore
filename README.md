@@ -7,7 +7,7 @@
   - 这是一个使用超简单的 C# 人脸识别库。
   - 此包是开源的、且免费、无限制的提供你使用，或者用于商业行为。
   - 如果你觉得此项目还不错，可以请作者喝果汁，或者买瓶霸王洗发水。
-     - <img src="https://s1.ax1x.com/2020/09/04/wFJf9x.jpg" width="200px"/> <img src="https://s1.ax1x.com/2020/09/04/wFJ6HJ.png" width="200px"/>
+     - <img src="https://i.loli.net/2020/09/11/N5ifZezGTPxCVBc.jpg" height="300px"/> <img src="https://i.loli.net/2020/09/11/P4CAegTjbvG3tr7.png" height="300px"/>
 
 ### 📘、API 文档
 [查看 API 文档](https://github.com/View12138/ViewFaceCore/blob/master/README_API.md)
