@@ -1,7 +1,7 @@
 ﻿using System;
-
 using ViewFaceCore.Sharp.Model;
-using ViewFaceCore.Plus.Platform;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace ViewFaceCore.Plus
 {
@@ -16,6 +16,58 @@ namespace ViewFaceCore.Plus
     /// </summary>
     static class ViewFacePlus
     {
+        [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool SetDllDirectory(string path);
+
+        static ViewFacePlus()
+        {
+            string path = null;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                //if (!Environment.Is64BitOperatingSystem || !Environment.Is64BitProcess)
+                //{
+                //    throw new Exception("Not support 32 bit linux system!");
+                //}
+                //switch (RuntimeInformation.ProcessArchitecture)
+                //{
+                //    case Architecture.X86:
+                //    case Architecture.Arm:
+                //        throw new Exception("Not support 32 bit linux system!");
+                //    case Architecture.Arm64:
+                //        path = "libs/linux/x64arm/ViewFace.so";
+                //        break;
+                //    case Architecture.X64:
+                //        path = "libs/linux/x64arm/ViewFace";
+                //        break;
+                //}
+                //string val = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH");
+                //Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", val + "," + GetFullPath(path));
+
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                if (Environment.Is64BitProcess)
+                {
+                    path = "libs/win/x64/ViewFace.dll";
+                }
+                else
+                {
+                    path = "libs/win/x86/ViewFace.dll";
+                }
+                SetDllDirectory(GetFullPath(path));
+            }
+        }
+
+        private static string GetFullPath(string path)
+        {
+            if (!File.Exists(path))
+            {
+                throw new Exception("Lib not exist!");
+            }
+            FileInfo fileInfo = new FileInfo(path);
+            return fileInfo.DirectoryName;
+        }
+
         /// <summary>
         /// 获取一个值，指示当前运行的进程是否是 64位
         /// </summary>
@@ -27,10 +79,7 @@ namespace ViewFaceCore.Plus
         /// <param name="writeLog"></param>
         public static void SetLogFunction(LogCallBack writeLog)
         {
-            if (Is64BitProcess)
-            { ViewFacePlus64.SetLogFunction(writeLog); }
-            else
-            { ViewFacePlus32.SetLogFunction(writeLog); }
+            ViewFacePlusNative.SetLogFunction(writeLog); 
         }
 
         /// <summary>
@@ -40,17 +89,11 @@ namespace ViewFaceCore.Plus
         {
             get
             {
-                if (Is64BitProcess)
-                { return ViewFacePlus64.GetModelPath(); }
-                else
-                { return ViewFacePlus32.GetModelPath(); }
+                return ViewFacePlusNative.GetModelPath();
             }
             set
             {
-                if (Is64BitProcess)
-                { ViewFacePlus64.SetModelPath(value); }
-                else
-                { ViewFacePlus32.SetModelPath(value); }
+                ViewFacePlusNative.SetModelPath(value);
             }
         }
 
@@ -59,10 +102,7 @@ namespace ViewFaceCore.Plus
         /// </summary>
         public static void ViewDispose()
         {
-            if (Is64BitProcess)
-            { ViewFacePlus64.ViewDispose(); }
-            else
-            { ViewFacePlus32.ViewDispose(); }
+            ViewFacePlusNative.ViewDispose();
         }
 
         /// <summary>
@@ -81,10 +121,7 @@ namespace ViewFaceCore.Plus
         public static int DetectorSize(byte[] imgData, ref FaceImage img,
             double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.DetectorSize(imgData, ref img, faceSize, threshold, maxWidth, maxHeight, type); }
-            else
-            { return ViewFacePlus32.DetectorSize(imgData, ref img, faceSize, threshold, maxWidth, maxHeight, type); }
+            return ViewFacePlusNative.DetectorSize(imgData, ref img, faceSize, threshold, maxWidth, maxHeight, type);
         }
         /// <summary>
         /// 人脸检测器
@@ -98,10 +135,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static bool Detector(float[] score, int[] x, int[] y, int[] width, int[] height)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.Detector(score, x, y, width, height); }
-            else
-            { return ViewFacePlus32.Detector(score, x, y, width, height); }
+            return ViewFacePlusNative.Detector(score, x, y, width, height);
         }
 
         /// <summary>
@@ -111,10 +145,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static int FaceMarkSize(int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.FaceMarkSize(type); }
-            else
-            { return ViewFacePlus32.FaceMarkSize(type); }
+            return ViewFacePlusNative.FaceMarkSize(type);
         }
         /// <summary>
         /// 获取人脸关键点
@@ -129,10 +160,7 @@ namespace ViewFaceCore.Plus
         public static bool FaceMark(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, double[] pointX, double[] pointY, int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.FaceMark(imgData, ref img, faceRect, pointX, pointY, type); }
-            else
-            { return ViewFacePlus32.FaceMark(imgData, ref img, faceRect, pointX, pointY, type); }
+            return ViewFacePlusNative.FaceMark(imgData, ref img, faceRect, pointX, pointY, type);
         }
 
         /// <summary>
@@ -142,10 +170,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static int ExtractSize(int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.ExtractSize(type); }
-            else
-            { return ViewFacePlus32.ExtractSize(type); }
+            return ViewFacePlusNative.ExtractSize(type);
         }
         /// <summary>
         /// 提取人脸特征值
@@ -159,10 +184,7 @@ namespace ViewFaceCore.Plus
         public static bool Extract(byte[] imgData, ref FaceImage img,
             FaceMarkPoint[] points, float[] features, int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.Extract(imgData, ref img, points, features, type); }
-            else
-            { return ViewFacePlus32.Extract(imgData, ref img, points, features, type); }
+            return ViewFacePlusNative.Extract(imgData, ref img, points, features, type);
         }
 
         /// <summary>
@@ -174,10 +196,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static float Similarity(float[] leftFeatures, float[] rightFeatures, int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.Similarity(leftFeatures, rightFeatures, type); }
-            else
-            { return ViewFacePlus32.Similarity(leftFeatures, rightFeatures, type); }
+            return ViewFacePlusNative.Similarity(leftFeatures, rightFeatures, type);
         }
 
         /// <summary>
@@ -193,10 +212,7 @@ namespace ViewFaceCore.Plus
         public static int AntiSpoofing(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, bool global)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.AntiSpoofing(imgData, ref img, faceRect, points, global); }
-            else
-            { return ViewFacePlus32.AntiSpoofing(imgData, ref img, faceRect, points, global); }
+            return ViewFacePlusNative.AntiSpoofing(imgData, ref img, faceRect, points, global);
         }
         /// <summary>
         /// 活体检测器
@@ -216,10 +232,7 @@ namespace ViewFaceCore.Plus
         public static int AntiSpoofingVideo(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, bool global)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.AntiSpoofingVideo(imgData, ref img, faceRect, points, global); }
-            else
-            { return ViewFacePlus32.AntiSpoofingVideo(imgData, ref img, faceRect, points, global); }
+            return ViewFacePlusNative.AntiSpoofingVideo(imgData, ref img, faceRect, points, global);
         }
 
         /// <summary>
@@ -237,10 +250,7 @@ namespace ViewFaceCore.Plus
             bool stable = false, int interval = 10,
             double faceSize = 20, double threshold = 0.9, int type = 0)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.FaceTrackSize(imgData, ref img, stable, interval, faceSize, threshold, type); }
-            else
-            { return ViewFacePlus32.FaceTrackSize(imgData, ref img, stable, interval, faceSize, threshold, type); }
+            return ViewFacePlusNative.FaceTrackSize(imgData, ref img, stable, interval, faceSize, threshold, type);
         }
 
         /// <summary>
@@ -255,10 +265,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static bool FaceTrack(float[] score, int[] PID, int[] x, int[] y, int[] width, int[] height)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.FaceTrack(score, PID, x, y, width, height); }
-            else
-            { return ViewFacePlus32.FaceTrack(score, PID, x, y, width, height); }
+            return ViewFacePlusNative.FaceTrack(score, PID, x, y, width, height);
         }
 
         /// <summary>
@@ -288,10 +295,7 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.QualityOfBrightness(imgData, ref img, faceRect, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
-            else
-            { return ViewFacePlus32.QualityOfBrightness(imgData, ref img, faceRect, points, pointsLength, ref level, ref score, v0, v1, v2, v3); }
+            return ViewFacePlusNative.QualityOfBrightness(imgData, ref img, faceRect, points, pointsLength, ref level, ref score, v0, v1, v2, v3);
         }
 
         /// <summary>
@@ -319,18 +323,9 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 0.1f, float high = 0.2f)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfClarity(imgData, ref img,
+            return ViewFacePlusNative.QualityOfClarity(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score,
                   low, high);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfClarity(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score,
-                  low, high);
-            }
         }
 
         /// <summary>
@@ -358,18 +353,9 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 10, float high = 1.5f)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfIntegrity(imgData, ref img,
+            return ViewFacePlusNative.QualityOfIntegrity(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score,
                   low, high);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfIntegrity(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score,
-                  low, high);
-            }
         }
 
         /// <summary>
@@ -387,16 +373,8 @@ namespace ViewFaceCore.Plus
         public static bool QualityOfPose(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfPose(imgData, ref img,
+            return ViewFacePlusNative.QualityOfPose(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfPose(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score);
-            }
         }
 
         /// <summary>
@@ -424,18 +402,9 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfPoseEx(imgData, ref img,
+            return ViewFacePlusNative.QualityOfPoseEx(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score,
                   yawLow, yawHigh, pitchLow, pitchHigh, rollLow, rollHigh);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfPoseEx(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score,
-                  yawLow, yawHigh, pitchLow, pitchHigh, rollLow, rollHigh);
-            }
         }
 
         /// <summary>
@@ -463,18 +432,9 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 80, float high = 120)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfResolution(imgData, ref img,
+            return ViewFacePlusNative.QualityOfResolution(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score,
                   low, high);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfResolution(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score,
-                  low, high);
-            }
         }
 
         /// <summary>
@@ -498,18 +458,9 @@ namespace ViewFaceCore.Plus
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float blur_thresh = 0.8f)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfClarityEx(imgData, ref img,
+            return ViewFacePlusNative.QualityOfClarityEx(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score,
                   blur_thresh);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfClarityEx(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score,
-                  blur_thresh);
-            }
         }
 
         /// <summary>
@@ -530,16 +481,8 @@ namespace ViewFaceCore.Plus
         public static bool QualityOfNoMask(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score)
         {
-            if (Is64BitProcess)
-            {
-                return ViewFacePlus64.QualityOfNoMask(imgData, ref img,
+            return ViewFacePlusNative.QualityOfNoMask(imgData, ref img,
                   faceRect, points, pointsLength, ref level, ref score);
-            }
-            else
-            {
-                return ViewFacePlus32.QualityOfNoMask(imgData, ref img,
-                  faceRect, points, pointsLength, ref level, ref score);
-            }
         }
 
         /// <summary>
@@ -555,10 +498,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static int AgePredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.AgePredictor(imgData, ref img, points, pointsLength); }
-            else
-            { return ViewFacePlus32.AgePredictor(imgData, ref img, points, pointsLength); }
+            return ViewFacePlusNative.AgePredictor(imgData, ref img, points, pointsLength);
         }
 
         /// <summary>
@@ -574,10 +514,7 @@ namespace ViewFaceCore.Plus
         /// <returns></returns>
         public static int GenderPredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.GenderPredictor(imgData, ref img, points, pointsLength); }
-            else
-            { return ViewFacePlus32.GenderPredictor(imgData, ref img, points, pointsLength); }
+            return ViewFacePlusNative.GenderPredictor(imgData, ref img, points, pointsLength);
         }
 
 
@@ -597,10 +534,7 @@ namespace ViewFaceCore.Plus
         public static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
             ref int left_eye, ref int right_eye)
         {
-            if (Is64BitProcess)
-            { return ViewFacePlus64.EyeStateDetector(imgData, ref img, points, pointsLength, ref left_eye, ref right_eye); }
-            else
-            { return ViewFacePlus32.EyeStateDetector(imgData, ref img, points, pointsLength, ref left_eye, ref right_eye); }
+            return ViewFacePlusNative.EyeStateDetector(imgData, ref img, points, pointsLength, ref left_eye, ref right_eye);
         }
     }
 }

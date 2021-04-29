@@ -1,15 +1,17 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Sharp.Model;
 
-namespace ViewFaceCore.Plus.Platform
+namespace ViewFaceCore.Plus
 {
     /// <summary>
-    /// x86 导入方法
+    /// 导入方法
     /// </summary>
-    class ViewFacePlus32
+    static class ViewFacePlusNative
     {
-        const string LibraryPath = @"FaceLibraries\x86\ViewFace.dll";
+
+        const string LibraryPath = "ViewFace";
 
         /// <summary>
         /// 设置日志回调函数(用于日志打印)
@@ -407,7 +409,7 @@ namespace ViewFaceCore.Plus.Platform
         /// <param name="right_eye"></param>
         /// <returns></returns>
         [DllImport(LibraryPath, EntryPoint = "V_EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength, 
+        public extern static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
             ref int left_eye, ref int right_eye);
     }
 }
