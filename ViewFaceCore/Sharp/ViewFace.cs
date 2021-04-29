@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
-using View.Drawing.Extensions;
+using ViewFaceCore.Extension;
 using ViewFaceCore.Plus;
 using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Exceptions;
