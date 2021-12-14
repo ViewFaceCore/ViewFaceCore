@@ -1,25 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Platforms>AnyCPU</Platforms>
-    <Authors>View</Authors>
-    <Version>0.3.4</Version>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <OutputType>Library</OutputType>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net40;net461;netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+		<Platforms>AnyCPU</Platforms>
+		<Authors>View</Authors>
+		<Version>0.3.4</Version>
+		<OutputType>Library</OutputType>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\Project\view\dotnet\View.Face\ViewFaceCore\ViewFaceCore.xml</DocumentationFile>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Project\view\dotnet\View.Face\ViewFaceCore\ViewFaceCore.xml</DocumentationFile>
-  </PropertyGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != 'net40'">
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
-  </ItemGroup>
+	<!--链接至 Bridge 项目的对应的 $(Configuration) 的输出文件，并在重新生成时拷贝至输出目录-->
+	<ItemGroup>
+		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.dll">
+			<Link>Bridges\Windows\x64\ViewFaceBridge.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.dll">
+			<Link>Bridges\Windows\x86\ViewFaceBridge.dll</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+
+		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.so">
+			<Link>Bridges\Linux\x64\ViewFaceBridge.so</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<!--<None Include="..\bridge\linux\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.so">
+			<Link>bridge\linux\x86\ViewFaceBridge.so</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>-->
+	</ItemGroup>
 </Project>
