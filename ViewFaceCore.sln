@@ -25,13 +25,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSimple", "Simples\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleSimple.Package", "Simples\ConsoleSimple.Package\ConsoleSimple.Package.csproj", "{A69BDDA3-FBD0-4D2F-B614-CC69F6077E92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCoreTest", "Tests\ViewFaceCoreTest\ViewFaceCoreTest.csproj", "{04A6CB99-1D0F-42AC-AECB-EB71BAB00E8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCoreTest", "Tests\ViewFaceCoreTest\ViewFaceCoreTest.csproj", "{04A6CB99-1D0F-42AC-AECB-EB71BAB00E8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceBridgeTest", "Tests\ViewFaceBridgeTest\ViewFaceBridgeTest.csproj", "{4D2C2ACD-3FC2-40F7-BEF5-E8CA2BDD3D29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceBridgeTest", "Tests\ViewFaceBridgeTest\ViewFaceBridgeTest.csproj", "{4D2C2ACD-3FC2-40F7-BEF5-E8CA2BDD3D29}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "Bridges\Shared\Shared.vcxitems", "{59D7F386-8018-44BC-B2BD-6AB32A264EE1}"
 EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Bridges\Shared\Shared.vcxitems*{59d7f386-8018-44bc-b2bd-6ab32a264ee1}*SharedItemsImports = 9
+		Bridges\Shared\Shared.vcxitems*{88e8ae97-d78c-4dc3-9823-faad5fc4110f}*SharedItemsImports = 4
+		Bridges\Shared\Shared.vcxitems*{c2228fa7-aae7-40a9-b858-dd2b62871928}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
