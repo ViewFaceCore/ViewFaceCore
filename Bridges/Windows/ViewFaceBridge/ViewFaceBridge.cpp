@@ -1,6 +1,8 @@
-﻿#include <iostream>
+﻿#include "environment.h"
+#include "Base.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
-}
+
+//typedef void(STDCALL* LogCallBack)(const char* logText);
+//
+//string modelPath = "./model/"; // 模型所在路径
+//LogCallBack logger = NULL; // 日志回调函数

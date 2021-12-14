@@ -131,6 +131,7 @@
     <ClCompile Include="ViewFaceBridge.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="environment.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>

@@ -3,4 +3,7 @@
   <ItemGroup>
     <ClCompile Include="ViewFaceBridge.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="environment.h" />
+  </ItemGroup>
 </Project>
