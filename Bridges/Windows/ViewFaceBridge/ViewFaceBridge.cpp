@@ -1,8 +1,942 @@
-ï»¿#include "environment.h"
-#include "Base.h"
+#include "environment.h"
 
 
-//typedef void(STDCALL* LogCallBack)(const char* logText);
-//
-//string modelPath = "./model/"; // æ¨¡å‹æ‰€åœ¨è·¯å¾„
-//LogCallBack logger = NULL; // æ—¥å¿—å›è°ƒå‡½æ•°
+#ifndef STDCALL
+#define STDCALL 
+#endif // !STDCALL
+
+#ifndef View_Api
+#define View_Api 
+#endif // !View_Api
+
+
+#include "seeta/FaceDetector.h"
+#include "seeta/FaceLandmarker.h"
+#include "seeta/FaceRecognizer.h"
+#include "seeta/FaceAntiSpoofing.h"
+#include "seeta/FaceTracker.h"
+
+#include "seeta/QualityOfBrightness.h"
+#include "seeta/QualityOfClarity.h"
+#include "seeta/QualityOfIntegrity.h"
+#include "seeta/QualityOfPose.h"
+#include "seeta/QualityOfPoseEx.h"
+#include "seeta/QualityOfResolution.h"
+
+#include "seetaEx/QualityOfClarityEx.h"
+#include "seetaEx/QualityOfNoMask.h"
+
+#include "seeta/AgePredictor.h"
+#include "seeta/GenderPredictor.h"
+#include "seeta/EyeStateDetector.h"
+
+#include <time.h>
+#include <iostream>
+
+using namespace std;
+
+string modelPath = "./model/"; // Ä£ĞÍËùÔÚÂ·¾¶
+LogCallBack logger = NULL; // ÈÕÖ¾»Øµ÷º¯Êı
+
+/***************************************************************************************************************/
+// ´òÓ¡ÈÕÖ¾
+void WriteLog(string str) {
+	if (logger == NULL) { cout << str << endl; }
+	else { logger(str.c_str()); }
+}
+// ´òÓ¡Ö¸¶¨º¯Êı²úÉúµÄÒ»°ãÏûÏ¢
+void WriteMessage(string fanctionName, string message) { WriteLog(fanctionName + "\t Message:" + message); }
+// ´òÓ¡Ö¸¶¨º¯Êı²úÉúµÄÄ£ĞÍÃû³Æ
+void WriteModelName(string fanctionName, string modelName) { WriteLog(fanctionName + "\t Model.Name:" + modelName); }
+// ´òÓ¡Ö¸¶¨º¯Êı²úÉúµÄÔËĞĞÊ±¼ä
+void WriteRunTime(string fanctionName, clock_t start) { WriteLog(fanctionName + "\t Run.Time:" + to_string(clock() - start) + " ms"); }
+// ´òÓ¡Ö¸¶¨º¯Êı²úÉúµÄ´íÎóÏûÏ¢
+void WriteError(string fanctionName, const std::exception& e) { WriteLog(fanctionName + "\t Error:" + e.what()); }
+
+/***************************************************************************************************************/
+
+// ×¢²áÈÕÖ¾»Øµ÷º¯Êı
+/// <summary>
+/// ×¢²áÈÕÖ¾»Øµ÷º¯Êı
+/// </summary>
+/// <param name="writeLog">»Øµ÷º¯Êı</param>
+View_Api void V_SetLogFunction(LogCallBack writeLog)
+{
+	logger = writeLog;
+	WriteMessage("SetLogFunction", "Successed.");
+}
+// ÉèÖÃÈËÁ³Ä£ĞÍÄ¿Â¼
+/// <summary>
+/// ÉèÖÃÈËÁ³Ä£ĞÍÄ¿Â¼
+/// </summary>
+/// <param name="path">ÈËÁ³Ä£ĞÍÄ¿Â¼</param>
+View_Api void V_SetModelPath(const char* path)
+{
+	modelPath = path;
+	WriteMessage("SetModelPath", "Model.Path:" + modelPath);
+}
+// »ñÈ¡ÈËÁ³Ä£ĞÍÄ¿Â¼
+/// <summary>
+/// »ñÈ¡ÈËÁ³Ä£ĞÍÄ¿Â¼
+/// </summary>
+/// <param name="path"></param>
+/// <returns></returns>
+View_Api bool V_GetModelPath(char** path)
+{
+	try
+	{
+		strcpy(*path, modelPath.c_str());
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("GetModelPath", e);
+		return false;
+	}
+}
+
+/***************************************************************************************************************/
+// ÈËÁ³¼ì²âÆ÷
+seeta::FaceDetector* v_faceDetector = NULL;
+// ÈËÁ³¼ì²â½á¹û
+static SeetaFaceInfoArray detectorInfos;
+// »ñÈ¡ÈËÁ³ÊıÁ¿
+/// <summary>
+/// »ñÈ¡ÈËÁ³ÊıÁ¿
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="faceSize">×îĞ¡ÈËÁ³³ß´ç</param>
+/// <param name="threshold">ÈËÁ³ÖÃĞÅ¶È</param>
+/// <param name="maxWidth">¿É¼ì²âµÄ×î´ó¿í¶È</param>
+/// <param name="maxHeight">¿É¼ì²âµÄ×î´ó¸ß¶È</param>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_detector£»1£ºmask_detector£»2£ºface_detector¡£</param>
+/// <returns></returns>
+View_Api int V_DetectorSize(unsigned char* imgData, SeetaImageData& img, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
+{
+	try {
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceDetector == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_detector.csta";
+			if (type == 1) { modelName = "mask_detector.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("DetectorSize", modelName);
+			v_faceDetector = new seeta::FaceDetector(setting);
+		}
+
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+
+		auto infos = v_faceDetector->detect(img);
+		detectorInfos = infos;
+
+		WriteRunTime("Detector", start); // ´Ë·½·¨ÒÑ¾­ÊÇÈËÁ³¼ì²âµÄÈ«¹ı³Ì£¬¹Ê¼ÆÊ±Æ÷ÏÔÊ¾Îª ÈËÁ³Ê¶±ğ·½·¨
+		return infos.size;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("DetectorSize", e);
+		return -1;
+	}
+}
+// ÈËÁ³¼ì²âÆ÷
+/// <summary>
+/// ÈËÁ³¼ì²âÆ÷
+/// </summary>
+/// <param name="score">ÈËÁ³ÖÃĞÅ¶È·ÖÊı Êı×é</param>
+/// <param name="x">ÈËÁ³Î»ÖÃ x Êı×é</param>
+/// <param name="y">ÈËÁ³Î»ÖÃ y Êı×é</param>
+/// <param name="width">ÈËÁ³´óĞ¡ width Êı×é</param>
+/// <param name="height">ÈËÁ³´óĞ¡ height Êı×é</param>
+/// <returns></returns>
+View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
+{
+	try
+	{
+		//clock_t start = clock();
+
+		for (int i = 0; i < detectorInfos.size; i++, detectorInfos.data++)
+		{
+			*score = detectorInfos.data->score;
+			*x = detectorInfos.data->pos.x;
+			*y = detectorInfos.data->pos.y;
+			*width = detectorInfos.data->pos.width;
+			*height = detectorInfos.data->pos.height;
+			score++, x++, y++, width++, height++;
+		}
+		detectorInfos.data = NULL;
+		detectorInfos.size = NULL;
+
+		//WriteRunTime(__FUNCDNAME__, start); // ´Ë·½·¨Ö»ÊÇ½« ÈËÁ³ÊıÁ¿¼ì²âÆ÷ »ñÈ¡µ½µÄÊı¾İ¸³Öµ´«µİ£¬²¢²»ºÄÊ±¡£¹Ê²»ÏÔÊ¾´Ë·½·¨µÄµ÷ÓÃÊ±¼ä
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("Detector", e);
+		return false;
+	}
+}
+
+/***************************************************************************************************************/
+// ÈËÁ³¹Ø¼üµãÆ÷
+seeta::FaceLandmarker* v_faceLandmarker = NULL;
+// ÈËÁ³¹Ø¼üµãÊıÁ¿
+/// <summary>
+/// ÈËÁ³¹Ø¼üµãÊıÁ¿
+/// </summary>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_landmarker_pts68£»1£ºface_landmarker_mask_pts5£»2£ºface_landmarker_pts5¡£</param>
+/// <returns></returns>
+View_Api int V_FaceMarkSize(int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		if (v_faceLandmarker == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_landmarker_pts68.csta";
+			if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
+			if (type == 2) { modelName = "face_landmarker_pts5.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("FaceMarkSize", modelName);
+			v_faceLandmarker = new seeta::FaceLandmarker(setting);
+		}
+		int size = v_faceLandmarker->number();
+
+		WriteRunTime("FaceMarkSize", start);
+		return size;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceMarkSize", e);
+		return -1;
+	}
+}
+// »ñÈ¡ÈËÁ³¹Ø¼üµã
+/// <summary>
+/// »ñÈ¡ÈËÁ³¹Ø¼üµã
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="x">ÈËÁ³Î»ÖÃ X</param>
+/// <param name="y">ÈËÁ³Î»ÖÃ Y</param>
+/// <param name="fWidth">ÈËÁ³´óĞ¡ width</param>
+/// <param name="fHeight">ÈËÁ³´óĞ¡ height</param>
+/// <param name="pointX">´æ´¢¹Ø¼üµã x ×ø±êµÄ Êı×é</param>
+/// <param name="pointY">´æ´¢¹Ø¼üµã y ×ø±êµÄ Êı×é</param>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_landmarker_pts68£»1£ºface_landmarker_mask_pts5£»2£ºface_landmarker_pts5¡£</param>
+/// <returns></returns>
+View_Api bool V_FaceMark(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, double* pointX, double* pointY, int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceLandmarker == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_landmarker_pts68.csta";
+			if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
+			if (type == 2) { modelName = "face_landmarker_pts5.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("FaceMark", modelName);
+			v_faceLandmarker = new seeta::FaceLandmarker(setting);
+		}
+		std::vector<SeetaPointF> _points = v_faceLandmarker->mark(img, faceRect);
+
+		if (!_points.empty()) {
+			for (auto iter = _points.begin(); iter != _points.end(); iter++)
+			{
+				*pointX = (*iter).x;
+				*pointY = (*iter).y;
+				pointX++;
+				pointY++;
+			}
+
+			WriteRunTime("FaceMark", start);
+			return true;
+		}
+		else { return false; }
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceMark", e);
+		return false;
+	}
+}
+
+/***************************************************************************************************************/
+// ÈËÁ³ÌØÕ÷ÖµÆ÷
+seeta::FaceRecognizer* v_faceRecognizer = NULL;
+// »ñÈ¡ÈËÁ³ÌØÕ÷Öµ³¤¶È
+/// <summary>
+/// »ñÈ¡ÈËÁ³ÌØÕ÷Öµ³¤¶È
+/// </summary>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_recognizer£»1£ºface_recognizer_mask£»2£ºface_recognizer_light¡£</param>
+/// <returns></returns>
+View_Api int V_ExtractSize(int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		if (v_faceRecognizer == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_recognizer.csta";
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("ExtractSize", modelName);
+			v_faceRecognizer = new seeta::FaceRecognizer(setting);
+		}
+		int length = v_faceRecognizer->GetExtractFeatureSize();
+
+		WriteRunTime("ExtractSize", start);
+		return length;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("ExtractSize", e);
+		return -1;
+	}
+}
+// ÌáÈ¡ÈËÁ³ÌØÕ÷Öµ
+/// <summary>
+/// ÌáÈ¡ÈËÁ³ÌØÕ÷Öµ
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="points">ÈËÁ³¹Ø¼üµã Êı×é</param>
+/// <param name="features">ÈËÁ³ÌØÕ÷Öµ Êı×é</param>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_recognizer£»1£ºface_recognizer_mask£»2£ºface_recognizer_light¡£</param>
+/// <returns></returns>
+View_Api bool V_Extract(unsigned char* imgData, SeetaImageData& img, SeetaPointF* points, float* features, int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceRecognizer == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_recognizer.csta";
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("Extract", modelName);
+			v_faceRecognizer = new seeta::FaceRecognizer(setting);
+		}
+		int length = v_faceRecognizer->GetExtractFeatureSize();
+		std::shared_ptr<float> _features(new float[v_faceRecognizer->GetExtractFeatureSize()], std::default_delete<float[]>());
+		v_faceRecognizer->Extract(img, points, _features.get());
+
+		for (int i = 0; i < length; i++)
+		{
+			*features = _features.get()[i];
+			features++;
+		}
+
+		WriteRunTime("Extract", start);
+		return true;
+
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("Extract", e);
+		return false;
+	}
+}
+// ÈËÁ³ÌØÕ÷ÖµÏàËÆ¶È¼ÆËã
+View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		if (v_faceRecognizer == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_recognizer.csta";
+			if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+			if (type == 2) { modelName = "face_recognizer_light.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("CalculateSimilarity", modelName);
+			v_faceRecognizer = new seeta::FaceRecognizer(setting);
+		}
+
+		auto similarity = v_faceRecognizer->CalculateSimilarity(leftFeatures, rightFeatures);
+		WriteMessage("CalculateSimilarity", "Similarity = " + to_string(similarity));
+		WriteRunTime("CalculateSimilarity", start);
+		return similarity;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("CalculateSimilarity", e);
+		return -1;
+	}
+}
+
+/***************************************************************************************************************/
+// »îÌå¼ì²âÆ÷
+seeta::FaceAntiSpoofing* v_faceAntiSpoofing = NULL;
+// »îÌå¼ì²â - µ¥Ö¡
+/// <summary>
+/// »îÌå¼ì²â - µ¥Ö¡
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="x">ÈËÁ³×ø±ê x</param>
+/// <param name="y">ÈËÁ³×ø±ê y</param>
+/// <param name="fWidth">ÈËÁ³´óĞ¡ width</param>
+/// <param name="fHeight">ÈËÁ³´óĞ¡ height</param>
+/// <param name="points">ÈËÁ³¹Ø¼üµã Êı×é</param>
+/// <param name="global">ÊÇ·ñÆôÓÃÈ«¾Ö¼ì²âÄÜÁ¦</param>
+/// <returns></returns>
+View_Api int V_AntiSpoofing(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
+{
+	try
+	{
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceAntiSpoofing == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "fas_first.csta";
+			setting.append(modelPath + modelName);
+			if (global) { // ÆôÓÃÈ«¾Ö¼ì²âÄÜÁ¦
+				modelName = "fas_second.csta";
+				setting.append(modelPath + modelName);
+				WriteModelName("AntiSpoofing", modelName);
+			}
+			WriteModelName("AntiSpoofing", modelName);
+			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
+		}
+
+		auto status = v_faceAntiSpoofing->Predict(img, faceRect, points);
+
+		WriteRunTime("AntiSpoofing", start);
+		return status;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("AntiSpoofing", e);
+		return -1;
+	}
+}
+// »îÌå¼ì²â - ÊÓÆµ
+/// <summary>
+/// »îÌå¼ì²â - ÊÓÆµ
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="x">ÈËÁ³×ø±ê x</param>
+/// <param name="y">ÈËÁ³×ø±ê y</param>
+/// <param name="fWidth">ÈËÁ³´óĞ¡ width</param>
+/// <param name="fHeight">ÈËÁ³´óĞ¡ height</param>
+/// <param name="points">ÈËÁ³¹Ø¼üµã Êı×é</param>
+/// <param name="global">ÊÇ·ñÆôÓÃÈ«¾Ö¼ì²âÄÜÁ¦</param>
+/// <returns></returns>
+View_Api int V_AntiSpoofingVideo(unsigned char* imgData, SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
+{
+	try
+	{
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceAntiSpoofing == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_id(0);
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "fas_first.csta";
+			setting.append(modelPath + modelName);
+			if (global) { // ÆôÓÃÈ«¾Ö¼ì²âÄÜÁ¦
+				modelName = "fas_second.csta";
+				setting.append(modelPath + modelName);
+				WriteModelName("AntiSpoofingVideo", modelName);
+			}
+			WriteModelName("AntiSpoofingVideo", modelName);
+			v_faceAntiSpoofing = new seeta::FaceAntiSpoofing(setting);
+		}
+
+		auto status = v_faceAntiSpoofing->PredictVideo(img, faceRect, points);
+
+		WriteRunTime("AntiSpoofingVideo", start);
+		return status;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("AntiSpoofingVideo", e);
+		return -1;
+	}
+}
+
+/***************************************************************************************************************/
+// ÈËÁ³¸ú×ÙÆ÷
+seeta::FaceTracker* v_faceTracker = NULL;
+static SeetaTrackingFaceInfoArray trackingInfos;
+/// <summary>
+/// »ñÈ¡¸ú×ÙµÄÈËÁ³¸öÊı
+/// </summary>
+/// <param name="imgData">Í¼Ïñ BGR Êı¾İ</param>
+/// <param name="width">Í¼Ïñ ¿í¶È</param>
+/// <param name="height">Í¼Ïñ ¸ß¶È</param>
+/// <param name="channels">Í¼Ïñ Í¨µÀÊı</param>
+/// <param name="videoWidth">ÊÓÆµ¿í¶È</param>
+/// <param name="videoHeight">ÊÓÆµ¸ß¶È</param>
+/// <param name="type">Ä£ĞÍÀàĞÍ¡£0£ºface_detector£»1£ºmask_detector£»2£ºmask_detector¡£</param>
+/// <returns></returns>
+View_Api int V_FaceTrackSize(unsigned char* imgData, SeetaImageData& img,
+	bool stable = false, int interval = 10, double faceSize = 20, double threshold = 0.9, int type = 0)
+{
+	try
+	{
+		clock_t start = clock();
+
+		img.data = imgData;
+		if (v_faceTracker == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "face_detector.csta";
+			if (type == 1) { modelName = "mask_detector.csta"; }
+			setting.append(modelPath + modelName);
+			WriteModelName("FaceTrackSize", modelName);
+			v_faceTracker = new seeta::FaceTracker(setting, img.width, img.height);
+		}
+
+		v_faceTracker->SetVideoStable(stable);
+		v_faceTracker->SetMinFaceSize(faceSize);
+		v_faceTracker->SetThreshold(threshold);
+		v_faceTracker->SetInterval(interval);
+
+		auto faceInfos = v_faceTracker->Track(img);
+
+		trackingInfos = faceInfos;
+
+		WriteRunTime("FaceTrack", start);
+		return faceInfos.size;
+
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceTrackSize", e);
+		return -1;
+	}
+}
+/// <summary>
+/// ÈËÁ³¸ú×ÙĞÅÏ¢
+/// </summary>
+/// <param name="score">ÈËÁ³ÖÃĞÅ¶È·ÖÊı Êı×é</param>
+/// <param name="PID">ÈËÁ³±êÊ¶ID Êı×é</param>
+/// <param name="x">ÈËÁ³Î»ÖÃ x Êı×é</param>
+/// <param name="y">ÈËÁ³Î»ÖÃ y Êı×é</param>
+/// <param name="width">ÈËÁ³´óĞ¡ width Êı×é</param>
+/// <param name="height">ÈËÁ³´óĞ¡ height Êı×é</param>
+/// <returns></returns>
+View_Api bool V_FaceTrack(float* score, int* PID, int* x, int* y, int* width, int* height)
+{
+	try
+	{
+		for (int i = 0; i < trackingInfos.size; i++, trackingInfos.data++)
+		{
+			*score = trackingInfos.data->score;
+			*PID = trackingInfos.data->PID;
+			*x = trackingInfos.data->pos.x;
+			*y = trackingInfos.data->pos.y;
+			*width = trackingInfos.data->pos.width;
+			*height = trackingInfos.data->pos.height;
+			score++; PID++; x++; y++; width++; height++;
+		}
+
+		trackingInfos.data = NULL;
+		trackingInfos.size = NULL;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("FaceTrack", e);
+		return false;
+	}
+}
+
+/***************************************************************************************************************/
+// ÁÁ¶ÈÆÀ¹ÀÆ÷
+seeta::QualityOfBrightness* V_Quality_Brightness = NULL;
+// ÁÁ¶ÈÆÀ¹À
+View_Api bool V_QualityOfBrightness(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_Brightness == NULL)
+		{
+			V_Quality_Brightness = new seeta::QualityOfBrightness(v0, v1, v2, v3);
+		}
+		auto result = V_Quality_Brightness->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfBrightness", e);
+		return false;
+	}
+}
+
+// ÇåÎú¶ÈÆÀ¹ÀÆ÷
+seeta::QualityOfClarity* V_Quality_Clarity = NULL;
+// ÇåÎú¶ÈÆÀ¹À
+View_Api bool V_QualityOfClarity(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float low = 0.1f, float high = 0.2f)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_Clarity == NULL)
+		{
+			V_Quality_Clarity = new seeta::QualityOfClarity(low, high);
+		}
+		auto result = V_Quality_Clarity->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfClarity", e);
+		return false;
+	}
+}
+
+// ÍêÕû¶ÈÆÀ¹ÀÆ÷
+seeta::QualityOfIntegrity* V_Quality_Integrity = NULL;
+// ÍêÕû¶ÈÆÀ¹À
+View_Api bool V_QualityOfIntegrity(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float low = 10, float high = 1.5f)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_Integrity == NULL)
+		{
+			WriteMessage("QualityOfIntegrity", "low:" + to_string(low) + " - high:" + to_string(high));
+			V_Quality_Integrity = new seeta::QualityOfIntegrity(low, high);
+		}
+		auto result = V_Quality_Integrity->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfIntegrity", e);
+		return false;
+	}
+}
+
+// ×ËÌ¬ÆÀ¹ÀÆ÷
+seeta::QualityOfPose* V_Quality_Pose = NULL;
+// ×ËÌ¬ÆÀ¹À
+View_Api bool V_QualityOfPose(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_Pose == NULL)
+		{
+			V_Quality_Pose = new seeta::QualityOfPose();
+		}
+		auto result = V_Quality_Pose->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfPose", e);
+		return false;
+	}
+}
+
+// ×ËÌ¬ (Éî¶È)ÆÀ¹ÀÆ÷
+seeta::QualityOfPoseEx* V_Quality_PoseEx = NULL;
+// ×ËÌ¬ (Éî¶È)ÆÀ¹À
+View_Api bool V_QualityOfPoseEx(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_PoseEx == NULL)
+		{
+			seeta::ModelSetting setting;
+			string modelName = "pose_estimation.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("QualityOfPoseEx", modelName);
+			V_Quality_PoseEx = new seeta::QualityOfPoseEx(setting);
+		}
+
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::YAW_LOW_THRESHOLD, yawLow);
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::YAW_HIGH_THRESHOLD, yawHigh);
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::PITCH_LOW_THRESHOLD, pitchLow);
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::PITCH_HIGH_THRESHOLD, pitchHigh);
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::ROLL_LOW_THRESHOLD, rollLow);
+		V_Quality_PoseEx->set(seeta::QualityOfPoseEx::ROLL_HIGH_THRESHOLD, rollHigh);
+
+		auto result = V_Quality_PoseEx->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfPoseEx", e);
+		return false;
+	}
+}
+
+// ·Ö±æÂÊÆÀ¹ÀÆ÷
+seeta::QualityOfResolution* V_Quality_Resolution = NULL;
+// ·Ö±æÂÊÆÀ¹À
+View_Api bool V_QualityOfResolution(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float low = 80, float high = 120)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_Resolution == NULL)
+		{
+			V_Quality_Resolution = new seeta::QualityOfResolution(low, high);
+		}
+		auto result = V_Quality_Resolution->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfResolution", e);
+		return false;
+	}
+}
+
+// ÇåÎú¶È (Éî¶È)ÆÀ¹ÀÆ÷
+seeta::QualityOfClarityEx* V_Quality_ClarityEx = NULL;
+// ÇåÎú¶È (Éî¶È)ÆÀ¹À
+View_Api bool V_QualityOfClarityEx(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score,
+	float blur_thresh = 0.8f)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_ClarityEx == NULL)
+		{
+			V_Quality_ClarityEx = new seeta::QualityOfClarityEx(blur_thresh, modelPath);
+		}
+		auto result = V_Quality_ClarityEx->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfClarity", e);
+		return false;
+	}
+}
+
+// ÕÚµ²ÆÀ¹ÀÆ÷
+seeta::QualityOfNoMask* V_Quality_NoMask = NULL;
+// ÕÚµ²ÆÀ¹À
+View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
+	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
+	int* level, float* score)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Quality_NoMask == NULL)
+		{
+			V_Quality_NoMask = new seeta::QualityOfNoMask(modelPath);
+		}
+		auto result = V_Quality_NoMask->check(img, faceRect, points, pointsLength);
+
+		*level = result.level;
+		*score = result.score;
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("QualityOfNoMask", e);
+		return false;
+	}
+}
+
+/******ÈËÁ³ÊôĞÔ***********************************************************************************************/
+// ÄêÁäÔ¤²âÆ÷
+seeta::AgePredictor* V_Age_Predictor = NULL;
+// ÄêÁäÔ¤²â
+View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
+	SeetaPointF* points, int pointsLength)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Age_Predictor == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "age_predictor.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("AgePredictor", modelName);
+			V_Age_Predictor = new seeta::AgePredictor(setting);
+		}
+		int age = 0;
+		auto result = V_Age_Predictor->PredictAgeWithCrop(img, points, age);
+		if (result)
+			return age;
+		else return -1;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("AgePredictor", e);
+		return -1;
+	}
+}
+
+// ÄêÁäÔ¤²âÆ÷
+seeta::GenderPredictor* V_Gender_Predictor = NULL;
+// ÄêÁäÔ¤²â
+View_Api int V_GenderPredictor(unsigned char* imgData, SeetaImageData& img,
+	SeetaPointF* points, int pointsLength)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_Gender_Predictor == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "gender_predictor.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("GenderPredictor", modelName);
+			V_Gender_Predictor = new seeta::GenderPredictor(setting);
+		}
+		seeta::GenderPredictor::GENDER gender = (seeta::GenderPredictor::GENDER)0;
+		auto result = V_Gender_Predictor->PredictGenderWithCrop(img, points, gender);
+		if (result)
+			return gender;
+		else return -1;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("GenderPredictor", e);
+		return -1;
+	}
+}
+
+// ÄêÁäÔ¤²âÆ÷
+seeta::EyeStateDetector* V_EyeState_Detector = NULL;
+// ÄêÁäÔ¤²â
+View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, SeetaPointF* points, int pointsLength,
+	seeta::EyeStateDetector::EYE_STATE& left_eye, seeta::EyeStateDetector::EYE_STATE& right_eye)
+{
+	try
+	{
+		img.data = imgData;
+		if (V_EyeState_Detector == NULL) {
+			seeta::ModelSetting setting;
+			setting.set_device(SEETA_DEVICE_CPU);
+			string modelName = "eye_state.csta";
+			setting.append(modelPath + modelName);
+			WriteModelName("EyeStateDetector", modelName);
+			V_EyeState_Detector = new seeta::EyeStateDetector(setting);
+		}
+
+		V_EyeState_Detector->Detect(img, points, left_eye, right_eye);
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		WriteError("EyeStateDetector", e);
+		return false;
+	}
+}
+/***************************************************************************************************************/
+
+// ÊÍ·Å×ÊÔ´
+View_Api void V_Dispose()
+{
+	if (v_faceDetector != NULL) delete v_faceDetector;
+	if (v_faceLandmarker != NULL) delete v_faceLandmarker;
+	if (v_faceRecognizer != NULL) delete v_faceRecognizer;
+	if (v_faceAntiSpoofing != NULL) delete v_faceAntiSpoofing;
+	if (v_faceTracker != NULL) delete v_faceTracker;
+
+	if (V_Quality_Brightness != NULL) delete V_Quality_Brightness;
+	if (V_Quality_Clarity != NULL) delete V_Quality_Clarity;
+	if (V_Quality_Integrity != NULL) delete V_Quality_Integrity;
+	if (V_Quality_Pose != NULL) delete V_Quality_Pose;
+	if (V_Quality_PoseEx != NULL) delete V_Quality_PoseEx;
+	if (V_Quality_Resolution != NULL) delete V_Quality_Resolution;
+	if (V_Quality_ClarityEx != NULL) delete V_Quality_ClarityEx;
+	if (V_Quality_NoMask != NULL) delete V_Quality_NoMask;
+
+	if (V_Age_Predictor != NULL) delete V_Age_Predictor;
+	if (V_Gender_Predictor != NULL) delete V_Gender_Predictor;
+	if (V_EyeState_Detector != NULL) delete V_EyeState_Detector;
+}

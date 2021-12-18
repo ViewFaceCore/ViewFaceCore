@@ -17,7 +17,4 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfClarityEx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfNoMask.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Base.h" />
-  </ItemGroup>
 </Project>

@@ -13,7 +13,4 @@
       <Filter>seetaEx</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Base.h" />
-  </ItemGroup>
 </Project>
