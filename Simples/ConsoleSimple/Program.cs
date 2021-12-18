@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using View.Drawing.Extensions;
 using ViewFaceCore.Sharp;
 using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Model;
@@ -17,8 +18,8 @@ namespace ViewFaceTest
         static void Main()
         {
             // 老图片路径
-            string oldImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/5.jpg";
-            string newImgPath = @"C:/Project/View.local.Packages/Images/Image.ViewFace.Test/1.jpg";
+            string oldImgPath = @"images/Jay_3.jpg";
+            string newImgPath = @"images/Jay_4.jpg";
 
             ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
             // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中

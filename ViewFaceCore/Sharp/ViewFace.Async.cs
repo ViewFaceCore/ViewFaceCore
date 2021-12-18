@@ -1,4 +1,4 @@
-﻿#if NET45_OR_GREATER
+﻿#if NET45_OR_GREATER || NETCOREAPP || NETSTANDARD
 
 using System;
 using System.Collections.Generic;

@@ -41,7 +41,7 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="modelPath">模型目录</param>
         /// <param name="action">日志回调函数</param>
-        public ViewFace(string modelPath, LogCallBack action) : this(modelPath) => ViewFacePlusNative.SetLogFunction(action);
+        public ViewFace(string modelPath, LogCallBack action) : this(modelPath) => ViewFaceBridge.SetLogFunction(action);
 
         /// <summary>
         /// 显示 ViewFace 当前运行的处理器架构。
@@ -57,7 +57,7 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 获取或设置模型路径
         /// </summary>
-        public string ModelPath { get => ViewFacePlusNative.ModelPath; set => ViewFacePlusNative.ModelPath = value; }
+        public string ModelPath { get => ViewFaceBridge.ModelPath; set => ViewFaceBridge.ModelPath = value; }
         /// <summary>
         /// 获取或设置人脸类型。
         /// <para>
@@ -103,7 +103,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             FaceImage img = new FaceImage(width, height, channels);
-            int size = ViewFacePlusNative.DetectorSize(bgr, ref img, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
+            int size = ViewFaceBridge.DetectorSize(bgr, ref img, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
 
             if (size == -1)
             { return new FaceInfo[0]; }
@@ -114,7 +114,7 @@ namespace ViewFaceCore.Sharp
             int[] _width = new int[size];
             int[] _height = new int[size];
 
-            if (ViewFacePlusNative.Detector(_socre, _x, _y, _width, _height))
+            if (ViewFaceBridge.Detector(_socre, _x, _y, _width, _height))
             {
                 List<FaceInfo> infos = new List<FaceInfo>();
                 for (int i = 0; i < size; i++)
@@ -141,7 +141,7 @@ namespace ViewFaceCore.Sharp
         public FaceMarkPoint[] FaceMark(Bitmap bitmap, FaceInfo info)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size = ViewFacePlusNative.FaceMarkSize((int)MarkType);
+            int size = ViewFaceBridge.FaceMarkSize((int)MarkType);
 
             if (size == -1)
             { return new FaceMarkPoint[0]; }
@@ -150,7 +150,7 @@ namespace ViewFaceCore.Sharp
             double[] _pointY = new double[size];
 
             FaceImage img = new FaceImage(width, height, channels);
-            if (ViewFacePlusNative.FaceMark(bgr, ref img, info.Location, _pointX, _pointY, (int)MarkType))
+            if (ViewFaceBridge.FaceMark(bgr, ref img, info.Location, _pointX, _pointY, (int)MarkType))
             {
                 List<FaceMarkPoint> points = new List<FaceMarkPoint>();
                 for (int i = 0; i < size; i++)
@@ -176,10 +176,10 @@ namespace ViewFaceCore.Sharp
         public float[] Extract(Bitmap bitmap, FaceMarkPoint[] points)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            float[] features = new float[ViewFacePlusNative.ExtractSize((int)FaceType)];
+            float[] features = new float[ViewFaceBridge.ExtractSize((int)FaceType)];
 
             FaceImage img = new FaceImage(width, height, channels);
-            if (ViewFacePlusNative.Extract(bgr, ref img, points, features, (int)FaceType))
+            if (ViewFaceBridge.Extract(bgr, ref img, points, features, (int)FaceType))
             { return features; }
             else
             { throw new ExtractException("人脸特征值提取失败"); }
@@ -206,7 +206,7 @@ namespace ViewFaceCore.Sharp
             if (leftFeatures.Length != rightFeatures.Length)
                 throw new ArgumentException("两个参数长度不一致");
 
-            return ViewFacePlusNative.Similarity(leftFeatures, rightFeatures, (int)FaceType);
+            return ViewFaceBridge.Similarity(leftFeatures, rightFeatures, (int)FaceType);
         }
 
         /// <summary>
@@ -238,7 +238,7 @@ namespace ViewFaceCore.Sharp
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
             FaceImage img = new FaceImage(width, height, channels);
-            return (AntiSpoofingStatus)ViewFacePlusNative.AntiSpoofing(bgr, ref img, info.Location, points, global);
+            return (AntiSpoofingStatus)ViewFaceBridge.AntiSpoofing(bgr, ref img, info.Location, points, global);
         }
 
         /// <summary>
@@ -264,7 +264,7 @@ namespace ViewFaceCore.Sharp
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
 
             FaceImage img = new FaceImage(width, height, channels);
-            return (AntiSpoofingStatus)ViewFacePlusNative.AntiSpoofingVideo(bgr, ref img, info.Location, points, global);
+            return (AntiSpoofingStatus)ViewFaceBridge.AntiSpoofingVideo(bgr, ref img, info.Location, points, global);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             FaceImage img = new FaceImage(width, height, channels);
-            int size = ViewFacePlusNative.FaceTrackSize(bgr, ref img, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
+            int size = ViewFaceBridge.FaceTrackSize(bgr, ref img, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
 
             if (size == -1)
             { return new FaceTrackInfo[0]; }
@@ -295,7 +295,7 @@ namespace ViewFaceCore.Sharp
             int[] _width = new int[size];
             int[] _height = new int[size];
 
-            if (ViewFacePlusNative.FaceTrack(_socre, _pid, _x, _y, _width, _height))
+            if (ViewFaceBridge.FaceTrack(_socre, _pid, _x, _y, _width, _height))
             {
                 List<FaceTrackInfo> infos = new List<FaceTrackInfo>();
                 for (int i = 0; i < size; i++)
@@ -324,43 +324,43 @@ namespace ViewFaceCore.Sharp
             switch (type)
             {
                 case QualityType.Brightness:
-                    res = ViewFacePlusNative.QualityOfBrightness(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfBrightness(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Brightness.V0, QualityConfig.Brightness.V1, QualityConfig.Brightness.V2, QualityConfig.Brightness.V3);
                     break;
                 case QualityType.Clarity:
-                    res = ViewFacePlusNative.QualityOfClarity(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfClarity(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Clarity.Low, QualityConfig.Clarity.High);
                     break;
                 case QualityType.Integrity:
-                    res = ViewFacePlusNative.QualityOfIntegrity(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfIntegrity(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Integrity.Low, QualityConfig.Integrity.High);
                     break;
                 case QualityType.Pose:
-                    res = ViewFacePlusNative.QualityOfPose(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfPose(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score);
                     break;
                 case QualityType.PoseEx:
-                    res = ViewFacePlusNative.QualityOfPoseEx(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfPoseEx(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.PoseEx.YawLow, QualityConfig.PoseEx.YawHigh,
                         QualityConfig.PoseEx.PitchLow, QualityConfig.PoseEx.PitchHigh,
                         QualityConfig.PoseEx.RollLow, QualityConfig.PoseEx.RollHigh);
                     break;
                 case QualityType.Resolution:
-                    res = ViewFacePlusNative.QualityOfResolution(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfResolution(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.Resolution.Low, QualityConfig.Resolution.High);
                     break;
                 case QualityType.ClarityEx:
-                    res = ViewFacePlusNative.QualityOfClarityEx(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfClarityEx(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score,
                         QualityConfig.ClarityEx.BlurThresh);
                     break;
                 case QualityType.Structure:
-                    res = ViewFacePlusNative.QualityOfNoMask(bgr, ref img, info.Location, points, points.Length,
+                    res = ViewFaceBridge.QualityOfNoMask(bgr, ref img, info.Location, points, points.Length,
                         ref level, ref score);
                     break;
             }
@@ -385,7 +385,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             FaceImage img = new FaceImage(width, height, channels);
-            return ViewFacePlusNative.AgePredictor(bgr, ref img, points, points.Length);
+            return ViewFaceBridge.AgePredictor(bgr, ref img, points, points.Length);
         }
 
         /// <summary>
@@ -401,7 +401,7 @@ namespace ViewFaceCore.Sharp
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             FaceImage img = new FaceImage(width, height, channels);
-            return (Gender)ViewFacePlusNative.GenderPredictor(bgr, ref img, points, points.Length);
+            return (Gender)ViewFaceBridge.GenderPredictor(bgr, ref img, points, points.Length);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace ViewFaceCore.Sharp
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
             FaceImage img = new FaceImage(width, height, channels);
             int left_eye = 0, right_eye = 0;
-            ViewFacePlusNative.EyeStateDetector(bgr, ref img, points, points.Length, ref left_eye, ref right_eye);
+            ViewFaceBridge.EyeStateDetector(bgr, ref img, points, points.Length, ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
         }
 
@@ -441,7 +441,7 @@ namespace ViewFaceCore.Sharp
                     // Dispose managed resources.
                 }
 
-                ViewFacePlusNative.ViewDispose();
+                ViewFaceBridge.ViewDispose();
 
                 disposed = true;
             }

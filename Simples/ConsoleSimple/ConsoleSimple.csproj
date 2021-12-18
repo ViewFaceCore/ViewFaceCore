@@ -6,7 +6,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="View.Drawing.Extensions" Version="0.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="images\Jay_3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="images\Jay_4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

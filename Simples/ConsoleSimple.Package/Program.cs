@@ -13,8 +13,8 @@ namespace ViewFaceTestPackage
         static void Main()
         {
             // 老图片路径
-            string oldImgPath = @"C:/Users/yangw/OneDrive/桌面/image/0.jpg";
-            string newImgPath = @"C:/Users/yangw/OneDrive/桌面/image/1.jpg";
+            string oldImgPath = @"images\Jay_3.jpg";
+            string newImgPath = @"images\Jay_4.jpg";
 
             ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
             // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
@@ -28,7 +28,7 @@ namespace ViewFaceTestPackage
             Bitmap oldImg = (Bitmap)Image.FromFile(oldImgPath); // 从文件中加载照片 // 或者视频帧等
 
             var oldFaceInfos = viewFace.FaceDetector(oldImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
-            oldFaceInfos = viewFace.FaceDetectorAsync(oldImg).GetAwaiter().GetResult(); // 异步检测图片中的人脸信息
+            oldFaceInfos = viewFace.FaceDetector(oldImg); // 异步检测图片中的人脸信息
 
             if (oldFaceInfos.Length > 0) //识别到人脸
             {

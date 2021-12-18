@@ -13,7 +13,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("1753a0ab-2521-4c1e-993b-a8294f752f0b")]
 
-#if NET5_0_OR_GREATER
-[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
-[assembly: System.Runtime.Versioning.SupportedOSPlatform("linux")]
-#endif
+

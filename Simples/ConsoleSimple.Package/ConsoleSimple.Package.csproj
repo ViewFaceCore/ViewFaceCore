@@ -2,14 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ViewFaceCore" Version="0.3.3-alpha" />
+    <PackageReference Include="View.Drawing.Extensions" Version="0.2.0" />
+    <PackageReference Include="ViewFaceCore" Version="0.3.5-alpha2" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="images\Jay_3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="images\Jay_4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="model\age_predictor.csta">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

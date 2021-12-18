@@ -91,17 +91,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
@@ -110,22 +110,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>$(ProjectName)</TargetName>
+    <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="ViewFaceBridge.cpp" />

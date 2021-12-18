@@ -9,10 +9,10 @@ namespace ViewFaceCore.Plus
     /// <summary>
     /// 导入方法
     /// </summary>
-    static partial class ViewFacePlusNative
+    static partial class ViewFaceBridge
     {
 
-        const string LibraryPath = "ViewFace";
+        const string LibraryPath = "ViewFaceBridge";
 
         /// <summary>
         /// 设置日志回调函数(用于日志打印)

@@ -2,21 +2,23 @@
 using ViewFaceCore.Sharp.Model;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Reflection;
 
 namespace ViewFaceCore.Plus
 {
     /// <summary>
     /// 适用于 Any CPU 的 ViewFacePlus
     /// </summary>
-    static partial class ViewFacePlusNative
+    static partial class ViewFaceBridge
     {
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool SetDllDirectory(string path);
 
-        static ViewFacePlusNative()
+        static ViewFaceBridge()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
+                //TODO: 在 Linux 下搜索动态库方案
                 if (!Environment.Is64BitOperatingSystem || !Environment.Is64BitProcess)
                 {
                     throw new Exception("Not support 32 bit linux system!");
@@ -37,13 +39,13 @@ namespace ViewFaceCore.Plus
                     case Architecture.X64: architecture = "x64"; break;
                 }
                 string val = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH");
-                Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", val + "," + GetFullPath($"Bridges/Linux/{architecture}/ViewFaceBridge.so"));
-
+                if (!string.IsNullOrEmpty(val)) { val += ","; }
+                Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", $"{val}{GetFullPath($"viewfacecore/linux/{architecture}/libViewFaceBridge.so")}/:$LD_LIBRARY_PATH");
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 string architecture = Environment.Is64BitProcess ? "x64" : "x86";
-                SetDllDirectory(GetFullPath($"Bridges/Windows/{architecture}/ViewFaceBridge.dll"));
+                SetDllDirectory(GetFullPath($"viewfacecore/win/{architecture}/ViewFaceBridge.dll"));
             }
         }
 
