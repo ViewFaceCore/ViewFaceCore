@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using ViewFaceCore.Sharp;
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Plus
@@ -8,7 +9,7 @@ namespace ViewFaceCore.Plus
     /// <summary>
     /// 导入方法
     /// </summary>
-    static class ViewFacePlusNative
+    static partial class ViewFacePlusNative
     {
 
         const string LibraryPath = "ViewFace";

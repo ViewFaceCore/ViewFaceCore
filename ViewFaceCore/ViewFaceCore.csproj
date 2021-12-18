@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!--Library Info-->
 	<PropertyGroup>
-		<TargetFrameworks>net40;net461;netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+		<TargetFrameworks>net40;net45;net461;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<Platforms>AnyCPU</Platforms>
 		<Authors>View</Authors>
-		<Version>0.3.4</Version>
+		<Version>0.3.5</Version>
 		<OutputType>Library</OutputType>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -14,28 +14,229 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net40'">
+	<ItemGroup Condition="'$(TargetFramework)' != 'net40' and '$(TargetFramework)' != 'net45'">
 		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
 	</ItemGroup>
 
-	<!--链接至 Bridge 项目的对应的 $(Configuration) 的输出文件，并在重新生成时拷贝至输出目录-->
-	<ItemGroup>
-		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.dll">
-			<Link>Bridges\Windows\x64\ViewFaceBridge.dll</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.dll">
-			<Link>Bridges\Windows\x86\ViewFaceBridge.dll</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
 
-		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.so">
-			<Link>Bridges\Linux\x64\ViewFaceBridge.so</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<!--<None Include="..\bridge\linux\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.so">
-			<Link>bridge\linux\x86\ViewFaceBridge.so</Link>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>-->
+	<!--Build Info-->
+	<!--链接至 Bridge 项目的对应的 $(Configuration) 的输出文件，并在重新生成时拷贝至输出目录-->
+	<ItemGroup Label="windows-x64">
+		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.dll" Link="Bridges\Windows\x64\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaPoseEstimation600d.dll" Link="Bridges\Windows\x64\SeetaPoseEstimation600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaQualityAssessor300.dll" Link="Bridges\Windows\x64\SeetaQualityAssessor300.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaQualityAssessor300d.dll" Link="Bridges\Windows\x64\SeetaQualityAssessor300d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\tennis.dll" Link="Bridges\Windows\x64\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\tennis_haswell.dll" Link="Bridges\Windows\x64\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\tennis_pentium.dll" Link="Bridges\Windows\x64\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\tennis_sandy_bridge.dll" Link="Bridges\Windows\x64\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAgePredictor600.dll" Link="Bridges\Windows\x64\SeetaAgePredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAgePredictor600d.dll" Link="Bridges\Windows\x64\SeetaAgePredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAuthorize.dll" Link="Bridges\Windows\x64\SeetaAuthorize.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAuthorized.dll" Link="Bridges\Windows\x64\SeetaAuthorized.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaEyeStateDetector200.dll" Link="Bridges\Windows\x64\SeetaEyeStateDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaEyeStateDetector200d.dll" Link="Bridges\Windows\x64\SeetaEyeStateDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceAntiSpoofingX600.dll" Link="Bridges\Windows\x64\SeetaFaceAntiSpoofingX600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceAntiSpoofingX600d.dll" Link="Bridges\Windows\x64\SeetaFaceAntiSpoofingX600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceDetector600.dll" Link="Bridges\Windows\x64\SeetaFaceDetector600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceDetector600d.dll" Link="Bridges\Windows\x64\SeetaFaceDetector600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceLandmarker600.dll" Link="Bridges\Windows\x64\SeetaFaceLandmarker600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceLandmarker600d.dll" Link="Bridges\Windows\x64\SeetaFaceLandmarker600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceRecognizer610.dll" Link="Bridges\Windows\x64\SeetaFaceRecognizer610.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceRecognizer610d.dll" Link="Bridges\Windows\x64\SeetaFaceRecognizer610d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceTracking600.dll" Link="Bridges\Windows\x64\SeetaFaceTracking600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceTracking600d.dll" Link="Bridges\Windows\x64\SeetaFaceTracking600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaGenderPredictor600.dll" Link="Bridges\Windows\x64\SeetaGenderPredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaGenderPredictor600d.dll" Link="Bridges\Windows\x64\SeetaGenderPredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaMaskDetector200.dll" Link="Bridges\Windows\x64\SeetaMaskDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaMaskDetector200d.dll" Link="Bridges\Windows\x64\SeetaMaskDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x64\SeetaPoseEstimation600.dll" Link="Bridges\Windows\x64\SeetaPoseEstimation600.dll" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
+
+	<ItemGroup Label="windows-x86">
+		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.dll" Link="Bridges\Windows\x86\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600d.dll" Link="Bridges\Windows\x86\SeetaPoseEstimation600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300.dll" Link="Bridges\Windows\x86\SeetaQualityAssessor300.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300d.dll" Link="Bridges\Windows\x86\SeetaQualityAssessor300d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\tennis.dll" Link="Bridges\Windows\x86\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\tennis_haswell.dll" Link="Bridges\Windows\x86\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\tennis_pentium.dll" Link="Bridges\Windows\x86\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll" Link="Bridges\Windows\x86\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600.dll" Link="Bridges\Windows\x86\SeetaAgePredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600d.dll" Link="Bridges\Windows\x86\SeetaAgePredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAuthorize.dll" Link="Bridges\Windows\x86\SeetaAuthorize.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAuthorized.dll" Link="Bridges\Windows\x86\SeetaAuthorized.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200.dll" Link="Bridges\Windows\x86\SeetaEyeStateDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200d.dll" Link="Bridges\Windows\x86\SeetaEyeStateDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600.dll" Link="Bridges\Windows\x86\SeetaFaceAntiSpoofingX600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600d.dll" Link="Bridges\Windows\x86\SeetaFaceAntiSpoofingX600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600.dll" Link="Bridges\Windows\x86\SeetaFaceDetector600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600d.dll" Link="Bridges\Windows\x86\SeetaFaceDetector600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600.dll" Link="Bridges\Windows\x86\SeetaFaceLandmarker600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600d.dll" Link="Bridges\Windows\x86\SeetaFaceLandmarker600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610.dll" Link="Bridges\Windows\x86\SeetaFaceRecognizer610.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610d.dll" Link="Bridges\Windows\x86\SeetaFaceRecognizer610d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600.dll" Link="Bridges\Windows\x86\SeetaFaceTracking600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600d.dll" Link="Bridges\Windows\x86\SeetaFaceTracking600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600.dll" Link="Bridges\Windows\x86\SeetaGenderPredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600d.dll" Link="Bridges\Windows\x86\SeetaGenderPredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200.dll" Link="Bridges\Windows\x86\SeetaMaskDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200d.dll" Link="Bridges\Windows\x86\SeetaMaskDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600.dll" Link="Bridges\Windows\x86\SeetaPoseEstimation600.dll" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+	<ItemGroup Label="linux-x64">
+		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.so" Link="Bridges\Linux\x64\ViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\SeetaFace\index\build\lib64\libtennis_sandy_bridge.so" Link="Bridges\Linux\x64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaAgePredictor600.so" Link="Bridges\Linux\x64\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaAuthorize.so" Link="Bridges\Linux\x64\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaEyeStateDetector200.so" Link="Bridges\Linux\x64\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaFaceAntiSpoofingX600.so" Link="Bridges\Linux\x64\libSeetaFaceAntiSpoofingX600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaFaceDetector600.so" Link="Bridges\Linux\x64\libSeetaFaceDetector600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaFaceLandmarker600.so" Link="Bridges\Linux\x64\libSeetaFaceLandmarker600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaFaceRecognizer610.so" Link="Bridges\Linux\x64\libSeetaFaceRecognizer610.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaFaceTracking600.so" Link="Bridges\Linux\x64\libSeetaFaceTracking600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaGenderPredictor600.so" Link="Bridges\Linux\x64\libSeetaGenderPredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaMaskDetector200.so" Link="Bridges\Linux\x64\libSeetaMaskDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaPoseEstimation600.so" Link="Bridges\Linux\x64\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libSeetaQualityAssessor300.so" Link="Bridges\Linux\x64\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libtennis.so" Link="Bridges\Linux\x64\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libtennis_haswell.so" Link="Bridges\Linux\x64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib64\libtennis_pentium.so" Link="Bridges\Linux\x64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
+
+	<!--Package Info-->
+	<ItemGroup>
+		<None Include="..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\Images\View-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>ViewFaceCore</PackageId>
+		<Authors>View</Authors>
+		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
+		<PackageVersion>$(Version)-alpha</PackageVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIcon>View-Logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
+		<Description>一款基于 SeetaFace6 实现的 .NET 平台的人脸识别库。</Description>
+		<PackageReleaseNotes>支持多目标，支持 Windows(x64/x86)、Linux(x64)</PackageReleaseNotes>
+
+		<!--GetRefFiles-->
+		<TargetsForTfmSpecificBuildOutput Condition="'$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0'">
+			$(TargetsForTfmSpecificBuildOutput);GetRefFiles
+		</TargetsForTfmSpecificBuildOutput>
+		
+		<!--GetWindowsBridgeFiles-->
+		<TargetsForTfmSpecificBuildOutput>
+			$(TargetsForTfmSpecificBuildOutput);GetWindowsBridgeFiles
+		</TargetsForTfmSpecificBuildOutput>
+
+		<!--GetLinuxBridgeFiles-->
+		<TargetsForTfmSpecificContentInPackage Condition="'$(TargetFramework)' != 'net40' and '$(TargetFramework)' != 'net45' and '$(TargetFramework)' != 'net461'">
+			$(TargetsForTfmSpecificContentInPackage);GetLinuxBridgeFiles
+		</TargetsForTfmSpecificContentInPackage>
+	</PropertyGroup>
+
+	<!--GetRefFiles-->
+	<Target Name="GetRefFiles">
+		<ItemGroup >
+			<BuildOutputInPackage Include="$(OutputPath)ref\*.dll" TargetPath="ref" />
+		</ItemGroup>
+	</Target>
+	<!--GetWindowsBridgeFiles-->
+	<Target Name="GetWindowsBridgeFiles">
+		<ItemGroup Label="windows-x64">
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\ViewFaceBridge.dll" TargetPath="Bridges\Windows\x64\ViewFaceBridge.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaPoseEstimation600d.dll" TargetPath="Bridges\Windows\x64\SeetaPoseEstimation600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaQualityAssessor300.dll" TargetPath="Bridges\Windows\x64\SeetaQualityAssessor300.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaQualityAssessor300d.dll" TargetPath="Bridges\Windows\x64\SeetaQualityAssessor300d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\tennis.dll" TargetPath="Bridges\Windows\x64\tennis.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\tennis_haswell.dll" TargetPath="Bridges\Windows\x64\tennis_haswell.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\tennis_pentium.dll" TargetPath="Bridges\Windows\x64\tennis_pentium.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\tennis_sandy_bridge.dll" TargetPath="Bridges\Windows\x64\tennis_sandy_bridge.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaAgePredictor600.dll" TargetPath="Bridges\Windows\x64\SeetaAgePredictor600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaAgePredictor600d.dll" TargetPath="Bridges\Windows\x64\SeetaAgePredictor600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaAuthorize.dll" TargetPath="Bridges\Windows\x64\SeetaAuthorize.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaAuthorized.dll" TargetPath="Bridges\Windows\x64\SeetaAuthorized.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaEyeStateDetector200.dll" TargetPath="Bridges\Windows\x64\SeetaEyeStateDetector200.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaEyeStateDetector200d.dll" TargetPath="Bridges\Windows\x64\SeetaEyeStateDetector200d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceAntiSpoofingX600.dll" TargetPath="Bridges\Windows\x64\SeetaFaceAntiSpoofingX600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceAntiSpoofingX600d.dll" TargetPath="Bridges\Windows\x64\SeetaFaceAntiSpoofingX600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceDetector600.dll" TargetPath="Bridges\Windows\x64\SeetaFaceDetector600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceDetector600d.dll" TargetPath="Bridges\Windows\x64\SeetaFaceDetector600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceLandmarker600.dll" TargetPath="Bridges\Windows\x64\SeetaFaceLandmarker600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceLandmarker600d.dll" TargetPath="Bridges\Windows\x64\SeetaFaceLandmarker600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceRecognizer610.dll" TargetPath="Bridges\Windows\x64\SeetaFaceRecognizer610.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceRecognizer610d.dll" TargetPath="Bridges\Windows\x64\SeetaFaceRecognizer610d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceTracking600.dll" TargetPath="Bridges\Windows\x64\SeetaFaceTracking600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaFaceTracking600d.dll" TargetPath="Bridges\Windows\x64\SeetaFaceTracking600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaGenderPredictor600.dll" TargetPath="Bridges\Windows\x64\SeetaGenderPredictor600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaGenderPredictor600d.dll" TargetPath="Bridges\Windows\x64\SeetaGenderPredictor600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaMaskDetector200.dll" TargetPath="Bridges\Windows\x64\SeetaMaskDetector200.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaMaskDetector200d.dll" TargetPath="Bridges\Windows\x64\SeetaMaskDetector200d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x64\SeetaPoseEstimation600.dll" TargetPath="Bridges\Windows\x64\SeetaPoseEstimation600.dll" />
+		</ItemGroup>
+
+		<ItemGroup Label="windows-x86">
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\ViewFaceBridge.dll" TargetPath="Bridges\Windows\x86\ViewFaceBridge.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaPoseEstimation600d.dll" TargetPath="Bridges\Windows\x86\SeetaPoseEstimation600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaQualityAssessor300.dll" TargetPath="Bridges\Windows\x86\SeetaQualityAssessor300.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaQualityAssessor300d.dll" TargetPath="Bridges\Windows\x86\SeetaQualityAssessor300d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\tennis.dll" TargetPath="Bridges\Windows\x86\tennis.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\tennis_haswell.dll" TargetPath="Bridges\Windows\x86\tennis_haswell.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\tennis_pentium.dll" TargetPath="Bridges\Windows\x86\tennis_pentium.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\tennis_sandy_bridge.dll" TargetPath="Bridges\Windows\x86\tennis_sandy_bridge.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaAgePredictor600.dll" TargetPath="Bridges\Windows\x86\SeetaAgePredictor600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaAgePredictor600d.dll" TargetPath="Bridges\Windows\x86\SeetaAgePredictor600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaAuthorize.dll" TargetPath="Bridges\Windows\x86\SeetaAuthorize.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaAuthorized.dll" TargetPath="Bridges\Windows\x86\SeetaAuthorized.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaEyeStateDetector200.dll" TargetPath="Bridges\Windows\x86\SeetaEyeStateDetector200.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaEyeStateDetector200d.dll" TargetPath="Bridges\Windows\x86\SeetaEyeStateDetector200d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceAntiSpoofingX600.dll" TargetPath="Bridges\Windows\x86\SeetaFaceAntiSpoofingX600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceAntiSpoofingX600d.dll" TargetPath="Bridges\Windows\x86\SeetaFaceAntiSpoofingX600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceDetector600.dll" TargetPath="Bridges\Windows\x86\SeetaFaceDetector600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceDetector600d.dll" TargetPath="Bridges\Windows\x86\SeetaFaceDetector600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceLandmarker600.dll" TargetPath="Bridges\Windows\x86\SeetaFaceLandmarker600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceLandmarker600d.dll" TargetPath="Bridges\Windows\x86\SeetaFaceLandmarker600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceRecognizer610.dll" TargetPath="Bridges\Windows\x86\SeetaFaceRecognizer610.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceRecognizer610d.dll" TargetPath="Bridges\Windows\x86\SeetaFaceRecognizer610d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceTracking600.dll" TargetPath="Bridges\Windows\x86\SeetaFaceTracking600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaFaceTracking600d.dll" TargetPath="Bridges\Windows\x86\SeetaFaceTracking600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaGenderPredictor600.dll" TargetPath="Bridges\Windows\x86\SeetaGenderPredictor600.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaGenderPredictor600d.dll" TargetPath="Bridges\Windows\x86\SeetaGenderPredictor600d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaMaskDetector200.dll" TargetPath="Bridges\Windows\x86\SeetaMaskDetector200.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaMaskDetector200d.dll" TargetPath="Bridges\Windows\x86\SeetaMaskDetector200d.dll" />
+			<BuildOutputInPackage Include="$(OutputPath)Bridges\Windows\x86\SeetaPoseEstimation600.dll" TargetPath="Bridges\Windows\x86\SeetaPoseEstimation600.dll" />
+		</ItemGroup>
+	</Target>
+	<!--GetLinuxBridgeFiles-->
+	<Target Name="GetLinuxBridgeFiles">
+		<ItemGroup Label="linux-x64">
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\ViewFaceBridge.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\ViewFaceBridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libtennis_sandy_bridge.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libtennis_sandy_bridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaAgePredictor600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaAgePredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaAuthorize.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaAuthorize.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaEyeStateDetector200.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaEyeStateDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaFaceAntiSpoofingX600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaFaceAntiSpoofingX600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaFaceDetector600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaFaceDetector600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaFaceLandmarker600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaFaceLandmarker600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaFaceRecognizer610.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaFaceRecognizer610.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaFaceTracking600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaFaceTracking600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaGenderPredictor600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaGenderPredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaMaskDetector200.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaMaskDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaPoseEstimation600.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaPoseEstimation600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libSeetaQualityAssessor300.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libSeetaQualityAssessor300.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libtennis.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libtennis.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libtennis_haswell.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libtennis_haswell.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)Bridges\Linux\x64\libtennis_pentium.so" PackagePath="lib\$(TargetFramework)\Bridges\Linux\x64\libtennis_pentium.so" />
+		</ItemGroup>
+	</Target>
+
 </Project>
+
