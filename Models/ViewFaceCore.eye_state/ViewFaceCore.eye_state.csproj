@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net40;net45;net461;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+		<Version>6.0.0</Version>
+		<PackageVersion>$(Version)</PackageVersion>
+		<Authors>View</Authors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="ViewFaceCore.eye_state.targets" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="eye_state.csta" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+</Project>

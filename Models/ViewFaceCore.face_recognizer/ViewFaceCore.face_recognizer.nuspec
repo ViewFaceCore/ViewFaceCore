@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.face_recognizer</id>
+		<version>6.0.0</version>
+		<title></title>
+		<authors>View</authors>
+		<owners></owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace model ‘face_recognizer’ for ViewFaceCore</description>
+	</metadata>
+	<files>
+		<file src="face_recognizer.csta" target="build\models\face_recognizer.csta" />
+		<file src="ViewFaceCore.face_recognizer.targets" target="build\ViewFaceCore.face_recognizer.targets" />
+		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.gender_predictor</id>
+		<version>6.0.0</version>
+		<title></title>
+		<authors>View</authors>
+		<owners></owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace model ‘gender_predictor’ for ViewFaceCore</description>
+	</metadata>
+	<files>
+		<file src="gender_predictor.csta" target="build\models\gender_predictor.csta" />
+		<file src="ViewFaceCore.gender_predictor.targets" target="build\ViewFaceCore.gender_predictor.targets" />
+		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>

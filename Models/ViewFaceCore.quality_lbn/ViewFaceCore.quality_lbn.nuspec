@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.quality_lbn</id>
+		<version>6.0.0</version>
+		<title></title>
+		<authors>View</authors>
+		<owners></owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace model ‘quality_lbn’ for ViewFaceCore</description>
+	</metadata>
+	<files>
+		<file src="quality_lbn.csta" target="build\models\quality_lbn.csta" />
+		<file src="ViewFaceCore.quality_lbn.targets" target="build\ViewFaceCore.quality_lbn.targets" />
+		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>
