@@ -12,43 +12,54 @@ namespace ViewFaceCore.Plus
     static partial class ViewFaceBridge
     {
 
-        const string LibraryPath = "ViewFaceBridge";
+        const string LibraryName = "ViewFaceBridge";
+
+        /// <summary>
+        /// 设置人脸模型的目录
+        /// </summary>
+        /// <param name="path"></param>
+        [DllImport(LibraryName, EntryPoint = "V_SetModelPath", CallingConvention = CallingConvention.Cdecl)]
+        private extern static void SetModelPath(byte[] path);
+
+        /// <summary>
+        /// 获取人脸模型的目录
+        /// </summary>
+        /// <param name="path"></param>
+        [DllImport(LibraryName, EntryPoint = "V_GetModelPath", CallingConvention = CallingConvention.Cdecl)]
+        private extern static bool GetModelPathEx(ref string path);
+
+        /// <summary>
+        /// 获取或设置人脸模型目录
+        /// </summary>
+        public static string ModelPath
+        {
+            get
+            {
+                string path = string.Empty;
+                GetModelPathEx(ref path);
+                return path;
+            }
+            set
+            {
+                SetModelPath(Encoding.UTF8.GetBytes(value));
+            }
+        }
+
 
         /// <summary>
         /// 设置日志回调函数(用于日志打印)
         /// </summary>
         /// <param name="writeLog"></param>
-        [DllImport(LibraryPath, EntryPoint = "V_SetLogFunction", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_SetLogFunction", CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetLogFunction(LogCallBack writeLog);
 
-        /// <summary>
-        /// 设置人脸模型的目录
-        /// </summary>
-        /// <param name="path"></param>
-        [DllImport(LibraryPath, EntryPoint = "V_SetModelPath", CallingConvention = CallingConvention.Cdecl)]
-        private extern static void SetModelPath(byte[] path);
-        /// <summary>
-        /// 设置人脸模型的目录
-        /// </summary>
-        /// <param name="path"></param>
-        public static void SetModelPath(string path) => SetModelPath(Encoding.UTF8.GetBytes(path));
-
-        /// <summary>
-        /// 获取人脸模型的目录
-        /// </summary>
-        /// <param name="path"></param>
-        [DllImport(LibraryPath, EntryPoint = "V_GetModelPath", CallingConvention = CallingConvention.Cdecl)]
-        private extern static bool GetModelPathEx(ref string path);
-        /// <summary>
-        /// 获取人脸模型的目录
-        /// </summary>
-        public static string GetModelPath() { string path = string.Empty; GetModelPathEx(ref path); return path; }
 
         /// <summary>
         /// 释放使用的资源
         /// </summary>
-        [DllImport(LibraryPath, EntryPoint = "V_Dispose", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_Dispose", CallingConvention = CallingConvention.Cdecl)]
         public extern static void ViewDispose();
+
 
         /// <summary>
         /// 人脸检测器检测到的人脸数量
@@ -63,7 +74,7 @@ namespace ViewFaceCore.Plus
         /// <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_DetectorSize", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_DetectorSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int DetectorSize(byte[] imgData, ref FaceImage img,
             double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0);
         /// <summary>
@@ -76,7 +87,7 @@ namespace ViewFaceCore.Plus
         /// <param name="width">人脸大小集合</param>
         /// <param name="height">人脸大小集合</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_Detector", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_Detector", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool Detector(float[] score, int[] x, int[] y, int[] width, int[] height);
 
         /// <summary>
@@ -84,7 +95,7 @@ namespace ViewFaceCore.Plus
         /// </summary>
         /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_FaceMarkSize", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_FaceMarkSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int FaceMarkSize(int type = 0);
         /// <summary>
         /// 获取人脸关键点
@@ -96,7 +107,7 @@ namespace ViewFaceCore.Plus
         /// <param name="pointY">存储关键点 y 坐标的 数组</param>
         /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_FaceMark", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_FaceMark", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool FaceMark(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, double[] pointX, double[] pointY, int type = 0);
 
@@ -105,7 +116,7 @@ namespace ViewFaceCore.Plus
         /// </summary>
         /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_ExtractSize", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_ExtractSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int ExtractSize(int type = 0);
         /// <summary>
         /// 提取人脸特征值
@@ -116,7 +127,7 @@ namespace ViewFaceCore.Plus
         /// <param name="features">人脸特征值 数组</param>
         /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_Extract", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool Extract(byte[] imgData, ref FaceImage img,
             FaceMarkPoint[] points, float[] features, int type = 0);
 
@@ -127,7 +138,7 @@ namespace ViewFaceCore.Plus
         /// <param name="rightFeatures"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_CalculateSimilarity", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_CalculateSimilarity", CallingConvention = CallingConvention.Cdecl)]
         public extern static float Similarity(float[] leftFeatures, float[] rightFeatures, int type = 0);
 
         /// <summary>
@@ -140,7 +151,7 @@ namespace ViewFaceCore.Plus
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofing(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, bool global);
         /// <summary>
@@ -158,7 +169,7 @@ namespace ViewFaceCore.Plus
         /// 在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="AntiSpoofingStatus.Detecting"/>
         /// </para>
         /// </returns>
-        [DllImport(LibraryPath, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AntiSpoofingVideo(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, bool global);
 
@@ -173,7 +184,7 @@ namespace ViewFaceCore.Plus
         /// <param name="threshold"></param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
         public extern static int FaceTrackSize(byte[] imgData, ref FaceImage img,
             bool stable = false, int interval = 10,
             double faceSize = 20, double threshold = 0.9, int type = 0);
@@ -188,7 +199,7 @@ namespace ViewFaceCore.Plus
         /// <param name="width">人脸大小 width 数组</param>
         /// <param name="height">人脸大小 height 数组</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_FaceTrack", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_FaceTrack", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool FaceTrack(float[] score, int[] PID, int[] x, int[] y, int[] width, int[] height);
 
         /// <summary>
@@ -214,7 +225,7 @@ namespace ViewFaceCore.Plus
         /// <param name="v2"></param>
         /// <param name="v3"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfBrightness", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfBrightness", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfBrightness(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230);
@@ -240,7 +251,7 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfClarity", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfClarity", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfClarity(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 0.1f, float high = 0.2f);
@@ -266,7 +277,7 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfIntegrity", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfIntegrity", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfIntegrity(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 10f, float high = 1.5f);
@@ -283,7 +294,7 @@ namespace ViewFaceCore.Plus
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfPose", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfPose", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfPose(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
@@ -308,7 +319,7 @@ namespace ViewFaceCore.Plus
         /// <param name="rollLow">roll 方向低分数阈值</param>
         /// <param name="rollHigh">roll 方向高分数阈值</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfPoseEx", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfPoseEx", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfPoseEx(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f);
@@ -334,7 +345,7 @@ namespace ViewFaceCore.Plus
         /// <param name="low"></param>
         /// <param name="high"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfResolution", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfResolution", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfResolution(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float low = 80, float high = 120);
@@ -356,7 +367,7 @@ namespace ViewFaceCore.Plus
         /// <param name="score">存储 分数</param>
         /// <param name="blur_thresh"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfClarityEx", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfClarityEx", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfClarityEx(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
             float blur_thresh = 0.8f);
@@ -373,7 +384,7 @@ namespace ViewFaceCore.Plus
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_QualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_QualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool QualityOfNoMask(byte[] imgData, ref FaceImage img,
             FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
@@ -385,7 +396,7 @@ namespace ViewFaceCore.Plus
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
-        [DllImport(LibraryPath, EntryPoint = "V_AgePredictor", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_AgePredictor", CallingConvention = CallingConvention.Cdecl)]
         public extern static int AgePredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
 
         /// <summary>
@@ -396,7 +407,7 @@ namespace ViewFaceCore.Plus
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
-        [DllImport(LibraryPath, EntryPoint = "V_GenderPredictor", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_GenderPredictor", CallingConvention = CallingConvention.Cdecl)]
         public extern static int GenderPredictor(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
 
         /// <summary>
@@ -409,7 +420,7 @@ namespace ViewFaceCore.Plus
         /// <param name="left_eye"></param>
         /// <param name="right_eye"></param>
         /// <returns></returns>
-        [DllImport(LibraryPath, EntryPoint = "V_EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "V_EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
         public extern static bool EyeStateDetector(byte[] imgData, ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
             ref int left_eye, ref int right_eye);
     }

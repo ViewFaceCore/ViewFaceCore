@@ -33,7 +33,7 @@ namespace ViewFaceCore.Sharp.Model
         /// 姿态评估（深度）
         /// <para>此姿态评估器是深度学习方式，通过回归人头部在yaw、pitch、roll三个方向的偏转角度来评估人脸是否是正面。</para>
         /// <para>
-        /// 需要模型 <see langword="pose_estimation.csta"/> 
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.pose_estimation">pose_estimation.csta</a> 
         /// </para>
         /// </summary>
         PoseEx,
@@ -45,15 +45,15 @@ namespace ViewFaceCore.Sharp.Model
         /// <summary>
         /// 清晰度评估（深度）
         /// <para>
-        /// 需要模型 <see langword="quality_lbn.csta"/> <br />
-        /// 需要模型 <see langword="face_landmarker_pts68.csta"/> 
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.quality_lbn">quality_lbn.csta</a> <br />
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_pts68">face_landmarker_pts68.csta</a> 
         /// </para>
         /// </summary>
         ClarityEx,
         /// <summary>
         /// 遮挡评估
         /// <para>
-        /// 需要模型 <see langword="face_landmarker_mask_pts5.csta"/> 
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a> 
         /// </para>
         /// </summary>
         Structure,

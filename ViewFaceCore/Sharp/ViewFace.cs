@@ -25,7 +25,7 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 使用默认的模型目录初始化人脸识别类
         /// </summary>
-        public ViewFace() : this("./model/") { }
+        public ViewFace() : this("./models/") { }
         /// <summary>
         /// 使用指定的模型目录初始化人脸识别类
         /// </summary>
@@ -35,7 +35,7 @@ namespace ViewFaceCore.Sharp
         /// 使用指定的日志回调函数初始化人脸识别类
         /// </summary>
         /// <param name="action">日志回调函数</param>
-        public ViewFace(LogCallBack action) : this("./model/", action) { }
+        public ViewFace(LogCallBack action) : this("./models/", action) { }
         /// <summary>
         /// 使用指定的模型目录、日志回调函数初始化人脸识别类
         /// </summary>
@@ -93,8 +93,8 @@ namespace ViewFaceCore.Sharp
         /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
         /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型： <a href="https://www.nuget.org/packages/ViewFaceCore.face_detector/">face_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.mask_detector">mask_detector.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
@@ -129,9 +129,9 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<see langword="face_landmarker_pts68.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<see langword="face_landmarker_mask_pts5.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<see langword="face_landmarker_pts5.csta"/><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
@@ -164,9 +164,9 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 提取人脸特征值。
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<see langword="face_recognizer.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<see langword="face_recognizer_mask.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<see langword="face_recognizer_light.csta"/><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer">face_recognizer.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap"></param>
@@ -187,11 +187,11 @@ namespace ViewFaceCore.Sharp
 
         /// <summary>
         /// 计算特征值相似度。
-        /// <para>只能计算相同 <see cref="FaceType"/> 计算出的特征值</para>
+        /// <para>只能计算相同 <see cref="FaceType"/> 提取出的特征值</para>
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<see langword="face_recognizer.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<see langword="face_recognizer_mask.csta"/><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<see langword="face_recognizer_light.csta"/><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer">face_recognizer.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// </summary>
         /// <exception cref="ArgumentException"/>
@@ -217,22 +217,17 @@ namespace ViewFaceCore.Sharp
         public bool IsSelf(float similarity) => similarity > FaceCompareConfig.GetThreshold(FaceType);
 
         /// <summary>
-        /// 活体检测器。
+        /// 活体检测器。(单帧图片)
         /// <para>
-        /// 单帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
-        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
-        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
-        /// </para>
-        /// <para>
-        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
-        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
+        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_first">fas_first.csta</a><br/>
+        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_second">fas_second.csta</a>
         /// </para>
         /// </summary>
-        /// <param name="bitmap"></param>
-        /// <param name="info"></param>
-        /// <param name="points"></param>
-        /// <param name="global"></param>
-        /// <returns></returns>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(Bitmap)"/> 获取</para></param>
+        /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
+        /// <param name="global">是否启用全局检测能力</param>
+        /// <returns>活体检测状态</returns>
         public AntiSpoofingStatus AntiSpoofing(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global = false)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
@@ -242,23 +237,17 @@ namespace ViewFaceCore.Sharp
         }
 
         /// <summary>
-        /// 活体检测器。
+        /// 活体检测器。(视频帧图片)
         /// <para>
-        /// 视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
-        /// 需通过 <see cref="FaceDetector(Bitmap)"/> 获取 <paramref name="info"/> 参数<br/>
-        /// 通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取与 <paramref name="info"/> 参数对应的 <paramref name="points"/>
+        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_first">fas_first.csta</a><br/>
+        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_second">fas_second.csta</a>
         /// </para>
-        /// <para>
-        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<see langword="fas_first.csta"/><br/>
-        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<see langword="fas_second.csta"/>
-        /// </para>
-        /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
         /// </summary>
-        /// <param name="bitmap"></param>
-        /// <param name="info"></param>
-        /// <param name="points"></param>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(Bitmap)"/> 获取</para></param>
+        /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
         /// <param name="global">是否启用全局检测能力</param>
-        /// <returns></returns>
+        /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
         public AntiSpoofingStatus AntiSpoofingVideo(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global = false)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
@@ -270,14 +259,11 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
         /// <para>
-        /// 可以通过 <see cref="TrackerConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
-        /// </para>
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<see langword="face_detector.csta"/><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<see langword="mask_detector.csta"/><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_detector">face_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.mask_detector">mask_detector.csta</a><br/>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">包含人脸的图片</param>
+        /// <param name="bitmap">待检测的图片</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
         public FaceTrackInfo[] FaceTrack(Bitmap bitmap)
         {
@@ -310,10 +296,10 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 人脸质量评估
         /// </summary>
-        /// <param name="bitmap"></param>
-        /// <param name="info"></param>
-        /// <param name="points"></param>
-        /// <param name="type"></param>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(Bitmap)"/> 获取</para></param>
+        /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
+        /// <param name="type">质量评估类型</param>
         /// <returns></returns>
         public QualityResult FaceQuality(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
         {
@@ -375,12 +361,12 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 年龄预测。
         /// <para>
-        /// 需要模型 <see langword="age_predictor.csta"/> 
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.age_predictor">age_predictor.csta</a>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">待识别的图像</param>
-        /// <param name="points">人脸关键点 数组</param>
-        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
+        /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
         public int FaceAgePredictor(Bitmap bitmap, FaceMarkPoint[] points)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
@@ -391,12 +377,12 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 性别预测。
         /// <para>
-        /// 需要模型 <see langword="gender_predictor.csta"/> 
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.gender_predictor">gender_predictor.csta</a>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">待识别的图像</param>
-        /// <param name="points">人脸关键点 数组</param>
-        /// <returns>性别枚举，<see cref="Gender.Unknown"/> 代表识别失败</returns>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
+        /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
         public Gender FaceGenderPredictor(Bitmap bitmap, FaceMarkPoint[] points)
         {
             byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
@@ -407,12 +393,12 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 眼睛状态检测。
         /// <para>
-        /// 眼睛的左右是相对图片内容而言的左右 <br />
-        /// 需要模型 <see langword="eye_state.csta"/> 
+        /// 眼睛的左右是相对图片内容而言的左右。<br />
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.eye_state">eye_state.csta</a>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">待识别的图像</param>
-        /// <param name="points">人脸关键点 数组</param>
+        /// <param name="bitmap">待检测的图片</param>
+        /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(Bitmap, FaceInfo)"/> 获取</para></param>
         /// <returns></returns>
         public EyeStateResult FaceEyeStateDetector(Bitmap bitmap, FaceMarkPoint[] points)
         {
@@ -426,6 +412,9 @@ namespace ViewFaceCore.Sharp
 
         private bool disposed = false;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
@@ -447,6 +436,9 @@ namespace ViewFaceCore.Sharp
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         ~ViewFace()
         {
             Dispose(false);

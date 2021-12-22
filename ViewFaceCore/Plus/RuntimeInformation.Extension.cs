@@ -1,4 +1,4 @@
-﻿// support RuntimeInformation on .NET Framework
+﻿// System.Runtime.InteropServices.RuntimeInformation on .NET Framework
 
 #if NETFRAMEWORK
 
@@ -12,27 +12,27 @@ namespace System.Runtime.InteropServices
         /// <summary>
         /// Gets the name of the .NET installation on which an app is running.
         /// </summary>
-        public static string FrameworkDescription => throw null;
+        public static string FrameworkDescription => $".NET Framework {Environment.Version}";
 
         /// <summary>
         /// Gets the platform architecture on which the current app is running.
         /// </summary>
-        public static Architecture OSArchitecture => throw null;
+        public static Architecture OSArchitecture => Environment.Is64BitOperatingSystem ? Architecture.X64 : Architecture.X86;
 
         /// <summary>
         /// Gets a string that describes the operating system on which the app is running.
         /// </summary>
-        public static string OSDescription => throw null;
+        public static string OSDescription => $"Microsoft Windows {Environment.OSVersion.Version}";
 
         /// <summary>
         /// Gets the process architecture of the currently running app.
         /// </summary>
-        public static Architecture ProcessArchitecture => throw null;
+        public static Architecture ProcessArchitecture => Environment.Is64BitProcess ? Architecture.X64 : Architecture.X86;
 
         /// <summary>
         /// Gets the platform on which an app is running.
         /// </summary>
-        public static string RuntimeIdentifier => throw null;
+        public static string RuntimeIdentifier => $"win{Environment.OSVersion.Version.Major}-{(Environment.Is64BitOperatingSystem ? "x64" : "x86")}";
 
         /// <summary>
         /// Indicates whether the current application is running on the specified platform.
@@ -42,6 +42,9 @@ namespace System.Runtime.InteropServices
         public static bool IsOSPlatform(OSPlatform platform) => platform == OSPlatform.Windows;
     }
 
+    /// <summary>
+    /// Represents an operating system platform.
+    /// </summary>
     public enum OSPlatform
     {
         /// <summary>
@@ -86,14 +89,6 @@ namespace System.Runtime.InteropServices
         /// A 64-bit ARM processor architecture.
         /// </summary>
         Arm64,
-        /// <summary>
-        /// The WebAssembly platform.
-        /// </summary>
-        Wasm,
-        /// <summary>
-        /// The S390x platform architecture.
-        /// </summary>
-        S390x
     }
 }
 
