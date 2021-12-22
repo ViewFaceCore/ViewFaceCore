@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="View.Drawing.Extensions" Version="0.2.0" />
     <PackageReference Include="ViewFaceCore" Version="0.3.5-alpha2" />
+    <PackageReference Include="ViewFaceCore.all_models" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
