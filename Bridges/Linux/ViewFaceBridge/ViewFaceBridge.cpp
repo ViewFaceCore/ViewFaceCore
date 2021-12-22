@@ -35,7 +35,7 @@
 
 using namespace std;
 
-string modelPath = "./model/"; // 模型所在路径
+string modelPath = "./models/"; // 模型所在路径
 LogCallBack logger = NULL; // 日志回调函数
 
 /***************************************************************************************************************/
