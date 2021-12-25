@@ -12,7 +12,11 @@ using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Sharp
 {
-    public partial class ViewFace
+    /// <summary>
+    /// 异步扩展，对于 CPU 绑定的操作直接使用 <see cref="Task.Run(Action)"/> 进行包装。
+    /// <para>参考: <see href="https://docs.microsoft.com/zh-cn/dotnet/standard/async-in-depth#deeper-dive-into-task-and-taskt-for-a-cpu-bound-operation"/></para>
+    /// </summary>
+    public static class ViewFaceAsyncExtensions
     {
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
@@ -27,8 +31,8 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
-        public async Task<FaceInfo[]> FaceDetectorAsync(Bitmap bitmap)
-            => await Task.Run(() => FaceDetector(bitmap));
+        public static async Task<FaceInfo[]> FaceDetectorAsync(this ViewFace face, Bitmap bitmap)
+            => await Task.Run(() => face.FaceDetector(bitmap));
 
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
@@ -43,8 +47,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public async Task<FaceMarkPoint[]> FaceMarkAsync(Bitmap bitmap, FaceInfo info)
-            => await Task.Run(() => FaceMark(bitmap, info));
+        public static async Task<FaceMarkPoint[]> FaceMarkAsync(this ViewFace face, Bitmap bitmap, FaceInfo info)
+            => await Task.Run(() => face.FaceMark(bitmap, info));
 
         /// <summary>
         /// 提取人脸特征值。
@@ -59,8 +63,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="points"></param>
         /// <exception cref="ExtractException"/>
         /// <returns></returns>
-        public async Task<float[]> ExtractAsync(Bitmap bitmap, FaceMarkPoint[] points)
-            => await Task.Run(() => Extract(bitmap, points));
+        public static async Task<float[]> ExtractAsync(this ViewFace face, Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => face.Extract(bitmap, points));
 
         /// <summary>
         /// 计算特征值相似度。
@@ -77,8 +81,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="leftFeatures"></param>
         /// <param name="rightFeatures"></param>
         /// <returns></returns>
-        public async Task<float> SimilarityAsync(float[] leftFeatures, float[] rightFeatures)
-            => await Task.Run(() => Similarity(leftFeatures, rightFeatures));
+        public static async Task<float> SimilarityAsync(this ViewFace face, float[] leftFeatures, float[] rightFeatures)
+            => await Task.Run(() => face.Similarity(leftFeatures, rightFeatures));
 
         /// <summary>
         /// 活体检测器。
@@ -98,8 +102,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="points"></param>
         /// <param name="global"></param>
         /// <returns></returns>
-        public async Task<AntiSpoofingStatus> AntiSpoofingAsync(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global = false)
-            => await Task.Run(() => AntiSpoofing(bitmap, info, points, global));
+        public static async Task<AntiSpoofingStatus> AntiSpoofingAsync(this ViewFace face, Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+            => await Task.Run(() => face.AntiSpoofing(bitmap, info, points, global));
 
         /// <summary>
         /// 活体检测器。
@@ -120,8 +124,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns></returns>
-        public async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global)
-            => await Task.Run(() => AntiSpoofingVideo(bitmap, info, points, global));
+        public static async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync(this ViewFace face, Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, bool global)
+            => await Task.Run(() => face.AntiSpoofingVideo(bitmap, info, points, global));
 
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
@@ -136,8 +140,8 @@ namespace ViewFaceCore.Sharp
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public async Task<FaceTrackInfo[]> FaceTrackAsync(Bitmap bitmap)
-            => await Task.Run(() => FaceTrack(bitmap));
+        public static async Task<FaceTrackInfo[]> FaceTrackAsync(this ViewFace face, Bitmap bitmap)
+            => await Task.Run(() => face.FaceTrack(bitmap));
 
         /// <summary>
         /// 人脸质量评估
@@ -148,8 +152,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="points"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public async Task<QualityResult> FaceQualityAsync(Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
-            => await Task.Run(() => FaceQuality(bitmap, info, points, type));
+        public static async Task<QualityResult> FaceQualityAsync(this ViewFace face, Bitmap bitmap, FaceInfo info, FaceMarkPoint[] points, QualityType type)
+            => await Task.Run(() => face.FaceQuality(bitmap, info, points, type));
 
         /// <summary>
         /// 年龄预测。
@@ -161,8 +165,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="bitmap">待识别的图像</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public async Task<int> FaceAgePredictorAsync(Bitmap bitmap, FaceMarkPoint[] points)
-            => await Task.Run(() => FaceAgePredictor(bitmap, points));
+        public static async Task<int> FaceAgePredictorAsync(this ViewFace face, Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => face.FaceAgePredictor(bitmap, points));
 
         /// <summary>
         /// 性别预测。
@@ -174,8 +178,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="bitmap">待识别的图像</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public async Task<Gender> FaceGenderPredictorAsync(Bitmap bitmap, FaceMarkPoint[] points)
-            => await Task.Run(() => FaceGenderPredictor(bitmap, points));
+        public static async Task<Gender> FaceGenderPredictorAsync(this ViewFace face, Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => face.FaceGenderPredictor(bitmap, points));
 
         /// <summary>
         /// 眼睛状态检测。
@@ -188,8 +192,8 @@ namespace ViewFaceCore.Sharp
         /// <param name="bitmap">待识别的图像</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public async Task<EyeStateResult> FaceEyeStateDetectorAsync(Bitmap bitmap, FaceMarkPoint[] points)
-            => await Task.Run(() => FaceEyeStateDetector(bitmap, points));
+        public static async Task<EyeStateResult> FaceEyeStateDetectorAsync(this ViewFace face, Bitmap bitmap, FaceMarkPoint[] points)
+            => await Task.Run(() => face.FaceEyeStateDetector(bitmap, points));
     }
 }
 

@@ -25,13 +25,13 @@
 		<PackageId>ViewFaceCore</PackageId>
 		<Authors>View</Authors>
 		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
-		<PackageVersion>$(Version)-alpha2</PackageVersion>
+		<PackageVersion>$(Version)-alpha3</PackageVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>View-Logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
 		<Description>一款基于 SeetaFace6 实现的 .NET 平台的人脸识别库。</Description>
-		<PackageReleaseNotes>支持多目标，支持 Windows(x64/x86)、Linux(x64)</PackageReleaseNotes>
+		<PackageReleaseNotes>支持多 .NET 目标，支持 Windows(x64/x86)、Linux(arm/arm64/x64)</PackageReleaseNotes>
 
 		<!--GetRefFiles-->
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);GetRefFiles</TargetsForTfmSpecificBuildOutput>
@@ -62,66 +62,42 @@
 	<ItemGroup Label="windows-x64">
 		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.dll" Link="viewfacecore\win\x64\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
 
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaPoseEstimation600d.dll" Link="viewfacecore\win\x64\SeetaPoseEstimation600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaQualityAssessor300.dll" Link="viewfacecore\win\x64\SeetaQualityAssessor300.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaQualityAssessor300d.dll" Link="viewfacecore\win\x64\SeetaQualityAssessor300d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\tennis.dll" Link="viewfacecore\win\x64\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\tennis_haswell.dll" Link="viewfacecore\win\x64\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\tennis_pentium.dll" Link="viewfacecore\win\x64\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\tennis_sandy_bridge.dll" Link="viewfacecore\win\x64\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAgePredictor600.dll" Link="viewfacecore\win\x64\SeetaAgePredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAgePredictor600d.dll" Link="viewfacecore\win\x64\SeetaAgePredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAuthorize.dll" Link="viewfacecore\win\x64\SeetaAuthorize.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaAuthorized.dll" Link="viewfacecore\win\x64\SeetaAuthorized.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaEyeStateDetector200.dll" Link="viewfacecore\win\x64\SeetaEyeStateDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaEyeStateDetector200d.dll" Link="viewfacecore\win\x64\SeetaEyeStateDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceAntiSpoofingX600.dll" Link="viewfacecore\win\x64\SeetaFaceAntiSpoofingX600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceAntiSpoofingX600d.dll" Link="viewfacecore\win\x64\SeetaFaceAntiSpoofingX600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceDetector600.dll" Link="viewfacecore\win\x64\SeetaFaceDetector600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceDetector600d.dll" Link="viewfacecore\win\x64\SeetaFaceDetector600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceLandmarker600.dll" Link="viewfacecore\win\x64\SeetaFaceLandmarker600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceLandmarker600d.dll" Link="viewfacecore\win\x64\SeetaFaceLandmarker600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceRecognizer610.dll" Link="viewfacecore\win\x64\SeetaFaceRecognizer610.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceRecognizer610d.dll" Link="viewfacecore\win\x64\SeetaFaceRecognizer610d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceTracking600.dll" Link="viewfacecore\win\x64\SeetaFaceTracking600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaFaceTracking600d.dll" Link="viewfacecore\win\x64\SeetaFaceTracking600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaGenderPredictor600.dll" Link="viewfacecore\win\x64\SeetaGenderPredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaGenderPredictor600d.dll" Link="viewfacecore\win\x64\SeetaGenderPredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaMaskDetector200.dll" Link="viewfacecore\win\x64\SeetaMaskDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x64\SeetaMaskDetector200d.dll" Link="viewfacecore\win\x64\SeetaMaskDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x64\SeetaPoseEstimation600.dll" Link="viewfacecore\win\x64\SeetaPoseEstimation600.dll" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
 	<ItemGroup Label="windows-x86">
 		<None Include="..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.dll" Link="viewfacecore\win\x86\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
 
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600d.dll" Link="viewfacecore\win\x86\SeetaPoseEstimation600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300.dll" Link="viewfacecore\win\x86\SeetaQualityAssessor300.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300d.dll" Link="viewfacecore\win\x86\SeetaQualityAssessor300d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\tennis.dll" Link="viewfacecore\win\x86\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\tennis_haswell.dll" Link="viewfacecore\win\x86\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\tennis_pentium.dll" Link="viewfacecore\win\x86\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll" Link="viewfacecore\win\x86\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600.dll" Link="viewfacecore\win\x86\SeetaAgePredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600d.dll" Link="viewfacecore\win\x86\SeetaAgePredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAuthorize.dll" Link="viewfacecore\win\x86\SeetaAuthorize.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaAuthorized.dll" Link="viewfacecore\win\x86\SeetaAuthorized.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200.dll" Link="viewfacecore\win\x86\SeetaEyeStateDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200d.dll" Link="viewfacecore\win\x86\SeetaEyeStateDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600.dll" Link="viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600d.dll" Link="viewfacecore\win\x86\SeetaFaceAntiSpoofingX600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600.dll" Link="viewfacecore\win\x86\SeetaFaceDetector600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600d.dll" Link="viewfacecore\win\x86\SeetaFaceDetector600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600.dll" Link="viewfacecore\win\x86\SeetaFaceLandmarker600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600d.dll" Link="viewfacecore\win\x86\SeetaFaceLandmarker600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610.dll" Link="viewfacecore\win\x86\SeetaFaceRecognizer610.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610d.dll" Link="viewfacecore\win\x86\SeetaFaceRecognizer610d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600.dll" Link="viewfacecore\win\x86\SeetaFaceTracking600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600d.dll" Link="viewfacecore\win\x86\SeetaFaceTracking600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600.dll" Link="viewfacecore\win\x86\SeetaGenderPredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600d.dll" Link="viewfacecore\win\x86\SeetaGenderPredictor600d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200.dll" Link="viewfacecore\win\x86\SeetaMaskDetector200.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200d.dll" Link="viewfacecore\win\x86\SeetaMaskDetector200d.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600.dll" Link="viewfacecore\win\x86\SeetaPoseEstimation600.dll" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 
@@ -146,6 +122,48 @@
 		<None Include="..\SeetaFace\index\build\lib64\libtennis_pentium.so" Link="viewfacecore\linux\x64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 	
+	<ItemGroup Label="linux-arm">
+		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\ARM\libViewFaceBridge.so" Link="viewfacecore\linux\arm\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_sandy_bridge.so" Link="viewfacecore\linux\arm\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaAgePredictor600.so" Link="viewfacecore\linux\arm\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaAuthorize.so" Link="viewfacecore\linux\arm\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaFaceAntiSpoofingX600.so" Link="viewfacecore\linux\arm\libSeetaFaceAntiSpoofingX600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaFaceDetector600.so" Link="viewfacecore\linux\arm\libSeetaFaceDetector600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaFaceLandmarker600.so" Link="viewfacecore\linux\arm\libSeetaFaceLandmarker600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaFaceRecognizer610.so" Link="viewfacecore\linux\arm\libSeetaFaceRecognizer610.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaFaceTracking600.so" Link="viewfacecore\linux\arm\libSeetaFaceTracking600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaGenderPredictor600.so" Link="viewfacecore\linux\arm\libSeetaGenderPredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaMaskDetector200.so" Link="viewfacecore\linux\arm\libSeetaMaskDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaPoseEstimation600.so" Link="viewfacecore\linux\arm\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaQualityAssessor300.so" Link="viewfacecore\linux\arm\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libtennis.so" Link="viewfacecore\linux\arm\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_haswell.so" Link="viewfacecore\linux\arm\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_pentium.so" Link="viewfacecore\linux\arm\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	
+	<ItemGroup Label="linux-arm64">
+		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\ARM64\libViewFaceBridge.so" Link="viewfacecore\linux\arm64\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_sandy_bridge.so" Link="viewfacecore\linux\arm64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaAgePredictor600.so" Link="viewfacecore\linux\arm64\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaAuthorize.so" Link="viewfacecore\linux\arm64\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaFaceAntiSpoofingX600.so" Link="viewfacecore\linux\arm64\libSeetaFaceAntiSpoofingX600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaFaceDetector600.so" Link="viewfacecore\linux\arm64\libSeetaFaceDetector600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaFaceLandmarker600.so" Link="viewfacecore\linux\arm64\libSeetaFaceLandmarker600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaFaceRecognizer610.so" Link="viewfacecore\linux\arm64\libSeetaFaceRecognizer610.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaFaceTracking600.so" Link="viewfacecore\linux\arm64\libSeetaFaceTracking600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaGenderPredictor600.so" Link="viewfacecore\linux\arm64\libSeetaGenderPredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaMaskDetector200.so" Link="viewfacecore\linux\arm64\libSeetaMaskDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaPoseEstimation600.so" Link="viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaQualityAssessor300.so" Link="viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis.so" Link="viewfacecore\linux\arm64\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_haswell.so" Link="viewfacecore\linux\arm64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_pentium.so" Link="viewfacecore\linux\arm64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+	
 
 	<!--GetRefFiles-->
 	<Target Name="GetRefFiles">
@@ -160,70 +178,46 @@
 	<Target Name="GetBuildFiles">
 		<ItemGroup Label="windows-x64">
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\ViewFaceBridge.dll" PackagePath="build\viewfacecore\win\x64\ViewFaceBridge.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaPoseEstimation600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaPoseEstimation600d.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAgePredictor600.dll" PackagePath="build\viewfacecore\win\x64\SeetaAgePredictor600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAuthorize.dll" PackagePath="build\viewfacecore\win\x64\SeetaAuthorize.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaEyeStateDetector200.dll" PackagePath="build\viewfacecore\win\x64\SeetaEyeStateDetector200.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceAntiSpoofingX600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceAntiSpoofingX600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceDetector600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceDetector600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceLandmarker600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceLandmarker600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceRecognizer610.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceRecognizer610.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceTracking600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceTracking600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaGenderPredictor600.dll" PackagePath="build\viewfacecore\win\x64\SeetaGenderPredictor600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaMaskDetector200.dll" PackagePath="build\viewfacecore\win\x64\SeetaMaskDetector200.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaPoseEstimation600.dll" PackagePath="build\viewfacecore\win\x64\SeetaPoseEstimation600.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaQualityAssessor300.dll" PackagePath="build\viewfacecore\win\x64\SeetaQualityAssessor300.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaQualityAssessor300d.dll" PackagePath="build\viewfacecore\win\x64\SeetaQualityAssessor300d.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\tennis.dll" PackagePath="build\viewfacecore\win\x64\tennis.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\tennis_haswell.dll" PackagePath="build\viewfacecore\win\x64\tennis_haswell.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\tennis_pentium.dll" PackagePath="build\viewfacecore\win\x64\tennis_pentium.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\tennis_sandy_bridge.dll" PackagePath="build\viewfacecore\win\x64\tennis_sandy_bridge.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAgePredictor600.dll" PackagePath="build\viewfacecore\win\x64\SeetaAgePredictor600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAgePredictor600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaAgePredictor600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAuthorize.dll" PackagePath="build\viewfacecore\win\x64\SeetaAuthorize.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaAuthorized.dll" PackagePath="build\viewfacecore\win\x64\SeetaAuthorized.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaEyeStateDetector200.dll" PackagePath="build\viewfacecore\win\x64\SeetaEyeStateDetector200.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaEyeStateDetector200d.dll" PackagePath="build\viewfacecore\win\x64\SeetaEyeStateDetector200d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceAntiSpoofingX600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceAntiSpoofingX600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceAntiSpoofingX600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceAntiSpoofingX600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceDetector600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceDetector600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceDetector600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceDetector600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceLandmarker600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceLandmarker600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceLandmarker600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceLandmarker600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceRecognizer610.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceRecognizer610.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceRecognizer610d.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceRecognizer610d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceTracking600.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceTracking600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaFaceTracking600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaFaceTracking600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaGenderPredictor600.dll" PackagePath="build\viewfacecore\win\x64\SeetaGenderPredictor600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaGenderPredictor600d.dll" PackagePath="build\viewfacecore\win\x64\SeetaGenderPredictor600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaMaskDetector200.dll" PackagePath="build\viewfacecore\win\x64\SeetaMaskDetector200.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaMaskDetector200d.dll" PackagePath="build\viewfacecore\win\x64\SeetaMaskDetector200d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x64\SeetaPoseEstimation600.dll" PackagePath="build\viewfacecore\win\x64\SeetaPoseEstimation600.dll" />
 		</ItemGroup>
 
 		<ItemGroup Label="windows-x86">
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\ViewFaceBridge.dll" PackagePath="build\viewfacecore\win\x86\ViewFaceBridge.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaPoseEstimation600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaPoseEstimation600d.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAgePredictor600.dll" PackagePath="build\viewfacecore\win\x86\SeetaAgePredictor600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAuthorize.dll" PackagePath="build\viewfacecore\win\x86\SeetaAuthorize.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaEyeStateDetector200.dll" PackagePath="build\viewfacecore\win\x86\SeetaEyeStateDetector200.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceDetector600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceDetector600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceLandmarker600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceLandmarker600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceRecognizer610.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceRecognizer610.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceTracking600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceTracking600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaGenderPredictor600.dll" PackagePath="build\viewfacecore\win\x86\SeetaGenderPredictor600.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaMaskDetector200.dll" PackagePath="build\viewfacecore\win\x86\SeetaMaskDetector200.dll" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaPoseEstimation600.dll" PackagePath="build\viewfacecore\win\x86\SeetaPoseEstimation600.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaQualityAssessor300.dll" PackagePath="build\viewfacecore\win\x86\SeetaQualityAssessor300.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaQualityAssessor300d.dll" PackagePath="build\viewfacecore\win\x86\SeetaQualityAssessor300d.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\tennis.dll" PackagePath="build\viewfacecore\win\x86\tennis.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\tennis_haswell.dll" PackagePath="build\viewfacecore\win\x86\tennis_haswell.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\tennis_pentium.dll" PackagePath="build\viewfacecore\win\x86\tennis_pentium.dll" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\tennis_sandy_bridge.dll" PackagePath="build\viewfacecore\win\x86\tennis_sandy_bridge.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAgePredictor600.dll" PackagePath="build\viewfacecore\win\x86\SeetaAgePredictor600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAgePredictor600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaAgePredictor600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAuthorize.dll" PackagePath="build\viewfacecore\win\x86\SeetaAuthorize.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaAuthorized.dll" PackagePath="build\viewfacecore\win\x86\SeetaAuthorized.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaEyeStateDetector200.dll" PackagePath="build\viewfacecore\win\x86\SeetaEyeStateDetector200.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaEyeStateDetector200d.dll" PackagePath="build\viewfacecore\win\x86\SeetaEyeStateDetector200d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceAntiSpoofingX600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceAntiSpoofingX600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceDetector600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceDetector600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceDetector600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceDetector600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceLandmarker600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceLandmarker600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceLandmarker600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceLandmarker600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceRecognizer610.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceRecognizer610.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceRecognizer610d.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceRecognizer610d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceTracking600.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceTracking600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaFaceTracking600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaFaceTracking600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaGenderPredictor600.dll" PackagePath="build\viewfacecore\win\x86\SeetaGenderPredictor600.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaGenderPredictor600d.dll" PackagePath="build\viewfacecore\win\x86\SeetaGenderPredictor600d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaMaskDetector200.dll" PackagePath="build\viewfacecore\win\x86\SeetaMaskDetector200.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaMaskDetector200d.dll" PackagePath="build\viewfacecore\win\x86\SeetaMaskDetector200d.dll" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\win\x86\SeetaPoseEstimation600.dll" PackagePath="build\viewfacecore\win\x86\SeetaPoseEstimation600.dll" />
 		</ItemGroup>
+		
 		<ItemGroup Label="linux-x64">
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libViewFaceBridge.so" PackagePath="build\viewfacecore\linux\x64\libViewFaceBridge.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\x64\libtennis_sandy_bridge.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libSeetaAgePredictor600.so" PackagePath="build\viewfacecore\linux\x64\libSeetaAgePredictor600.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libSeetaAuthorize.so" PackagePath="build\viewfacecore\linux\x64\libSeetaAuthorize.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libSeetaEyeStateDetector200.so" PackagePath="build\viewfacecore\linux\x64\libSeetaEyeStateDetector200.so" />
@@ -239,6 +233,47 @@
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libtennis.so" PackagePath="build\viewfacecore\linux\x64\libtennis.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libtennis_haswell.so" PackagePath="build\viewfacecore\linux\x64\libtennis_haswell.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libtennis_pentium.so" PackagePath="build\viewfacecore\linux\x64\libtennis_pentium.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\x64\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\x64\libtennis_sandy_bridge.so" />
+		</ItemGroup>
+
+		<ItemGroup Label="linux-arm">
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libViewFaceBridge.so" PackagePath="build\viewfacecore\linux\arm\libViewFaceBridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\arm\libtennis_sandy_bridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaAgePredictor600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaAgePredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaAuthorize.so" PackagePath="build\viewfacecore\linux\arm\libSeetaAuthorize.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" PackagePath="build\viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaFaceAntiSpoofingX600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaFaceAntiSpoofingX600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaFaceDetector600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaFaceDetector600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaFaceLandmarker600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaFaceLandmarker600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaFaceRecognizer610.so" PackagePath="build\viewfacecore\linux\arm\libSeetaFaceRecognizer610.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaFaceTracking600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaFaceTracking600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaGenderPredictor600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaGenderPredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaMaskDetector200.so" PackagePath="build\viewfacecore\linux\arm\libSeetaMaskDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaPoseEstimation600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaPoseEstimation600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaQualityAssessor300.so" PackagePath="build\viewfacecore\linux\arm\libSeetaQualityAssessor300.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis.so" PackagePath="build\viewfacecore\linux\arm\libtennis.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_haswell.so" PackagePath="build\viewfacecore\linux\arm\libtennis_haswell.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_pentium.so" PackagePath="build\viewfacecore\linux\arm\libtennis_pentium.so" />
+		</ItemGroup>
+
+		<ItemGroup Label="linux-arm64">
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libViewFaceBridge.so" PackagePath="build\viewfacecore\linux\arm64\libViewFaceBridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_sandy_bridge.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaAgePredictor600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaAgePredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaAuthorize.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaAuthorize.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaFaceAntiSpoofingX600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaFaceAntiSpoofingX600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaFaceDetector600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaFaceDetector600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaFaceLandmarker600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaFaceLandmarker600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaFaceRecognizer610.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaFaceRecognizer610.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaFaceTracking600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaFaceTracking600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaGenderPredictor600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaGenderPredictor600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaMaskDetector200.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaMaskDetector200.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis.so" PackagePath="build\viewfacecore\linux\arm64\libtennis.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_haswell.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_haswell.so" />
+			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_pentium.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_pentium.so" />
 		</ItemGroup>
 
 		<ItemGroup>

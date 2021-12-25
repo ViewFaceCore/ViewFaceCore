@@ -97,7 +97,7 @@ namespace ViewFaceCore.Plus
                     string libraryPath = Path.Combine(LibraryPath, library);
                     if (File.Exists(libraryPath))
                     {
-                        if (NativeLibrary.Load(library) == IntPtr.Zero)
+                        if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                         { throw new BadImageFormatException($"加载本机库失败: {library}"); }
                     }
                     else

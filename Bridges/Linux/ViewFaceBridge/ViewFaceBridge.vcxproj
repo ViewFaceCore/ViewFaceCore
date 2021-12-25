@@ -142,11 +142,17 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>../../../SeetaFace/index/build/lib/arm/libtennis_pentium.so;../../../SeetaFace/index/build/lib/arm/libtennis_sandy_bridge.so;../../../SeetaFace/index/build/lib/arm/libSeetaAgePredictor600.so;../../../SeetaFace/index/build/lib/arm/libSeetaAuthorize.so;../../../SeetaFace/index/build/lib/arm/libSeetaEyeStateDetector200.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceAntiSpoofingX600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceDetector600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceLandmarker600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceRecognizer610.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceTracking600.so;../../../SeetaFace/index/build/lib/arm/libSeetaGenderPredictor600.so;../../../SeetaFace/index/build/lib/arm/libSeetaMaskDetector200.so;../../../SeetaFace/index/build/lib/arm/libSeetaPoseEstimation600.so;../../../SeetaFace/index/build/lib/arm/libSeetaQualityAssessor300.so;../../../SeetaFace/index/build/lib/arm/libtennis.so;../../../SeetaFace/index/build/lib/arm/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>../../../SeetaFace/index/build/lib/arm64/libtennis_pentium.so;../../../SeetaFace/index/build/lib/arm64/libtennis_sandy_bridge.so;../../../SeetaFace/index/build/lib/arm64/libSeetaAgePredictor600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaAuthorize.so;../../../SeetaFace/index/build/lib/arm64/libSeetaEyeStateDetector200.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceAntiSpoofingX600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceDetector600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceLandmarker600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceRecognizer610.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceTracking600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaGenderPredictor600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaMaskDetector200.so;../../../SeetaFace/index/build/lib/arm64/libSeetaPoseEstimation600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaQualityAssessor300.so;../../../SeetaFace/index/build/lib/arm64/libtennis.so;../../../SeetaFace/index/build/lib/arm64/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -160,11 +166,17 @@
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>../../../SeetaFace/index/build/lib/arm/libtennis_pentium.so;../../../SeetaFace/index/build/lib/arm/libtennis_sandy_bridge.so;../../../SeetaFace/index/build/lib/arm/libSeetaAgePredictor600.so;../../../SeetaFace/index/build/lib/arm/libSeetaAuthorize.so;../../../SeetaFace/index/build/lib/arm/libSeetaEyeStateDetector200.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceAntiSpoofingX600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceDetector600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceLandmarker600.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceRecognizer610.so;../../../SeetaFace/index/build/lib/arm/libSeetaFaceTracking600.so;../../../SeetaFace/index/build/lib/arm/libSeetaGenderPredictor600.so;../../../SeetaFace/index/build/lib/arm/libSeetaMaskDetector200.so;../../../SeetaFace/index/build/lib/arm/libSeetaPoseEstimation600.so;../../../SeetaFace/index/build/lib/arm/libSeetaQualityAssessor300.so;../../../SeetaFace/index/build/lib/arm/libtennis.so;../../../SeetaFace/index/build/lib/arm/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>../../../SeetaFace/index/build/lib/arm64/libtennis_pentium.so;../../../SeetaFace/index/build/lib/arm64/libtennis_sandy_bridge.so;../../../SeetaFace/index/build/lib/arm64/libSeetaAgePredictor600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaAuthorize.so;../../../SeetaFace/index/build/lib/arm64/libSeetaEyeStateDetector200.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceAntiSpoofingX600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceDetector600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceLandmarker600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceRecognizer610.so;../../../SeetaFace/index/build/lib/arm64/libSeetaFaceTracking600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaGenderPredictor600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaMaskDetector200.so;../../../SeetaFace/index/build/lib/arm64/libSeetaPoseEstimation600.so;../../../SeetaFace/index/build/lib/arm64/libSeetaQualityAssessor300.so;../../../SeetaFace/index/build/lib/arm64/libtennis.so;../../../SeetaFace/index/build/lib/arm64/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

@@ -19,7 +19,7 @@ namespace ViewFaceCore.Sharp
     /// <summary>
     /// 人脸识别类
     /// </summary>
-    public sealed partial class ViewFace : IDisposable
+    public sealed class ViewFace : IDisposable
     {
         // Constructor
         /// <summary>
