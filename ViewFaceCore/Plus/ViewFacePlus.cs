@@ -47,26 +47,26 @@ namespace ViewFaceCore.Plus
         }
 
         /// <summary>
-        /// Linux 下 libViewFaceBridge.so 的所有依赖库。(按照依赖顺序排列)
+        /// ViewFaceBridge 的所有依赖库。(按照依赖顺序排列)
         /// </summary>
         private static readonly List<string> Libraries = new List<string>()
         {
-            "libSeetaAuthorize.so",
-            "libtennis.so",
-            "libtennis_haswell.so",
-            "libtennis_pentium.so",
-            "libtennis_sandy_bridge.so",
-            "libSeetaMaskDetector200.so",
-            "libSeetaAgePredictor600.so",
-            "libSeetaEyeStateDetector200.so",
-            "libSeetaFaceAntiSpoofingX600.so",
-            "libSeetaFaceDetector600.so",
-            "libSeetaFaceLandmarker600.so",
-            "libSeetaFaceRecognizer610.so",
-            "libSeetaFaceTracking600.so",
-            "libSeetaGenderPredictor600.so",
-            "libSeetaPoseEstimation600.so",
-            "libSeetaQualityAssessor300.so",
+            "SeetaAuthorize",
+            "tennis",
+            "tennis_haswell",
+            "tennis_pentium",
+            "tennis_sandy_bridge",
+            "SeetaMaskDetector200",
+            "SeetaAgePredictor600",
+            "SeetaEyeStateDetector200",
+            "SeetaFaceAntiSpoofingX600",
+            "SeetaFaceDetector600",
+            "SeetaFaceLandmarker600",
+            "SeetaFaceRecognizer610",
+            "SeetaFaceTracking600",
+            "SeetaGenderPredictor600",
+            "SeetaPoseEstimation600",
+            "SeetaQualityAssessor300",
         };
 
         /// <summary>
@@ -81,41 +81,56 @@ namespace ViewFaceCore.Plus
         static ViewFaceBridge()
         {
 #if NETFRAMEWORK || NETSTANDARD
-            SetDllDirectory(LibraryPath);
-#elif NETCOREAPP3_1_OR_GREATER
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                SetDllDirectory(LibraryPath);
-            }
+            { SetDllDirectory(LibraryPath); }
+            else
+            { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
+#elif NETCOREAPP3_1_OR_GREATER
+            #region Resolver Libraries on Linux
+            // Author: <a href="https://github.com/withsalt">withsalt</a>
+            // 预加载 ViewFaceBridge 的所有依赖库
+
+            string format;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            { format = "{0}.dll"; }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            { format = "lib{0}.so"; }
+            else
+            { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
+
+            foreach (var library in Libraries)
             {
-                #region Resolver Libraries on Linux
-                // Author: <a href="https://github.com/withsalt">withsalt</a>
-                // 预加载 libViewFaceBridge.so 的所有依赖库
-                foreach (var library in Libraries)
+                string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
+                if (File.Exists(libraryPath))
                 {
-                    string libraryPath = Path.Combine(LibraryPath, library);
+                    if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
+                    { throw new BadImageFormatException($"加载本机库失败: {library}"); }
+                }
+                else
+                { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
+
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    libraryPath = Path.Combine(LibraryPath, string.Format("{0}d.dll", library));
                     if (File.Exists(libraryPath))
                     {
                         if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                         { throw new BadImageFormatException($"加载本机库失败: {library}"); }
                     }
-                    else
-                    { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
                 }
-
-                NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
-                {
-                    if (libraryName.Equals("ViewFaceBridge", StringComparison.OrdinalIgnoreCase))
-                    {
-                        return NativeLibrary.Load(Path.Combine(LibraryPath, "libViewFaceBridge.so"), assembly, searchPath);
-                    }
-                    return IntPtr.Zero;
-                });
-                #endregion
             }
-            else
-            { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
+
+            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
+            {
+                var library = "ViewFaceBridge";
+                if (libraryName.Equals(library, StringComparison.OrdinalIgnoreCase))
+                {
+                    string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
+                    return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.ApplicationDirectory);
+                }
+                return IntPtr.Zero;
+            });
+            #endregion
 #else
             throw new PlatformNotSupportedException($"不支持的 .NET 平台: {RuntimeInformation.FrameworkDescription}");
 #endif
