@@ -9,3 +9,8 @@ echo ====================== pack ViewFaceCore.runtime.win.x86 ==================
 cd ViewFaceCore.runtime.win.x86
 call pack.bat
 cd ..
+
+echo ====================== pack ViewFaceCore.runtime.ubuntu.20.04.x64 ======================
+cd ViewFaceCore.runtime.ubuntu.20.04.x64
+call pack.bat
+cd ..
