@@ -15,7 +15,12 @@ cd ViewFaceCore.runtime.ubuntu.20.04.x64
 call pack.bat
 cd ..
 
-echo ====================== pack ViewFaceCore.runtime.raspberry_pi.arm ======================
-cd ViewFaceCore.runtime.raspberry_pi.arm
+echo ====================== pack ViewFaceCore.runtime.linux.arm ======================
+cd ViewFaceCore.runtime.linux.arm
+call pack.bat
+cd ..
+
+echo ====================== pack ViewFaceCore.runtime.linux.arm64 ======================
+cd ViewFaceCore.runtime.linux.arm64
 call pack.bat
 cd ..

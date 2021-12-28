@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>ViewFaceCore.runtime.raspberry_pi.arm</id>
+		<id>ViewFaceCore.runtime.linux.arm</id>
 		<version>6.0.1</version>
 		<title></title>
 		<authors>WithSalt</authors>
 		<owners></owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<icon>WithSalt-Logo.png</icon>
-		<description>ViewFaceCore Native libraries for Linux-arm (Raspberry Pi)</description>
+		<description>ViewFaceCore Native libraries for Linux-arm</description>
 	</metadata>
 	<files>
 		<file src="..\..\Bridges\Linux\ViewFaceBridge\bin\Release\ARM\libViewFaceBridge.so" target="build\viewfacecore\linux\arm\libViewFaceBridge.so" />
@@ -27,7 +27,7 @@
 		<file src="..\..\SeetaFace\index\build\lib\arm\libSeetaPoseEstimation600.so" target="build\viewfacecore\linux\arm\libSeetaPoseEstimation600.so" />
 		<file src="..\..\SeetaFace\index\build\lib\arm\libSeetaQualityAssessor300.so" target="build\viewfacecore\linux\arm\libSeetaQualityAssessor300.so" />
 
-		<file src="ViewFaceCore.runtime.raspberry_pi.arm.targets" target="build\ViewFaceCore.runtime.raspberry_pi.arm.targets" />
+		<file src="ViewFaceCore.runtime.linux.arm.targets" target="build\ViewFaceCore.runtime.linux.arm.targets" />
 		<file src="..\..\Images\WithSalt-Logo.png" target="WithSalt-Logo.png" />
 	</files>
 </package>
