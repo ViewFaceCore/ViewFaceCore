@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.runtime.win.x86</id>
+		<version>6.0.0</version>
+		<title></title>
+		<authors>View</authors>
+		<owners></owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>ViewFaceCore Native libraries for Windows-x86</description>
+	</metadata>
+	<files>
+		<file src="..\..\SeetaFace\index\build\bin\x86\tennis.dll" target="build\viewfacecore\win\x86\tennis.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\tennis_haswell.dll" target="build\viewfacecore\win\x86\tennis_haswell.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\tennis_pentium.dll" target="build\viewfacecore\win\x86\tennis_pentium.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll" target="build\viewfacecore\win\x86\tennis_sandy_bridge.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600.dll" target="build\viewfacecore\win\x86\SeetaAgePredictor600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600d.dll" target="build\viewfacecore\win\x86\SeetaAgePredictor600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaAuthorize.dll" target="build\viewfacecore\win\x86\SeetaAuthorize.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaAuthorized.dll" target="build\viewfacecore\win\x86\SeetaAuthorized.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200.dll" target="build\viewfacecore\win\x86\SeetaEyeStateDetector200.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200d.dll" target="build\viewfacecore\win\x86\SeetaEyeStateDetector200d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600.dll" target="build\viewfacecore\win\x86\SeetaFaceAntiSpoofingX600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceAntiSpoofingX600d.dll" target="build\viewfacecore\win\x86\SeetaFaceAntiSpoofingX600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600.dll" target="build\viewfacecore\win\x86\SeetaFaceDetector600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceDetector600d.dll" target="build\viewfacecore\win\x86\SeetaFaceDetector600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600.dll" target="build\viewfacecore\win\x86\SeetaFaceLandmarker600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceLandmarker600d.dll" target="build\viewfacecore\win\x86\SeetaFaceLandmarker600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610.dll" target="build\viewfacecore\win\x86\SeetaFaceRecognizer610.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceRecognizer610d.dll" target="build\viewfacecore\win\x86\SeetaFaceRecognizer610d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600.dll" target="build\viewfacecore\win\x86\SeetaFaceTracking600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaFaceTracking600d.dll" target="build\viewfacecore\win\x86\SeetaFaceTracking600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600.dll" target="build\viewfacecore\win\x86\SeetaGenderPredictor600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaGenderPredictor600d.dll" target="build\viewfacecore\win\x86\SeetaGenderPredictor600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200.dll" target="build\viewfacecore\win\x86\SeetaMaskDetector200.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaMaskDetector200d.dll" target="build\viewfacecore\win\x86\SeetaMaskDetector200d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600.dll" target="build\viewfacecore\win\x86\SeetaPoseEstimation600.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaPoseEstimation600d.dll" target="build\viewfacecore\win\x86\SeetaPoseEstimation600d.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300.dll" target="build\viewfacecore\win\x86\SeetaQualityAssessor300.dll" />
+		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300d.dll" target="build\viewfacecore\win\x86\SeetaQualityAssessor300d.dll" />
+
+		<file src="ViewFaceCore.runtime.win.x86.targets" target="build\ViewFaceCore.runtime.win.x86.targets" />
+		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>
