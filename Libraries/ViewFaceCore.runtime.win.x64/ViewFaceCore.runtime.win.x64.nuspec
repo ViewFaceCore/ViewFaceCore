@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.runtime.win.x64</id>
-		<version>6.0.0</version>
+		<version>6.0.1</version>
 		<title></title>
 		<authors>View</authors>
 		<owners></owners>
@@ -11,6 +11,8 @@
 		<description>ViewFaceCore Native libraries for Windows-x64</description>
 	</metadata>
 	<files>
+		<file src="..\..\Bridges\Windows\ViewFaceBridge\bin\Release\x64\ViewFaceBridge.dll" target="build\viewfacecore\win\x64\ViewFaceBridge.dll" />
+		
 		<file src="..\..\SeetaFace\index\build\bin\x64\tennis.dll" target="build\viewfacecore\win\x64\tennis.dll" />
 		<file src="..\..\SeetaFace\index\build\bin\x64\tennis_haswell.dll" target="build\viewfacecore\win\x64\tennis_haswell.dll" />
 		<file src="..\..\SeetaFace\index\build\bin\x64\tennis_pentium.dll" target="build\viewfacecore\win\x64\tennis_pentium.dll" />

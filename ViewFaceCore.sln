@@ -31,7 +31,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "Bridges\Shared\Sh
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{41C16385-E0AC-4C89-A355-BA390B994F49}"
 	ProjectSection(SolutionItems) = preProject
-		Models\BuildPackage.bat = Models\BuildPackage.bat
+		Models\pack.all.bat = Models\pack.all.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.face_detector", "Models\ViewFaceCore.face_detector\ViewFaceCore.face_detector.csproj", "{3196B90B-84BF-40BF-8EBF-F25CBE683266}"
@@ -68,12 +68,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.all_models", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{831C2E64-7E48-4DFC-93D8-CAF6061E008D}"
 	ProjectSection(SolutionItems) = preProject
-		Libraries\BuildLibrariesPackages.bat = Libraries\BuildLibrariesPackages.bat
+		Libraries\pack.all.bat = Libraries\pack.all.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.runtime.win.x64", "Libraries\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj", "{55253C44-E367-49A0-8D23-2710B0FBCDDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x64", "Libraries\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj", "{55253C44-E367-49A0-8D23-2710B0FBCDDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.runtime.win.x86", "Libraries\ViewFaceCore.runtime.win.x86\ViewFaceCore.runtime.win.x86.csproj", "{342FF263-E09B-43E5-9A9C-FE4A50B934A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x86", "Libraries\ViewFaceCore.runtime.win.x86\ViewFaceCore.runtime.win.x86.csproj", "{342FF263-E09B-43E5-9A9C-FE4A50B934A2}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
