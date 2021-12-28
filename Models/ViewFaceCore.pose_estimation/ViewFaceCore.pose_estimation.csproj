@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
 	<PropertyGroup>
 		<TargetFrameworks>net40;net45;net461;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<Version>6.0.0</Version>
@@ -6,8 +7,4 @@
 		<Authors>View</Authors>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<None Include="ViewFaceCore.pose_estimation.targets" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="pose_estimation.csta" CopyToOutputDirectory="PreserveNewest" />
-	</ItemGroup>
 </Project>
