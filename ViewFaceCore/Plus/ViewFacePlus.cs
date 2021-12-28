@@ -106,7 +106,7 @@ namespace ViewFaceCore.Plus
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                     { throw new BadImageFormatException($"加载本机库失败: {library}"); }
                 }
-                else
+                else if(!libraryPath.Contains("tennis"))
                 { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -117,6 +117,8 @@ namespace ViewFaceCore.Plus
                         if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                         { throw new BadImageFormatException($"加载本机库失败: {library}"); }
                     }
+                    else if (!libraryPath.Contains("tennis"))
+                    { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
                 }
             }
 

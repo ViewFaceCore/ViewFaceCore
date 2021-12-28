@@ -25,7 +25,7 @@
 		<PackageId>ViewFaceCore</PackageId>
 		<Authors>View</Authors>
 		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
-		<PackageVersion>$(Version)-alpha4</PackageVersion>
+		<PackageVersion>$(Version)-alpha5</PackageVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>View-Logo.png</PackageIcon>
@@ -149,7 +149,6 @@
 	<ItemGroup Label="linux-arm">
 		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\ARM\libViewFaceBridge.so" Link="viewfacecore\linux\arm\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
 
-		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_sandy_bridge.so" Link="viewfacecore\linux\arm\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaAgePredictor600.so" Link="viewfacecore\linux\arm\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaAuthorize.so" Link="viewfacecore\linux\arm\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
@@ -163,14 +162,11 @@
 		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaPoseEstimation600.so" Link="viewfacecore\linux\arm\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm\libSeetaQualityAssessor300.so" Link="viewfacecore\linux\arm\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm\libtennis.so" Link="viewfacecore\linux\arm\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_haswell.so" Link="viewfacecore\linux\arm\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\lib\arm\libtennis_pentium.so" Link="viewfacecore\linux\arm\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 	
 	<ItemGroup Label="linux-arm64">
 		<None Include="..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\ARM64\libViewFaceBridge.so" Link="viewfacecore\linux\arm64\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
 
-		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_sandy_bridge.so" Link="viewfacecore\linux\arm64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaAgePredictor600.so" Link="viewfacecore\linux\arm64\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaAuthorize.so" Link="viewfacecore\linux\arm64\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
@@ -184,8 +180,6 @@
 		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaPoseEstimation600.so" Link="viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm64\libSeetaQualityAssessor300.so" Link="viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis.so" Link="viewfacecore\linux\arm64\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_haswell.so" Link="viewfacecore\linux\arm64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\SeetaFace\index\build\lib\arm64\libtennis_pentium.so" Link="viewfacecore\linux\arm64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 	
 
@@ -286,7 +280,6 @@
 
 		<ItemGroup Label="linux-arm">
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libViewFaceBridge.so" PackagePath="build\viewfacecore\linux\arm\libViewFaceBridge.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\arm\libtennis_sandy_bridge.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaAgePredictor600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaAgePredictor600.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaAuthorize.so" PackagePath="build\viewfacecore\linux\arm\libSeetaAuthorize.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" PackagePath="build\viewfacecore\linux\arm\libSeetaEyeStateDetector200.so" />
@@ -300,13 +293,10 @@
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaPoseEstimation600.so" PackagePath="build\viewfacecore\linux\arm\libSeetaPoseEstimation600.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libSeetaQualityAssessor300.so" PackagePath="build\viewfacecore\linux\arm\libSeetaQualityAssessor300.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis.so" PackagePath="build\viewfacecore\linux\arm\libtennis.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_haswell.so" PackagePath="build\viewfacecore\linux\arm\libtennis_haswell.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm\libtennis_pentium.so" PackagePath="build\viewfacecore\linux\arm\libtennis_pentium.so" />
 		</ItemGroup>
 
 		<ItemGroup Label="linux-arm64">
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libViewFaceBridge.so" PackagePath="build\viewfacecore\linux\arm64\libViewFaceBridge.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_sandy_bridge.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_sandy_bridge.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaAgePredictor600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaAgePredictor600.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaAuthorize.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaAuthorize.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" />
@@ -320,8 +310,6 @@
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" PackagePath="build\viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" />
 			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis.so" PackagePath="build\viewfacecore\linux\arm64\libtennis.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_haswell.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_haswell.so" />
-			<TfmSpecificPackageFile Include="$(OutputPath)viewfacecore\linux\arm64\libtennis_pentium.so" PackagePath="build\viewfacecore\linux\arm64\libtennis_pentium.so" />
 		</ItemGroup>
 
 		<ItemGroup>
