@@ -29,8 +29,15 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>View-Logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
-		<Description>一款基于 SeetaFace6 实现的 .NET 平台的人脸识别库。</Description>
-		<PackageReleaseNotes>支持多 .NET 目标，支持 Windows(x64/x86)、Linux(arm/arm64/x64)</PackageReleaseNotes>
+		<Description>
+			一款基于 SeetaFace6 实现的 .NET 平台的人脸识别库。
+			支持多 .NET 目标，支持 Windows(x64/x86)、Linux(arm//x64)
+			Windows-x64 支持 : https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64/
+			Windows-x86 支持 : https://www.nuget.org/packages/ViewFaceCore.runtime.win.x86/
+			Ubuntu-x64 支持 : https://www.nuget.org/packages/ViewFaceCore.runtime.ubuntu.20.04.x64/
+			Raspberry_Pi-arm 支持 : https://www.nuget.org/packages/ViewFaceCore.runtime.raspberry_pi.arm/
+		</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
 	
 	</PropertyGroup>
 
