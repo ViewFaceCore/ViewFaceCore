@@ -9,6 +9,11 @@
     <PackageReference Include="View.Drawing.Extensions" Version="0.2.0" />
     <PackageReference Include="ViewFaceCore" Version="0.3.5-alpha6" />
     <PackageReference Include="ViewFaceCore.all_models" Version="6.0.1" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm" Version="6.0.1" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm64" Version="6.0.1" />
+    <PackageReference Include="ViewFaceCore.runtime.ubuntu.20.04.x64" Version="6.0.1" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x64" Version="6.0.1" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x86" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,54 +22,6 @@
     </None>
     <None Update="images\Jay_4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="model\age_predictor.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\eye_state.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="C:\Users\yangw\.nuget\packages\viewfacecore\0.3.2\Build\model\face_detector.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_landmarker_mask_pts5.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_landmarker_pts5.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_landmarker_pts68.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_recognizer.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_recognizer_light.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\face_recognizer_mask.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\fas_first.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\fas_second.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\gender_predictor.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\mask_detector.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\pose_estimation.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="model\quality_lbn.csta">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
