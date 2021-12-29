@@ -921,22 +921,59 @@ View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, Se
 // 释放资源
 View_Api void V_Dispose()
 {
-	if (v_faceDetector != NULL) delete v_faceDetector;
-	if (v_faceLandmarker != NULL) delete v_faceLandmarker;
-	if (v_faceRecognizer != NULL) delete v_faceRecognizer;
-	if (v_faceAntiSpoofing != NULL) delete v_faceAntiSpoofing;
-	if (v_faceTracker != NULL) delete v_faceTracker;
+	if (v_faceDetector != NULL) {
+		delete v_faceDetector;
+		v_faceDetector = NULL;
+	}
+	if (v_faceLandmarker != NULL) {
+		delete v_faceLandmarker;
+		v_faceLandmarker = NULL;
+	}
+	if (v_faceRecognizer != NULL) {
+		delete v_faceRecognizer;
+		v_faceRecognizer = NULL;
+	}
+	if (v_faceAntiSpoofing != NULL) {
+		delete v_faceAntiSpoofing;
+		v_faceAntiSpoofing = NULL;
+	}
+	if (v_faceTracker != NULL) {
+		delete v_faceTracker;
+		v_faceTracker = NULL;
+	}
 
-	if (V_Quality_Brightness != NULL) delete V_Quality_Brightness;
-	if (V_Quality_Clarity != NULL) delete V_Quality_Clarity;
-	if (V_Quality_Integrity != NULL) delete V_Quality_Integrity;
-	if (V_Quality_Pose != NULL) delete V_Quality_Pose;
-	if (V_Quality_PoseEx != NULL) delete V_Quality_PoseEx;
-	if (V_Quality_Resolution != NULL) delete V_Quality_Resolution;
-	if (V_Quality_ClarityEx != NULL) delete V_Quality_ClarityEx;
-	if (V_Quality_NoMask != NULL) delete V_Quality_NoMask;
+	if (V_Quality_Brightness != NULL) {
+		delete V_Quality_Brightness; V_Quality_Brightness = NULL;
+	}
+	if (V_Quality_Clarity != NULL) {
+		delete V_Quality_Clarity; V_Quality_Clarity = NULL;
+	}
+	if (V_Quality_Integrity != NULL) {
+		delete V_Quality_Integrity; V_Quality_Integrity = NULL;
+	}
+	if (V_Quality_Pose != NULL) {
+		delete V_Quality_Pose; V_Quality_Pose = NULL;
+	}
+	if (V_Quality_PoseEx != NULL) {
+		delete V_Quality_PoseEx; V_Quality_PoseEx = NULL;
+	}
+	if (V_Quality_Resolution != NULL) {
+		delete V_Quality_Resolution; V_Quality_Resolution = NULL;
+	}
+	if (V_Quality_ClarityEx != NULL) {
+		delete V_Quality_ClarityEx; V_Quality_ClarityEx = NULL;
+	}
+	if (V_Quality_NoMask != NULL) {
+		delete V_Quality_NoMask; V_Quality_NoMask = NULL;
+	}
 
-	if (V_Age_Predictor != NULL) delete V_Age_Predictor;
-	if (V_Gender_Predictor != NULL) delete V_Gender_Predictor;
-	if (V_EyeState_Detector != NULL) delete V_EyeState_Detector;
+	if (V_Age_Predictor != NULL) {
+		delete V_Age_Predictor; V_Age_Predictor = NULL;
+	}
+	if (V_Gender_Predictor != NULL) {
+		delete V_Gender_Predictor; V_Gender_Predictor = NULL;
+	}
+	if (V_EyeState_Detector != NULL) {
+		delete V_EyeState_Detector; V_EyeState_Detector = NULL;
+	}
 }
