@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net40;net45;net461;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-		<Version>6.0.1</Version>
+		<Version>6.0.2</Version>
 		<PackageVersion>$(Version)</PackageVersion>
 		<Authors>View</Authors>
 		<PackageIcon>View-Logo.png</PackageIcon>
@@ -10,20 +10,20 @@
 		<None Include="..\..\Images\View-Logo.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\ViewFaceCore.age_predictor\ViewFaceCore.age_predictor.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.eye_state\ViewFaceCore.eye_state.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_detector\ViewFaceCore.face_detector.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_landmarker_mask_pts5\ViewFaceCore.face_landmarker_mask_pts5.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_landmarker_pts5\ViewFaceCore.face_landmarker_pts5.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_landmarker_pts68\ViewFaceCore.face_landmarker_pts68.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_recognizer\ViewFaceCore.face_recognizer.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_recognizer_light\ViewFaceCore.face_recognizer_light.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.face_recognizer_mask\ViewFaceCore.face_recognizer_mask.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.fas_first\ViewFaceCore.fas_first.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.fas_second\ViewFaceCore.fas_second.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.gender_predictor\ViewFaceCore.gender_predictor.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.mask_detector\ViewFaceCore.mask_detector.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.pose_estimation\ViewFaceCore.pose_estimation.csproj" PrivateAssets="contentFiles;analyzers" />
-		<ProjectReference Include="..\ViewFaceCore.quality_lbn\ViewFaceCore.quality_lbn.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.age_predictor\ViewFaceCore.model.age_predictor.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.eye_state\ViewFaceCore.model.eye_state.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_detector\ViewFaceCore.model.face_detector.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_landmarker_mask_pts5\ViewFaceCore.model.face_landmarker_mask_pts5.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_landmarker_pts5\ViewFaceCore.model.face_landmarker_pts5.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_landmarker_pts68\ViewFaceCore.model.face_landmarker_pts68.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_recognizer\ViewFaceCore.model.face_recognizer.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_recognizer_light\ViewFaceCore.model.face_recognizer_light.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.face_recognizer_mask\ViewFaceCore.model.face_recognizer_mask.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.fas_first\ViewFaceCore.model.fas_first.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.fas_second\ViewFaceCore.model.fas_second.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.gender_predictor\ViewFaceCore.model.gender_predictor.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.mask_detector\ViewFaceCore.model.mask_detector.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.pose_estimation\ViewFaceCore.model.pose_estimation.csproj" PrivateAssets="contentFiles;analyzers" />
+		<ProjectReference Include="..\ViewFaceCore.model.quality_lbn\ViewFaceCore.model.quality_lbn.csproj" PrivateAssets="contentFiles;analyzers" />
 	</ItemGroup>
 </Project>

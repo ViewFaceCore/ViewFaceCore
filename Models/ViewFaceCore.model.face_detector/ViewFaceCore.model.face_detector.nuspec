@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.model.face_detector</id>
+		<version>6.0.0</version>
+		<title></title>
+		<authors>View</authors>
+		<owners></owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace model ‘face_detector’ for ViewFaceCore</description>
+	</metadata>
+	<files>
+		<file src="face_detector.csta" target="build\models\face_detector.csta" />
+		<file src="ViewFaceCore.model.face_detector.targets" target="build\ViewFaceCore.model.face_detector.targets" />
+		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>
