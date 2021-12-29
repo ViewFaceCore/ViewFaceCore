@@ -97,7 +97,7 @@ View_Api bool V_GetModelPath(char** path)
 
 /***************************************************************************************************************/
 // 人脸检测器
-seeta::FaceDetector* v_faceDetector = NULL;
+seeta::FaceDetector* v_faceDetector = nullptr;
 // 人脸检测结果
 static SeetaFaceInfoArray detectorInfos;
 // 获取人脸数量
@@ -120,7 +120,7 @@ View_Api int V_DetectorSize(unsigned char* imgData, SeetaImageData& img, double 
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceDetector == NULL) {
+		if (v_faceDetector == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_detector.csta";
@@ -187,7 +187,7 @@ View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
 
 /***************************************************************************************************************/
 // 人脸关键点器
-seeta::FaceLandmarker* v_faceLandmarker = NULL;
+seeta::FaceLandmarker* v_faceLandmarker = nullptr;
 // 人脸关键点数量
 /// <summary>
 /// 人脸关键点数量
@@ -200,7 +200,7 @@ View_Api int V_FaceMarkSize(int type = 0)
 	{
 		clock_t start = clock();
 
-		if (v_faceLandmarker == NULL) {
+		if (v_faceLandmarker == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_landmarker_pts68.csta";
@@ -279,7 +279,7 @@ View_Api bool V_FaceMark(unsigned char* imgData, SeetaImageData& img, SeetaRect 
 
 /***************************************************************************************************************/
 // 人脸特征值器
-seeta::FaceRecognizer* v_faceRecognizer = NULL;
+seeta::FaceRecognizer* v_faceRecognizer = nullptr;
 // 获取人脸特征值长度
 /// <summary>
 /// 获取人脸特征值长度
@@ -292,7 +292,7 @@ View_Api int V_ExtractSize(int type = 0)
 	{
 		clock_t start = clock();
 
-		if (v_faceRecognizer == NULL) {
+		if (v_faceRecognizer == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -397,7 +397,7 @@ View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, 
 
 /***************************************************************************************************************/
 // 活体检测器
-seeta::FaceAntiSpoofing* v_faceAntiSpoofing = NULL;
+seeta::FaceAntiSpoofing* v_faceAntiSpoofing = nullptr;
 // 活体检测 - 单帧
 /// <summary>
 /// 活体检测 - 单帧
@@ -420,7 +420,7 @@ View_Api int V_AntiSpoofing(unsigned char* imgData, SeetaImageData& img, SeetaRe
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceAntiSpoofing == NULL) {
+		if (v_faceAntiSpoofing == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -497,7 +497,7 @@ View_Api int V_AntiSpoofingVideo(unsigned char* imgData, SeetaImageData& img, Se
 
 /***************************************************************************************************************/
 // 人脸跟踪器
-seeta::FaceTracker* v_faceTracker = NULL;
+seeta::FaceTracker* v_faceTracker = nullptr;
 static SeetaTrackingFaceInfoArray trackingInfos;
 /// <summary>
 /// 获取跟踪的人脸个数
@@ -518,7 +518,7 @@ View_Api int V_FaceTrackSize(unsigned char* imgData, SeetaImageData& img,
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceTracker == NULL) {
+		if (v_faceTracker == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_detector.csta";
@@ -586,7 +586,7 @@ View_Api bool V_FaceTrack(float* score, int* PID, int* x, int* y, int* width, in
 
 /***************************************************************************************************************/
 // 亮度评估器
-seeta::QualityOfBrightness* V_Quality_Brightness = NULL;
+seeta::QualityOfBrightness* V_Quality_Brightness = nullptr;
 // 亮度评估
 View_Api bool V_QualityOfBrightness(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -596,7 +596,7 @@ View_Api bool V_QualityOfBrightness(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_Brightness == NULL)
+		if (V_Quality_Brightness == nullptr)
 		{
 			V_Quality_Brightness = new seeta::QualityOfBrightness(v0, v1, v2, v3);
 		}
@@ -615,7 +615,7 @@ View_Api bool V_QualityOfBrightness(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 清晰度评估器
-seeta::QualityOfClarity* V_Quality_Clarity = NULL;
+seeta::QualityOfClarity* V_Quality_Clarity = nullptr;
 // 清晰度评估
 View_Api bool V_QualityOfClarity(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -625,7 +625,7 @@ View_Api bool V_QualityOfClarity(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_Clarity == NULL)
+		if (V_Quality_Clarity == nullptr)
 		{
 			V_Quality_Clarity = new seeta::QualityOfClarity(low, high);
 		}
@@ -644,7 +644,7 @@ View_Api bool V_QualityOfClarity(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 完整度评估器
-seeta::QualityOfIntegrity* V_Quality_Integrity = NULL;
+seeta::QualityOfIntegrity* V_Quality_Integrity = nullptr;
 // 完整度评估
 View_Api bool V_QualityOfIntegrity(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -654,7 +654,7 @@ View_Api bool V_QualityOfIntegrity(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_Integrity == NULL)
+		if (V_Quality_Integrity == nullptr)
 		{
 			WriteMessage("QualityOfIntegrity", "low:" + to_string(low) + " - high:" + to_string(high));
 			V_Quality_Integrity = new seeta::QualityOfIntegrity(low, high);
@@ -674,7 +674,7 @@ View_Api bool V_QualityOfIntegrity(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 姿态评估器
-seeta::QualityOfPose* V_Quality_Pose = NULL;
+seeta::QualityOfPose* V_Quality_Pose = nullptr;
 // 姿态评估
 View_Api bool V_QualityOfPose(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -683,7 +683,7 @@ View_Api bool V_QualityOfPose(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_Pose == NULL)
+		if (V_Quality_Pose == nullptr)
 		{
 			V_Quality_Pose = new seeta::QualityOfPose();
 		}
@@ -702,7 +702,7 @@ View_Api bool V_QualityOfPose(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 姿态 (深度)评估器
-seeta::QualityOfPoseEx* V_Quality_PoseEx = NULL;
+seeta::QualityOfPoseEx* V_Quality_PoseEx = nullptr;
 // 姿态 (深度)评估
 View_Api bool V_QualityOfPoseEx(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -712,7 +712,7 @@ View_Api bool V_QualityOfPoseEx(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_PoseEx == NULL)
+		if (V_Quality_PoseEx == nullptr)
 		{
 			seeta::ModelSetting setting;
 			string modelName = "pose_estimation.csta";
@@ -743,7 +743,7 @@ View_Api bool V_QualityOfPoseEx(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 分辨率评估器
-seeta::QualityOfResolution* V_Quality_Resolution = NULL;
+seeta::QualityOfResolution* V_Quality_Resolution = nullptr;
 // 分辨率评估
 View_Api bool V_QualityOfResolution(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -753,7 +753,7 @@ View_Api bool V_QualityOfResolution(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_Resolution == NULL)
+		if (V_Quality_Resolution == nullptr)
 		{
 			V_Quality_Resolution = new seeta::QualityOfResolution(low, high);
 		}
@@ -772,7 +772,7 @@ View_Api bool V_QualityOfResolution(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 清晰度 (深度)评估器
-seeta::QualityOfClarityEx* V_Quality_ClarityEx = NULL;
+seeta::QualityOfClarityEx* V_Quality_ClarityEx = nullptr;
 // 清晰度 (深度)评估
 View_Api bool V_QualityOfClarityEx(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -782,7 +782,7 @@ View_Api bool V_QualityOfClarityEx(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_ClarityEx == NULL)
+		if (V_Quality_ClarityEx == nullptr)
 		{
 			V_Quality_ClarityEx = new seeta::QualityOfClarityEx(blur_thresh, modelPath);
 		}
@@ -801,7 +801,7 @@ View_Api bool V_QualityOfClarityEx(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 遮挡评估器
-seeta::QualityOfNoMask* V_Quality_NoMask = NULL;
+seeta::QualityOfNoMask* V_Quality_NoMask = nullptr;
 // 遮挡评估
 View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
 	SeetaRect faceRect, SeetaPointF* points, int pointsLength,
@@ -810,7 +810,7 @@ View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Quality_NoMask == NULL)
+		if (V_Quality_NoMask == nullptr)
 		{
 			V_Quality_NoMask = new seeta::QualityOfNoMask(modelPath);
 		}
@@ -830,7 +830,7 @@ View_Api bool V_QualityOfNoMask(unsigned char* imgData, SeetaImageData& img,
 
 /******人脸属性***********************************************************************************************/
 // 年龄预测器
-seeta::AgePredictor* V_Age_Predictor = NULL;
+seeta::AgePredictor* V_Age_Predictor = nullptr;
 // 年龄预测
 View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
 	SeetaPointF* points, int pointsLength)
@@ -838,7 +838,7 @@ View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Age_Predictor == NULL) {
+		if (V_Age_Predictor == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "age_predictor.csta";
@@ -860,7 +860,7 @@ View_Api int V_AgePredictor(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 年龄预测器
-seeta::GenderPredictor* V_Gender_Predictor = NULL;
+seeta::GenderPredictor* V_Gender_Predictor = nullptr;
 // 年龄预测
 View_Api int V_GenderPredictor(unsigned char* imgData, SeetaImageData& img,
 	SeetaPointF* points, int pointsLength)
@@ -868,7 +868,7 @@ View_Api int V_GenderPredictor(unsigned char* imgData, SeetaImageData& img,
 	try
 	{
 		img.data = imgData;
-		if (V_Gender_Predictor == NULL) {
+		if (V_Gender_Predictor == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "gender_predictor.csta";
@@ -890,7 +890,7 @@ View_Api int V_GenderPredictor(unsigned char* imgData, SeetaImageData& img,
 }
 
 // 年龄预测器
-seeta::EyeStateDetector* V_EyeState_Detector = NULL;
+seeta::EyeStateDetector* V_EyeState_Detector = nullptr;
 // 年龄预测
 View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, SeetaPointF* points, int pointsLength,
 	seeta::EyeStateDetector::EYE_STATE& left_eye, seeta::EyeStateDetector::EYE_STATE& right_eye)
@@ -898,7 +898,7 @@ View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, Se
 	try
 	{
 		img.data = imgData;
-		if (V_EyeState_Detector == NULL) {
+		if (V_EyeState_Detector == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "eye_state.csta";
@@ -921,59 +921,22 @@ View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, Se
 // 释放资源
 View_Api void V_Dispose()
 {
-	if (v_faceDetector != NULL) {
-		delete v_faceDetector;
-		v_faceDetector = NULL;
-	}
-	if (v_faceLandmarker != NULL) {
-		delete v_faceLandmarker;
-		v_faceLandmarker = NULL;
-	}
-	if (v_faceRecognizer != NULL) {
-		delete v_faceRecognizer;
-		v_faceRecognizer = NULL;
-	}
-	if (v_faceAntiSpoofing != NULL) {
-		delete v_faceAntiSpoofing;
-		v_faceAntiSpoofing = NULL;
-	}
-	if (v_faceTracker != NULL) {
-		delete v_faceTracker;
-		v_faceTracker = NULL;
-	}
+	if (v_faceDetector != nullptr) { delete v_faceDetector; v_faceDetector = nullptr; }
+	if (v_faceLandmarker != nullptr) { delete v_faceLandmarker; v_faceLandmarker = nullptr; }
+	if (v_faceRecognizer != nullptr) { delete v_faceRecognizer; v_faceRecognizer = nullptr; }
+	if (v_faceAntiSpoofing != nullptr) { delete v_faceAntiSpoofing; v_faceAntiSpoofing = nullptr; }
+	if (v_faceTracker != nullptr) { delete v_faceTracker; v_faceTracker = nullptr; }
 
-	if (V_Quality_Brightness != NULL) {
-		delete V_Quality_Brightness; V_Quality_Brightness = NULL;
-	}
-	if (V_Quality_Clarity != NULL) {
-		delete V_Quality_Clarity; V_Quality_Clarity = NULL;
-	}
-	if (V_Quality_Integrity != NULL) {
-		delete V_Quality_Integrity; V_Quality_Integrity = NULL;
-	}
-	if (V_Quality_Pose != NULL) {
-		delete V_Quality_Pose; V_Quality_Pose = NULL;
-	}
-	if (V_Quality_PoseEx != NULL) {
-		delete V_Quality_PoseEx; V_Quality_PoseEx = NULL;
-	}
-	if (V_Quality_Resolution != NULL) {
-		delete V_Quality_Resolution; V_Quality_Resolution = NULL;
-	}
-	if (V_Quality_ClarityEx != NULL) {
-		delete V_Quality_ClarityEx; V_Quality_ClarityEx = NULL;
-	}
-	if (V_Quality_NoMask != NULL) {
-		delete V_Quality_NoMask; V_Quality_NoMask = NULL;
-	}
+	if (V_Quality_Brightness != nullptr) { delete V_Quality_Brightness; V_Quality_Brightness = nullptr; }
+	if (V_Quality_Clarity != nullptr) { delete V_Quality_Clarity; V_Quality_Clarity = nullptr; }
+	if (V_Quality_Integrity != nullptr) { delete V_Quality_Integrity; V_Quality_Integrity = nullptr; }
+	if (V_Quality_Pose != nullptr) { delete V_Quality_Pose; V_Quality_Pose = nullptr; }
+	if (V_Quality_PoseEx != nullptr) { delete V_Quality_PoseEx; V_Quality_PoseEx = nullptr; }
+	if (V_Quality_Resolution != nullptr) { delete V_Quality_Resolution; V_Quality_Resolution = nullptr; }
+	if (V_Quality_ClarityEx != nullptr) { delete V_Quality_ClarityEx; V_Quality_ClarityEx = nullptr; }
+	if (V_Quality_NoMask != nullptr) { delete V_Quality_NoMask; V_Quality_NoMask = nullptr; }
 
-	if (V_Age_Predictor != NULL) {
-		delete V_Age_Predictor; V_Age_Predictor = NULL;
-	}
-	if (V_Gender_Predictor != NULL) {
-		delete V_Gender_Predictor; V_Gender_Predictor = NULL;
-	}
-	if (V_EyeState_Detector != NULL) {
-		delete V_EyeState_Detector; V_EyeState_Detector = NULL;
-	}
+	if (V_Age_Predictor != nullptr) { delete V_Age_Predictor; V_Age_Predictor = nullptr; }
+	if (V_Gender_Predictor != nullptr) { delete V_Gender_Predictor; V_Gender_Predictor = nullptr; }
+	if (V_EyeState_Detector != nullptr) { delete V_EyeState_Detector; V_EyeState_Detector = nullptr; }
 }
