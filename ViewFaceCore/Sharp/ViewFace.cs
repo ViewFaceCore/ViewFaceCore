@@ -93,8 +93,8 @@ namespace ViewFaceCore.Sharp
         /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
         /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型： <a href="https://www.nuget.org/packages/ViewFaceCore.face_detector/">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.mask_detector">mask_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型： <a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector/">face_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
@@ -129,9 +129,9 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">包含人脸的图片</param>
@@ -164,9 +164,9 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 提取人脸特征值。
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer">face_recognizer.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_light">face_recognizer_light.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer">face_recognizer.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap"></param>
@@ -189,9 +189,9 @@ namespace ViewFaceCore.Sharp
         /// 计算特征值相似度。
         /// <para>只能计算相同 <see cref="FaceType"/> 提取出的特征值</para>
         /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer">face_recognizer.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_recognizer_light">face_recognizer_light.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer">face_recognizer.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
+        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// </summary>
         /// <exception cref="ArgumentException"/>
@@ -219,8 +219,8 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 活体检测器。(单帧图片)
         /// <para>
-        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_first">fas_first.csta</a><br/>
-        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_second">fas_second.csta</a>
+        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_first">fas_first.csta</a><br/>
+        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_second">fas_second.csta</a>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>
@@ -239,8 +239,8 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 活体检测器。(视频帧图片)
         /// <para>
-        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_first">fas_first.csta</a><br/>
-        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.fas_second">fas_second.csta</a>
+        /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_first">fas_first.csta</a><br/>
+        /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_second">fas_second.csta</a>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>
@@ -259,8 +259,8 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 识别 <paramref name="bitmap"/> 中的人脸，并返回可跟踪的人脸信息。
         /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.face_detector">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.mask_detector">mask_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector">face_detector.csta</a><br/>
+        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>
@@ -361,7 +361,7 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 年龄预测。
         /// <para>
-        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.age_predictor">age_predictor.csta</a>
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">age_predictor.csta</a>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>
@@ -377,7 +377,7 @@ namespace ViewFaceCore.Sharp
         /// <summary>
         /// 性别预测。
         /// <para>
-        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.gender_predictor">gender_predictor.csta</a>
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.gender_predictor">gender_predictor.csta</a>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>
@@ -394,7 +394,7 @@ namespace ViewFaceCore.Sharp
         /// 眼睛状态检测。
         /// <para>
         /// 眼睛的左右是相对图片内容而言的左右。<br />
-        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.eye_state">eye_state.csta</a>
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.eye_state">eye_state.csta</a>
         /// </para>
         /// </summary>
         /// <param name="bitmap">待检测的图片</param>

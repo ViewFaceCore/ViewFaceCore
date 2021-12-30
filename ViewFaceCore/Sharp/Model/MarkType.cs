@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace ViewFaceCore.Sharp.Model
@@ -10,16 +11,19 @@ namespace ViewFaceCore.Sharp.Model
     public enum MarkType : int
     {
         /// <summary>
-        /// 68个关键点。
+        /// 68个关键点
         /// </summary>
+        [Description("68个关键点")]
         Normal = 0,
         /// <summary>
-        /// 戴口罩的关键点。
+        /// 戴口罩的关键点
         /// </summary>
+        [Description("戴口罩的关键点")]
         Mask,
         /// <summary>
-        /// 5个关键点。
+        /// 5个关键点
         /// </summary>
+        [Description("5个关键点")]
         Light,
     }
 }

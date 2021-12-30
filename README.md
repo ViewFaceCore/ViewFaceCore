@@ -21,16 +21,19 @@
 - ### 受支持的 .NET 框架 和 操作系统  
    | 目标框架 |最低版本 | 操作系统 |
    | :-: |:-: | :-: |
-   | .NET Framework |4.0 | win-x64、win-x86 |
-   | .NET Standard |2.0 | win-x64、win-x86 |
-   | .NET / .NET Core |3.1 | win-x64、win-x86、linux-x64 |
+   | .NET Framework |4.0 | win ( x64/x86 ) |
+   | .NET Standard |2.0 | win ( x64/x86 ) |
+   | .NET / .NET Core |3.1 | win ( x64/x86 )、linux ( arm/arm64/x64 ) |
 
 - ### 简单的人脸信息检测  
+   - 以 Windows x64 为例
    1. 使用 [nuget](https://www.nuget.org) 安装依赖
-      | 包名称 | 最小版本 | build 文件夹 |
-      | :- | :-: | - |
-      | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.5` | `viewfacecore` |
-      | [ViewFaceCore.face_detector](https://www.nuget.org/packages/ViewFaceCore.face_detector) | `6.0.0` | `models` |
+      | 包名称 | 最小版本 | 生成文件夹 | 说明 |
+      | :- | :-: | - | - |
+      | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.5` | —— | ViewFaceCore .NET 核心库 |
+      | [ViewFaceCore.model.face_detector](https://www.nuget.org/packages/ViewFaceCore.model.face_detector) | `6.0.0` | `models` | 人脸检测的模型支持 |
+      | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `6.0.2` | `viewfacecore\win\x64` | Windows-x64 的本机运行时 |
+
    2. 获取人脸信息  
       ```csharp
       using System;

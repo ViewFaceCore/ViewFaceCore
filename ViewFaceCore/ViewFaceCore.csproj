@@ -24,7 +24,7 @@
 		<PackageId>ViewFaceCore</PackageId>
 		<Authors>View</Authors>
 		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
-		<PackageVersion>$(Version)-beta1</PackageVersion>
+		<PackageVersion>$(Version)</PackageVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>View-Logo.png</PackageIcon>
@@ -37,6 +37,9 @@ Windows-x86 支持库 : ViewFaceCore.runtime.win.x86
 Ubuntu-x64 支持库 : ViewFaceCore.runtime.ubuntu.20.04.x64
 Linux-arm 支持库 : ViewFaceCore.runtime.linux.arm
 Linux-arm64 支持库 : ViewFaceCore.runtime.linux.arm64
+
+可按需添加模型包 : ViewFaceCore.model.*
+或添加所有模型包 : ViewFaceCore.all_models
 		</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
 	
