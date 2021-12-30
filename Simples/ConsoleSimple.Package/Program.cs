@@ -16,7 +16,7 @@ namespace ViewFaceTestPackage
             string oldImgPath = @"images/Jay_3.jpg";
             string newImgPath = @"images/Jay_4.jpg";
 
-            ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
+            using ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
             // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
             viewFace.FaceType = FaceType.Normal;
             // 系统默认使用5个人脸关键点。//不建议改动，除非是使用口罩模型。
@@ -25,7 +25,7 @@ namespace ViewFaceTestPackage
             #region 识别老照片
 
             float[] oldEigenValues;
-            Bitmap oldImg = (Bitmap)Image.FromFile(oldImgPath); // 从文件中加载照片 // 或者视频帧等
+            using Bitmap oldImg = (Bitmap)Image.FromFile(oldImgPath); // 从文件中加载照片 // 或者视频帧等
 
             Stopwatch oldSt = Stopwatch.StartNew();
 
@@ -108,8 +108,8 @@ namespace ViewFaceTestPackage
             Console.WriteLine();
             #region 识别新照片
             float[] newEigenValues;
-            Bitmap newImg = (Bitmap)Image.FromFile(newImgPath/*新图片路径*/); // 从文件中加载照片 // 或者视频帧等
-            newImg = (Bitmap)newImg.ChangeSize(new Size(1024, 768));
+            using Bitmap _newImg = (Bitmap)Image.FromFile(newImgPath/*新图片路径*/); // 从文件中加载照片 // 或者视频帧等
+            using Bitmap newImg = (Bitmap)_newImg.ChangeSize(new Size(1024, 768));
             oldSt.Restart();
             var newFaces = viewFace.FaceDetector(newImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
             if (newFaces.Length > 0) //识别到人脸
