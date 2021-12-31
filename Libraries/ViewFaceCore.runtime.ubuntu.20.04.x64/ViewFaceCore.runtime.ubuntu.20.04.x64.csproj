@@ -7,4 +7,26 @@
 		<Authors>View</Authors>
 	</PropertyGroup>
 
+	<!--项目引用方式-->
+	<ItemGroup>
+		<None Include="..\..\Bridges\Linux\ViewFaceBridge\bin\Release\x64\libViewFaceBridge.so" Link="viewfacecore\linux\x64\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
+
+		<None Include="..\..\SeetaFace\index\build\lib64\libtennis.so" Link="viewfacecore\linux\x64\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_haswell.so" Link="viewfacecore\linux\x64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_pentium.so" Link="viewfacecore\linux\x64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_sandy_bridge.so" Link="viewfacecore\linux\x64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaAgePredictor600.so" Link="viewfacecore\linux\x64\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaAuthorize.so" Link="viewfacecore\linux\x64\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\x64\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaFaceAntiSpoofingX600.so" Link="viewfacecore\linux\x64\libSeetaFaceAntiSpoofingX600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaFaceDetector600.so" Link="viewfacecore\linux\x64\libSeetaFaceDetector600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaFaceLandmarker600.so" Link="viewfacecore\linux\x64\libSeetaFaceLandmarker600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaFaceRecognizer610.so" Link="viewfacecore\linux\x64\libSeetaFaceRecognizer610.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaFaceTracking600.so" Link="viewfacecore\linux\x64\libSeetaFaceTracking600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaGenderPredictor600.so" Link="viewfacecore\linux\x64\libSeetaGenderPredictor600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaMaskDetector200.so" Link="viewfacecore\linux\x64\libSeetaMaskDetector200.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaPoseEstimation600.so" Link="viewfacecore\linux\x64\libSeetaPoseEstimation600.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaQualityAssessor300.so" Link="viewfacecore\linux\x64\libSeetaQualityAssessor300.so" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>
