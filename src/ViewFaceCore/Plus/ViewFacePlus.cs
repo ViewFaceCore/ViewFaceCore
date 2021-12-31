@@ -106,20 +106,8 @@ namespace ViewFaceCore.Plus
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                     { throw new BadImageFormatException($"加载本机库失败: {library}"); }
                 }
-                else if(!libraryPath.Contains("tennis"))
+                else if(!libraryPath.Contains("tennis_"))
                 { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
-
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    libraryPath = Path.Combine(LibraryPath, string.Format("{0}d.dll", library));
-                    if (File.Exists(libraryPath))
-                    {
-                        if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
-                        { throw new BadImageFormatException($"加载本机库失败: {library}"); }
-                    }
-                    else if (!libraryPath.Contains("tennis"))
-                    { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
-                }
             }
 
             NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
