@@ -7,4 +7,9 @@
 		<Authors>View</Authors>
 	</PropertyGroup>
 
+	<!--项目引用方式-->
+	<ItemGroup>
+		<None Update="eye_state.csta" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>

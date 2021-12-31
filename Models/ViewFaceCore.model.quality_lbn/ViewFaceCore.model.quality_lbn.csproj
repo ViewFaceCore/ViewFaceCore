@@ -7,4 +7,9 @@
 		<Authors>View</Authors>
 	</PropertyGroup>
 
+	<!--项目引用方式-->
+	<ItemGroup>
+	  <None Update="quality_lbn.csta" CopyToOutputDirectory="PreserveNewest" />
+	</ItemGroup>
+
 </Project>
