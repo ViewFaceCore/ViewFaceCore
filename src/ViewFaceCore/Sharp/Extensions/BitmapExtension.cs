@@ -22,25 +22,30 @@ namespace ViewFaceCore.Extension
         /// <returns>图像的 BGR <see cref="byte"/> 数组</returns>
         public static byte[] To24BGRByteArray(this Bitmap bitmap, out int width, out int height, out int channels)
         {
-            Rectangle rectangle = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-            BitmapData bitmapData = bitmap.LockBits(rectangle, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
             width = bitmap.Width;
             height = bitmap.Height;
-            int num = bitmap.Height * bitmapData.Stride;
-            byte[] array = new byte[num];
-            Marshal.Copy(bitmapData.Scan0, array, 0, num);
-            bitmap.UnlockBits(bitmapData);
             channels = 3;
-            byte[] bgra = new byte[array.Length / 4 * channels];
-            // brga
-            int j = 0;
-            for (int i = 0; i < array.Length; i++)
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+            try
             {
-                if ((i + 1) % 4 == 0) continue;
-                bgra[j] = array[i];
-                j++;
+                int num = bitmap.Height * bitmapData.Stride;
+                byte[] array = new byte[num];
+                Marshal.Copy(bitmapData.Scan0, array, 0, num);
+                byte[] bgra = new byte[array.Length / 4 * channels];
+                // brga
+                int j = 0;
+                for (int i = 0; i < array.Length; i++)
+                {
+                    if ((i + 1) % 4 == 0) continue;
+                    bgra[j] = array[i];
+                    j++;
+                }
+                return bgra;
             }
-            return bgra;
+            finally
+            {
+                bitmap.UnlockBits(bitmapData);
+            }
         }
     }
 }
