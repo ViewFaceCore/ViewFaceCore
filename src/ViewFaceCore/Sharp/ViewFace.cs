@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using ViewFaceCore.Extension;
 using ViewFaceCore.Plus;
 using ViewFaceCore.Sharp.Configs;
 using ViewFaceCore.Sharp.Exceptions;

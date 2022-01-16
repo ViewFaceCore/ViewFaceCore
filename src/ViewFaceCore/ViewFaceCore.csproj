@@ -48,13 +48,13 @@ Linux-arm64 支持库 : ViewFaceCore.runtime.linux.arm64
 	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+		<!--<PackageReference Include="System.Drawing.Common" Version="5.0.3" />-->
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+		<!--<PackageReference Include="System.Drawing.Common" Version="5.0.3" />-->
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+		<!--<PackageReference Include="System.Drawing.Common" Version="5.0.3" />-->
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<!--<PackageReference Include="System.Drawing.Common" Version="5.0.3" />-->
