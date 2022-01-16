@@ -29,7 +29,7 @@ namespace ViewFaceCore.Sharp.Model
         /// <param name="height">人脸图像高度</param>
         /// <param name="channels">人脸图像通道数</param>
         /// <param name="buffer">人脸图像像素数据<para>按照 BGR 排列的 <see cref="byte"/> 列表</para></param>
-        public FaceImage(int width, int height, int channels, IEnumerable<byte> buffer)
+        public FaceImage(int width, int height, int channels, byte[] buffer)
         {
             this.width = width;
             this.height = height;

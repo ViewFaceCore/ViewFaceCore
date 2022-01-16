@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net40;net45;net461;netstandard2.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+	</ItemGroup>
+
+</Project>
