@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ViewFaceCore.Extension;
 using ViewFaceCore.Plus;
@@ -73,7 +75,7 @@ namespace ViewFaceCore.Sharp
         /// 获取或设置人脸关键点类型
         /// <para>
         /// <listheader>此属性可影响到以下方法：</listheader><br />
-        /// • <c><see cref="FaceMark(Bitmap, FaceInfo)"/></c><br />
+        /// • <c><see cref="FaceMark(FaceImage, FaceInfo)"/></c><br />
         /// </para>
         /// </summary>
         public MarkType MarkType { get; set; } = MarkType.Light;
@@ -88,7 +90,7 @@ namespace ViewFaceCore.Sharp
 
         // Public Method
         /// <summary>
-        /// 识别 <paramref name="bitmap"/> 中的人脸，并返回人脸的信息。
+        /// 识别 <paramref name="image"/> 中的人脸，并返回人脸的信息。
         /// <para>
         /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
@@ -97,65 +99,46 @@ namespace ViewFaceCore.Sharp
         /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">包含人脸的图片</param>
+        /// <param name="image">包含人脸的图片</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
-        public FaceInfo[] FaceDetector(Bitmap bitmap)
+        public IEnumerable<FaceInfo> FaceDetector(FaceImage image)
         {
-            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            FaceImage img = new FaceImage(width, height, channels);
-            int size = ViewFaceBridge.DetectorSize(bgr, ref img, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
+            int size = 0;
+            var infos = ViewFaceBridge.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
 
-            if (size == -1)
-            { return new FaceInfo[0]; }
-
-            float[] _socre = new float[size];
-            int[] _x = new int[size];
-            int[] _y = new int[size];
-            int[] _width = new int[size];
-            int[] _height = new int[size];
-
-            if (ViewFaceBridge.Detector(_socre, _x, _y, _width, _height))
+            for (int i = 0; i < size; i++)
             {
-                List<FaceInfo> infos = new List<FaceInfo>();
-                for (int i = 0; i < size; i++)
-                {
-                    infos.Add(new FaceInfo() { Score = _socre[i], Location = new FaceRect() { X = _x[i], Y = _y[i], Width = _width[i], Height = _height[i] } });
-                }
-                return infos.ToArray();
+                int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
+                var info = (FaceInfo)Marshal.PtrToStructure(infos + ofs, typeof(FaceInfo));
+                yield return info;
             }
-            else { return new FaceInfo[0]; }
         }
 
         /// <summary>
-        /// 识别 <paramref name="bitmap"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
+        /// 识别 <paramref name="image"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
         /// <para>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
         /// </para>
         /// </summary>
-        /// <param name="bitmap">包含人脸的图片</param>
+        /// <param name="image">包含人脸的图片</param>
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public FaceMarkPoint[] FaceMark(Bitmap bitmap, FaceInfo info)
+        public IEnumerable<FaceMarkPoint> FaceMark(FaceImage image, FaceInfo info)
         {
-            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            int size = ViewFaceBridge.FaceMarkSize((int)MarkType);
-
-            if (size == -1)
-            { return new FaceMarkPoint[0]; }
-
-            double[] _pointX = new double[size];
-            double[] _pointY = new double[size];
-
-            FaceImage img = new FaceImage(width, height, channels);
-            if (ViewFaceBridge.FaceMark(bgr, ref img, info.Location, _pointX, _pointY, (int)MarkType))
+            int size = 0;
+            var points = ViewFaceBridge.FaceMark(ref image, info.Location, ref size, (int)MarkType);
+            if (points != IntPtr.Zero)
             {
-                List<FaceMarkPoint> points = new List<FaceMarkPoint>();
                 for (int i = 0; i < size; i++)
-                { points.Add(new FaceMarkPoint() { X = _pointX[i], Y = _pointY[i] }); }
-                return points.ToArray();
+                {
+                    var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
+                    var point = (FaceMarkPoint)Marshal.PtrToStructure(points + ofs, typeof(FaceMarkPoint));
+                    yield return point;
+                }
+                ViewFaceBridge.Free(points);
             }
             else
             { throw new MarkException("人脸关键点获取失败"); }
@@ -169,20 +152,21 @@ namespace ViewFaceCore.Sharp
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// </summary>
-        /// <param name="bitmap"></param>
+        /// <param name="image"></param>
         /// <param name="points"></param>
         /// <exception cref="ExtractException"/>
         /// <returns></returns>
-        public float[] Extract(Bitmap bitmap, FaceMarkPoint[] points)
+        public IEnumerable<float> Extract(FaceImage image, IEnumerable<FaceMarkPoint> points)
         {
-            byte[] bgr = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
-            float[] features = new float[ViewFaceBridge.ExtractSize((int)FaceType)];
-
-            FaceImage img = new FaceImage(width, height, channels);
-            if (ViewFaceBridge.Extract(bgr, ref img, points, features, (int)FaceType))
-            { return features; }
-            else
-            { throw new ExtractException("人脸特征值提取失败"); }
+            int size = 0;
+            var features = ViewFaceBridge.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
+            for (int i = 0; i < size; i++)
+            {
+                var ofs = i * Marshal.SizeOf(typeof(float));
+                var feature = (float)Marshal.PtrToStructure(features + ofs, typeof(float));
+                yield return feature;
+            }
+            ViewFaceBridge.Free(features);
         }
 
         /// <summary>
@@ -199,14 +183,14 @@ namespace ViewFaceCore.Sharp
         /// <param name="leftFeatures"></param>
         /// <param name="rightFeatures"></param>
         /// <returns></returns>
-        public float Similarity(float[] leftFeatures, float[] rightFeatures)
+        public float Similarity(IEnumerable<float> leftFeatures, IEnumerable<float> rightFeatures)
         {
-            if (leftFeatures.Length == 0 || rightFeatures.Length == 0)
+            if (!leftFeatures.Any() || !rightFeatures.Any())
                 throw new ArgumentNullException("参数不能为空", nameof(leftFeatures));
-            if (leftFeatures.Length != rightFeatures.Length)
+            if (leftFeatures.Count() != rightFeatures.Count())
                 throw new ArgumentException("两个参数长度不一致");
 
-            return ViewFaceBridge.Similarity(leftFeatures, rightFeatures, (int)FaceType);
+            return ViewFaceBridge.Similarity(leftFeatures.ToArray(), rightFeatures.ToArray(), (int)FaceType);
         }
 
         /// <summary>
@@ -444,4 +428,5 @@ namespace ViewFaceCore.Sharp
             Dispose(false);
         }
     }
+
 }

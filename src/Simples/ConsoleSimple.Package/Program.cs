@@ -17,7 +17,7 @@ namespace ViewFaceTestPackage
             string newImgPath = @"images/Jay_4.jpg";
 
             using ViewFace viewFace = new ViewFace((str) => { Debug.WriteLine(str); }); // 初始化人脸识别类，并设置 日志回调函数
-            // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
+                                                                                        // 系统默认使用的轻量级识别模型。如果对精度有要求，请切换到 Normal 模式；并下载需要模型文件 放入生成目录的 model 文件夹中
             viewFace.FaceType = FaceType.Normal;
             // 系统默认使用5个人脸关键点。//不建议改动，除非是使用口罩模型。
             viewFace.MarkType = MarkType.Light;
@@ -28,6 +28,24 @@ namespace ViewFaceTestPackage
             using Bitmap oldImg = (Bitmap)Image.FromFile(oldImgPath); // 从文件中加载照片 // 或者视频帧等
 
             Stopwatch oldSt = Stopwatch.StartNew();
+
+            for (int index = 0; index < 5000; index++)
+            {
+                var _oldFaceInfos = viewFace.FaceDetector(oldImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
+                if (_oldFaceInfos.Length > 0) //识别到人脸
+                {
+                    { // 打印人脸信息
+                        Console.WriteLine($"识别到的人脸数量：{_oldFaceInfos.Length} 。人脸信息：\n");
+                        Console.WriteLine($"序号\t人脸置信度\t位置X\t位置Y\t宽度\t高度");
+                        for (int i = 0; i < _oldFaceInfos.Length; i++)
+                        {
+                            Console.WriteLine($"{i + 1}\t{_oldFaceInfos[i].Score:f8}\t{_oldFaceInfos[i].Location.X}\t{_oldFaceInfos[i].Location.Y}\t{_oldFaceInfos[i].Location.Width}\t{_oldFaceInfos[i].Location.Height}");
+                        }
+                        Console.WriteLine();
+                    }
+                }
+                Console.WriteLine(index);
+            }
 
             var oldFaceInfos = viewFace.FaceDetector(oldImg); // 检测图片中包含的人脸信息。(置信度、位置、大小)
             oldFaceInfos = viewFace.FaceDetector(oldImg); // 异步检测图片中的人脸信息
@@ -146,7 +164,8 @@ namespace ViewFaceTestPackage
 
             Console.WriteLine();
             Console.WriteLine("识别完成，请按任意键退出...");
-            Console.ReadKey();
+            Console.WriteLine();
+            Console.Read();
         }
     }
 }

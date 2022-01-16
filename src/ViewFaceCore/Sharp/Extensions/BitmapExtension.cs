@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#if !NET6_0_OR_GREATER
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Text;
+using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Extension
 {
@@ -47,5 +46,18 @@ namespace ViewFaceCore.Extension
                 bitmap.UnlockBits(bitmapData);
             }
         }
+
+        /// <summary>
+        /// <see cref="Bitmap"/> 转换为 <see cref="FaceImage"/>。
+        /// </summary>
+        /// <param name="bitmap">人脸图像</param>
+        /// <returns></returns>
+        public static FaceImage ToFaceImage(Bitmap bitmap)
+        {
+            var buffer = bitmap.To24BGRByteArray(out int width, out int height, out int channels);
+            return new FaceImage(width, height, channels, buffer);
+        }
     }
 }
+
+#endif

@@ -36,12 +36,12 @@
 using namespace std;
 
 string modelPath = "./models/"; // 模型所在路径
-LogCallBack logger = NULL; // 日志回调函数
+LogCallBack logger = nullptr; // 日志回调函数
 
 /***************************************************************************************************************/
 // 打印日志
 void WriteLog(string str) {
-	if (logger == NULL) { cout << str << endl; }
+	if (logger == nullptr) { cout << str << endl; }
 	else { logger(str.c_str()); }
 }
 // 打印指定函数产生的一般消息
@@ -60,7 +60,7 @@ void WriteError(string fanctionName, const std::exception& e) { WriteLog(fanctio
 /// 注册日志回调函数
 /// </summary>
 /// <param name="writeLog">回调函数</param>
-View_Api void V_SetLogFunction(LogCallBack writeLog)
+View_Api void SetLogFunction(LogCallBack writeLog)
 {
 	logger = writeLog;
 	WriteMessage("SetLogFunction", "Successed.");
@@ -70,7 +70,7 @@ View_Api void V_SetLogFunction(LogCallBack writeLog)
 /// 设置人脸模型目录
 /// </summary>
 /// <param name="path">人脸模型目录</param>
-View_Api void V_SetModelPath(const char* path)
+View_Api void SetModelPath(const char* path)
 {
 	modelPath = path;
 	WriteMessage("SetModelPath", "Model.Path:" + modelPath);
@@ -97,7 +97,7 @@ View_Api bool V_GetModelPath(char** path)
 
 /***************************************************************************************************************/
 // 人脸检测器
-seeta::FaceDetector* v_faceDetector = nullptr;
+seeta::FaceDetector* faceDetector = nullptr;
 // 人脸检测结果
 static SeetaFaceInfoArray detectorInfos;
 // 获取人脸数量
@@ -120,22 +120,22 @@ View_Api int V_DetectorSize(unsigned char* imgData, SeetaImageData& img, double 
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceDetector == nullptr) {
+		if (faceDetector == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_detector.csta";
 			if (type == 1) { modelName = "mask_detector.csta"; }
 			setting.append(modelPath + modelName);
 			WriteModelName("DetectorSize", modelName);
-			v_faceDetector = new seeta::FaceDetector(setting);
+			faceDetector = new seeta::FaceDetector(setting);
 		}
 
-		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
-		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
-		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
-		v_faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+		faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+		faceDetector->set(seeta::FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+		faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+		faceDetector->set(seeta::FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
 
-		auto infos = v_faceDetector->detect(img);
+		auto infos = faceDetector->detect(img);
 		detectorInfos = infos;
 
 		WriteRunTime("Detector", start); // 此方法已经是人脸检测的全过程，故计时器显示为 人脸识别方法
@@ -172,8 +172,8 @@ View_Api bool V_Detector(float* score, int* x, int* y, int* width, int* height)
 			*height = detectorInfos.data->pos.height;
 			score++, x++, y++, width++, height++;
 		}
-		detectorInfos.data = NULL;
-		detectorInfos.size = NULL;
+		detectorInfos.data = nullptr;
+		detectorInfos.size = 0;
 
 		//WriteRunTime(__FUNCDNAME__, start); // 此方法只是将 人脸数量检测器 获取到的数据赋值传递，并不耗时。故不显示此方法的调用时间
 		return true;
@@ -244,7 +244,7 @@ View_Api bool V_FaceMark(unsigned char* imgData, SeetaImageData& img, SeetaRect 
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceLandmarker == NULL) {
+		if (v_faceLandmarker == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_device(SEETA_DEVICE_CPU);
 			string modelName = "face_landmarker_pts68.csta";
@@ -333,7 +333,7 @@ View_Api bool V_Extract(unsigned char* imgData, SeetaImageData& img, SeetaPointF
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceRecognizer == NULL) {
+		if (v_faceRecognizer == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -371,7 +371,7 @@ View_Api float V_CalculateSimilarity(float* leftFeatures, float* rightFeatures, 
 	{
 		clock_t start = clock();
 
-		if (v_faceRecognizer == NULL) {
+		if (v_faceRecognizer == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -468,7 +468,7 @@ View_Api int V_AntiSpoofingVideo(unsigned char* imgData, SeetaImageData& img, Se
 		clock_t start = clock();
 
 		img.data = imgData;
-		if (v_faceAntiSpoofing == NULL) {
+		if (v_faceAntiSpoofing == nullptr) {
 			seeta::ModelSetting setting;
 			setting.set_id(0);
 			setting.set_device(SEETA_DEVICE_CPU);
@@ -572,8 +572,8 @@ View_Api bool V_FaceTrack(float* score, int* PID, int* x, int* y, int* width, in
 			score++; PID++; x++; y++; width++; height++;
 		}
 
-		trackingInfos.data = NULL;
-		trackingInfos.size = NULL;
+		trackingInfos.data = nullptr;
+		trackingInfos.size = 0;
 
 		return true;
 	}
@@ -921,7 +921,7 @@ View_Api bool V_EyeStateDetector(unsigned char* imgData, SeetaImageData& img, Se
 // 释放资源
 View_Api void V_Dispose()
 {
-	if (v_faceDetector != nullptr) { delete v_faceDetector; v_faceDetector = nullptr; }
+	if (faceDetector != nullptr) { delete faceDetector; faceDetector = nullptr; }
 	if (v_faceLandmarker != nullptr) { delete v_faceLandmarker; v_faceLandmarker = nullptr; }
 	if (v_faceRecognizer != nullptr) { delete v_faceRecognizer; v_faceRecognizer = nullptr; }
 	if (v_faceAntiSpoofing != nullptr) { delete v_faceAntiSpoofing; v_faceAntiSpoofing = nullptr; }
