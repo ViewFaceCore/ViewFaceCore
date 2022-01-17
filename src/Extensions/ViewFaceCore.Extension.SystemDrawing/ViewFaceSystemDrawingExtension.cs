@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using ViewFaceCore.Sharp;
-using ViewFaceCore.Sharp.Model;
+using ViewFaceCore;
+using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Extension.SystemDrawing
 {

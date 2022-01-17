@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
-using ViewFaceCore.Sharp;
-using ViewFaceCore.Sharp.Model;
+using ViewFaceCore;
+using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Native
 {
     /// <summary>
     /// 导入方法
     /// </summary>
-    static partial class ViewFaceNative
+    internal static partial class ViewFaceNative
     {
 
         const string LibraryName = "ViewFaceBridge";

@@ -1,5 +1,5 @@
 ﻿using System;
-using ViewFaceCore.Sharp.Model;
+using ViewFaceCore.Model;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
@@ -11,7 +11,7 @@ namespace ViewFaceCore.Native
     /// <summary>
     /// 适用于 Any CPU 的 ViewFacePlus
     /// </summary>
-    static partial class ViewFaceNative
+    internal static partial class ViewFaceNative
     {
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool SetDllDirectory(string path);

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewFaceCore.Sharp;
-using ViewFaceCore.Sharp.Model;
+using ViewFaceCore;
+using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Extension.SkiaSharp
 {
