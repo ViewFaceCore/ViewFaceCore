@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-
+﻿using System.Collections.Generic;
+using System.Linq;
 using ViewFaceCore.Sharp.Model;
 
 namespace ViewFaceCore.Sharp.Extensions
@@ -17,17 +17,17 @@ namespace ViewFaceCore.Sharp.Extensions
         /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
         /// </summary>
         /// <param name="viewFace"></param>
-        /// <param name="bitmaps">一组图片，即视频帧的 <see cref="Bitmap"/> 数组</param>
+        /// <param name="bitmaps">一组图片信息，即视频帧的 <see cref="FaceImage"/> 数组</param>
         /// <param name="faceIndex">指定要识别的人脸索引</param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns></returns>
-        public static AntiSpoofingStatus AntiSpoofingVideo(this ViewFace viewFace, Bitmap[] bitmaps, int faceIndex, bool global)
+        public static AntiSpoofingStatus AntiSpoofingVideo(this ViewFace viewFace, IEnumerable<FaceImage> bitmaps, int faceIndex, bool global)
         {
             var result = AntiSpoofingStatus.Detecting;
             bool haveFace = false;
             foreach (var bitmap in bitmaps)
             {
-                var infos = viewFace.FaceDetector(bitmap);
+                var infos = viewFace.FaceDetector(bitmap).ToArray();
                 if (faceIndex >= 0 && faceIndex < infos.Length)
                 {
                     haveFace = true;
@@ -42,23 +42,6 @@ namespace ViewFaceCore.Sharp.Extensions
             { return result; }
             else
             { return AntiSpoofingStatus.Error; }
-        }
-
-        /// <summary>
-        /// 计算人脸特征值相似度。
-        /// </summary>
-        /// <param name="viewFace"></param>
-        /// <param name="lhs"></param>
-        /// <param name="rhs"></param>
-        /// <returns></returns>
-        public static float Compare(this ViewFace viewFace, float[] lhs, float[] rhs)
-        {
-            float sum = 0;
-            for (int i = 0; i < lhs.Length; i++)
-            {
-                sum += lhs[i] * rhs[i];
-            }
-            return sum;
         }
     }
 }

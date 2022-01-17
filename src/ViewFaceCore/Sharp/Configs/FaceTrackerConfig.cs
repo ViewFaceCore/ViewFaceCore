@@ -17,12 +17,12 @@ namespace ViewFaceCore.Sharp.Configs
         /// 如果最小人脸参数设置为 <see langword="80"/> 的话，从检测能力上，可以将原图缩小的原来的 <see langword="1/4"/> ，这样从计算复杂度上，能够比最小人脸设置为 <see langword="20"/> 时，提速到 <see langword="16"/> 倍。
         /// </para>
         /// </summary>
-        public double FaceSize { get; set; } = 20;
+        public int FaceSize { get; set; } = 20;
         /// <summary>
         /// 检测器阈值。
         /// <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
         /// </summary>
-        public double Threshold { get; set; } = 0.9;
+        public float Threshold { get; set; } = 0.9f;
         /// <summary>
         /// 是否进行检测结果的帧间平滑，使得检测结果从视觉上更好一些。
         /// </summary>

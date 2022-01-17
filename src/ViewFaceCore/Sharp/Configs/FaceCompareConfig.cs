@@ -11,7 +11,7 @@ namespace ViewFaceCore.Sharp.Configs
         /// <summary>
         /// 人脸相似度阈值
         /// </summary>
-        static Dictionary<FaceType, float> Threshold { get; } = new Dictionary<FaceType, float>()
+        private static Dictionary<FaceType, float> Threshold { get; } = new Dictionary<FaceType, float>()
         {
             { FaceType.Normal, 0.62f },
             { FaceType.Mask, 0.48f },

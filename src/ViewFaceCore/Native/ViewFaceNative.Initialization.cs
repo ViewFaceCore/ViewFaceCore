@@ -6,12 +6,12 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ViewFaceCore.Plus
+namespace ViewFaceCore.Native
 {
     /// <summary>
     /// 适用于 Any CPU 的 ViewFacePlus
     /// </summary>
-    static partial class ViewFaceBridge
+    static partial class ViewFaceNative
     {
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool SetDllDirectory(string path);
@@ -78,7 +78,7 @@ namespace ViewFaceCore.Plus
         /// <exception cref="BadImageFormatException"></exception>
         /// <exception cref="FileNotFoundException"></exception>
         /// <exception cref="PlatformNotSupportedException"></exception>
-        static ViewFaceBridge()
+        static ViewFaceNative()
         {
 #if NETFRAMEWORK || NETSTANDARD
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

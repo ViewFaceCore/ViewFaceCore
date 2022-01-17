@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
-
-#if !NET6_0_OR_GREATER
-using System.Drawing;
-using ViewFaceCore.Extension;
-#endif
 
 namespace ViewFaceCore.Sharp.Model
 {
@@ -15,7 +9,7 @@ namespace ViewFaceCore.Sharp.Model
     /// <para>图像 data 直接使用 byte[] 传送，在 ViewFace 内部进行组装</para>
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FaceImage : IDisposable
+    public struct FaceImage : IDisposable, IEquatable<FaceImage>
     {
         private readonly int width;
         private readonly int height;
@@ -80,9 +74,42 @@ namespace ViewFaceCore.Sharp.Model
         /// <summary>
         /// <see cref="IDisposable"/>
         /// </summary>
+
+#pragma warning disable CS1591 // 缺少对公共可见类型或成员的 XML 注释
+        public static bool operator ==(FaceImage a, FaceImage b)
+            => a.Width == b.Width
+            && a.Height == b.Height
+            && a.Channels == b.Channels
+            && EqualityComparer<IEnumerable<byte>>.Default.Equals(a.Data, b.Data);
+
+        public static bool operator !=(FaceImage a, FaceImage b)
+            => a.Width != b.Width
+            || a.Height != b.Height
+            || a.Channels != b.Channels
+            || !EqualityComparer<IEnumerable<byte>>.Default.Equals(a.Data, b.Data);
+
+        public override bool Equals(object obj)
+        {
+            if (obj is FaceImage other)
+            { return this == other; }
+            else { return false; }
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1213452459;
+            hashCode = hashCode * -1521134295 + Width.GetHashCode();
+            hashCode = hashCode * -1521134295 + Height.GetHashCode();
+            hashCode = hashCode * -1521134295 + Channels.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<IEnumerable<byte>>.Default.GetHashCode(Data);
+            return hashCode;
+        }
+        public bool Equals(FaceImage other) => this == other;
+
         public void Dispose()
         {
             Marshal.FreeHGlobal(data);
         }
-    };
+#pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+    }
 }
