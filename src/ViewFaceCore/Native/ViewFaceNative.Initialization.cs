@@ -39,7 +39,7 @@ namespace ViewFaceCore.Native
                 else
                 { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
 
-                var libraryPath = Path.Combine(Environment.CurrentDirectory, "viewfacecore", platform, architecture);
+                var libraryPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "viewfacecore", platform, architecture);
                 if (Directory.Exists(libraryPath))
                 { return libraryPath; }
                 else { throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}"); }
