@@ -1,0 +1,56 @@
+[submodule "OpenRoleZoo"]
+	path = OpenRoleZoo
+	url = https://github.com/ViewFaceCore/OpenRoleZoo
+	branch = master
+[submodule "SeetaEyeStateDetector"]
+	path = SeetaEyeStateDetector
+	url = https://github.com/ViewFaceCore/SeetaEyeStateDetector
+	branch = master
+[submodule "SeetaAgePredictor"]
+	path = SeetaAgePredictor
+	url = https://github.com/ViewFaceCore/SeetaAgePredictor
+	branch = master
+[submodule "FaceAntiSpoofingX6"]
+	path = FaceAntiSpoofingX6
+	url = https://github.com/ViewFaceCore/FaceAntiSpoofingX6
+	branch = master
+[submodule "SeetaGenderPredictor"]
+	path = SeetaGenderPredictor
+	url = https://github.com/ViewFaceCore/SeetaGenderPredictor
+	branch = master
+[submodule "SeetaMaskDetector"]
+	path = SeetaMaskDetector
+	url = https://github.com/ViewFaceCore/SeetaMaskDetector
+	branch = master
+[submodule "FaceTracker6"]
+	path = FaceTracker6
+	url = https://github.com/ViewFaceCore/FaceTracker6
+	branch = master
+[submodule "FaceBoxes"]
+	path = FaceBoxes
+	url = https://github.com/ViewFaceCore/FaceBoxes
+	branch = master
+[submodule "Landmarker"]
+	path = Landmarker
+	url = https://github.com/ViewFaceCore/Landmarker
+	branch = master
+[submodule "FaceRecognizer6"]
+	path = FaceRecognizer6
+	url = https://github.com/ViewFaceCore/FaceRecognizer6
+	branch = master
+[submodule "PoseEstimator6"]
+	path = PoseEstimator6
+	url = https://github.com/ViewFaceCore/PoseEstimator6
+	branch = master
+[submodule "QualityAssessor3"]
+	path = QualityAssessor3
+	url = https://github.com/ViewFaceCore/QualityAssessor3
+	branch = master
+[submodule "TenniS"]
+	path = TenniS
+	url = https://github.com/ViewFaceCore/TenniS
+	branch = master
+[submodule "SeetaAuthorize"]
+	path = SeetaAuthorize
+	url = https://github.com/ViewFaceCore/SeetaAuthorize
+	branch = master

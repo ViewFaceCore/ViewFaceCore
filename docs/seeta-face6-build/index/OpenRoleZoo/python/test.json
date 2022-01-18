@@ -1,0 +1,20 @@
+{
+    "name": "json2sta",
+    "date": "@date",
+    "stride": 4,
+    "scale": 1.414,
+    "threshold": [
+        0.7,
+        0.7,
+        0.85
+    ],
+    "transform": {
+        "type": "sigmoid",
+        "param": [
+            1,
+            2.3
+        ]
+    },
+    "data" : "@file@1.jpg"
+}
+

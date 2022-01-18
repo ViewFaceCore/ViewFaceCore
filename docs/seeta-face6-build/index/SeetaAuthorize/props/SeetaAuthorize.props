@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- option -->
+  <PropertyGroup Label="UserMacros">
+    <SeetaAuthorizeHome>D:\SeetatechGit_Clean\wqy\SeetaAuthorize</SeetaAuthorizeHome>
+    <SeetaAuthorizeDebugFuffix>d</SeetaAuthorizeDebugFuffix>
+    <SeetaAutoEncrypt>false</SeetaAutoEncrypt>
+  </PropertyGroup>
+  <ItemGroup>
+    <BuildMacro Include="SeetaAuthorizeHome">
+      <Value>$(SeetaAuthorizeHome)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SeetaAuthorizeDebugFuffix">
+      <Value>$(SeetaAuthorizeDebugFuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SeetaAutoEncrypt">
+      <Value>$(SeetaAutoEncrypt)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(SeetaAutoEncrypt)'=='true'">
+    <SeetaAuthorizeDefintions>SEETA_AUTO_ENCRYPT;$(SeetaAuthorizeDefintions)</SeetaAuthorizeDefintions>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>$(SeetaAuthorizeDefintions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <!-- include OpenSSL.props -->
+  <ImportGroup Label="PropertySheets" Condition="'$(SeetaLockSDKOnline)'=='true' OR '$(SeetaLockModel)'=='true'">
+    <Import Project="OpenSSL.props" />
+  </ImportGroup>
+  <!-- include SeetaLock -->
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SeetaAuthorizeHome)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <Link>
+      <AdditionalLibraryDirectories>$(SeetaAuthorizeHome)\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SeetaAuthorize.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <Link>
+      <AdditionalLibraryDirectories>$(SeetaAuthorizeHome)\lib\$(PlatformTarget);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SeetaAuthorize$(SeetaAuthorizeDebugFuffix).lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+      <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEvent>
+      <Command>%(Command)
+   copy /Y "$(SeetaAuthorizeHome)\lib\$(PlatformTarget)\SeetaAuthorized.dll" "$(SolutionDir)build\lib\$(PlatformTarget)\"
+   </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PostBuildEvent>
+      <Command>%(Command)
+   copy /Y "$(SeetaAuthorizeHome)\lib\$(PlatformTarget)\SeetaAuthorized.dll" "$(SolutionDir)build\lib\$(PlatformTarget)\"
+   </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+        <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PostBuildEvent>
+      <Command>%(Command)
+   copy /Y "$(SeetaAuthorizeHome)\lib\$(PlatformTarget)\SeetaAuthorize.dll" "$(SolutionDir)build\lib\$(PlatformTarget)\"
+   </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PostBuildEvent>
+      <Command>%(Command)
+   copy /Y "$(SeetaAuthorizeHome)\lib\$(PlatformTarget)\SeetaAuthorize.dll" "$(SolutionDir)build\lib\$(PlatformTarget)\"
+   </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+</Project>

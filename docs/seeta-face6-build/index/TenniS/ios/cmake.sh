@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+BASE=$(cd `dirname $0`; pwd)
+ROOT=$BASE/..
+
+cmake "$ROOT" -DCMAKE_TOOLCHAIN_FILE="$BASE"/iOS.cmake \
+-DTS_USE_OPENMP=OFF \
+-DTS_USE_SIMD=ON \
+-DTS_USE_CBLAS=ON \
+-DTS_USE_NEON=ON \
+-DTS_BUILD_TEST=OFF \
+-DTS_BUILD_TOOLS=OFF \
+-DCMAKE_BUILD_TYPE=Release \
+-DCMAKE_INSTALL_PREFIX=/usr/local \
+-DIOS_DEPLOYMENT_TARGET=9 \
+-DENABLE_BITCODE=0 \
+$@
+
+# optional 1
+# -DIOS_PLATFORM=OS
+# -DIOS_PLATFORM=SIMULATOR64
+# optinal 2
+# -DIOS_ARCH=arm64
+
