@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.model.face_landmarker_pts5</id>
-		<version>6.0.0</version>
+		<version>6.0.3</version>
 		<title></title>
 		<authors>View</authors>
 		<owners></owners>
@@ -11,7 +11,7 @@
 		<description>SeetaFace model ‘face_landmarker_pts5’ for ViewFaceCore</description>
 	</metadata>
 	<files>
-		<file src="face_landmarker_pts5.csta" target="build\models\face_landmarker_pts5.csta" />
+		<file src="face_landmarker_pts5.csta" target="build\viewfacecore\models\face_landmarker_pts5.csta" />
 		<file src="ViewFaceCore.model.face_landmarker_pts5.targets" target="build\ViewFaceCore.model.face_landmarker_pts5.targets" />
 		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
 	</files>

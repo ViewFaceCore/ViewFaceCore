@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.model.pose_estimation</id>
-		<version>6.0.0</version>
+		<version>6.0.3</version>
 		<title></title>
 		<authors>View</authors>
 		<owners></owners>
@@ -11,7 +11,7 @@
 		<description>SeetaFace model ‘pose_estimation’ for ViewFaceCore</description>
 	</metadata>
 	<files>
-		<file src="pose_estimation.csta" target="build\models\pose_estimation.csta" />
+		<file src="pose_estimation.csta" target="build\viewfacecore\models\pose_estimation.csta" />
 		<file src="ViewFaceCore.model.pose_estimation.targets" target="build\ViewFaceCore.model.pose_estimation.targets" />
 		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
 	</files>

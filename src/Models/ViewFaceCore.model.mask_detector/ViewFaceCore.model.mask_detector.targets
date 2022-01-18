@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
-		<None Include="$(MSBuildThisFileDirectory)\models\*.csta">
-			<Link>models\%(Filename)%(Extension)</Link>
+		<None Include="$(MSBuildThisFileDirectory)\viewfacecore\models\*.csta">
+			<Link>viewfacecore\models\%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
