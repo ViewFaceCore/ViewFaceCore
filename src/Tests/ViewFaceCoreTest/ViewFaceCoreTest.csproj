@@ -15,7 +15,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj" />
+    <ProjectReference Include="..\..\Libraries\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
+    <ProjectReference Include="..\..\Models\ViewFaceCore.all_models\ViewFaceCore.all_models.csproj" />
     <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="images\Jay_3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="images\Jay_4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

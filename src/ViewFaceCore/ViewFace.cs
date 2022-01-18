@@ -86,6 +86,7 @@ namespace ViewFaceCore
                 var info = (FaceInfo)Marshal.PtrToStructure(infos + ofs, typeof(FaceInfo));
                 yield return info;
             }
+            ViewFaceNative.Free(infos);
         }
 
         /// <summary>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ViewFaceCoreTest": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

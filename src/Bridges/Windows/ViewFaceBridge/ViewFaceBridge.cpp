@@ -63,10 +63,19 @@ View_Api SeetaFaceInfo* Detector(SeetaImageData& img, int* size, double faceSize
 	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
 	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
 
-	auto infos = faceDetector->detect(img);
+	auto faces = faceDetector->detect_v2(img);
 	delete faceDetector;
-	*size = infos.size;
-	return infos.data;
+
+	*size = faces.size();
+	SeetaFaceInfo* _infos = (SeetaFaceInfo*)malloc((*size) * sizeof(SeetaFaceInfo));
+	int index = 0;
+	for (auto& face : faces)
+	{
+		_infos[index] = face;
+		index++;
+	}
+
+	return _infos;
 }
 
 // ÈËÁ³¹Ø¼üµãÆ÷

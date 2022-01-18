@@ -9,7 +9,10 @@
 
 	<!--项目引用方式-->
 	<ItemGroup>
-		<None Include="..\..\Bridges\Windows\ViewFaceBridge\bin\Release\x64\ViewFaceBridge.dll" Link="viewfacecore\win\x64\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
+		<!--调式文件-->
+		<None Include="..\..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.pdb" Link="viewfacecore\win\x64\ViewFaceBridge.pdb" CopyToOutputDirectory="PreserveNewest" />
+		
+		<None Include="..\..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x64\ViewFaceBridge.dll" Link="viewfacecore\win\x64\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
 
 		<None Include="..\..\SeetaFace\index\build\bin\x64\tennis.dll" Link="viewfacecore\win\x64\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\bin\x64\tennis_haswell.dll" Link="viewfacecore\win\x64\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
