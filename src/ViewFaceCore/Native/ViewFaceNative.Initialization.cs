@@ -1,10 +1,8 @@
 ﻿using System;
-using ViewFaceCore.Model;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ViewFaceCore.Native
 {
@@ -39,7 +37,7 @@ namespace ViewFaceCore.Native
                 else
                 { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
 
-                var libraryPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "viewfacecore", platform, architecture);
+                var libraryPath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ViewFace)).Location), "viewfacecore", platform, architecture);
                 if (Directory.Exists(libraryPath))
                 { return libraryPath; }
                 else { throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}"); }
@@ -116,7 +114,7 @@ namespace ViewFaceCore.Native
                 if (libraryName.Equals(library, StringComparison.OrdinalIgnoreCase))
                 {
                     string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
-                    return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.ApplicationDirectory);
+                    return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.AssemblyDirectory);
                 }
                 return IntPtr.Zero;
             });
