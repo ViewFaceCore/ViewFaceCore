@@ -15,9 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj" />
     <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj" />
-    <ProjectReference Include="..\..\Libraries\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
-    <ProjectReference Include="..\..\Models\ViewFaceCore.all_models\ViewFaceCore.all_models.csproj" />
     <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
 

@@ -139,6 +139,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>..\..\..\SeetaFace\index\build\lib\x64\SeetaEyeStateDetector200.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaFaceAntiSpoofingX600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaFaceDetector600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaFaceLandmarker600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaFaceRecognizer610.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaFaceTracking600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaGenderPredictor600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaMaskDetector200.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaPoseEstimation600.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaQualityAssessor300.lib;..\..\..\SeetaFace\index\build\lib\x64\SeetaAgePredictor600.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y "$(OutDir)*" "..\..\..\Tests\ViewFaceCoreTest\bin\$(Configuration)\net6.0\viewfacecore\win\$(PlatformShortName)\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
