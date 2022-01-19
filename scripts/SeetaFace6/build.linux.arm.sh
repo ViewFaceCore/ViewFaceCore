@@ -9,9 +9,9 @@ env_setup() {
   )
 
   BUILD_PATH_BASE="$BUILD_HOME"/build
-  BUILD_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace_build
+  BUILD_PATH_SEETA="$BUILD_PATH_BASE"/temp
   INSTALL_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace
-  SOURCE_PATH_SEETA="$BUILD_HOME"/index
+  SOURCE_PATH_SEETA="$BUILD_HOME"/../../src/SeetaFace/index
 
   mkdir -p "$BUILD_PATH_BASE"
   mkdir -p "$BUILD_PATH_SEETA"

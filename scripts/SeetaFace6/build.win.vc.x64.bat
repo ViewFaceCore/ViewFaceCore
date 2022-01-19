@@ -7,9 +7,9 @@ color 0f
 rem 设置vcvarsall.bat位置
 set VCVARSALL_DIR="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
 rem 设置源码位置
-set "BASE_DIR=%~dp0index"
+set "BASE_DIR=%~dp0..\..\src\SeetaFace\index"
 rem 设置编译结果位置
-set "INSTALL_DIR=%~dp0index\build"
+set "INSTALL_DIR=%~dp0..\..\src\SeetaFace\index\build"
 rem 编译结果
 set "BUILD_TYPE=Release"
 rem set "BUILD_TYPE=Debug"

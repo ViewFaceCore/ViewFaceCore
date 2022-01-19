@@ -9,9 +9,9 @@ env_setup() {
   )
 
   BUILD_PATH_BASE="$BUILD_HOME"/build
-  BUILD_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace_build
+  BUILD_PATH_SEETA="$BUILD_PATH_BASE"/temp
   INSTALL_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace
-  SOURCE_PATH_SEETA="$BUILD_HOME"/index
+  SOURCE_PATH_SEETA="$BUILD_HOME"/../../src/SeetaFace/index
 
   mkdir -p "$BUILD_PATH_BASE"
   mkdir -p "$BUILD_PATH_SEETA"
@@ -85,10 +85,10 @@ build_seeta_TenniS() {
     -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH_SEETA" \
     -DTS_USE_OPENMP=ON \
     -DTS_USE_SIMD=ON \
-	-DTS_ON_HASWELL=ON \
-	-DTS_DYNAMIC_INSTRUCTION=ON \
     -DTS_BUILD_TEST=OFF \
-    -DTS_BUILD_TOOLS=OFF || exit
+    -DTS_BUILD_TOOLS=OFF \
+    -DTS_ON_ARM=ON \
+    -DTS_USE_NEON=ON || exit
 
   echo -e "\n>>> Making TenniS"
   make "$CORES" || exit
