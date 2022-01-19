@@ -31,7 +31,7 @@ sudo ./build.linux.x64.sh
 
 1. 安装VS 2019编译工具  
 需要选择MSVC v142 VS2019工作负载，如图所示：
-![](https://raw.githubusercontent.com/ViewFaceCore/ViewFaceCore/dev/docs/seeta-face6-build/docs/vs.png)
+![](https://raw.githubusercontent.com/ViewFaceCore/ViewFaceCore/dev/docs/images/vs.png)
 
 2. 安装[jom](https://download.qt.io/official_releases/jom/ "jom")  
 下载[jom](https://download.qt.io/official_releases/jom/ "jom")，解压后将jom.exe所在目录设置为系统环境变量。  
