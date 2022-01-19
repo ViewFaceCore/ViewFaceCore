@@ -1,4 +1,5 @@
 ﻿using SkiaSharp;
+using System;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore
@@ -26,6 +27,14 @@ namespace ViewFaceCore
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
             FaceImage faceImage = new FaceImage(width, height, channels, data);
             return faceImage;
+        }
+        public static FaceImage ToFaceImage(this object obj)
+        {
+            if (obj is SKBitmap bitmap)
+            {
+                return bitmap.ToFaceImage();
+            }
+            throw new NotImplementedException();
         }
 
         #region Private

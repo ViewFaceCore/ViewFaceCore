@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using ViewFaceCore.Model;
@@ -30,6 +31,14 @@ namespace ViewFaceCore
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
             FaceImage faceImage = new FaceImage(width, height, channels, data);
             return faceImage;
+        }
+        public static FaceImage ToFaceImage(this object obj)
+        {
+            if (obj is Bitmap bitmap)
+            {
+                return bitmap.ToFaceImage();
+            }
+            throw new NotImplementedException();
         }
 
         #region private

@@ -10,9 +10,9 @@ namespace ViewFaceCoreTest
         [TestMethod]
         public void TestMethod1()
         {
-            //using System.Drawing.Bitmap bitmap = (System.Drawing.Bitmap)System.Drawing.Image.FromFile(@"images\Jay_3.jpg");
-            using SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(SkiaSharp.SKData.Create(@"images\Jay_3.jpg"));
-            using var image = bitmap.ToFaceImage();
+            using System.Drawing.Bitmap bitmap = (System.Drawing.Bitmap)System.Drawing.Image.FromFile(@"images\Jay_3.jpg");
+            //using SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(SkiaSharp.SKData.Create(@"images\Jay_3.jpg"));
+            var image = bitmap.ToFaceImage();
 
             ViewFace viewFace = new ViewFace();
             for (int i = 0; i < 1000; i++)
