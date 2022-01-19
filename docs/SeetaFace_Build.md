@@ -18,7 +18,7 @@ git clone --recursive https://github.com/ViewFaceCore/ViewFaceCore.git
 
 3. 授权编译脚本  
 ```shell
-cd ViewFaceCore/docs/seeta-face6-build
+cd ViewFaceCore/scripts/SeetaFace6
 sudo chmod +x build.*.sh
 ```
 
