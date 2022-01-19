@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ViewFaceCore.Configs;
+﻿using ViewFaceCore.Configs;
 
 namespace ViewFaceCore.Extensions
 {

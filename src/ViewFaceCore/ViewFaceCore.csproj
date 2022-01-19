@@ -7,6 +7,7 @@
 		<Authors>View</Authors>
 		<Version>0.3.5</Version>
 		<OutputType>Library</OutputType>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">

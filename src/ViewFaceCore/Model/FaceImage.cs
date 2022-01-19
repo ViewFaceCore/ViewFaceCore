@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ViewFaceCore.Model
 {
@@ -8,7 +10,7 @@ namespace ViewFaceCore.Model
     /// 人脸图像信息数据
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FaceImage : IDisposable, IEquatable<FaceImage>
+    public struct FaceImage : IDisposable, IEquatable<FaceImage>, IFormattable
     {
         private readonly int width;
         private readonly int height;
@@ -110,5 +112,35 @@ namespace ViewFaceCore.Model
             Marshal.FreeHGlobal(data);
         }
 #pragma warning restore CS1591 // 缺少对公共可见类型或成员的 XML 注释
+
+
+        #region IFormattable
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => ToString(null, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public string ToString(string format) => ToString(format, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            string wtips = nameof(Width), htips = nameof(Height), ctips = nameof(Channels);
+
+            if ((formatProvider ?? Thread.CurrentThread.CurrentCulture) is CultureInfo cultureInfo && cultureInfo.Name.StartsWith("zh"))
+            { wtips = "宽度"; htips = "高度"; ctips = "通道数"; }
+
+            return $"{{{wtips}:{Width}, {htips}:{Height}, {ctips}:{Channels}}}";
+        }
+        #endregion
     }
 }

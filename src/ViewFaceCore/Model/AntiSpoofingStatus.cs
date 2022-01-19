@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace ViewFaceCore.Model
 {
     /// <summary>
     /// 活体检测状态
     /// </summary>
+    [Description("活体检测状态")]
     public enum AntiSpoofingStatus
     {
         /// <summary>

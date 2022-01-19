@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ViewFaceCore.Configs
+﻿namespace ViewFaceCore.Configs
 {
     /// <summary>
     /// 人脸跟踪器配置

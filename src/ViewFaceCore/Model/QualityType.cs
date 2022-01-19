@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace ViewFaceCore.Model
 {
     /// <summary>
     /// 质量评估类型
     /// </summary>
+    [Description("质量评估类型")]
     public enum QualityType
     {
         /// <summary>

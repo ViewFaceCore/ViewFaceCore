@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace ViewFaceCore.Model
 {
     /// <summary>
-    /// 人脸关键点类型
+    /// 关键点类型
     /// </summary>
+    [Description("关键点类型")]
     public enum MarkType : int
     {
         /// <summary>

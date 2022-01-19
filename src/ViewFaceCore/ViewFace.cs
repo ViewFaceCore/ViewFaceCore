@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using ViewFaceCore.Native;
+using System.Threading;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Exceptions;
 using ViewFaceCore.Model;
+using ViewFaceCore.Native;
 
 namespace ViewFaceCore
 {
     /// <summary>
     /// 人脸识别类
     /// </summary>
-    public sealed class ViewFace
+    public sealed class ViewFace : IFormattable
     {
         // Constructor
         /// <summary>
@@ -348,6 +348,36 @@ namespace ViewFaceCore
             ViewFaceNative.EyeStateDetector(ref image, points.ToArray(), points.Count(), ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
         }
+
+
+        #region IFormattable
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => ToString(null, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public string ToString(string format) => ToString(format, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            string mtips = nameof(ModelPath), otips = "OperatingSystem", atips = "ProcessArchitecture";
+
+            if ((formatProvider ?? Thread.CurrentThread.CurrentCulture) is CultureInfo cultureInfo && cultureInfo.Name.StartsWith("zh"))
+            { mtips = "模型路径"; otips = "操作系统"; atips = "进程架构"; }
+
+            return $"{{{mtips}:{ModelPath}, {otips}:{RuntimeInformation.OSDescription}, {atips}:{RuntimeInformation.ProcessArchitecture}}}";
+        }
+        #endregion
     }
 
 }

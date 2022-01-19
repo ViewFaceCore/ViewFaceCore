@@ -1,4 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ViewFaceCore.Model
 {
@@ -6,7 +9,7 @@ namespace ViewFaceCore.Model
     /// 人脸跟踪信息
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public struct FaceTrackInfo
+    public struct FaceTrackInfo : IFormattable
     {
         private readonly FaceRect pos;
         private readonly float score;
@@ -27,5 +30,34 @@ namespace ViewFaceCore.Model
         /// 人脸标识Id
         /// </summary>
         public int Pid => PID;
+
+        #region IFormattable
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString() => ToString(null, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <returns></returns>
+        public string ToString(string format) => ToString(format, null);
+        /// <summary>
+        /// 返回可视化字符串
+        /// </summary>
+        /// <param name="format"></param>
+        /// <param name="formatProvider"></param>
+        /// <returns></returns>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            string stips = nameof(Score), ltips = nameof(Location), ptips = nameof(Pid);
+
+            if ((formatProvider ?? Thread.CurrentThread.CurrentCulture) is CultureInfo cultureInfo && cultureInfo.Name.StartsWith("zh"))
+            { stips = "置信度"; ltips = "位置"; ptips = "标识Id"; }
+
+            return $"{{{ptips}:{Pid}, {stips}:{Score}, {ltips}:{Location.ToString(format, formatProvider)}}}";
+        }
+        #endregion
     }
 }

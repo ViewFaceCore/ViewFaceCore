@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace ViewFaceCore.Model
 {
     /// <summary>
-    /// 人脸性别
+    /// 性别
     /// </summary>
+    [Description("性别")]
     public enum Gender
     {
         /// <summary>
@@ -18,7 +16,7 @@ namespace ViewFaceCore.Model
         /// <summary>
         /// 男性
         /// </summary>
-        [Description("男")] 
+        [Description("男")]
         Male = 0,
         /// <summary>
         /// 女性
