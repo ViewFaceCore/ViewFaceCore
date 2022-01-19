@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # From https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/
+
 # 环境变量准备
 env_setup() {
   BUILD_HOME=$(
