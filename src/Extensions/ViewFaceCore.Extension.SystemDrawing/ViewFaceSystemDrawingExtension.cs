@@ -8,31 +8,26 @@ namespace ViewFaceCore
 {
     public static class ViewFaceSystemDrawingExtension
     {
-        //public static IEnumerable<FaceInfo> FaceDetector(this ViewFace viewFace, Bitmap image)
-        //{
-        //    byte[] data = BitmapExtension.To24BGRByteArray(image, out int width, out int height, out int channels);
-        //    IEnumerable<FaceInfo> result = null;
-        //    FaceImage faceImage = new FaceImage(width, height, channels, data);
-        //    result = viewFace.FaceDetector(faceImage);
-        //    return result;
-        //}
-
-        //public static IEnumerable<FaceMarkPoint> FaceMark(this ViewFace viewFace, Bitmap image, FaceInfo info)
-        //{
-        //    byte[] data = BitmapExtension.To24BGRByteArray(image, out int width, out int height, out int channels);
-        //    using (FaceImage faceImage = new FaceImage(width, height, channels, data))
-        //    {
-        //        return viewFace.FaceMark(faceImage, info);
-        //    }
-        //}
-
+        /// <summary>
+        /// Bitmap convert to FaceImage
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public static FaceImage ToFaceImage(this Bitmap image)
         {
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
             FaceImage faceImage = new FaceImage(width, height, channels, data);
             return faceImage;
         }
-        public static FaceImage ToFaceImage(this object obj)
+
+        /// <summary>
+        /// Bitmap convert to FaceImage
+        /// </summary>
+        /// <typeparam name="T">Only support type of System.Drawing.Bitmap</typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static FaceImage ToFaceImage<T>(this T obj) where T : class
         {
             if (obj is Bitmap bitmap)
             {
@@ -51,8 +46,12 @@ namespace ViewFaceCore
         /// <param name="height">图像高度</param>
         /// <param name="channels">图像通道</param>
         /// <returns>图像的 BGR <see cref="byte"/> 数组</returns>
-        public static byte[] To24BGRByteArray(this Bitmap bitmap, out int width, out int height, out int channels)
+        private static byte[] To24BGRByteArray(this Bitmap bitmap, out int width, out int height, out int channels)
         {
+            if (bitmap == null)
+            {
+                throw new ArgumentNullException(nameof(bitmap));
+            }
             width = bitmap.Width;
             height = bitmap.Height;
             channels = 3;

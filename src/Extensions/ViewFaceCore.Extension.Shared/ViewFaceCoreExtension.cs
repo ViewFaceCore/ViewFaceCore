@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ViewFaceCore.Model;
 
+
 namespace ViewFaceCore
 {
     public static class ViewFaceCoreExtension

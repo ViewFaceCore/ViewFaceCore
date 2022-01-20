@@ -6,29 +6,26 @@ namespace ViewFaceCore
 {
     public static class ViewFaceSkiaSharpExtension
     {
-        //public static IEnumerable<FaceInfo> FaceDetector(this ViewFace viewFace, SKBitmap image)
-        //{
-        //    byte[] data = BitmapExtension.To24BGRByteArray(image, out int width, out int height, out int channels);
-        //    FaceImage faceImage = new FaceImage(width, height, channels, data);
-        //    return viewFace.FaceDetector(faceImage);
-        //}
-
-        //public static IEnumerable<FaceMarkPoint> FaceMark(this ViewFace viewFace, SKBitmap image, FaceInfo info)
-        //{
-        //    byte[] data = BitmapExtension.To24BGRByteArray(image, out int width, out int height, out int channels);
-        //    using (FaceImage faceImage = new FaceImage(width, height, channels, data))
-        //    {
-        //        return viewFace.FaceMark(faceImage, info);
-        //    }
-        //}
-
+        /// <summary>
+        /// SKBitmap convert to FaceImage
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public static FaceImage ToFaceImage(this SKBitmap image)
         {
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
             FaceImage faceImage = new FaceImage(width, height, channels, data);
             return faceImage;
         }
-        public static FaceImage ToFaceImage(this object obj)
+
+        /// <summary>
+        /// SKBitmap convert to FaceImage
+        /// </summary>
+        /// <typeparam name="T">Only support type of SkiaSharp.SKBitmap</typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public static FaceImage ToFaceImage<T>(this T obj) where T : class
         {
             if (obj is SKBitmap bitmap)
             {
@@ -49,10 +46,18 @@ namespace ViewFaceCore
         /// <returns>图像的 BGR <see cref="byte"/> 数组</returns>
         private static byte[] To24BGRByteArray(this SKBitmap bitmap, out int width, out int height, out int channels)
         {
+            if(bitmap == null)
+            {
+                throw new ArgumentNullException(nameof(bitmap));
+            }
             width = bitmap.Width;
             height = bitmap.Height;
             channels = 3;
             byte[] array = bitmap.Bytes;
+            if(array == null || array.Length == 0)
+            {
+                throw new Exception("SKBitmap data is null");
+            }
             byte[] bgra = new byte[array.Length / 4 * channels];
             // brga
             int j = 0;
