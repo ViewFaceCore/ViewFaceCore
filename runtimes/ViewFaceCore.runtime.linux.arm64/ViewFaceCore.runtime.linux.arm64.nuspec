@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.runtime.linux.arm64</id>
+		<version>6.0.2</version>
+		<authors>WithSalt, SeetaFace</authors>
+		<owners>ViewFaceCore</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>WithSalt-Logo.png</icon>
+		<description>ViewFaceCore Native libraries for Linux-arm64</description>
+	</metadata>
+	<files>
+		<file src="..\..\Bridges\Linux\ViewFaceBridge\bin\Release\ARM64\libViewFaceBridge.so" target="build\viewfacecore\linux\arm64\libViewFaceBridge.so" />
+
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libtennis.so" target="build\viewfacecore\linux\arm64\libtennis.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaAgePredictor600.so" target="build\viewfacecore\linux\arm64\libSeetaAgePredictor600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaAuthorize.so" target="build\viewfacecore\linux\arm64\libSeetaAuthorize.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaEyeStateDetector200.so" target="build\viewfacecore\linux\arm64\libSeetaEyeStateDetector200.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaFaceAntiSpoofingX600.so" target="build\viewfacecore\linux\arm64\libSeetaFaceAntiSpoofingX600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaFaceDetector600.so" target="build\viewfacecore\linux\arm64\libSeetaFaceDetector600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaFaceLandmarker600.so" target="build\viewfacecore\linux\arm64\libSeetaFaceLandmarker600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaFaceRecognizer610.so" target="build\viewfacecore\linux\arm64\libSeetaFaceRecognizer610.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaFaceTracking600.so" target="build\viewfacecore\linux\arm64\libSeetaFaceTracking600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaGenderPredictor600.so" target="build\viewfacecore\linux\arm64\libSeetaGenderPredictor600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaMaskDetector200.so" target="build\viewfacecore\linux\arm64\libSeetaMaskDetector200.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaPoseEstimation600.so" target="build\viewfacecore\linux\arm64\libSeetaPoseEstimation600.so" />
+		<file src="..\..\SeetaFace\index\build\lib\arm64\libSeetaQualityAssessor300.so" target="build\viewfacecore\linux\arm64\libSeetaQualityAssessor300.so" />
+
+		<file src="ViewFaceCore.runtime.linux.arm64.targets" target="build\ViewFaceCore.runtime.linux.arm64.targets" />
+		<file src="..\..\Images\WithSalt-Logo.png" target="WithSalt-Logo.png" />
+	</files>
+</package>

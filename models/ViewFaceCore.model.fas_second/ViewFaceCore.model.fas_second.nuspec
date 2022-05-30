@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.model.fas_second</id>
+		<version>6.0.4</version>
+		<authors>View, SeetaFace</authors>
+		<owners>ViewFaceCore</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace model 'fas_second' for ViewFaceCore</description>
+	</metadata>
+	<files>
+		<file src="fas_second.csta" target="build\viewfacecore\models\fas_second.csta" />
+		<file src="ViewFaceCore.model.fas_second.targets" target="build\ViewFaceCore.model.fas_second.targets" />
+		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>

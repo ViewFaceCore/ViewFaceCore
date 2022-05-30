@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard1.0</TargetFramework>
+	</PropertyGroup>
+
+	<!--项目引用方式-->
+	<ItemGroup>
+	  <None Update="mask_detector.csta" CopyToOutputDirectory="PreserveNewest" Link="viewfacecore/models/mask_detector.csta" />
+	</ItemGroup>
+
+</Project>

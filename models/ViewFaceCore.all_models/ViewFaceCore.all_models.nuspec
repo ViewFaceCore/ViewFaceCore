@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>ViewFaceCore.all_models</id>
+		<version>6.0.4</version>
+		<authors>View, SeetaFace</authors>
+		<owners>ViewFaceCore</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<icon>View-Logo.png</icon>
+		<description>SeetaFace all model for ViewFaceCore</description>
+		<dependencies>
+			<dependency id="ViewFaceCore.model.age_predictor" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.eye_state" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_detector" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_landmarker_mask_pts5" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_landmarker_pts5" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_landmarker_pts68" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_recognizer" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_recognizer_light" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.face_recognizer_mask" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.fas_first" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.fas_second" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.gender_predictor" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.mask_detector" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.pose_estimation" version="6.0.4" exclude="Analyzers" />
+			<dependency id="ViewFaceCore.model.quality_lbn" version="6.0.4" exclude="Analyzers" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
+	</files>
+</package>
