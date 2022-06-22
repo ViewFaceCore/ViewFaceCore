@@ -2,10 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.model.fas_second</id>
-		<version>6.0.4</version>
-		<authors>View, SeetaFace</authors>
+		<version>6.0.5</version>
+		<authors>View, SeetaTech</authors>
 		<owners>ViewFaceCore</owners>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<license type="file">SeetaFace_LICENSE</license>
 		<icon>View-Logo.png</icon>
 		<description>SeetaFace model 'fas_second' for ViewFaceCore</description>
 	</metadata>
@@ -13,5 +14,6 @@
 		<file src="fas_second.csta" target="build\viewfacecore\models\fas_second.csta" />
 		<file src="ViewFaceCore.model.fas_second.targets" target="build\ViewFaceCore.model.fas_second.targets" />
 		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
 	</files>
 </package>
