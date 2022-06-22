@@ -126,16 +126,21 @@
 
 ## 📄&nbsp;文档
 - [ViewFaceCore API](https://github.com/View12138/ViewFaceCore/blob/master/README_API.md)
-- [SeetaFace6 说明](https://github.com/seetafaceengine/SeetaFace6/blob/master/README.md)
-- [SeetaFace 入门教程](http://leanote.com/blog/post/5e7d6cecab64412ae60016ef)
-- [SeetaFace 各接口说明](https://github.com/seetafaceengine/SeetaFace6/tree/master/docs)
+- [*SeetaFace6 说明*](https://github.com/seetafaceengine/SeetaFace6/blob/master/README.md)
+- [*SeetaFace 各接口说明*](https://github.com/seetafaceengine/SeetaFace6/tree/master/docs)
+- [*SeetaFace 入门教程*](http://leanote.com/blog/post/5e7d6cecab64412ae60016ef)
 
 
 ## ❓&nbsp;常见问题
 
-## 📦&nbsp;使用许可
+## 📦&nbsp;使用许可   
 <div align="center">
 
-[MIT](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE) © 2021 View
+[Copyright (c) 2021, View](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE)
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+[*Copyright (c) 2019, SeetaTech*](https://github.com/SeetaFace6Open/index/blob/master/LICENSE)
 
 </din>
+
+> [\[源\]](https://github.com/SeetaFace6Open/index#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) > *`SeetaFace` 开源版可以免费用于商业和个人用途。如果需要更多的商业支持，请联系商务邮件 bd@seetatech.com*
+
