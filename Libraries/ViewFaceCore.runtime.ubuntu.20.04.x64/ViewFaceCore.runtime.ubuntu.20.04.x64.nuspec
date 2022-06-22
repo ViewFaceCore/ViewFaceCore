@@ -2,11 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.runtime.ubuntu.20.04.x64</id>
-		<version>6.0.2</version>
+		<version>6.0.3</version>
 		<title></title>
-		<authors>View</authors>
+		<authors>View,SeetaTech</authors>
 		<owners></owners>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<license type="file">SeetaFace_LICENSE</license>
 		<icon>View-Logo.png</icon>
 		<description>ViewFaceCore Native libraries for Linux-x64 (Ubuntu 20.04)</description>
 	</metadata>
@@ -32,5 +33,6 @@
 
 		<file src="ViewFaceCore.runtime.ubuntu.20.04.x64.targets" target="build\ViewFaceCore.runtime.ubuntu.20.04.x64.targets" />
 		<file src="..\..\Images\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
 	</files>
 </package>
