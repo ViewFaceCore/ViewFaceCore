@@ -6,18 +6,18 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
 		<PackageReference Include="SkiaSharp">
-			<Version>2.80.3</Version>
+			<Version>2.88.0</Version>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="SkiaSharp">
-			<Version>2.80.3</Version>
+			<Version>2.88.0</Version>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" />
 	</ItemGroup>
 
 	<ItemGroup>

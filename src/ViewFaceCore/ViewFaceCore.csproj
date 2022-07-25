@@ -18,7 +18,7 @@
 	<!--Package Info-->
 	<ItemGroup>
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
-		<None Include="..\Images\View-Logo.png" Pack="true" PackagePath="" />
+		<None Include="..\..\docs\images\logos\View-Logo.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<PropertyGroup>

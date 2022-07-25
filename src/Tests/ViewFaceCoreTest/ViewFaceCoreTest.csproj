@@ -8,17 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.2.7" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.2.7" />
-    <PackageReference Include="coverlet.collector" Version="3.1.0" />
-    <PackageReference Include="ViewFaceCore.all_models" Version="6.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.2.10" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.2.10" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="ViewFaceCore.all_models" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj" />
-    <ProjectReference Include="..\..\Libraries\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
-    <ProjectReference Include="..\..\Libraries\ViewFaceCore.runtime.win.x86\ViewFaceCore.runtime.win.x86.csproj" />
+    <ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
     <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
 
