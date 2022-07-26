@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "..\ViewFaceCore\ViewFaceCore.csproj", "{A80BBE13-C15C-40BB-B03F-85FAC11B03DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCore\ViewFaceCore.csproj", "{A80BBE13-C15C-40BB-B03F-85FAC11B03DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{E277C41E-DE26-47CB-B0C5-8689ADFDFB89}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ViewFaceCore.Extension.Shared", "..\Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.shproj", "{0AC3FA3E-66D2-48BC-B56C-67428B758BF6}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ViewFaceCore.Extension.Shared", "Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.shproj", "{0AC3FA3E-66D2-48BC-B56C-67428B758BF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.SkiaSharp", "..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj", "{084290C4-31D7-44F4-9F2A-1351857AA01F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.SkiaSharp", "Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj", "{084290C4-31D7-44F4-9F2A-1351857AA01F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.SystemDrawing", "..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj", "{D5E1E633-99B7-4EC0-87E8-932DAD2E81EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.SystemDrawing", "Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj", "{D5E1E633-99B7-4EC0-87E8-932DAD2E81EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,8 +100,8 @@ Global
 		SolutionGuid = {80AB26C7-63C8-4E0F-B40C-21B9AEE7EE41}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{084290c4-31d7-44f4-9f2a-1351857aa01f}*SharedItemsImports = 5
-		..\Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{0ac3fa3e-66d2-48bc-b56c-67428b758bf6}*SharedItemsImports = 13
-		..\Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{d5e1e633-99b7-4ec0-87e8-932dad2e81eb}*SharedItemsImports = 5
+		Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{084290c4-31d7-44f4-9f2a-1351857aa01f}*SharedItemsImports = 5
+		Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{0ac3fa3e-66d2-48bc-b56c-67428b758bf6}*SharedItemsImports = 13
+		Extensions\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems*{d5e1e633-99b7-4ec0-87e8-932dad2e81eb}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

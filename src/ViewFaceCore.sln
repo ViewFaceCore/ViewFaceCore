@@ -5,17 +5,17 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bridges", "Bridges", "{96BEABC9-B5A5-450E-9379-B42DBFC716BC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "..\Bridges\Shared\Shared.vcxitems", "{59D7F386-8018-44BC-B2BD-6AB32A264EE1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shared", "Bridges\Shared\Shared.vcxitems", "{59D7F386-8018-44BC-B2BD-6AB32A264EE1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{9C44AB7E-90CA-4C36-A1CA-1A82E4593B51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{A9582183-EE81-4AD8-922D-7F6DDF1CE619}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ViewFaceBridge", "..\Bridges\Linux\ViewFaceBridge\ViewFaceBridge.vcxproj", "{C2228FA7-AAE7-40A9-B858-DD2B62871928}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ViewFaceBridge", "Bridges\Linux\ViewFaceBridge\ViewFaceBridge.vcxproj", "{C2228FA7-AAE7-40A9-B858-DD2B62871928}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ViewFaceBridge", "..\Bridges\Windows\ViewFaceBridge\ViewFaceBridge.vcxproj", "{88E8AE97-D78C-4DC3-9823-FAAD5FC4110F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ViewFaceBridge", "Bridges\Windows\ViewFaceBridge\ViewFaceBridge.vcxproj", "{88E8AE97-D78C-4DC3-9823-FAAD5FC4110F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "..\ViewFaceCore\ViewFaceCore.csproj", "{A80BBE13-C15C-40BB-B03F-85FAC11B03DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCore\ViewFaceCore.csproj", "{A80BBE13-C15C-40BB-B03F-85FAC11B03DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,8 +114,8 @@ Global
 		SolutionGuid = {80AB26C7-63C8-4E0F-B40C-21B9AEE7EE41}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\Bridges\Shared\Shared.vcxitems*{59d7f386-8018-44bc-b2bd-6ab32a264ee1}*SharedItemsImports = 9
-		..\Bridges\Shared\Shared.vcxitems*{88e8ae97-d78c-4dc3-9823-faad5fc4110f}*SharedItemsImports = 4
-		..\Bridges\Shared\Shared.vcxitems*{c2228fa7-aae7-40a9-b858-dd2b62871928}*SharedItemsImports = 4
+		Bridges\Shared\Shared.vcxitems*{59d7f386-8018-44bc-b2bd-6ab32a264ee1}*SharedItemsImports = 9
+		Bridges\Shared\Shared.vcxitems*{88e8ae97-d78c-4dc3-9823-faad5fc4110f}*SharedItemsImports = 4
+		Bridges\Shared\Shared.vcxitems*{c2228fa7-aae7-40a9-b858-dd2b62871928}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

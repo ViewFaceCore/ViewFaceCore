@@ -29,11 +29,15 @@ namespace ViewFaceCore
         /// <exception cref="NotImplementedException"></exception>
         public static FaceImage ToFaceImage<T>(this T obj) where T : class
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
             if (obj is Bitmap bitmap)
             {
                 return bitmap.ToFaceImage();
             }
-            throw new NotImplementedException();
+            throw new Exception($"Not support type:{obj.GetType()}");
         }
 
         #region private

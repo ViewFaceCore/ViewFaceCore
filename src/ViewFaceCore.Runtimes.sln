@@ -5,17 +5,17 @@ VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtimes", "Runtimes", "{2979B369-318B-4DE4-A115-75D00294725E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.linux.arm", "..\Runtimes\ViewFaceCore.runtime.linux.arm\ViewFaceCore.runtime.linux.arm.csproj", "{15865546-0F5D-47B1-8A75-EE71F44335CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.linux.arm", "Runtimes\ViewFaceCore.runtime.linux.arm\ViewFaceCore.runtime.linux.arm.csproj", "{15865546-0F5D-47B1-8A75-EE71F44335CF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.linux.arm64", "..\Runtimes\ViewFaceCore.runtime.linux.arm64\ViewFaceCore.runtime.linux.arm64.csproj", "{FBA3CDDA-AFBD-4894-9506-276A6BA1C639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.linux.arm64", "Runtimes\ViewFaceCore.runtime.linux.arm64\ViewFaceCore.runtime.linux.arm64.csproj", "{FBA3CDDA-AFBD-4894-9506-276A6BA1C639}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.ubuntu.20.04.x64", "..\Runtimes\ViewFaceCore.runtime.ubuntu.20.04.x64\ViewFaceCore.runtime.ubuntu.20.04.x64.csproj", "{4EFC0241-3640-4A86-A20F-2A77D241A831}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.ubuntu.20.04.x64", "Runtimes\ViewFaceCore.runtime.ubuntu.20.04.x64\ViewFaceCore.runtime.ubuntu.20.04.x64.csproj", "{4EFC0241-3640-4A86-A20F-2A77D241A831}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.vc", "..\Runtimes\ViewFaceCore.runtime.win.vc\ViewFaceCore.runtime.win.vc.csproj", "{9C25A9CE-43AC-4AD0-A125-5D138A76A000}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.vc", "Runtimes\ViewFaceCore.runtime.win.vc\ViewFaceCore.runtime.win.vc.csproj", "{9C25A9CE-43AC-4AD0-A125-5D138A76A000}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x64", "..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj", "{1CED5CC3-5FCA-4E84-8706-04E509FE2E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x64", "Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj", "{1CED5CC3-5FCA-4E84-8706-04E509FE2E61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x86", "..\Runtimes\ViewFaceCore.runtime.win.x86\ViewFaceCore.runtime.win.x86.csproj", "{A2A4F270-F7EA-40E4-B0AC-BE3E912B7FAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.win.x86", "Runtimes\ViewFaceCore.runtime.win.x86\ViewFaceCore.runtime.win.x86.csproj", "{A2A4F270-F7EA-40E4-B0AC-BE3E912B7FAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

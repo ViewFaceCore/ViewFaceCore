@@ -6,6 +6,8 @@ namespace ViewFaceCore
 {
     public static class ViewFaceSkiaSharpExtension
     {
+        private const SKColorType targetColorType = SKColorType.Bgra8888;
+
         /// <summary>
         /// SKBitmap convert to FaceImage
         /// </summary>
@@ -27,11 +29,15 @@ namespace ViewFaceCore
         /// <exception cref="NotImplementedException"></exception>
         public static FaceImage ToFaceImage<T>(this T obj) where T : class
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
             if (obj is SKBitmap bitmap)
             {
                 return bitmap.ToFaceImage();
             }
-            throw new NotImplementedException();
+            throw new Exception($"Not support type:{obj.GetType()}");
         }
 
         #region Private
@@ -39,22 +45,67 @@ namespace ViewFaceCore
         /// <summary>
         /// <see cref="Bitmap"/> 转为 3*8bit BGR <see cref="byte"/> 数组。
         /// </summary>
-        /// <param name="bitmap">待转换图像</param>
+        /// <param name="source">待转换图像</param>
         /// <param name="width">图像宽度</param>
         /// <param name="height">图像高度</param>
         /// <param name="channels">图像通道</param>
         /// <returns>图像的 BGR <see cref="byte"/> 数组</returns>
-        private static byte[] To24BGRByteArray(this SKBitmap bitmap, out int width, out int height, out int channels)
+        private static byte[] To24BGRByteArray(SKBitmap source, out int width, out int height, out int channels)
         {
-            if(bitmap == null)
+            if (source == null)
             {
-                throw new ArgumentNullException(nameof(bitmap));
+                throw new ArgumentNullException(nameof(source));
             }
-            width = bitmap.Width;
-            height = bitmap.Height;
             channels = 3;
-            byte[] array = bitmap.Bytes;
-            if(array == null || array.Length == 0)
+            if (source.ColorType != targetColorType)
+            {
+                using (SKBitmap bitmap = ConvertToBgra8888(source))
+                {
+                    width = bitmap.Width;
+                    height = bitmap.Height;
+                    return ConvertToBGRByte(bitmap, channels);
+                }
+            }
+            else
+            {
+                width = source.Width;
+                height = source.Height;
+                return ConvertToBGRByte(source, channels);
+            }
+        }
+
+        /// <summary>
+        /// 转换图像格式
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private static SKBitmap ConvertToBgra8888(SKBitmap source)
+        {
+            if (!source.CanCopyTo(targetColorType))
+            {
+                throw new Exception("Can not copy image color type to Bgra8888");
+            }
+            SKBitmap bitmap = new SKBitmap();
+            source.CopyTo(bitmap, targetColorType);
+            if (bitmap == null)
+            {
+                throw new Exception("Copy image to Bgra8888 failed");
+            }
+            return bitmap;
+        }
+
+        /// <summary>
+        /// 转为BGR Bytes
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private static byte[] ConvertToBGRByte(SKBitmap source, int channels)
+        {
+            byte[] array = source.Bytes;
+            if (array == null || array.Length == 0)
             {
                 throw new Exception("SKBitmap data is null");
             }

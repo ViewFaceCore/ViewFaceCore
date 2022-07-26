@@ -21,6 +21,7 @@ namespace ViewFaceCore
         /// 使用默认的模型目录初始化人脸识别类
         /// </summary>
         public ViewFace() : this("./viewfacecore/models/") { }
+
         /// <summary>
         /// 使用指定的模型目录初始化人脸识别类
         /// </summary>
@@ -32,10 +33,12 @@ namespace ViewFaceCore
         /// 获取或设置人脸检测器配置
         /// </summary>
         public FaceDetectorConfig DetectorConfig { get; set; } = new FaceDetectorConfig();
+
         /// <summary>
         /// 获取或设置模型路径
         /// </summary>
         public string ModelPath { get => ViewFaceNative.GetModelPath(); set => ViewFaceNative.SetModelPath(value); }
+
         /// <summary>
         /// 获取或设置人脸类型。
         /// <para>
@@ -45,6 +48,7 @@ namespace ViewFaceCore
         /// </para>
         /// </summary>
         public FaceType FaceType { get; set; } = FaceType.Normal;
+
         /// <summary>
         /// 获取或设置人脸关键点类型
         /// <para>
@@ -53,10 +57,12 @@ namespace ViewFaceCore
         /// </para>
         /// </summary>
         public MarkType MarkType { get; set; } = MarkType.Light;
+
         /// <summary>
         /// 获取或设置人脸跟踪器的配置
         /// </summary>
         public FaceTrackerConfig TrackerConfig { get; set; } = new FaceTrackerConfig();
+
         /// <summary>
         /// 获取或设置质量评估器的配置
         /// </summary>
@@ -137,24 +143,6 @@ namespace ViewFaceCore
             }
             ViewFaceNative.Free(features);
         }
-
-        // 不再使用 Native 的方式来计算相似度
-        /// <summary>
-        /// 计算特征值相似度。
-        /// <para>只能计算相同 <see cref="FaceType"/> 提取出的特征值</para>
-        /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer">face_recognizer.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
-        /// </para>
-        /// </summary>
-        /// <exception cref="ArgumentException"/>
-        /// <exception cref="ArgumentNullException"/>
-        /// <param name="lfs"></param>
-        /// <param name="rfs"></param>
-        /// <returns></returns>
-        [Obsolete("使用 ViewFace.Compare(IEnumerable<float>, IEnumerable<float>) 代替", true)]
-        public float Similarity(IEnumerable<float> lfs, IEnumerable<float> rfs) => throw new NotImplementedException();
 
         /// <summary>
         /// 计算特征值相似度。
@@ -356,12 +344,14 @@ namespace ViewFaceCore
         /// </summary>
         /// <returns></returns>
         public override string ToString() => ToString(null, null);
+
         /// <summary>
         /// 返回可视化字符串
         /// </summary>
         /// <param name="format"></param>
         /// <returns></returns>
         public string ToString(string format) => ToString(format, null);
+
         /// <summary>
         /// 返回可视化字符串
         /// </summary>
