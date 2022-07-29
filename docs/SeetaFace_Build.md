@@ -82,6 +82,26 @@ FaceAntiSpoofing::FaceAntiSpoofing( const seeta::ModelSetting &setting )
 FaceAntiSpoofing::FaceAntiSpoofing( const SeetaModelSetting &setting )
 ```
 
+#### 3. 眼睛状态检测错误
+**修复方式：**  
+修改`EyeStateDetector.h`的16行  
+```cpp
+SEETA_API explicit EyeStateDetector(const seeta::ModelSetting &setting);
+```
+改为  
+```cpp
+SEETA_API explicit EyeStateDetector(const SeetaModelSetting &setting);
+```
+
+修改`EyeStateDetector.cpp`的653行  
+```cpp
+EyeStateDetector::EyeStateDetector(const seeta::ModelSetting &setting)
+```
+改为  
+```cpp
+EyeStateDetector::EyeStateDetector(const SeetaModelSetting &setting)
+```
+
 #### 3. win10,vs2019,vc14环境下编译OpenRoleZoo报错
 
 **来自：** https://github.com/SeetaFace6Open/index/issues/4  
