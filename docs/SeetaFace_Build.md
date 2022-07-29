@@ -102,7 +102,7 @@ EyeStateDetector::EyeStateDetector(const seeta::ModelSetting &setting)
 EyeStateDetector::EyeStateDetector(const SeetaModelSetting &setting)
 ```
 
-#### 3. win10,vs2019,vc14环境下编译OpenRoleZoo报错
+#### 4. win10,vs2019,vc14环境下编译OpenRoleZoo报错
 
 **来自：** https://github.com/SeetaFace6Open/index/issues/4  
 **修复方式：**  
