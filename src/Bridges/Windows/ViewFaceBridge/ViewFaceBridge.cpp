@@ -73,7 +73,6 @@ seeta:v6:FaceDetector faceDetector(ModelSetting(modelPath + (type == 0 ? "face_d
 		_infos[index] = face;
 		index++;
 	}
-
 	return _infos;
 }
 
@@ -180,10 +179,17 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(SeetaImageData& img, int* size, bool s
 	faceTracker.SetThreshold(threshold);
 	faceTracker.SetInterval(interval);
 
-	auto infos = faceTracker.Track(img);
-
-	*size = infos.size;
-	return infos.data;
+	auto cfaces = faceTracker.Track(img);
+	std::vector<SeetaTrackingFaceInfo> faces(cfaces.data, cfaces.data + cfaces.size);
+	*size = faces.size();
+	SeetaTrackingFaceInfo* _infos = (SeetaTrackingFaceInfo*)malloc((*size) * sizeof(SeetaTrackingFaceInfo));
+	int index = 0;
+	for (auto& face : faces)
+	{
+		_infos[index] = face;
+		index++;
+	}
+	return _infos;
 }
 
 

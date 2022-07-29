@@ -131,7 +131,7 @@ namespace ViewFaceCore.Native
         /// <param name="threshold"></param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "FaceTrackSize", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "FaceTrack", CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr FaceTrack(ref FaceImage img, ref int size, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int type = 0);
 
         /// <summary>

@@ -22,7 +22,10 @@ namespace ConsoleApp1
             //AntiSpoofingTest();
 
             //质量评估测试，开始：2022-07-28 09:57，结束：,结果：不通过，有三个评估方式有问题
-            FaceQualityTest();
+            //FaceQualityTest();
+
+            //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+            FaceTrackTest();
 
             Console.WriteLine("Hello, World!");
         }
@@ -112,9 +115,25 @@ namespace ConsoleApp1
             }
         }
 
-        private static void ExtractTest()
+        /// <summary>
+        /// 人脸追踪测试
+        /// </summary>
+        private static void FaceTrackTest()
         {
+            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            ViewFace viewFace = new ViewFace();
 
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            int i = 0;
+            while (true)
+            {
+                sw.Restart();
+                var result = viewFace.FaceTrack(bitmap).ToList();
+                logger.Info($"第{i + 1}次检测，结果：{result.Count}，{result[0].ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
+                sw.Stop();
+                i++;
+            }
         }
     }
 }
