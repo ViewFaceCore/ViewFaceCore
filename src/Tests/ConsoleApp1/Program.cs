@@ -30,7 +30,7 @@ namespace ConsoleApp1
             //AntiSpoofingTest();
 
             //质量评估测试，开始：2022-07-28 09:57，结束：,结果：不通过，有三个评估方式有问题
-            FaceQualityTest();
+            //FaceQualityTest();
 
             //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
             //FaceTrackTest();

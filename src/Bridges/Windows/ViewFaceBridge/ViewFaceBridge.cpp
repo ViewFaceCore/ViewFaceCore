@@ -49,7 +49,8 @@ View_Api void GetModelPath(char** path)
 }
 
 // 释放由 malloc 分配的内存
-View_Api void Free(void* address) {
+View_Api void Free(void* address) 
+{
 	free(address);
 }
 

@@ -84,15 +84,15 @@ namespace ViewFaceCore
         public IEnumerable<FaceInfo> FaceDetector(FaceImage image)
         {
             int size = 0;
-            var infos = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
+            var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
 
             for (int i = 0; i < size; i++)
             {
                 int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
-                var info = (FaceInfo)Marshal.PtrToStructure(infos + ofs, typeof(FaceInfo));
+                var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
                 yield return info;
             }
-            ViewFaceNative.Free(infos);
+            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
         }
 
         /// <summary>
@@ -110,14 +110,14 @@ namespace ViewFaceCore
         public IEnumerable<FaceMarkPoint> FaceMark(FaceImage image, FaceInfo info)
         {
             long size = 0;
-            var points = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
+            var ptr = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
             for (int i = 0; i < size; i++)
             {
                 var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                var point = (FaceMarkPoint)Marshal.PtrToStructure(points + ofs, typeof(FaceMarkPoint));
+                var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
                 yield return point;
             }
-            ViewFaceNative.Free(points);
+            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
         }
 
         /// <summary>
@@ -143,10 +143,7 @@ namespace ViewFaceCore
             }
             finally
             {
-                if (ptr != IntPtr.Zero)
-                {
-                    ViewFaceNative.Free(ptr);
-                }
+                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
             }
         }
 
@@ -160,14 +157,14 @@ namespace ViewFaceCore
         /// <exception cref="ArgumentException"></exception>
         public float Compare(IEnumerable<float> lfs, IEnumerable<float> rfs)
         {
-            if (!lfs.Any() || !rfs.Any())
+            if (lfs == null || !lfs.Any() || rfs == null || !rfs.Any())
             { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
 
             var _lfs = lfs.ToArray();
             var _rfs = rfs.ToArray();
 
             if (_lfs.Length != _rfs.Length)
-            { throw new ArgumentException("两个参数长度不一致"); }
+            { throw new ArgumentException("两个人脸特征值数组长度不一致，请使用同一检测模型"); }
 
             float sum = 0;
             for (int i = 0; i < _lfs.Length; i++)
@@ -240,14 +237,15 @@ namespace ViewFaceCore
         public IEnumerable<FaceTrackInfo> FaceTrack(FaceImage image)
         {
             int size = 0;
-            var infos = ViewFaceNative.FaceTrack(ref image, ref size, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
+            var ptr = ViewFaceNative.FaceTrack(ref image, ref size, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
 
             for (int i = 0; i < size; i++)
             {
                 int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
-                var info = (FaceTrackInfo)Marshal.PtrToStructure(infos + ofs, typeof(FaceTrackInfo));
+                var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
                 yield return info;
             }
+            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
         }
 
         /// <summary>

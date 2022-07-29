@@ -50,7 +50,7 @@ namespace ViewFaceCore
         /// <param name="height">图像高度</param>
         /// <param name="channels">图像通道</param>
         /// <returns>图像的 BGR <see cref="byte"/> 数组</returns>
-        private static byte[] To24BGRByteArray(this Bitmap bitmap, out int width, out int height, out int channels)
+        private static byte[] To24BGRByteArray(Bitmap bitmap, out int width, out int height, out int channels)
         {
             if (bitmap == null)
             {
