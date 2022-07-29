@@ -33,10 +33,10 @@ namespace ConsoleApp1
             //FaceQualityTest();
 
             //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-            //FaceTrackTest();
+            FaceTrackTest();
 
             //人脸特征值测试
-            ExtractTest();
+            //ExtractTest();
 
             //年龄预测测试
             //FaceAgePredictorTest();
@@ -48,7 +48,7 @@ namespace ConsoleApp1
             //FaceEyeStateDetectorTest();
 
             //人脸对比测试
-            //CompareTest();
+            CompareTest();
 
             Console.WriteLine("Hello, World!");
         }
@@ -79,20 +79,20 @@ namespace ConsoleApp1
 
             Worker((sw, i) =>
             {
-                //var brightnessResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Brightness);
-                //logger.Info($"第{i + 1}次{QualityType.Brightness}评估，结果：{brightnessResult}，耗时：{sw.ElapsedMilliseconds}ms");
-                //var resolutionResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Resolution);
-                //logger.Info($"第{i + 1}次{QualityType.Resolution}评估，结果：{resolutionResult}，耗时：{sw.ElapsedMilliseconds}ms");
-                //var clarityResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Clarity);
-                //logger.Info($"第{i + 1}次{QualityType.Clarity}评估，结果：{clarityResult}，耗时：{sw.ElapsedMilliseconds}ms");
-                //var clarityExResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.ClarityEx);
-                //logger.Info($"第{i + 1}次{QualityType.ClarityEx}评估，结果：{clarityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
-                //var integrityExResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Integrity);
-                //logger.Info($"第{i + 1}次{QualityType.Integrity}评估，结果：{integrityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                var brightnessResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Brightness);
+                logger.Info($"第{i + 1}次{QualityType.Brightness}评估，结果：{brightnessResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                var resolutionResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Resolution);
+                logger.Info($"第{i + 1}次{QualityType.Resolution}评估，结果：{resolutionResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                var clarityResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Clarity);
+                logger.Info($"第{i + 1}次{QualityType.Clarity}评估，结果：{clarityResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                var clarityExResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.ClarityEx);
+                logger.Info($"第{i + 1}次{QualityType.ClarityEx}评估，结果：{clarityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                var integrityExResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Integrity);
+                logger.Info($"第{i + 1}次{QualityType.Integrity}评估，结果：{integrityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
 
                 //
-                var poseResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Pose);
-                logger.Info($"第{i + 1}次{QualityType.Pose}评估，结果：{poseResult}，耗时：{sw.ElapsedMilliseconds}ms");
+                //var poseResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Pose);
+                //logger.Info($"第{i + 1}次{QualityType.Pose}评估，结果：{poseResult}，耗时：{sw.ElapsedMilliseconds}ms");
                 //var poseExeResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.PoseEx);
                 //logger.Info($"第{i + 1}次{QualityType.PoseEx}评估，结果：{poseExeResult}，耗时：{sw.ElapsedMilliseconds}ms");
                 //var structureeResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Structure);
@@ -205,7 +205,7 @@ namespace ConsoleApp1
                 bool isSelf = viewFace.IsSelf(p0, p1);
                 logger.Info($"第{i + 1}次{nameof(ViewFace.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
             });
-            
+
         }
 
         #region Helpers

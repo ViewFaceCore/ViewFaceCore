@@ -152,38 +152,13 @@ namespace ViewFaceCore
 
         /// <summary>
         /// 计算特征值相似度。
-        /// <para>只能计算相同 <see cref="FaceType"/> 提取出的特征值</para>
-        /// </summary>
-        /// <exception cref="ArgumentException"/>
-        /// <exception cref="ArgumentNullException"/>
-        /// <param name="lfs">特征值一</param>
-        /// <param name="rfs">特征值二</param>
-        /// <returns></returns>
-        public float Compare(IEnumerable<float> lfs, IEnumerable<float> rfs)
-        {
-            if (!lfs.Any() || !rfs.Any())
-            { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
-
-            var _lfs = lfs.ToArray();
-            var _rfs = rfs.ToArray();
-
-            if (_lfs.Length != _rfs.Length)
-            {
-                throw new ArgumentException("两个人脸特征值长度不一致");
-            }
-
-            return ViewFaceNative.Compare(_lfs, _rfs, _lfs.Length);
-        }
-
-        /// <summary>
-        /// 计算特征值相似度。测试完之后看看用哪一个比较快
         /// </summary>
         /// <param name="lfs"></param>
         /// <param name="rfs"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public float LocalCompare(IEnumerable<float> lfs, IEnumerable<float> rfs)
+        public float Compare(IEnumerable<float> lfs, IEnumerable<float> rfs)
         {
             if (!lfs.Any() || !rfs.Any())
             { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
@@ -200,6 +175,9 @@ namespace ViewFaceCore
                 sum += _lfs[i] * _rfs[i];
             }
             return sum;
+
+            //调用Native组件
+            //return ViewFaceNative.Compare(_lfs, _rfs, _lfs.Length);
         }
 
         /// <summary>
