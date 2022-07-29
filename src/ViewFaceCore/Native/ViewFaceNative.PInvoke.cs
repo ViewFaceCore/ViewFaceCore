@@ -40,8 +40,6 @@ namespace ViewFaceCore.Native
             return modelPath;
         }
 
-
-
         /// <summary>
         /// 释放本机代码中由 malloc 分配的内存。
         /// </summary>

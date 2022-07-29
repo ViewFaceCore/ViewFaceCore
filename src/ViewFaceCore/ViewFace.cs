@@ -134,14 +134,11 @@ namespace ViewFaceCore
         public IEnumerable<float> Extract(FaceImage image, IEnumerable<FaceMarkPoint> points)
         {
             int size = 0;
-            var features = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
-            for (int i = 0; i < size; i++)
-            {
-                var ofs = i * Marshal.SizeOf(typeof(float));
-                var feature = (float)Marshal.PtrToStructure(features + ofs, typeof(float));
-                yield return feature;
-            }
-            ViewFaceNative.Free(features);
+            var ptr = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
+            float[] result = new float[size];
+            Marshal.Copy(ptr, result, 0, size);
+            Marshal.FreeHGlobal(ptr);
+            return result;
         }
 
         /// <summary>

@@ -69,10 +69,7 @@ namespace ViewFaceCore
         {
             using (var faceImage = image.ToFaceImage())
             {
-                foreach (var point in viewFace.Extract(faceImage, points))
-                {
-                    yield return point;
-                }
+                return viewFace.Extract(faceImage, points);
             }
         }
 

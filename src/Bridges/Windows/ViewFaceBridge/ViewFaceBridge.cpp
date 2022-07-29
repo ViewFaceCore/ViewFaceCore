@@ -102,7 +102,7 @@ View_Api SeetaPointF* FaceMark(SeetaImageData& img, SeetaRect faceRect, long* si
 }
 
 // 提取人脸特征值
-View_Api float* Extract(SeetaImageData& img, SeetaPointF* points, int* size, int type = 0)
+View_Api std::vector<float>* Extract(SeetaImageData& img, SeetaPointF* points, int* size, int type = 0)
 {
 	string modelName = "face_recognizer.csta";
 	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
@@ -110,30 +110,24 @@ View_Api float* Extract(SeetaImageData& img, SeetaPointF* points, int* size, int
 	seeta::v6::FaceRecognizer faceRecognizer(ModelSetting(modelPath + modelName));
 
 	*size = faceRecognizer.GetExtractFeatureSize();
-	std::shared_ptr<float> _features(new float[faceRecognizer.GetExtractFeatureSize()], std::default_delete<float[]>());
+	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
 	faceRecognizer.Extract(img, points, _features.get());
 
-	float* features = (float*)malloc(*size * sizeof(float));
-	for (int i = 0; i < *size; i++)
-	{
-		*features = _features.get()[i];
-		features++;
-	}
-	return features;
+	float* features = _features.get();
+	std::vector<float> results{ features, features + *size };
+	return &results;
 }
 
 // 人脸特征值相似度计算
-//View_Api float CalculateSimilarity(float* leftFeatures, float* rightFeatures, int type = 0)
-//{
-//	string modelName = "face_recognizer.csta";
-//	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
-//	if (type == 2) { modelName = "face_recognizer_light.csta"; }
-//	auto faceRecognizer = new FaceRecognizer(ModelSetting(modelPath + modelName, SEETA_DEVICE_CPU, 0));
-//
-//	float similarity = faceRecognizer->CalculateSimilarity(leftFeatures, rightFeatures);
-//	delete faceRecognizer;
-//	return similarity;
-//}
+View_Api float CalculateSimilarity(float* leftFeatures, float* rightFeatures, int type = 0)
+{
+	string modelName = "face_recognizer.csta";
+	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
+	if (type == 2) { modelName = "face_recognizer_light.csta"; }
+	seeta::v6::FaceRecognizer faceRecognizer(ModelSetting(modelPath + modelName, SEETA_DEVICE_CPU, 0));
+	float similarity = faceRecognizer.CalculateSimilarity(leftFeatures, rightFeatures);
+	return similarity;
+}
 
 /***************************************************************************************************************/
 // 活体检测器
