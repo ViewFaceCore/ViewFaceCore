@@ -19,11 +19,12 @@
 
 ## ⭐&nbsp;快速开始
 - ### 受支持的 .NET 框架 和 操作系统  
+
    | 目标框架 |最低版本 | 操作系统 |
    | :-: |:-: | :-: |
    | .NET Framework |4.0 | win ( x64/x86 ) |
    | .NET Standard |2.0 | win ( x64/x86 ) |
-   | .NET / .NET Core |3.1 | win ( x64/x86 )、linux ( arm/arm64/x64 ) |
+   | .NET / .NET Core |3.1、5.0、6.0、7.0 | win ( x64/x86 )、linux ( arm/arm64/x64 ) |
 
 - ### 简单的人脸信息检测  
    - 以 Windows x64 为例
@@ -33,6 +34,7 @@
       | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.5` | —— | ViewFaceCore .NET 核心库 |
       | [ViewFaceCore.model.face_detector](https://www.nuget.org/packages/ViewFaceCore.model.face_detector) | `6.0.0` | `models` | 人脸检测的模型支持 |
       | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `6.0.2` | `viewfacecore\win\x64` | Windows-x64 的本机运行时 |
+	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | `6.0.2` |  —— | SkiaSharp图像处理扩展 |
 
    2. 获取人脸信息  
       ```csharp
@@ -61,9 +63,6 @@
           }
       }
       ```
-
-
-
 
 
 ## 🔧&nbsp;构建
@@ -98,30 +97,7 @@
    | Ubuntu 开发包 (arm64) | *.so | `ViewFaceCore\SeetaFace\index\build\lib\arm64\` |
    | Ubuntu 开发包 (arm) | *.so | `ViewFaceCore\SeetaFace\index\build\lib\arm\` |
 
-   `全部重新编译`  
-   1. 配置 %VctPath% 环境变量 (即：vcvarsall.bat 脚本的路径)
-      > 以 Visual Studio 2022 为例：  
-      > `C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build`
-   2. 按照 [SeetaFace 编译依赖](https://github.com/SeetaFace6Open/index#%E7%BC%96%E8%AF%91%E4%BE%9D%E8%B5%96) 配置好依赖工具
-      - 本项目使用 MSVC (win) / GCC (linux on wsl) 编译完成
-      > 1. 编译工具
-      > 2. For linux<br>
-      >  GNU Make 工具<br>
-      >  GCC 或者 Clang 编译器
-      > 3. For windows<br>
-      >  [MSVC](https://visualstudio.microsoft.com/zh-hans/) 或者 MinGW. <br>
-      >  [jom](https://wiki.qt.io/Jom)
-      > 4. [CMake](http://www.cmake.org/)
-      > 5. 依赖架构<br>
-      >  CPU 支持 AVX 和 FMA [可选]（x86）或 NENO（ARM）支持
-   3. 首先编译 `OpenRoleZoo `、`SeetaAuthorize`、`TenniS` 三个项目
-      - 在项目的 `craft` 文件夹下启动 shell
-      > **`powershell`** > `./build.win.vc14.all.cmd`  
-      > **`linux shell(wsl)`** > `./build.linux.all.sh`
-   4. 然后编译其他项目 `SeetaMaskDetector`、`FaceAntiSpoofingX6`、`FaceBoxes`、`FaceRecognizer6`、`FaceTracker6`、`Landmarker`、`OpenRoleZoo`、`PoseEstimator6`、`QualityAssessor3`、`SeetaAgePredictor`、`SeetaAuthorize`、`SeetaEyeStateDetector`、`SeetaGenderPredictor`  
-      - 在项目的 `craft` 文件夹下启动 shell
-      > **`powershell`** > `./build.win.vc14.all.cmd`  
-      > **`linux shell(wsl)`** > `./build.linux.all.sh`
+   参考：https://github.com/ViewFaceCore/ViewFaceCore/blob/dev_20220725/docs/SeetaFace_Build.md
 
 
 ## 📄&nbsp;文档
