@@ -13,6 +13,7 @@ namespace ConsoleApp1
     {
         private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly static string imagePath = @"images\Jay_3.jpg";
+        private readonly static string imagePath1 = @"images\Jay_4.jpg";
         private readonly static string logPath = "logs";
 
         static void Main(string[] args)
@@ -35,7 +36,7 @@ namespace ConsoleApp1
             //FaceTrackTest();
 
             //人脸特征值测试
-            //ExtractTest();
+            ExtractTest();
 
             //年龄预测测试
             //FaceAgePredictorTest();
@@ -44,8 +45,10 @@ namespace ConsoleApp1
             //FaceGenderPredictorTest();
 
             //眼睛状态检测测试
-            FaceEyeStateDetectorTest();
+            //FaceEyeStateDetectorTest();
 
+            //人脸对比测试
+            //CompareTest();
 
             Console.WriteLine("Hello, World!");
         }
@@ -183,6 +186,26 @@ namespace ConsoleApp1
                 var result = viewFace.FaceEyeStateDetector(bitmap, GetFaceMarkPoint(viewFace, bitmap));
                 logger.Info($"第{i + 1}次{nameof(ViewFace.FaceEyeStateDetector)}检测，结果：{result.ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
             });
+        }
+
+        /// <summary>
+        /// 人脸对比测试
+        /// </summary>
+        private static void CompareTest()
+        {
+            using SKBitmap bitmap0 = SKBitmap.Decode(imagePath);
+            using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
+            ViewFace viewFace = new ViewFace();
+            Worker((sw, i) =>
+            {
+                var p0 = GetExtract(viewFace, bitmap0);
+                var p1 = GetExtract(viewFace, bitmap1);
+
+                float result = viewFace.Compare(p0, p1);
+                bool isSelf = viewFace.IsSelf(p0, p1);
+                logger.Info($"第{i + 1}次{nameof(ViewFace.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+            
         }
 
         #region Helpers

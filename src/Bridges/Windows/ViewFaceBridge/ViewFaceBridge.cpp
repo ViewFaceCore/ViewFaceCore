@@ -54,7 +54,7 @@ View_Api void Free(void* address) {
 }
 
 // 获取人脸数量
-View_Api SeetaFaceInfo* Detector(SeetaImageData& img, int* size, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
+View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const  double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const int type = 0)
 {
 	FaceDetector faceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
 	faceDetector.set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
@@ -76,7 +76,7 @@ View_Api SeetaFaceInfo* Detector(SeetaImageData& img, int* size, double faceSize
 }
 
 // 人脸关键点器
-View_Api SeetaPointF* FaceMark(SeetaImageData& img, SeetaRect faceRect, long* size, int type = 0)
+View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRect, long* size, const int type = 0)
 {
 	string modelName = "face_landmarker_pts68.csta";
 	if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
@@ -101,7 +101,7 @@ View_Api SeetaPointF* FaceMark(SeetaImageData& img, SeetaRect faceRect, long* si
 }
 
 // 提取人脸特征值
-View_Api std::vector<float>* Extract(SeetaImageData& img, SeetaPointF* points, int* size, int type = 0)
+View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, int* size, const int type = 0)
 {
 	string modelName = "face_recognizer.csta";
 	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
@@ -112,20 +112,24 @@ View_Api std::vector<float>* Extract(SeetaImageData& img, SeetaPointF* points, i
 	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
 	faceRecognizer.Extract(img, points, _features.get());
 
-	float* features = _features.get();
-	std::vector<float> results{ features, features + *size };
-	return &results;
+	float* source = _features.get();
+	float* features = new float[*size];
+	for (int i = 0; i < *size; i++)
+	{
+		features[i] = source[i];
+	}
+	return features;
 }
 
 // 人脸特征值相似度计算
-View_Api float CalculateSimilarity(float* leftFeatures, float* rightFeatures, int type = 0)
-{
-	string modelName = "face_recognizer.csta";
-	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
-	if (type == 2) { modelName = "face_recognizer_light.csta"; }
-	seeta::v6::FaceRecognizer faceRecognizer(ModelSetting(modelPath + modelName, SEETA_DEVICE_CPU, 0));
-	float similarity = faceRecognizer.CalculateSimilarity(leftFeatures, rightFeatures);
-	return similarity;
+View_Api float Compare(const float* lhs, const float* rhs, int size) {
+	float sum = 0;
+	for (int i = 0; i < size; ++i) {
+		sum += *lhs * *rhs;
+		++lhs;
+		++rhs;
+	}
+	return sum;
 }
 
 /***************************************************************************************************************/

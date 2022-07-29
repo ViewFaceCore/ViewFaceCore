@@ -89,6 +89,16 @@ namespace ViewFaceCore.Native
         public extern static IntPtr Extract(ref FaceImage img, FaceMarkPoint[] points, ref int size, int type = 0);
 
         /// <summary>
+        /// 计算相似度
+        /// </summary>
+        /// <param name="leftFeatures"></param>
+        /// <param name="rightFeatures"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "Compare", CallingConvention = CallingConvention.Cdecl)]
+        public extern static float Compare(float[] lhs, float[] rhs, int size);
+
+        /// <summary>
         /// 活体检测器
         /// <para>单帧检测</para>
         /// </summary>
