@@ -225,9 +225,8 @@ View_Api void Quality_Integrity(const SeetaImageData& img, const SeetaRect faceR
 // ×ËÌ¬ÆÀ¹À
 View_Api void Quality_Pose(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
 {
-	auto quality_Pose = new seeta::v3::QualityOfPose();
-	auto result = quality_Pose->check(img, faceRect, points, pointsLength);
-	delete quality_Pose;
+	seeta::v3::QualityOfPose quality_Pose;
+	auto result = quality_Pose.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;

@@ -309,7 +309,7 @@ namespace ViewFaceCore.Native
         /// <param name="level">存储 等级</param>
         /// <param name="score">存储 分数</param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "Quality_OfNoMask", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(LibraryName, EntryPoint = "Quality_NoMask", CallingConvention = CallingConvention.Cdecl)]
         public extern static void QualityOfNoMask(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
         /// <summary>

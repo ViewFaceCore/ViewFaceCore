@@ -54,36 +54,39 @@ View_Api void Free(void* address) {
 }
 
 // 获取人脸数量
-View_Api SeetaFaceInfo* Detector(SeetaImageData& img, int* size, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
+View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const  double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const int type = 0)
 {
-	auto faceDetector = new FaceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
+	FaceDetector faceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
+	faceDetector.set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+	faceDetector.set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+	faceDetector.set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+	faceDetector.set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
 
-	faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
-	faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
-	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
-	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+	auto faces = faceDetector.detect_v2(img);
 
-	auto infos = faceDetector->detect(img);
-	delete faceDetector;
-	*size = infos.size;
-	return infos.data;
+	*size = faces.size();
+	SeetaFaceInfo* _infos = new SeetaFaceInfo[*size];
+	for (int i = 0; i < faces.size(); i++)
+	{
+		_infos[i] = faces[i];
+	}
+	return _infos;
 }
 
 // 人脸关键点器
-View_Api SeetaPointF* FaceMark(SeetaImageData& img, SeetaRect faceRect, long* size, int type = 0)
+View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRect, long* size, const int type = 0)
 {
 	string modelName = "face_landmarker_pts68.csta";
 	if (type == 1) { modelName = "face_landmarker_mask_pts5.csta"; }
 	if (type == 2) { modelName = "face_landmarker_pts5.csta"; }
-	auto faceLandmarker = new FaceLandmarker(ModelSetting(modelPath + modelName, SEETA_DEVICE_AUTO));
+	seeta::v6::FaceLandmarker faceLandmarker(ModelSetting(modelPath + modelName, SEETA_DEVICE_AUTO));
 
-	*size = faceLandmarker->number();
-	std::vector<SeetaPointF> _points = faceLandmarker->mark(img, faceRect);
-	delete faceLandmarker;
+	*size = faceLandmarker.number();
+	std::vector<SeetaPointF> _points = faceLandmarker.mark(img, faceRect);
 
 	*size = _points.size();
 	if (!_points.empty()) {
-		SeetaPointF* points = (SeetaPointF*)malloc((*size) * sizeof(SeetaPointF));
+		SeetaPointF* points = new SeetaPointF[*size];
 		SeetaPointF* start = points;
 		for (auto iter = _points.begin(); iter != _points.end(); iter++)
 		{
@@ -96,59 +99,51 @@ View_Api SeetaPointF* FaceMark(SeetaImageData& img, SeetaRect faceRect, long* si
 }
 
 // 提取人脸特征值
-View_Api float* Extract(SeetaImageData& img, SeetaPointF* points, int* size, int type = 0)
+View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, int* size, const int type = 0)
 {
 	string modelName = "face_recognizer.csta";
 	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
 	if (type == 2) { modelName = "face_recognizer_light.csta"; }
-	auto faceRecognizer = new FaceRecognizer(ModelSetting(modelPath + modelName));
+	seeta::v6::FaceRecognizer faceRecognizer(ModelSetting(modelPath + modelName));
 
-	*size = faceRecognizer->GetExtractFeatureSize();
-	std::shared_ptr<float> _features(new float[faceRecognizer->GetExtractFeatureSize()], std::default_delete<float[]>());
-	faceRecognizer->Extract(img, points, _features.get());
-	delete faceRecognizer;
+	*size = faceRecognizer.GetExtractFeatureSize();
+	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
+	faceRecognizer.Extract(img, points, _features.get());
 
-	float* features = (float*)malloc(*size * sizeof(float));
-	for (int i = 0; i < *size; i++)
-	{
-		*features = _features.get()[i];
-		features++;
-	}
+	float* source = _features.get();
+	float* features = new float[*size];
+	memcpy(features, source, *size * sizeof(float));
 	return features;
 }
 
 // 人脸特征值相似度计算
-//View_Api float CalculateSimilarity(float* leftFeatures, float* rightFeatures, int type = 0)
-//{
-//	string modelName = "face_recognizer.csta";
-//	if (type == 1) { modelName = "face_recognizer_mask.csta"; }
-//	if (type == 2) { modelName = "face_recognizer_light.csta"; }
-//	auto faceRecognizer = new FaceRecognizer(ModelSetting(modelPath + modelName, SEETA_DEVICE_CPU, 0));
-//
-//	float similarity = faceRecognizer->CalculateSimilarity(leftFeatures, rightFeatures);
-//	delete faceRecognizer;
-//	return similarity;
-//}
+View_Api float Compare(const float* lhs, const float* rhs, int size) {
+	float sum = 0;
+	for (int i = 0; i < size; ++i) {
+		sum += *lhs * *rhs;
+		++lhs;
+		++rhs;
+	}
+	return sum;
+}
 
 /***************************************************************************************************************/
 // 活体检测器
 // 活体检测 - 单帧
-View_Api int AntiSpoofing(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
+View_Api int AntiSpoofing(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const bool global)
 {
 	ModelSetting setting;
 	setting.append(modelPath + "fas_first.csta");
 	//启用全局检测能力
 	if (global) { setting.append(modelPath + "fas_second.csta"); }
-	auto faceAntiSpoofing = new FaceAntiSpoofing(setting);
-
-	auto state = faceAntiSpoofing->Predict(img, faceRect, points);
-	delete faceAntiSpoofing;
+	seeta::v6::FaceAntiSpoofing faceAntiSpoofing(setting);
+	auto state = faceAntiSpoofing.Predict(img, faceRect, points);
 	return state;
 }
 
-static FaceAntiSpoofing* faceAntiSpoofing = nullptr;
+static seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
 // 活体检测 - 视频
-View_Api int AntiSpoofingVideo(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, bool global)
+View_Api int AntiSpoofingVideo(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const bool global)
 {
 	if (faceAntiSpoofing == nullptr) {
 		ModelSetting setting;
@@ -168,114 +163,118 @@ View_Api int AntiSpoofingVideo(SeetaImageData& img, SeetaRect faceRect, SeetaPoi
 }
 
 // 获取跟踪的人脸个数
-View_Api SeetaTrackingFaceInfo* FaceTrack(SeetaImageData& img, int* size, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9, int type = 0)
+View_Api SeetaTrackingFaceInfo* FaceTrack(const SeetaImageData& img, int* size, const bool stable = false, const int interval = 10, const int faceSize = 20, const float threshold = 0.9, const int type = 0)
 {
-	auto faceTracker = new FaceTracker(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")), img.width, img.height);
-	faceTracker->SetVideoStable(stable);
-	faceTracker->SetMinFaceSize(faceSize);
-	faceTracker->SetThreshold(threshold);
-	faceTracker->SetInterval(interval);
+	seeta::v6::FaceTracker faceTracker(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")), img.width, img.height);
+	faceTracker.SetVideoStable(stable);
+	faceTracker.SetMinFaceSize(faceSize);
+	faceTracker.SetThreshold(threshold);
+	faceTracker.SetInterval(interval);
 
-	auto infos = faceTracker->Track(img);
-	delete faceTracker;
-
-	*size = infos.size;
-	return infos.data;
+	auto cfaces = faceTracker.Track(img);
+	std::vector<SeetaTrackingFaceInfo> faces(cfaces.data, cfaces.data + cfaces.size);
+	*size = faces.size();
+	SeetaTrackingFaceInfo* _infos = new SeetaTrackingFaceInfo[*size];
+	for (int i = 0; i < faces.size(); i++)
+	{
+		_infos[i] = faces[i];
+	}
+	return _infos;
 }
 
 
 // 亮度评估
-View_Api void Quality_Brightness(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score, float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230)
+View_Api void Quality_Brightness(const SeetaImageData& img
+	, const SeetaRect faceRect
+	, const SeetaPointF* points
+	, const int pointsLength
+	, int* level
+	, float* score
+	, const float v0 = 70
+	, const float v1 = 100
+	, const float v2 = 210
+	, const float v3 = 230)
 {
-	auto quality_Brightness = new QualityOfBrightness(v0, v1, v2, v3);
-	auto result = quality_Brightness->check(img, faceRect, points, pointsLength);
-	delete quality_Brightness;
+	seeta::v3::QualityOfBrightness quality_Brightness(v0, v1, v2, v3);
+	auto result = quality_Brightness.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 清晰度评估
-View_Api void Quality_Clarity(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score, float low = 0.1f, float high = 0.2f)
+View_Api void Quality_Clarity(const SeetaImageData& img, const SeetaRect faceRect, const  SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 0.1f, const float high = 0.2f)
 {
-	auto quality_Clarity = new QualityOfClarity(low, high);
-	auto result = quality_Clarity->check(img, faceRect, points, pointsLength);
-	delete quality_Clarity;
+	seeta::v3::QualityOfClarity quality_Clarity(low, high);
+	auto result = quality_Clarity.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 完整度评估
-View_Api void Quality_Integrity(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score, float low = 10, float high = 1.5f)
+View_Api void Quality_Integrity(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 10, const float high = 1.5f)
 {
-	auto quality_Integrity = new QualityOfIntegrity(low, high);
-	auto result = quality_Integrity->check(img, faceRect, points, pointsLength);
-	delete quality_Integrity;
+	seeta::v3::QualityOfIntegrity quality_Integrity(low, high);
+	auto result = quality_Integrity.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 姿态评估
-View_Api void Quality_Pose(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score)
+View_Api void Quality_Pose(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
 {
-	auto quality_Pose = new QualityOfPose();
-	auto result = quality_Pose->check(img, faceRect, points, pointsLength);
-	delete quality_Pose;
+	seeta::v3::QualityOfPose quality_Pose;
+	auto result = quality_Pose.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 姿态 (深度)评估
-View_Api void Quality_PoseEx(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score,
-	float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f)
+View_Api void Quality_PoseEx(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score,
+	const float yawLow = 25, const float yawHigh = 10, const float pitchLow = 20, const float pitchHigh = 10, const float rollLow = 33.33f, const float rollHigh = 16.67f)
 {
-	auto quality_PoseEx = new QualityOfPoseEx(ModelSetting(modelPath + "pose_estimation.csta"));
+	seeta::v3::QualityOfPoseEx quality_PoseEx(ModelSetting(modelPath + "pose_estimation.csta"));
+	quality_PoseEx.set(QualityOfPoseEx::YAW_LOW_THRESHOLD, yawLow);
+	quality_PoseEx.set(QualityOfPoseEx::YAW_HIGH_THRESHOLD, yawHigh);
+	quality_PoseEx.set(QualityOfPoseEx::PITCH_LOW_THRESHOLD, pitchLow);
+	quality_PoseEx.set(QualityOfPoseEx::PITCH_HIGH_THRESHOLD, pitchHigh);
+	quality_PoseEx.set(QualityOfPoseEx::ROLL_LOW_THRESHOLD, rollLow);
+	quality_PoseEx.set(QualityOfPoseEx::ROLL_HIGH_THRESHOLD, rollHigh);
 
-	quality_PoseEx->set(QualityOfPoseEx::YAW_LOW_THRESHOLD, yawLow);
-	quality_PoseEx->set(QualityOfPoseEx::YAW_HIGH_THRESHOLD, yawHigh);
-	quality_PoseEx->set(QualityOfPoseEx::PITCH_LOW_THRESHOLD, pitchLow);
-	quality_PoseEx->set(QualityOfPoseEx::PITCH_HIGH_THRESHOLD, pitchHigh);
-	quality_PoseEx->set(QualityOfPoseEx::ROLL_LOW_THRESHOLD, rollLow);
-	quality_PoseEx->set(QualityOfPoseEx::ROLL_HIGH_THRESHOLD, rollHigh);
-
-	auto result = quality_PoseEx->check(img, faceRect, points, pointsLength);
-	delete quality_PoseEx;
+	auto result = quality_PoseEx.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 分辨率评估
-View_Api void Quality_Resolution(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score, float low = 80, float high = 120)
+View_Api void Quality_Resolution(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 80, const float high = 120)
 {
-	auto quality_Resolution = new QualityOfResolution(low, high);
-	auto result = quality_Resolution->check(img, faceRect, points, pointsLength);
-	delete quality_Resolution;
+	seeta::v3::QualityOfResolution quality_Resolution(low, high);
+	auto result = quality_Resolution.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 清晰度 (深度)评估
-View_Api void Quality_ClarityEx(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score, float blur_thresh = 0.8f)
+View_Api void Quality_ClarityEx(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float blur_thresh = 0.8f)
 {
-	auto quality_ClarityEx = new QualityOfClarityEx(blur_thresh, modelPath);
-	auto result = quality_ClarityEx->check(img, faceRect, points, pointsLength);
-	delete quality_ClarityEx;
+	seeta::QualityOfClarityEx quality_ClarityEx(blur_thresh, modelPath);
+	auto result = quality_ClarityEx.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
 // 遮挡评估
-View_Api void Quality_NoMask(SeetaImageData& img, SeetaRect faceRect, SeetaPointF* points, int pointsLength, int* level, float* score)
+View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
 {
-	auto quality_NoMask = new QualityOfNoMask(modelPath);
-	auto result = quality_NoMask->check(img, faceRect, points, pointsLength);
-	delete quality_NoMask;
+	seeta::QualityOfNoMask quality_NoMask(modelPath);
+	auto result = quality_NoMask.check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
@@ -283,34 +282,30 @@ View_Api void Quality_NoMask(SeetaImageData& img, SeetaRect faceRect, SeetaPoint
 
 /******人脸属性***********************************************************************************************/
 // 年龄预测
-View_Api int PredictAge(SeetaImageData& img, SeetaPointF* points, int pointsLength)
+View_Api int PredictAge(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength)
 {
-	auto age_Predictor = new AgePredictor(ModelSetting(modelPath + "age_predictor.csta"));
+	seeta::v6::AgePredictor age_Predictor(ModelSetting(modelPath + "age_predictor.csta"));
 	int age = 0;
-	auto result = age_Predictor->PredictAgeWithCrop(img, points, age);
-	delete age_Predictor;
+	bool result = age_Predictor.PredictAgeWithCrop(img, points, age);
 
 	if (result) { return age; }
 	else { return -1; }
 }
 
 // 年龄预测
-View_Api int PredictGender(SeetaImageData& img, SeetaPointF* points, int pointsLength)
+View_Api int PredictGender(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength)
 {
-	auto gender_Predictor = new GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta"));
-
+	seeta::v6::GenderPredictor gender_Predictor(ModelSetting(modelPath + "gender_predictor.csta"));
 	GenderPredictor::GENDER gender = GenderPredictor::GENDER::MALE;
-	auto result = gender_Predictor->PredictGenderWithCrop(img, points, gender);
-	delete gender_Predictor;
+	auto result = gender_Predictor.PredictGenderWithCrop(img, points, gender);
 
 	if (result) { return gender; }
 	else { return -1; }
 }
 
-// 年龄预测
-View_Api void EyeDetector(SeetaImageData& img, SeetaPointF* points, int pointsLength, EyeStateDetector::EYE_STATE& left_eye, EyeStateDetector::EYE_STATE& right_eye)
+// 眼睛状态检测
+View_Api void EyeDetector(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength, EyeStateDetector::EYE_STATE& left_eye, EyeStateDetector::EYE_STATE& right_eye)
 {
-	auto eyeState_Detector = new EyeStateDetector(ModelSetting(modelPath + "eye_state.csta"));
-	eyeState_Detector->Detect(img, points, left_eye, right_eye);
-	delete eyeState_Detector;
+	seeta::v6::EyeStateDetector eyeState_Detector(ModelSetting(modelPath + "eye_state.csta"));
+	eyeState_Detector.Detect(img, points, left_eye, right_eye);
 }
