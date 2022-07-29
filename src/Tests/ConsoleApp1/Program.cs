@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using ViewFaceCore;
 using ViewFaceCore.Model;
@@ -12,9 +13,15 @@ namespace ConsoleApp1
     {
         private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly static string imagePath = @"images\Jay_3.jpg";
+        private readonly static string logPath = "logs";
 
         static void Main(string[] args)
         {
+            if (Directory.Exists(logPath))
+            {
+                Directory.Delete(logPath, true);
+            }
+
             //人脸识别和标记测试，开始：2022-07-28 17:11，结束：,结果：
             //FaceDetectorAndFaceMarkTest();
 
@@ -28,16 +35,19 @@ namespace ConsoleApp1
             //FaceTrackTest();
 
             //人脸特征值测试
-            ExtractTest();
+            //ExtractTest();
+
+            //年龄预测测试
+            //FaceAgePredictorTest();
+
+            //性别预测测试
+            //FaceGenderPredictorTest();
+
+            //眼睛状态检测测试
+            FaceEyeStateDetectorTest();
+
 
             Console.WriteLine("Hello, World!");
-        }
-
-        private static IEnumerable<FaceMarkPoint> GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
-        {
-            var infos = viewFace.FaceDetector(bitmap);
-            var info = infos.First();
-            return viewFace.FaceMark(bitmap, info).ToList();
         }
 
         private static void FaceDetectorAndFaceMarkTest()
@@ -45,19 +55,15 @@ namespace ConsoleApp1
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             ViewFace viewFace = new ViewFace();
             Stopwatch sw = new Stopwatch();
-            sw.Start();
-            int i = 0;
-            while (true)
+
+            Worker((sw, i) =>
             {
-                sw.Restart();
                 var infos = viewFace.FaceDetector(bitmap);
                 var info = infos.First();
                 var markPoints = GetFaceMarkPoint(viewFace, bitmap);
 
                 logger.Info($"第{i + 1}次识别，结果：{markPoints.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
-                sw.Stop();
-                i++;
-            }
+            });
         }
 
         private static void FaceQualityTest()
@@ -68,12 +74,8 @@ namespace ConsoleApp1
             var info = infos.First();
             var markPoints = GetFaceMarkPoint(viewFace, bitmap);
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            int i = 0;
-            while (true)
+            Worker((sw, i) =>
             {
-                sw.Restart();
                 //var brightnessResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Brightness);
                 //logger.Info($"第{i + 1}次{QualityType.Brightness}评估，结果：{brightnessResult}，耗时：{sw.ElapsedMilliseconds}ms");
                 //var resolutionResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Resolution);
@@ -92,9 +94,7 @@ namespace ConsoleApp1
                 //logger.Info($"第{i + 1}次{QualityType.PoseEx}评估，结果：{poseExeResult}，耗时：{sw.ElapsedMilliseconds}ms");
                 //var structureeResult = viewFace.FaceQuality(bitmap, info, markPoints, QualityType.Structure);
                 //logger.Info($"第{i + 1}次{QualityType.Structure}评估，结果：{structureeResult}，耗时：{sw.ElapsedMilliseconds}ms");
-                sw.Stop();
-                i++;
-            }
+            });
         }
 
         /// <summary>
@@ -108,17 +108,11 @@ namespace ConsoleApp1
             var info = infos.First();
             var markPoints = GetFaceMarkPoint(viewFace, bitmap);
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            int i = 0;
-            while (true)
+            Worker((sw, i) =>
             {
-                sw.Restart();
                 var result = viewFace.AntiSpoofing(bitmap, info, markPoints);
                 logger.Info($"第{i + 1}次检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
-                sw.Stop();
-                i++;
-            }
+            });
         }
 
         /// <summary>
@@ -128,18 +122,11 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             ViewFace viewFace = new ViewFace();
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            int i = 0;
-            while (true)
+            Worker((sw, i) =>
             {
-                sw.Restart();
                 var result = viewFace.FaceTrack(bitmap).ToList();
                 logger.Info($"第{i + 1}次检测，结果：{result.Count}，{result[0].ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
-                sw.Stop();
-                i++;
-            }
+            });
         }
 
         /// <summary>
@@ -149,18 +136,83 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             ViewFace viewFace = new ViewFace();
+            Worker((sw, i) =>
+            {
+                var result = viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap)).ToList();
+                logger.Info($"第{i + 1}次{nameof(ViewFace.Extract)}检测，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+        }
 
+        /// <summary>
+        /// 年龄预测
+        /// </summary>
+        private static void FaceAgePredictorTest()
+        {
+            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            ViewFace viewFace = new ViewFace();
+            Worker((sw, i) =>
+            {
+                var result = viewFace.FaceAgePredictor(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+                logger.Info($"第{i + 1}次{nameof(ViewFace.FaceAgePredictor)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+        }
+
+        /// <summary>
+        /// 性别预测
+        /// </summary>
+        private static void FaceGenderPredictorTest()
+        {
+            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            ViewFace viewFace = new ViewFace();
+            Worker((sw, i) =>
+            {
+                var result = viewFace.FaceGenderPredictor(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+                logger.Info($"第{i + 1}次{nameof(ViewFace.FaceGenderPredictor)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+        }
+
+        /// <summary>
+        /// 眼睛状态检测
+        /// </summary>
+        private static void FaceEyeStateDetectorTest()
+        {
+            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            ViewFace viewFace = new ViewFace();
+            Worker((sw, i) =>
+            {
+                var result = viewFace.FaceEyeStateDetector(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+                logger.Info($"第{i + 1}次{nameof(ViewFace.FaceEyeStateDetector)}检测，结果：{result.ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+        }
+
+        #region Helpers
+
+        private static IEnumerable<FaceMarkPoint> GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
+        {
+            var infos = viewFace.FaceDetector(bitmap);
+            var info = infos.First();
+            return viewFace.FaceMark(bitmap, info).ToList();
+        }
+
+        private static IEnumerable<float> GetExtract(ViewFace viewFace, SKBitmap bitmap)
+        {
+            return viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+        }
+
+        private static void Worker(Action<Stopwatch, int> action)
+        {
             Stopwatch sw = new Stopwatch();
             sw.Start();
             int i = 0;
             while (true)
             {
                 sw.Restart();
-                var result = viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap)).ToList();
-                logger.Info($"第{i + 1}次{nameof(ViewFace.Extract)}检测，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+                action(sw, i);
                 sw.Stop();
                 i++;
             }
         }
+
+        #endregion
     }
 }

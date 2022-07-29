@@ -56,8 +56,7 @@ View_Api void Free(void* address) {
 // 获取人脸数量
 View_Api SeetaFaceInfo* Detector(SeetaImageData& img, int* size, double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0)
 {
-seeta:v6:FaceDetector faceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
-
+	FaceDetector faceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
 	faceDetector.set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
 	faceDetector.set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
 	faceDetector.set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
