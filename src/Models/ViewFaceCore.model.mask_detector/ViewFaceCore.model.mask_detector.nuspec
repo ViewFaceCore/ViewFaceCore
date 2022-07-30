@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.model.mask_detector</id>
-		<version>6.0.5</version>
+		<version>0.0.0</version>
 		<authors>View, SeetaTech</authors>
 		<owners>ViewFaceCore</owners>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
 	<files>
 		<file src="mask_detector.csta" target="build\viewfacecore\models\mask_detector.csta" />
 		<file src="ViewFaceCore.model.mask_detector.targets" target="build\ViewFaceCore.model.mask_detector.targets" />
-		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
-		<file src="..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
+		<file src="..\..\..\assets\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
 	</files>
 </package>

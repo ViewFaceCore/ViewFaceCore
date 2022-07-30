@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.model.quality_lbn</id>
-		<version>6.0.5</version>
+		<version>0.0.0</version>
 		<authors>View, SeetaTech</authors>
 		<owners>ViewFaceCore</owners>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
 	<files>
 		<file src="quality_lbn.csta" target="build\viewfacecore\models\quality_lbn.csta" />
 		<file src="ViewFaceCore.model.quality_lbn.targets" target="build\ViewFaceCore.model.quality_lbn.targets" />
-		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
-		<file src="..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
+		<file src="..\..\..\assets\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
 	</files>
 </package>

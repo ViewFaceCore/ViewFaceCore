@@ -1,4 +1,9 @@
-## models 说明
+## Models
 
-ViewFaceCore.model.* 项目是 Se
-使用  pack.all.bat 将所有 model 项目打包至 `ViewFaceCore.all_models\bin\Release\6.0.4` 目录下
+### 说明
+- ViewFaceCore.model.* 项目是 SeetaFace 的模型文件的 nuget 打包项目
+- 使用 `ViewFaceCore.Models.sln` 组织管理
+
+### 打包方式
+- 运行 `pack.all.bat` 脚本将 Models 下的所有项目打包至 `packages\[配置]\[版本号]` 目录下
+- 可以通过修改 `pack.all.bat` 脚本中的 `configuration` `version` `output` 参数来修改生成的配置, 版本号和输出目录
