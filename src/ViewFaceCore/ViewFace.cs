@@ -14,7 +14,7 @@ namespace ViewFaceCore
     /// <summary>
     /// 人脸识别类
     /// </summary>
-    public sealed class ViewFace : IFormattable
+    public sealed class ViewFace : IFormattable, IDisposable
     {
         // Constructor
         /// <summary>
@@ -373,7 +373,13 @@ namespace ViewFaceCore
 
             return $"{{{mtips}:{ModelPath}, {otips}:{RuntimeInformation.OSDescription}, {atips}:{RuntimeInformation.ProcessArchitecture}}}";
         }
+
         #endregion
+
+        public void Dispose()
+        {
+            ViewFaceNative.Dispose();
+        }
     }
 
 }

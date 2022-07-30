@@ -17,16 +17,20 @@ namespace ViewFaceCoreSkiaSharpTest
         public void FaceDetectorTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
-            var infos = viewFace.FaceDetector(bitmap);
-            Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
+            using (ViewFace viewFace = new ViewFace())
+            {
+                var infos = viewFace.FaceDetector(bitmap).ToList();
+                Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
+            }
+            ViewFace viewFace1 = new ViewFace();
+            var infos1 = viewFace1.FaceDetector(bitmap);
         }
 
         [TestMethod]
         public void FaceMarkTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
+            using ViewFace viewFace = new ViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             var points = viewFace.FaceMark(bitmap, info).ToList();

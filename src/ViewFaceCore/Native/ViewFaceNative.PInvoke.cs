@@ -344,5 +344,8 @@ namespace ViewFaceCore.Native
         [DllImport(LibraryName, EntryPoint = "EyeDetector", CallingConvention = CallingConvention.Cdecl)]
         public extern static void EyeStateDetector(ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
             ref int left_eye, ref int right_eye);
+
+        [DllImport(LibraryName, EntryPoint = "Dispose", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void Dispose();
     }
 }

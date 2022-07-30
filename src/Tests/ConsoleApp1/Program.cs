@@ -201,17 +201,18 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap0 = SKBitmap.Decode(imagePath);
             using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
-            ViewFace viewFace = new ViewFace();
-            Worker((sw, i) =>
+            using (ViewFace viewFace = new ViewFace())
             {
-                var p0 = GetExtract(viewFace, bitmap0);
-                var p1 = GetExtract(viewFace, bitmap1);
+                Worker((sw, i) =>
+                {
+                    var p0 = GetExtract(viewFace, bitmap0);
+                    var p1 = GetExtract(viewFace, bitmap1);
 
-                float result = viewFace.Compare(p0, p1);
-                bool isSelf = viewFace.IsSelf(p0, p1);
-                logger.Info($"第{i + 1}次{nameof(ViewFace.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
-            });
-
+                    float result = viewFace.Compare(p0, p1);
+                    bool isSelf = viewFace.IsSelf(p0, p1);
+                    logger.Info($"第{i + 1}次{nameof(ViewFace.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
+                });
+            }
         }
 
         #region Helpers
