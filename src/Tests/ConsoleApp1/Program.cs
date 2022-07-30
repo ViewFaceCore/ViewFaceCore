@@ -224,7 +224,7 @@ namespace ConsoleApp1
             return viewFace.FaceMark(bitmap, info).ToList();
         }
 
-        private static IEnumerable<float> GetExtract(ViewFace viewFace, SKBitmap bitmap)
+        private static float[] GetExtract(ViewFace viewFace, SKBitmap bitmap)
         {
             return viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
         }

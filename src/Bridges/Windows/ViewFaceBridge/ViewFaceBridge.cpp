@@ -14,6 +14,7 @@
 #include "seeta/FaceRecognizer.h"
 #include "seeta/FaceAntiSpoofing.h"
 #include "seeta/FaceTracker.h"
+#include "seeta/MaskDetector.h"
 
 #include "seeta/QualityOfBrightness.h"
 #include "seeta/QualityOfClarity.h"
@@ -34,6 +35,9 @@
 
 using namespace std;
 using namespace seeta;
+
+//释放标识，避免被释放后二次创建对象，然后就忘了释放
+static bool _isDispose = false;
 
 string modelPath = "./viewfacecore/models/"; // 模型所在路径
 // 设置人脸模型目录
@@ -56,20 +60,39 @@ View_Api void Free(void* address)
 
 static seeta::v6::FaceDetector* _faceDetector = nullptr;
 
+const double _defaultFaceSize = 20;
+const double _defaultThreshold = 0.9;
+const double _defaultMaxWidth = 2000;
+const double _defaultMaxHeight = 2000;
+
 // 获取人脸数量
-View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const  double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const int type = 0)
+View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const int type = 0)
 {
-	if (_faceDetector == nullptr) {
-		_faceDetector = new FaceDetector(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")));
+	if (_isDispose) {
+		throw "The current object has been disposed.";
 	}
-	FaceDetector faceDetector(_faceDetector);
-	faceDetector.set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
-	faceDetector.set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
-	faceDetector.set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
-	faceDetector.set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+	if (_faceDetector == nullptr) {
+		_faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", SEETA_DEVICE_AUTO));
+	}
+	_faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+	_faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+	_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+	_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
 
-	auto faces = faceDetector.detect_v2(img);
+	/*if (faceSize != _defaultFaceSize) {
+		_faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+	}
+	if (threshold != _defaultThreshold) {
+		_faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+	}
+	if (maxWidth != _defaultMaxWidth) {
+		_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+	}
+	if (maxHeight != _defaultMaxHeight) {
+		_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+	}*/
 
+	auto faces = _faceDetector->detect_v2(img);
 	*size = faces.size();
 	SeetaFaceInfo* _infos = new SeetaFaceInfo[*size];
 	for (int i = 0; i < faces.size(); i++)
@@ -86,25 +109,32 @@ static seeta::v6::FaceLandmarker* faceLandmarker_type_2 = nullptr;
 // 人脸关键点器
 View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRect, long* size, const int type = 0)
 {
+	if (_isDispose) {
+		throw "The current object has been disposed.";
+	}
 	if (faceLandmarker_type_0 == nullptr) {
-		faceLandmarker_type_0 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta"));
-		faceLandmarker_type_1 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta"));
-		faceLandmarker_type_2 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta"));
+		faceLandmarker_type_0 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta", SEETA_DEVICE_AUTO));
+	}
+	if (faceLandmarker_type_1 == nullptr) {
+		faceLandmarker_type_1 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta", SEETA_DEVICE_AUTO));
+	}
+	if (faceLandmarker_type_2 == nullptr) {
+		faceLandmarker_type_2 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta", SEETA_DEVICE_AUTO));
 	}
 	seeta::v6::FaceLandmarker* faceLandmarker = nullptr;
 	switch (type)
 	{
 	case 0:
-		faceLandmarker = new seeta::v6::FaceLandmarker(faceLandmarker_type_0);
+		faceLandmarker = faceLandmarker_type_0;
 		break;
 	case 1:
-		faceLandmarker = new seeta::v6::FaceLandmarker(faceLandmarker_type_1);
+		faceLandmarker = faceLandmarker_type_1;
 		break;
 	case 2:
-		faceLandmarker = new seeta::v6::FaceLandmarker(faceLandmarker_type_2);
+		faceLandmarker = faceLandmarker_type_2;
 		break;
 	default:
-		break;
+		throw "Unsupport type.";
 	}
 
 	*size = faceLandmarker->number();
@@ -119,42 +149,45 @@ View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRe
 			*start = *iter;
 			start++;
 		}
-		delete(faceLandmarker);
 		return points;
 	}
-	else {
-		delete(faceLandmarker);
-		return 0;
-	}
+	return 0;
 }
 
 static seeta::v6::FaceRecognizer* _faceRecognizer_type_0 = nullptr;
 static seeta::v6::FaceRecognizer* _faceRecognizer_type_1 = nullptr;
 static seeta::v6::FaceRecognizer* _faceRecognizer_type_2 = nullptr;
+
 // 提取人脸特征值
 View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, int* size, const int type = 0)
 {
-	if (_faceRecognizer_type_0 == nullptr) {
+	if (_isDispose) {
+		throw "The current object has been disposed.";
+	}
+	if (_faceRecognizer_type_0 == nullptr){
 		_faceRecognizer_type_0 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer.csta"));
+	}
+	if (_faceRecognizer_type_1 == nullptr) {
 		_faceRecognizer_type_1 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_mask.csta"));
+	}
+	if (_faceRecognizer_type_2 == nullptr) {
 		_faceRecognizer_type_2 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_light.csta"));
 	}
 	seeta::v6::FaceRecognizer* faceRecognizer = nullptr;
 	switch (type)
 	{
 	case 0:
-		faceRecognizer = new seeta::v6::FaceRecognizer(_faceRecognizer_type_0);
+		faceRecognizer = _faceRecognizer_type_0;
 		break;
 	case 1:
-		faceRecognizer = new seeta::v6::FaceRecognizer(_faceRecognizer_type_1);
+		faceRecognizer = _faceRecognizer_type_1;
 		break;
 	case 2:
-		faceRecognizer = new seeta::v6::FaceRecognizer(_faceRecognizer_type_2);
+		faceRecognizer = _faceRecognizer_type_2;
 		break;
 	default:
-		break;
+		throw "Unsupport type.";
 	}
-
 	*size = faceRecognizer->GetExtractFeatureSize();
 	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
 	faceRecognizer->Extract(img, points, _features.get());
@@ -162,7 +195,6 @@ View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, in
 	float* source = _features.get();
 	float* features = new float[*size];
 	memcpy(features, source, *size * sizeof(float));
-	delete(faceRecognizer);
 	return features;
 }
 
@@ -361,30 +393,56 @@ View_Api void EyeDetector(const SeetaImageData& img, const SeetaPointF* points, 
 }
 
 View_Api void Dispose() {
-	try {
-		if (_faceDetector != nullptr) {
-			delete(_faceDetector);
+	_isDispose = true;
+	if (_faceDetector != nullptr) {
+		try {
+			delete _faceDetector;
+			_faceDetector = nullptr;
 		}
-		if (_faceRecognizer_type_0 != nullptr) {
-			delete(_faceRecognizer_type_0);
-		}
-		if (_faceRecognizer_type_1 != nullptr) {
-			delete(_faceRecognizer_type_1);
-		}
-		if (_faceRecognizer_type_2 != nullptr) {
-			delete(_faceRecognizer_type_2);
-		}
-		if (faceLandmarker_type_0 != nullptr) {
-			delete(faceLandmarker_type_0);
-		}
-		if (faceLandmarker_type_1 != nullptr) {
-			delete(faceLandmarker_type_1);
-		}
-		if (faceLandmarker_type_2 != nullptr) {
-			delete(faceLandmarker_type_2);
-		}
+		catch (int e) {}
 	}
-	catch (int e) {
 
+	if (faceLandmarker_type_0 != nullptr) {
+		try {
+			delete faceLandmarker_type_0;
+			faceLandmarker_type_0 = nullptr;
+		}
+		catch (int e) {}
+	}
+	if (faceLandmarker_type_1 != nullptr) {
+		try {
+			delete faceLandmarker_type_1;
+			faceLandmarker_type_1 = nullptr;
+		}
+		catch (int e) {}
+	}
+	if (faceLandmarker_type_2 != nullptr) {
+		try {
+			delete faceLandmarker_type_2;
+			faceLandmarker_type_2 = nullptr;
+		}
+		catch (int e) {}
+	}
+
+	if (_faceRecognizer_type_0 != nullptr) {
+		try {
+			delete _faceRecognizer_type_0;
+			_faceRecognizer_type_0 = nullptr;
+		}
+		catch (int e) {}
+	}
+	if (_faceRecognizer_type_1 != nullptr) {
+		try {
+			delete _faceRecognizer_type_1;
+			_faceRecognizer_type_1 = nullptr;
+		}
+		catch (int e) {}
+	}
+	if (_faceRecognizer_type_2 != nullptr) {
+		try {
+			delete _faceRecognizer_type_2;
+			_faceRecognizer_type_2 = nullptr;
+		}
+		catch (int e) {}
 	}
 }

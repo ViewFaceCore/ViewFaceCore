@@ -14,7 +14,7 @@ namespace ViewFaceCore
     /// <summary>
     /// 人脸识别类
     /// </summary>
-    public sealed class ViewFace : IFormattable, IDisposable
+    public sealed class ViewFace : IViewFace
     {
         // Constructor
         /// <summary>
@@ -68,6 +68,8 @@ namespace ViewFaceCore
         /// </summary>
         public QualityConfig QualityConfig { get; set; } = new QualityConfig();
 
+        private readonly static object _faceDetectorLocker = new object();
+
         // Public Method
         /// <summary>
         /// 识别 <paramref name="image"/> 中的人脸，并返回人脸的信息。
@@ -83,17 +85,22 @@ namespace ViewFaceCore
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
         public IEnumerable<FaceInfo> FaceDetector(FaceImage image)
         {
-            int size = 0;
-            var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
-
-            for (int i = 0; i < size; i++)
+            lock (_faceDetectorLocker)
             {
-                int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
-                var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
-                yield return info;
+                int size = 0;
+                var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
+
+                for (int i = 0; i < size; i++)
+                {
+                    int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
+                    var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
+                    yield return info;
+                }
+                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
             }
-            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
         }
+
+        private readonly static object _faceMarkLocker = new object();
 
         /// <summary>
         /// 识别 <paramref name="image"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
@@ -109,16 +116,21 @@ namespace ViewFaceCore
         /// <returns>若失败，则返回结果 Length == 0</returns>
         public IEnumerable<FaceMarkPoint> FaceMark(FaceImage image, FaceInfo info)
         {
-            long size = 0;
-            var ptr = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
-            for (int i = 0; i < size; i++)
+            lock (_faceMarkLocker)
             {
-                var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
-                yield return point;
+                long size = 0;
+                var ptr = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
+                for (int i = 0; i < size; i++)
+                {
+                    var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
+                    var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
+                    yield return point;
+                }
+                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
             }
-            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
         }
+
+        private readonly static object _extractLocker = new object();
 
         /// <summary>
         /// 提取人脸特征值。
@@ -131,19 +143,22 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点数据</param>
         /// <returns></returns>
-        public IEnumerable<float> Extract(FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public float[] Extract(FaceImage image, IEnumerable<FaceMarkPoint> points)
         {
-            int size = 0;
-            var ptr = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
-            try
+            lock (_extractLocker)
             {
-                float[] result = new float[size];
-                Marshal.Copy(ptr, result, 0, size);
-                return result;
-            }
-            finally
-            {
-                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
+                int size = 0;
+                var ptr = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
+                try
+                {
+                    float[] result = new float[size];
+                    Marshal.Copy(ptr, result, 0, size);
+                    return result;
+                }
+                finally
+                {
+                    if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
+                }
             }
         }
 
@@ -155,21 +170,18 @@ namespace ViewFaceCore
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public float Compare(IEnumerable<float> lfs, IEnumerable<float> rfs)
+        public float Compare(float[] lfs, float[] rfs)
         {
             if (lfs == null || !lfs.Any() || rfs == null || !rfs.Any())
             { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
 
-            var _lfs = lfs.ToArray();
-            var _rfs = rfs.ToArray();
-
-            if (_lfs.Length != _rfs.Length)
+            if (lfs.Length != rfs.Length)
             { throw new ArgumentException("两个人脸特征值数组长度不一致，请使用同一检测模型"); }
 
             float sum = 0;
-            for (int i = 0; i < _lfs.Length; i++)
+            for (int i = 0; i < lfs.Length; i++)
             {
-                sum += _lfs[i] * _rfs[i];
+                sum += lfs[i] * rfs[i];
             }
             return sum;
 
@@ -186,7 +198,7 @@ namespace ViewFaceCore
         /// <param name="lfs"></param>
         /// <param name="rfs"></param>
         /// <returns></returns>
-        public bool IsSelf(IEnumerable<float> lfs, IEnumerable<float> rfs) => Compare(lfs, rfs) > FaceCompareConfig.GetThreshold(FaceType);
+        public bool IsSelf(float[] lfs, float[] rfs) => Compare(lfs, rfs) > FaceCompareConfig.GetThreshold(FaceType);
 
         /// <summary>
         /// 判断相似度是否为同一个人。
@@ -376,9 +388,14 @@ namespace ViewFaceCore
 
         #endregion
 
+        private readonly static object _disposeLocker = new object();
+
         public void Dispose()
         {
-            ViewFaceNative.Dispose();
+            lock (_disposeLocker)
+            {
+                ViewFaceNative.Dispose();
+            }
         }
     }
 
