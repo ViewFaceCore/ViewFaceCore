@@ -1,5 +1,9 @@
 #pragma once
 
+#include <iostream>
+#include <string>
+#include <math.h>
+
 #include "../../SeetaFace/index/build/include/seeta/FaceDetector.h"
 #include "../../SeetaFace/index/build/include/seeta/FaceLandmarker.h"
 #include "../../SeetaFace/index/build/include/seeta/FaceRecognizer.h"
@@ -21,5 +25,3 @@
 #include "../../SeetaFace/index/build/include/seeta/GenderPredictor.h"
 #include "../../SeetaFace/index/build/include/seeta/EyeStateDetector.h"
 
-#include <iostream>
-#include <string>

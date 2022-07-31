@@ -36,7 +36,7 @@ void _dispose(T& ptr) {
 }
 
 // 模型所在路径
-string modelPath = "./viewfacecore/models/"; 
+string modelPath = "./viewfacecore/models/";
 
 // 设置人脸模型目录
 View_Api void SetModelPath(const char* path)
@@ -494,7 +494,7 @@ View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect
 /// 获取年龄预测句柄
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::AgePredictor* GetAgePredictorHandler() 
+View_Api seeta::v6::AgePredictor* GetAgePredictorHandler()
 {
 	return new seeta::v6::AgePredictor(ModelSetting(modelPath + "age_predictor.csta", SEETA_DEVICE_AUTO));
 }
@@ -525,7 +525,7 @@ View_Api int PredictAge(seeta::v6::AgePredictor* handler, const SeetaImageData& 
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler) 
+View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
 {
 	_dispose(handler);
 }
@@ -538,7 +538,7 @@ View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
 /// 获取性别预测句柄
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler() 
+View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler()
 {
 	return new seeta::v6::GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta", SEETA_DEVICE_AUTO));
 }
@@ -565,7 +565,7 @@ View_Api int PredictGender(seeta::v6::GenderPredictor* handler, const SeetaImage
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler) 
+View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
 {
 	_dispose(handler);
 }
@@ -578,7 +578,7 @@ View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
 /// 获取眼睛状态检测句柄
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler() 
+View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler()
 {
 	return new seeta::v6::EyeStateDetector(ModelSetting(modelPath + "eye_state.csta", SEETA_DEVICE_AUTO));
 }
@@ -606,7 +606,7 @@ View_Api void EyeStateDetector(seeta::v6::EyeStateDetector* handler
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector* handler) 
+View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector* handler)
 {
 	_dispose(handler);
 }
