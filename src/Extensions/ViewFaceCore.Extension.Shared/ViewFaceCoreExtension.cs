@@ -114,26 +114,6 @@ namespace ViewFaceCore
         }
 
         /// <summary>
-        /// 识别 <paramref name="image"/> 中的人脸，并返回可跟踪的人脸信息。
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
-        /// </para>
-        /// </summary>
-        /// <param name="image">人脸图像信息</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public static IEnumerable<FaceTrackInfo> FaceTrack<T>(this ViewFace viewFace, T image) where T : class
-        {
-            using (var faceImage = image.ToFaceImage())
-            {
-                foreach (var trackInfo in viewFace.FaceTrack(faceImage))
-                {
-                    yield return trackInfo;
-                }
-            }
-        }
-
-        /// <summary>
         /// 人脸质量评估
         /// </summary>
         /// <param name="image">人脸图像信息</param>
@@ -200,6 +180,23 @@ namespace ViewFaceCore
                 return viewFace.FaceEyeStateDetector(faceImage, points);
             }
         }
+
+        #region 人脸追踪
+
+        /// <summary>
+        /// 识别 <paramref name="image"/> 中的人脸，并返回可跟踪的人脸信息。
+        /// </summary>
+        /// <param name="image">人脸图像信息</param>
+        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
+        public static FaceTrackInfo[] Track<T>(this FaceTrack faceTrack, T image) where T : class
+        {
+            using (var faceImage = image.ToFaceImage())
+            {
+                return faceTrack.Track(faceImage);
+            }
+        }
+
+        #endregion
 
     }
 }

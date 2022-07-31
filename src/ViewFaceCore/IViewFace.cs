@@ -47,11 +47,6 @@ namespace ViewFaceCore
         public MarkType MarkType { get; set; }
 
         /// <summary>
-        /// 获取或设置人脸跟踪器的配置
-        /// </summary>
-        public FaceTrackerConfig TrackerConfig { get; set; }
-
-        /// <summary>
         /// 获取或设置质量评估器的配置
         /// </summary>
         public QualityConfig QualityConfig { get; set; }
@@ -155,17 +150,6 @@ namespace ViewFaceCore
         public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global = false);
 
         /// <summary>
-        /// 识别 <paramref name="image"/> 中的人脸，并返回可跟踪的人脸信息。
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
-        /// </para>
-        /// </summary>
-        /// <param name="image">人脸图像信息</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public IEnumerable<FaceTrackInfo> FaceTrack(FaceImage image);
-
-        /// <summary>
         /// 人脸质量评估
         /// </summary>
         /// <param name="image">人脸图像信息</param>
@@ -174,7 +158,6 @@ namespace ViewFaceCore
         /// <param name="type">质量评估类型</param>
         /// <returns></returns>
         public QualityResult FaceQuality(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, QualityType type);
-
 
         /// <summary>
         /// 年龄预测。

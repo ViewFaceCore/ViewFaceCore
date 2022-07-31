@@ -33,7 +33,7 @@ namespace ConsoleApp1
             //FaceQualityTest();
 
             //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-            //FaceTrackTest();
+            FaceTrackTest();
 
             //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
             //ExtractTest();
@@ -48,7 +48,7 @@ namespace ConsoleApp1
             //FaceEyeStateDetectorTest();
 
             //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-            CompareTest();
+            //CompareTest();
 
             Console.WriteLine("Hello, World!");
         }
@@ -130,11 +130,16 @@ namespace ConsoleApp1
         private static void FaceTrackTest()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
+            using FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
             Worker((sw, i) =>
             {
-                var result = viewFace.FaceTrack(bitmap).ToList();
-                logger.Info($"第{i + 1}次检测，结果：{result.Count}，{result[0].ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
+                var result = faceTrack.Track(bitmap).ToList();
+                if (result == null || !result.Any())
+                {
+                    Console.WriteLine("GG...");
+                    return;
+                }
+                logger.Info($"第{i + 1}次追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 

@@ -18,13 +18,12 @@ namespace ViewFaceCoreSkiaSharpTest
         public void FaceDetectorTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using (ViewFace viewFace = new ViewFace())
-            {
-                var infos = viewFace.FaceDetector(bitmap).ToList();
-                Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
-            }
-            ViewFace viewFace1 = new ViewFace();
-            var infos1 = viewFace1.FaceDetector(bitmap);
+            using ViewFace viewFace = new ViewFace();
+
+            var infos = viewFace.FaceDetector(bitmap).ToList();
+            Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
+
+            var infos1 = viewFace.FaceDetector(bitmap).ToArray();
         }
 
         [TestMethod]
@@ -46,6 +45,24 @@ namespace ViewFaceCoreSkiaSharpTest
             ViewFace viewFace = new ViewFace();
             var result = viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
             Assert.IsTrue(result.Any());
+        }
+
+        [TestMethod]
+        public void FaceTrackTest1()
+        {
+            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+
+            using (FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height)))
+            {
+                var result = faceTrack.Track(bitmap).ToList();
+                if (result == null || !result.Any())
+                {
+                    Assert.Fail();
+                }
+                faceTrack.Reset();
+            }
+
+            Debug.WriteLine("FaceTrack is disposed");
         }
 
         [TestMethod]

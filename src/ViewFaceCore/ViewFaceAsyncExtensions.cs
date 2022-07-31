@@ -113,23 +113,6 @@ namespace ViewFaceCore
             => await Task.Run(() => face.AntiSpoofingVideo(image, info, points, global));
 
         /// <summary>
-        /// 识别 <paramref name="image"/> 中的人脸，并返回可跟踪的人脸信息。
-        /// <para><see cref="ViewFace.FaceTrack(FaceImage)"/> 的异步版本。</para>
-        /// <para>
-        /// 可以通过 <see cref="ViewFace.TrackerConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
-        /// </para>
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector">ViewFaceCore.model.face_detector</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">ViewFaceCore.model.mask_detector</a><br/>
-        /// </para>
-        /// </summary>
-        /// <param name="face"></param>
-        /// <param name="image">人脸图像信息</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="ViewFace.TrackerConfig"/> 重新检测。</returns>
-        public static async Task<IEnumerable<FaceTrackInfo>> FaceTrackAsync(this ViewFace face, FaceImage image)
-            => await Task.Run(() => face.FaceTrack(image));
-
-        /// <summary>
         /// 人脸质量评估
         /// <para><see cref="ViewFace.FaceQuality(FaceImage, FaceInfo, IEnumerable{FaceMarkPoint}, QualityType)"/> 的异步版本。</para>
         /// </summary>

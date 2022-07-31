@@ -59,11 +59,6 @@ namespace ViewFaceCore
         public MarkType MarkType { get; set; } = MarkType.Light;
 
         /// <summary>
-        /// 获取或设置人脸跟踪器的配置
-        /// </summary>
-        public FaceTrackerConfig TrackerConfig { get; set; } = new FaceTrackerConfig();
-
-        /// <summary>
         /// 获取或设置质量评估器的配置
         /// </summary>
         public QualityConfig QualityConfig { get; set; } = new QualityConfig();
@@ -76,10 +71,6 @@ namespace ViewFaceCore
         /// <para>
         /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型： <a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector/">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
-        /// </para>
         /// </summary>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
@@ -88,15 +79,17 @@ namespace ViewFaceCore
             lock (_faceDetectorLocker)
             {
                 int size = 0;
-                var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight, (int)FaceType);
-
-                for (int i = 0; i < size; i++)
+                var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight);
+                if (ptr != IntPtr.Zero)
                 {
-                    int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
-                    var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
-                    yield return info;
+                    for (int i = 0; i < size; i++)
+                    {
+                        int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
+                        var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
+                        yield return info;
+                    }
+                    ViewFaceNative.Free(ptr);
                 }
-                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
             }
         }
 
@@ -120,13 +113,16 @@ namespace ViewFaceCore
             {
                 long size = 0;
                 var ptr = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
-                for (int i = 0; i < size; i++)
+                if (ptr != IntPtr.Zero)
                 {
-                    var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                    var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
-                    yield return point;
+                    for (int i = 0; i < size; i++)
+                    {
+                        var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
+                        var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
+                        yield return point;
+                    }
+                    ViewFaceNative.Free(ptr);
                 }
-                if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
             }
         }
 
@@ -149,16 +145,20 @@ namespace ViewFaceCore
             {
                 int size = 0;
                 var ptr = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
-                try
+                if (ptr != IntPtr.Zero)
                 {
-                    float[] result = new float[size];
-                    Marshal.Copy(ptr, result, 0, size);
-                    return result;
+                    try
+                    {
+                        float[] result = new float[size];
+                        Marshal.Copy(ptr, result, 0, size);
+                        return result;
+                    }
+                    finally
+                    {
+                        ViewFaceNative.Free(ptr);
+                    }
                 }
-                finally
-                {
-                    if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
-                }
+                return new float[0];
             }
         }
 
@@ -236,29 +236,6 @@ namespace ViewFaceCore
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
         public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global = false)
             => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(ref image, info.Location, points.ToArray(), global);
-
-        /// <summary>
-        /// 识别 <paramref name="image"/> 中的人脸，并返回可跟踪的人脸信息。
-        /// <para>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> <see langword="||"/> <see cref="FaceType.Light"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_detector">face_detector.csta</a><br/>
-        /// 当 <c><see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/></c> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.mask_detector">mask_detector.csta</a><br/>
-        /// </para>
-        /// </summary>
-        /// <param name="image">人脸图像信息</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public IEnumerable<FaceTrackInfo> FaceTrack(FaceImage image)
-        {
-            int size = 0;
-            var ptr = ViewFaceNative.FaceTrack(ref image, ref size, TrackerConfig.Stable, TrackerConfig.Interval, TrackerConfig.FaceSize, TrackerConfig.Threshold, (int)FaceType);
-
-            for (int i = 0; i < size; i++)
-            {
-                int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
-                var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
-                yield return info;
-            }
-            if (ptr != IntPtr.Zero) ViewFaceNative.Free(ptr);
-        }
 
         /// <summary>
         /// 人脸质量评估

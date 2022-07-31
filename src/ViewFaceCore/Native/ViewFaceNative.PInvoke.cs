@@ -62,7 +62,7 @@ namespace ViewFaceCore.Native
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "Detector", CallingConvention = CallingConvention.Cdecl)]
         public extern static IntPtr Detector(ref FaceImage img, ref int size,
-            double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int type = 0);
+            double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000);
 
         /// <summary>
         /// 获取人脸关键点
@@ -129,18 +129,42 @@ namespace ViewFaceCore.Native
             FaceRect faceRect, FaceMarkPoint[] points, bool global);
 
         /// <summary>
-        /// 人脸跟踪信息
+        /// 获取人脸跟踪句柄
         /// </summary>
-        /// <param name="img">图像信息</param>
-        /// <param name="size"></param>
+        /// <param name="width">图像宽度</param>
+        /// <param name="height">图像高度</param>
+        /// <param name="type">模型类型。0：face_detector；1：mask_detector；</param>
         /// <param name="stable"></param>
         /// <param name="interval"></param>
         /// <param name="faceSize"></param>
         /// <param name="threshold"></param>
-        /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "GetFaceTrackHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceTrackHandler(int width, int height, int type = 0, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f);
+
+        /// <summary>
+        /// 人脸跟踪信息
+        /// </summary>
+        /// <param name="faceTracker">人脸跟踪句柄</param>
+        /// <param name="img">追踪图像</param>
+        /// <param name="size"></param>
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "FaceTrack", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr FaceTrack(ref FaceImage img, ref int size, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int type = 0);
+        public extern static IntPtr FaceTrack(IntPtr faceTracker, ref FaceImage img, ref int size);
+
+        /// <summary>
+        /// 重置追踪视频
+        /// </summary>
+        /// <param name="faceTracker"></param>
+        [DllImport(LibraryName, EntryPoint = "FaceTrackReset", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void FaceTrackReset(IntPtr faceTracker);
+
+        /// <summary>
+        /// 释放人脸追踪句柄
+        /// </summary>
+        /// <param name="faceTracker"></param>
+        [DllImport(LibraryName, EntryPoint = "FaceTrackDispose", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void FaceTrackDispose(IntPtr faceTracker);
 
         /// <summary>
         /// 亮度评估。
