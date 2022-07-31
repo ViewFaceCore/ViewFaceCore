@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using ViewFaceCore.Model;
 
 
@@ -190,6 +189,47 @@ namespace ViewFaceCore
             }
         }
 
+        #endregion
+
+
+        #region 特征值
+        /// <summary>
+        /// 计算特征值相似度。
+        /// </summary>
+        /// <param name="lfs"></param>
+        /// <param name="rfs"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public static float Compare(this ViewFace _, float[] lfs, float[] rfs)
+        {
+            if (lfs == null || !lfs.Any() || rfs == null || !rfs.Any())
+            { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
+
+            if (lfs.Length != rfs.Length)
+            { throw new ArgumentException("两个人脸特征值数组长度不一致，请使用同一检测模型"); }
+
+            float sum = 0;
+            for (int i = 0; i < lfs.Length; i++)
+            {
+                sum += lfs[i] * rfs[i];
+            }
+            return sum;
+
+            //调用Native组件
+            //return ViewFaceNative.Compare(_lfs, _rfs, _lfs.Length);
+        }
+
+        /// <summary>
+        /// 判断两个特征值是否为同一个人。
+        /// <para>只能对比相同 <see cref="FaceType"/> 提取出的特征值</para>
+        /// </summary>
+        /// <exception cref="ArgumentException"/>
+        /// <exception cref="ArgumentNullException"/>
+        /// <param name="lfs"></param>
+        /// <param name="rfs"></param>
+        /// <returns></returns>
+        public static bool IsSelf(this ViewFace viewFace, float[] lfs, float[] rfs) => viewFace.IsSelf(viewFace.Compare(lfs, rfs));
         #endregion
 
     }

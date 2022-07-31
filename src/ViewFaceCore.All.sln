@@ -50,6 +50,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCoreSkiaSharpTest", "Tests\ViewFaceCoreSkiaSharpTest\ViewFaceCoreSkiaSharpTest.csproj", "{B802D7A1-D523-495B-913D-D847EE7F2231}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{3090995F-608F-4181-A8B3-93A0F5C8B24D}"
+	ProjectSection(SolutionItems) = preProject
+		Models\pack.all.bat = Models\pack.all.bat
+		Models\README.md = Models\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.all_models", "Models\ViewFaceCore.all_models\ViewFaceCore.all_models.csproj", "{E93763B6-8A59-452C-903C-1F883DF64C40}"
 EndProject

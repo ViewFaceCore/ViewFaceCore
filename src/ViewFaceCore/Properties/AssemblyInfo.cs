@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // 在此类的 SDK 样式项目中，现在，在此文件中早前定义的几个程序集属性将在生成期间自动添加，并使用在项目属性中定义的值进行填充。有关包含的属性以及如何定制此过程的详细信息，请参阅
@@ -13,4 +14,7 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("1753a0ab-2521-4c1e-993b-a8294f752f0b")]
 
+// 仅对内部不同图形库的实现公开访问
+[assembly: InternalsVisibleTo("ViewFaceCore.Extension.SystemDrawing")]
+[assembly: InternalsVisibleTo("ViewFaceCore.Extension.SkiaSharp")]
 

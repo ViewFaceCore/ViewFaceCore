@@ -14,7 +14,7 @@ namespace ViewFaceCore
     /// <summary>
     /// 人脸识别类
     /// </summary>
-    public sealed class ViewFace : IViewFace
+    public sealed class ViewFace
     {
         // Constructor
         /// <summary>
@@ -65,7 +65,7 @@ namespace ViewFaceCore
 
         private readonly static object _faceDetectorLocker = new object();
 
-        // Public Method
+        // internal Method
         /// <summary>
         /// 识别 <paramref name="image"/> 中的人脸，并返回人脸的信息。
         /// <para>
@@ -74,7 +74,7 @@ namespace ViewFaceCore
         /// </summary>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
-        public FaceInfo[] FaceDetector(FaceImage image)
+        internal FaceInfo[] FaceDetector(FaceImage image)
         {
             lock (_faceDetectorLocker)
             {
@@ -109,7 +109,7 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public FaceMarkPoint[] FaceMark(FaceImage image, FaceInfo info)
+        internal FaceMarkPoint[] FaceMark(FaceImage image, FaceInfo info)
         {
             lock (_faceMarkLocker)
             {
@@ -142,7 +142,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点数据</param>
         /// <returns></returns>
-        public float[] Extract(FaceImage image, FaceMarkPoint[] points)
+        internal float[] Extract(FaceImage image, FaceMarkPoint[] points)
         {
             lock (_extractLocker)
             {
@@ -166,49 +166,11 @@ namespace ViewFaceCore
         }
 
         /// <summary>
-        /// 计算特征值相似度。
-        /// </summary>
-        /// <param name="lfs"></param>
-        /// <param name="rfs"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        public float Compare(float[] lfs, float[] rfs)
-        {
-            if (lfs == null || !lfs.Any() || rfs == null || !rfs.Any())
-            { throw new ArgumentNullException(nameof(lfs), "参数不能为空"); }
-
-            if (lfs.Length != rfs.Length)
-            { throw new ArgumentException("两个人脸特征值数组长度不一致，请使用同一检测模型"); }
-
-            float sum = 0;
-            for (int i = 0; i < lfs.Length; i++)
-            {
-                sum += lfs[i] * rfs[i];
-            }
-            return sum;
-
-            //调用Native组件
-            //return ViewFaceNative.Compare(_lfs, _rfs, _lfs.Length);
-        }
-
-        /// <summary>
-        /// 判断两个特征值是否为同一个人。
-        /// <para>只能对比相同 <see cref="FaceType"/> 提取出的特征值</para>
-        /// </summary>
-        /// <exception cref="ArgumentException"/>
-        /// <exception cref="ArgumentNullException"/>
-        /// <param name="lfs"></param>
-        /// <param name="rfs"></param>
-        /// <returns></returns>
-        public bool IsSelf(float[] lfs, float[] rfs) => Compare(lfs, rfs) > FaceCompareConfig.GetThreshold(FaceType);
-
-        /// <summary>
         /// 判断相似度是否为同一个人。
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
-        public bool IsSelf(float similarity) => similarity > FaceCompareConfig.GetThreshold(FaceType);
+        internal bool IsSelf(float similarity) => similarity > FaceCompareConfig.GetThreshold(FaceType);
 
         /// <summary>
         /// 活体检测器。(单帧图片)
@@ -222,7 +184,7 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns>活体检测状态</returns>
-        public AntiSpoofingStatus AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+        internal AntiSpoofingStatus AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
             => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(ref image, info.Location, points, global);
 
         /// <summary>
@@ -237,7 +199,7 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-        public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+        internal AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
             => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(ref image, info.Location, points, global);
 
         /// <summary>
@@ -248,7 +210,7 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="type">质量评估类型</param>
         /// <returns></returns>
-        public QualityResult FaceQuality(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
+        internal QualityResult FaceQuality(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
         {
             int level = -1;
             float score = -1;
@@ -299,7 +261,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
-        public int FaceAgePredictor(FaceImage image, FaceMarkPoint[] points)
+        internal int FaceAgePredictor(FaceImage image, FaceMarkPoint[] points)
         {
             return ViewFaceNative.AgePredictor(ref image, points, points.Length);
         }
@@ -313,7 +275,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
-        public Gender FaceGenderPredictor(FaceImage image, FaceMarkPoint[] points)
+        internal Gender FaceGenderPredictor(FaceImage image, FaceMarkPoint[] points)
         {
             return (Gender)ViewFaceNative.GenderPredictor(ref image, points, points.Length);
         }
@@ -328,7 +290,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns></returns>
-        public EyeStateResult FaceEyeStateDetector(FaceImage image, FaceMarkPoint[] points)
+        internal EyeStateResult FaceEyeStateDetector(FaceImage image, FaceMarkPoint[] points)
         {
             int left_eye = 0, right_eye = 0;
             ViewFaceNative.EyeStateDetector(ref image, points, points.Length, ref left_eye, ref right_eye);

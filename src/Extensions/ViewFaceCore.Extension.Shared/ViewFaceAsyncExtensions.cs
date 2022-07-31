@@ -1,11 +1,7 @@
 ﻿#if NET45_OR_GREATER || NETCOREAPP || NETSTANDARD
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
-using ViewFaceCore.Native;
-using ViewFaceCore.Configs;
 using ViewFaceCore.Exceptions;
 using ViewFaceCore.Model;
 
@@ -31,7 +27,7 @@ namespace ViewFaceCore
         /// <param name="face"></param>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="ViewFace.DetectorConfig"/> 重新检测。</returns>
-        public static async Task<FaceInfo[]> FaceDetectorAsync(this ViewFace face, FaceImage image)
+        public static async Task<FaceInfo[]> FaceDetectorAsync<T>(this ViewFace face, T image) where T : class
             => await Task.Run(() => face.FaceDetector(image));
 
         /// <summary>
@@ -48,7 +44,7 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public static async Task<FaceMarkPoint[]> FaceMarkAsync(this ViewFace face, FaceImage image, FaceInfo info)
+        public static async Task<FaceMarkPoint[]> FaceMarkAsync<T>(this ViewFace face, T image, FaceInfo info) where T : class
             => await Task.Run(() => face.FaceMark(image, info));
 
         /// <summary>
@@ -64,7 +60,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public static async Task<float[]> ExtractAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
+        public static async Task<float[]> ExtractAsync<T>(this ViewFace face, T image, FaceMarkPoint[] points) where T : class
             => await Task.Run(() => face.Extract(image, points));
 
         /// <summary>
@@ -86,7 +82,7 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="global"></param>
         /// <returns></returns>
-        public static async Task<AntiSpoofingStatus> AntiSpoofingAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+        public static async Task<AntiSpoofingStatus> AntiSpoofingAsync<T>(this ViewFace face, T image, FaceInfo info, FaceMarkPoint[] points, bool global = false) where T : class
             => await Task.Run(() => face.AntiSpoofing(image, info, points, global));
 
         /// <summary>
@@ -109,7 +105,7 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns></returns>
-        public static async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global)
+        public static async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync<T>(this ViewFace face, T image, FaceInfo info, FaceMarkPoint[] points, bool global) where T : class
             => await Task.Run(() => face.AntiSpoofingVideo(image, info, points, global));
 
         /// <summary>
@@ -122,7 +118,7 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static async Task<QualityResult> FaceQualityAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
+        public static async Task<QualityResult> FaceQualityAsync<T>(this ViewFace face, T image, FaceInfo info, FaceMarkPoint[] points, QualityType type) where T : class
             => await Task.Run(() => face.FaceQuality(image, info, points, type));
 
         /// <summary>
@@ -136,7 +132,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<int> FaceAgePredictorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
+        public static async Task<int> FaceAgePredictorAsync<T>(this ViewFace face, T image, FaceMarkPoint[] points) where T : class
             => await Task.Run(() => face.FaceAgePredictor(image, points));
 
         /// <summary>
@@ -150,7 +146,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<Gender> FaceGenderPredictorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
+        public static async Task<Gender> FaceGenderPredictorAsync<T>(this ViewFace face, T image, FaceMarkPoint[] points) where T : class
             => await Task.Run(() => face.FaceGenderPredictor(image, points));
 
         /// <summary>
@@ -165,7 +161,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<EyeStateResult> FaceEyeStateDetectorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
+        public static async Task<EyeStateResult> FaceEyeStateDetectorAsync<T>(this ViewFace face, T image, FaceMarkPoint[] points) where T : class
             => await Task.Run(() => face.FaceEyeStateDetector(image, points));
     }
 }
