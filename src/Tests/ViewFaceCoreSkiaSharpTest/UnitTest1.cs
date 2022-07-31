@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ViewFaceCore;
+using ViewFaceCore.Core;
+using ViewFaceCore.Core.Interface;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCoreSkiaSharpTest
@@ -18,7 +20,7 @@ namespace ViewFaceCoreSkiaSharpTest
         public void FaceDetectorTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using ViewFace viewFace = new ViewFace();
+            using BaseViewFace viewFace = new BaseViewFace();
 
             var infos = viewFace.FaceDetector(bitmap);
             var a = infos.Any();
@@ -35,7 +37,7 @@ namespace ViewFaceCoreSkiaSharpTest
         public void FaceMarkTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using ViewFace viewFace = new ViewFace();
+            using BaseViewFace viewFace = new BaseViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             var points = viewFace.FaceMark(bitmap, info).ToList();
@@ -47,7 +49,7 @@ namespace ViewFaceCoreSkiaSharpTest
         public void ExtractTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
             var result = viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
             Assert.IsTrue(result.Any());
         }
@@ -74,7 +76,7 @@ namespace ViewFaceCoreSkiaSharpTest
         public void AntiSpoofingTest1()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             var markPoints = GetFaceMarkPoint(viewFace, bitmap);
@@ -86,7 +88,7 @@ namespace ViewFaceCoreSkiaSharpTest
         public void AntiSpoofingTest2()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             var markPoints = GetFaceMarkPoint(viewFace, bitmap);
@@ -103,7 +105,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using SKBitmap bitmap0 = SKBitmap.Decode(imagePath);
             using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
-            using ViewFace viewFace = new ViewFace();
+            using BaseViewFace viewFace = new BaseViewFace();
 
             var p0 = GetExtract(viewFace, bitmap0);
             var p1 = GetExtract(viewFace, bitmap1);
@@ -116,14 +118,14 @@ namespace ViewFaceCoreSkiaSharpTest
 
         #region Helpers
 
-        private FaceMarkPoint[] GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
+        private FaceMarkPoint[] GetFaceMarkPoint(BaseViewFace viewFace, SKBitmap bitmap)
         {
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             return viewFace.FaceMark(bitmap, info);
         }
 
-        private float[] GetExtract(ViewFace viewFace, SKBitmap bitmap)
+        private float[] GetExtract(BaseViewFace viewFace, SKBitmap bitmap)
         {
             return viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
         }

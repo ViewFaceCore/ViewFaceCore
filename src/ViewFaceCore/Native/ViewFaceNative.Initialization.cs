@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ViewFaceCore.Core;
 
 namespace ViewFaceCore.Native
 {
@@ -37,7 +38,7 @@ namespace ViewFaceCore.Native
                 else
                 { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
 
-                var libraryPath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ViewFace)).Location), "viewfacecore", platform, architecture);
+                var libraryPath = Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(BaseViewFace)).Location), "viewfacecore", platform, architecture);
                 if (Directory.Exists(libraryPath))
                 { return libraryPath; }
                 else { throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}"); }

@@ -7,16 +7,16 @@ using ViewFaceCore.Configs;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
-    public sealed class FaceTrack : IDisposable
+    public sealed class FaceTrack : BaseViewFace, IDisposable
     {
         private readonly IntPtr _handle = IntPtr.Zero;
-        private readonly static object _trackLocker = new object();
+        private readonly static object _locker = new object();
 
         public FaceTrack(FaceTrackerConfig trackerConfig)
         {
-            _handle = ViewFaceNative.GetFaceTrackHandler(trackerConfig.Width
+            _handle = ViewFaceNative.GetFaceTrackerHandler(trackerConfig.Width
                 , trackerConfig.Height
                 , trackerConfig.Type
                 , trackerConfig.Stable
@@ -40,7 +40,7 @@ namespace ViewFaceCore
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
         public FaceTrackInfo[] Track(FaceImage image)
         {
-            lock (_trackLocker)
+            lock (_locker)
             {
                 int size = 0;
                 var ptr = ViewFaceNative.FaceTrack(_handle, ref image, ref size);
@@ -65,7 +65,7 @@ namespace ViewFaceCore
         /// </summary>
         public void Reset()
         {
-            lock (_trackLocker)
+            lock (_locker)
             {
                 ViewFaceNative.FaceTrackReset(_handle);
             }
@@ -73,9 +73,9 @@ namespace ViewFaceCore
 
         public void Dispose()
         {
-            lock (_trackLocker)
+            lock (_locker)
             {
-                ViewFaceNative.FaceTrackDispose(_handle);
+                ViewFaceNative.DisposeFaceTracker(_handle);
             }
         }
     }

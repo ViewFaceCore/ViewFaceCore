@@ -8,6 +8,18 @@ namespace ViewFaceCore.Configs
     /// </summary>
     public class FaceCompareConfig
     {
+        public FaceCompareConfig()
+        {
+            FaceType = FaceType.Normal;
+        }
+
+        public FaceCompareConfig(FaceType faceType)
+        {
+            FaceType = faceType;
+        }
+
+        public FaceType FaceType { get; set; } = FaceType.Normal;
+
         /// <summary>
         /// 人脸相似度阈值
         /// </summary>

@@ -15,10 +15,29 @@
 using namespace std;
 using namespace seeta;
 
-//释放标识，避免被释放后二次创建对象，然后就忘了释放
-static bool _isDispose = false;
+#pragma region Common
 
-string modelPath = "./viewfacecore/models/"; // 模型所在路径
+/// <summary>
+/// 释放
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <param name="ptr"></param>
+template<typename T>
+void _dispose(T& ptr) {
+	if (ptr != nullptr) {
+		try {
+			delete ptr;
+			ptr = nullptr;
+		}
+		catch (int e) {
+
+		}
+	}
+}
+
+// 模型所在路径
+string modelPath = "./viewfacecore/models/"; 
+
 // 设置人脸模型目录
 View_Api void SetModelPath(const char* path)
 {
@@ -37,36 +56,44 @@ View_Api void Free(shared_ptr<void>* address)
 	free(address);
 }
 
-static seeta::v6::FaceDetector* _faceDetector = nullptr;
-// 获取人脸数量
-View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000)
+#pragma endregion
+
+#pragma region FaceDetector
+
+/// <summary>
+/// 创建人脸识别句柄
+/// </summary>
+/// <param name="faceSize"></param>
+/// <param name="threshold"></param>
+/// <param name="maxWidth"></param>
+/// <param name="maxHeight"></param>
+/// <returns></returns>
+View_Api seeta::v6::FaceDetector* GetFaceDetectorHandler(const double faceSize = 20
+	, const double threshold = 0.9
+	, const double maxWidth = 2000
+	, const double maxHeight = 2000)
 {
-	if (_isDispose) {
-		throw "The current object has been disposed.";
+	seeta::v6::FaceDetector* faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", SEETA_DEVICE_AUTO));
+	faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
+	faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
+	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
+	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
+	return faceDetector;
+}
+
+/// <summary>
+/// 获取人脸数量
+/// </summary>
+/// <param name="faceDetector"></param>
+/// <param name="img"></param>
+/// <param name="size"></param>
+/// <returns></returns>
+View_Api SeetaFaceInfo* FaceDetector(seeta::v6::FaceDetector* handler, const SeetaImageData& img, int* size)
+{
+	if (handler == nullptr) {
+		return 0;
 	}
-	if (_faceDetector == nullptr) {
-		_faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", SEETA_DEVICE_AUTO));
-		_faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
-		_faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
-		_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
-		_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
-	}
-	else {
-		double epsilon = 0.000001;
-		if (fabs(faceSize - _faceDetector->get(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE)) >= epsilon) {
-			_faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
-		}
-		if (fabs(threshold - _faceDetector->get(FaceDetector::Property::PROPERTY_THRESHOLD)) >= epsilon) {
-			_faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
-		}
-		if (fabs(maxWidth - _faceDetector->get(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH)) >= epsilon) {
-			_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
-		}
-		if (fabs(maxHeight - _faceDetector->get(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT)) >= epsilon) {
-			_faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_HEIGHT, maxHeight);
-		}
-	}
-	auto faces = _faceDetector->detect_v2(img);
+	auto faces = handler->detect_v2(img);
 	*size = faces.size();
 	SeetaFaceInfo* _infos = (SeetaFaceInfo*)malloc((*size) * sizeof(SeetaFaceInfo));
 	if (_infos == nullptr) {
@@ -78,43 +105,55 @@ View_Api SeetaFaceInfo* Detector(const SeetaImageData& img, int* size, const dou
 	return _infos;
 }
 
-static seeta::v6::FaceLandmarker* faceLandmarker_type_0 = nullptr;
-static seeta::v6::FaceLandmarker* faceLandmarker_type_1 = nullptr;
-static seeta::v6::FaceLandmarker* faceLandmarker_type_2 = nullptr;
-
-// 人脸关键点器
-View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRect, long* size, const int type = 0)
+/// <summary>
+/// 释放人脸识别句柄
+/// </summary>
+/// <param name="faceDetector"></param>
+/// <returns></returns>
+View_Api void DisposeFaceDetector(seeta::v6::FaceDetector* handler)
 {
-	if (_isDispose) {
-		throw "The current object has been disposed.";
-	}
-	seeta::v6::FaceLandmarker* faceLandmarker = nullptr;
+	_dispose(handler);
+}
+
+#pragma endregion
+
+#pragma region FaceMark
+
+/// <summary>
+/// 获取人脸关键点句柄
+/// </summary>
+/// <param name="type"></param>
+/// <returns></returns>
+View_Api seeta::v6::FaceLandmarker* GetFaceLandmarkerHandler(const int type = 0)
+{
 	switch (type)
 	{
 	case 0:
-		if (faceLandmarker_type_0 == nullptr) {
-			faceLandmarker_type_0 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta", SEETA_DEVICE_AUTO));
-		}
-		faceLandmarker = faceLandmarker_type_0;
-		break;
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta", SEETA_DEVICE_AUTO));
 	case 1:
-		if (faceLandmarker_type_1 == nullptr) {
-			faceLandmarker_type_1 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta", SEETA_DEVICE_AUTO));
-		}
-		faceLandmarker = faceLandmarker_type_1;
-		break;
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta", SEETA_DEVICE_AUTO));
 	case 2:
-		if (faceLandmarker_type_2 == nullptr) {
-			faceLandmarker_type_2 = new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta", SEETA_DEVICE_AUTO));
-		}
-		faceLandmarker = faceLandmarker_type_2;
-		break;
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta", SEETA_DEVICE_AUTO));
 	default:
 		throw "Unsupport type.";
 	}
+}
 
-	*size = faceLandmarker->number();
-	std::vector<SeetaPointF> _points = faceLandmarker->mark(img, faceRect);
+/// <summary>
+/// 人脸关键点器
+/// </summary>
+/// <param name="img"></param>
+/// <param name="faceRect"></param>
+/// <param name="size"></param>
+/// <param name="type"></param>
+/// <returns></returns>
+View_Api SeetaPointF* FaceMark(seeta::v6::FaceLandmarker* handler, const SeetaImageData& img, const SeetaRect faceRect, long* size)
+{
+	if (handler == nullptr) {
+		return 0;
+	}
+	*size = handler->number();
+	std::vector<SeetaPointF> _points = handler->mark(img, faceRect);
 
 	*size = _points.size();
 	if (!_points.empty()) {
@@ -132,43 +171,51 @@ View_Api SeetaPointF* FaceMark(const SeetaImageData& img, const SeetaRect faceRe
 	return 0;
 }
 
-static seeta::v6::FaceRecognizer* _faceRecognizer_type_0 = nullptr;
-static seeta::v6::FaceRecognizer* _faceRecognizer_type_1 = nullptr;
-static seeta::v6::FaceRecognizer* _faceRecognizer_type_2 = nullptr;
-
-// 提取人脸特征值
-View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, int* size, const int type = 0)
+View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker* handler)
 {
-	if (_isDispose) {
-		throw "The current object has been disposed.";
-	}
-	seeta::v6::FaceRecognizer* faceRecognizer = nullptr;
+	_dispose(handler);
+}
+
+#pragma endregion
+
+#pragma region FaceRecognizer
+
+/// <summary>
+/// 获取人脸特征值句柄
+/// </summary>
+/// <param name="type"></param>
+/// <returns></returns>
+View_Api seeta::v6::FaceRecognizer* GetFaceRecognizerHandler(const int type = 0)
+{
 	switch (type)
 	{
 	case 0:
-		if (_faceRecognizer_type_0 == nullptr) {
-			_faceRecognizer_type_0 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer.csta", SEETA_DEVICE_AUTO));
-		}
-		faceRecognizer = _faceRecognizer_type_0;
-		break;
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer.csta", SEETA_DEVICE_AUTO));
 	case 1:
-		if (_faceRecognizer_type_1 == nullptr) {
-			_faceRecognizer_type_1 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_mask.csta", SEETA_DEVICE_AUTO));
-		}
-		faceRecognizer = _faceRecognizer_type_1;
-		break;
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_mask.csta", SEETA_DEVICE_AUTO));
 	case 2:
-		if (_faceRecognizer_type_2 == nullptr) {
-			_faceRecognizer_type_2 = new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_light.csta", SEETA_DEVICE_AUTO));
-		}
-		faceRecognizer = _faceRecognizer_type_2;
-		break;
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_light.csta", SEETA_DEVICE_AUTO));
 	default:
 		throw "Unsupport type.";
 	}
-	*size = faceRecognizer->GetExtractFeatureSize();
+}
+
+/// <summary>
+/// 提取人脸特征值
+/// </summary>
+/// <param name="img"></param>
+/// <param name="points"></param>
+/// <param name="size"></param>
+/// <param name="type"></param>
+/// <returns></returns>
+View_Api float* FaceRecognizerExtract(const seeta::v6::FaceRecognizer* handler, const SeetaImageData& img, const SeetaPointF* points, int* size)
+{
+	if (handler == nullptr) {
+		return 0;
+	}
+	*size = handler->GetExtractFeatureSize();
 	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
-	faceRecognizer->Extract(img, points, _features.get());
+	handler->Extract(img, points, _features.get());
 
 	float* source = _features.get();
 	float* features = (float*)malloc(*size * sizeof(float));
@@ -179,8 +226,20 @@ View_Api float* Extract(const SeetaImageData& img, const SeetaPointF* points, in
 	return features;
 }
 
-// 人脸特征值相似度计算
-View_Api float Compare(const float* lhs, const float* rhs, int size) {
+View_Api void DisposeFaceRecognizer(const seeta::v6::FaceRecognizer* handler)
+{
+	_dispose(handler);
+}
+
+/// <summary>
+/// 人脸特征值相似度计算
+/// </summary>
+/// <param name="lhs"></param>
+/// <param name="rhs"></param>
+/// <param name="size"></param>
+/// <returns></returns>
+View_Api float Compare(const float* lhs, const float* rhs, int size)
+{
 	float sum = 0;
 	for (int i = 0; i < size; ++i) {
 		sum += *lhs * *rhs;
@@ -190,72 +249,82 @@ View_Api float Compare(const float* lhs, const float* rhs, int size) {
 	return sum;
 }
 
-/***************************************************************************************************************/
+#pragma endregion
 
-static seeta::v6::FaceAntiSpoofing* _faceAntiSpoofing = nullptr;
-static seeta::v6::FaceAntiSpoofing* _faceAntiSpoofing_global = nullptr;
-// 活体检测器
-// 活体检测 - 单帧
-View_Api int AntiSpoofing(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const bool global)
-{
-	seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
-	//启用全局检测能力
+#pragma region FaceAntiSpoofing（活体检测）
+
+View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const bool global) {
 	if (global) {
-		if (_faceAntiSpoofing_global == nullptr) {
-			ModelSetting setting;
-			setting.append(modelPath + "fas_first.csta");
-			setting.append(modelPath + "fas_second.csta");
-			_faceAntiSpoofing_global = new seeta::v6::FaceAntiSpoofing(setting);
-		}
-		faceAntiSpoofing = _faceAntiSpoofing_global;
+		ModelSetting setting;
+		setting.append(modelPath + "fas_first.csta");
+		setting.append(modelPath + "fas_second.csta");
+		return new seeta::v6::FaceAntiSpoofing(setting);
 	}
 	else {
-		if (_faceAntiSpoofing == nullptr) {
-			ModelSetting setting;
-			setting.append(modelPath + "fas_first.csta");
-			_faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
-		}
-		faceAntiSpoofing = _faceAntiSpoofing;
+		ModelSetting setting;
+		setting.append(modelPath + "fas_first.csta");
+		return new seeta::v6::FaceAntiSpoofing(setting);
 	}
-	auto state = faceAntiSpoofing->Predict(img, faceRect, points);
+}
+
+/// <summary>
+/// 活体检测 - 单帧
+/// </summary>
+/// <param name="img"></param>
+/// <param name="faceRect"></param>
+/// <param name="points"></param>
+/// <param name="global"></param>
+/// <returns></returns>
+View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points)
+{
+	if (handler == nullptr) {
+		return -1;
+	}
+	auto state = handler->Predict(img, faceRect, points);
 	return state;
 }
 
-static seeta::v6::FaceAntiSpoofing* _faceAntiSpoofing_video = nullptr;
-static seeta::v6::FaceAntiSpoofing* _faceAntiSpoofing_video_global = nullptr;
-// 活体检测 - 视频
-View_Api int AntiSpoofingVideo(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const bool global)
+/// <summary>
+/// 活体检测 - 视频
+/// </summary>
+/// <param name="img"></param>
+/// <param name="faceRect"></param>
+/// <param name="points"></param>
+/// <param name="global"></param>
+/// <returns></returns>
+View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points)
 {
-	seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
-	//启用全局检测能力
-	if (global) {
-		if (_faceAntiSpoofing_video_global == nullptr) {
-			ModelSetting setting;
-			setting.append(modelPath + "fas_first.csta");
-			setting.append(modelPath + "fas_second.csta");
-			_faceAntiSpoofing_video_global = new seeta::v6::FaceAntiSpoofing(setting);
-		}
-		faceAntiSpoofing = _faceAntiSpoofing_video_global;
+	if (handler == nullptr) {
+		return -1;
 	}
-	else {
-		if (_faceAntiSpoofing_video == nullptr) {
-			ModelSetting setting;
-			setting.append(modelPath + "fas_first.csta");
-			_faceAntiSpoofing_video = new seeta::v6::FaceAntiSpoofing(setting);
-		}
-		faceAntiSpoofing = _faceAntiSpoofing_video;
-	}
-
-	auto status = faceAntiSpoofing->PredictVideo(img, faceRect, points);
+	auto status = handler->PredictVideo(img, faceRect, points);
 	if (status != FaceAntiSpoofing::Status::DETECTING)
 	{
-		faceAntiSpoofing->ResetVideo();
+		handler->ResetVideo();
 	}
 	return status;
 }
 
-// 获取人脸追踪句柄
-View_Api seeta::v6::FaceTracker* GetFaceTrackHandler(const int width
+View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler) {
+	_dispose(handler);
+}
+
+#pragma endregion
+
+#pragma region FaceTracker(人脸追踪)
+
+/// <summary>
+/// 获取人脸追踪句柄
+/// </summary>
+/// <param name="width"></param>
+/// <param name="height"></param>
+/// <param name="type"></param>
+/// <param name="stable"></param>
+/// <param name="interval"></param>
+/// <param name="faceSize"></param>
+/// <param name="threshold"></param>
+/// <returns></returns>
+View_Api seeta::v6::FaceTracker* GetFaceTrackerHandler(const int width
 	, const int height
 	, const int type = 0
 	, const bool stable = false
@@ -270,13 +339,19 @@ View_Api seeta::v6::FaceTracker* GetFaceTrackHandler(const int width
 	return faceTracker;
 }
 
-// 获取跟踪的人脸个数
-View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* faceTracker, const SeetaImageData& img, int* size)
+/// <summary>
+/// 获取跟踪的人脸个数
+/// </summary>
+/// <param name="faceTracker"></param>
+/// <param name="img"></param>
+/// <param name="size"></param>
+/// <returns></returns>
+View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* handler, const SeetaImageData& img, int* size)
 {
-	if (faceTracker == nullptr) {
+	if (handler == nullptr) {
 		return 0;
 	}
-	auto cfaces = faceTracker->Track(img);
+	auto cfaces = handler->Track(img);
 	std::vector<SeetaTrackingFaceInfo> faces(cfaces.data, cfaces.data + cfaces.size);
 	*size = faces.size();
 	SeetaTrackingFaceInfo* _infos = new SeetaTrackingFaceInfo[*size];
@@ -287,22 +362,30 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* faceTrac
 	return _infos;
 }
 
-//重置追踪结果
-View_Api void FaceTrackReset(seeta::v6::FaceTracker* faceTracker) {
-	if (faceTracker == nullptr) {
+/// <summary>
+/// 重置追踪
+/// </summary>
+/// <param name="faceTracker"></param>
+/// <returns></returns>
+View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler) {
+	if (handler == nullptr) {
 		return;
 	}
-	faceTracker->Reset();
+	handler->Reset();
 }
 
-// 释放追踪对象
-View_Api void FaceTrackDispose(seeta::v6::FaceTracker* faceTracker) {
-	if (faceTracker == nullptr) {
-		return;
-	}
-	delete faceTracker;
+/// <summary>
+/// 释放追踪对象
+/// </summary>
+/// <param name="faceTracker"></param>
+/// <returns></returns>
+View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler) {
+	_dispose(handler);
 }
 
+#pragma endregion
+
+#pragma region 质量评估
 
 // 亮度评估
 View_Api void Quality_Brightness(const SeetaImageData& img
@@ -401,66 +484,133 @@ View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect
 	*score = result.score;
 }
 
-/******人脸属性***********************************************************************************************/
-// 年龄预测
-View_Api int PredictAge(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength)
-{
-	seeta::v6::AgePredictor age_Predictor(ModelSetting(modelPath + "age_predictor.csta"));
-	int age = 0;
-	bool result = age_Predictor.PredictAgeWithCrop(img, points, age);
+#pragma endregion
 
-	if (result) { return age; }
-	else { return -1; }
+#pragma region 年龄/性别/眼睛状态检测
+
+#pragma region 年龄预测
+
+/// <summary>
+/// 获取年龄预测句柄
+/// </summary>
+/// <returns></returns>
+View_Api seeta::v6::AgePredictor* GetAgePredictorHandler() 
+{
+	return new seeta::v6::AgePredictor(ModelSetting(modelPath + "age_predictor.csta", SEETA_DEVICE_AUTO));
 }
 
-// 年龄预测
-View_Api int PredictGender(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength)
+/// <summary>
+/// 年龄预测
+/// </summary>
+/// <param name="img"></param>
+/// <param name="points"></param>
+/// <returns></returns>
+View_Api int PredictAge(seeta::v6::AgePredictor* handler, const SeetaImageData& img, const SeetaPointF* points)
 {
-	seeta::v6::GenderPredictor gender_Predictor(ModelSetting(modelPath + "gender_predictor.csta"));
-	GenderPredictor::GENDER gender = GenderPredictor::GENDER::MALE;
-	auto result = gender_Predictor.PredictGenderWithCrop(img, points, gender);
+	if (handler == nullptr) {
+		return -1;
+	}
+	int age = 0;
+	bool result = handler->PredictAgeWithCrop(img, points, age);
+	if (result) {
+		return age;
+	}
+	else {
+		return -1;
+	}
+}
 
+/// <summary>
+/// 释放年龄预测句柄
+/// </summary>
+/// <param name="handler"></param>
+/// <returns></returns>
+View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler) 
+{
+	_dispose(handler);
+}
+
+#pragma endregion
+
+#pragma region 性别预测
+
+/// <summary>
+/// 获取性别预测句柄
+/// </summary>
+/// <returns></returns>
+View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler() 
+{
+	return new seeta::v6::GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta", SEETA_DEVICE_AUTO));
+}
+
+/// <summary>
+/// 性别预测
+/// </summary>
+/// <param name="img"></param>
+/// <param name="points"></param>
+/// <returns></returns>
+View_Api int PredictGender(seeta::v6::GenderPredictor* handler, const SeetaImageData& img, const SeetaPointF* points)
+{
+	if (handler == nullptr) {
+		return -1;
+	}
+	GenderPredictor::GENDER gender = GenderPredictor::GENDER::MALE;
+	auto result = handler->PredictGenderWithCrop(img, points, gender);
 	if (result) { return gender; }
 	else { return -1; }
 }
 
-// 眼睛状态检测
-View_Api void EyeDetector(const SeetaImageData& img, const SeetaPointF* points, const int pointsLength, EyeStateDetector::EYE_STATE& left_eye, EyeStateDetector::EYE_STATE& right_eye)
+/// <summary>
+/// 释放性别预测句柄
+/// </summary>
+/// <param name="handler"></param>
+/// <returns></returns>
+View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler) 
 {
-	seeta::v6::EyeStateDetector eyeState_Detector(ModelSetting(modelPath + "eye_state.csta"));
-	eyeState_Detector.Detect(img, points, left_eye, right_eye);
+	_dispose(handler);
 }
 
-template<typename T>
-void _dispose(T& ptr) {
-	if (ptr != nullptr) {
-		try {
-			delete ptr;
-			ptr = nullptr;
-		}
-		catch (int e) {
+#pragma endregion
 
-		}
+#pragma region 眼睛状态检测
+
+/// <summary>
+/// 获取眼睛状态检测句柄
+/// </summary>
+/// <returns></returns>
+View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler() 
+{
+	return new seeta::v6::EyeStateDetector(ModelSetting(modelPath + "eye_state.csta", SEETA_DEVICE_AUTO));
+}
+
+/// <summary>
+/// 眼睛状态检测
+/// </summary>
+/// <param name="img"></param>
+/// <param name="points"></param>
+/// <returns></returns>
+View_Api void EyeStateDetector(seeta::v6::EyeStateDetector* handler
+	, const SeetaImageData& img
+	, const SeetaPointF* points
+	, EyeStateDetector::EYE_STATE& left_eye
+	, EyeStateDetector::EYE_STATE& right_eye)
+{
+	if (handler == nullptr) {
+		return;
 	}
+	handler->Detect(img, points, left_eye, right_eye);
 }
 
-View_Api void Dispose() {
-	_isDispose = true;
-	//获取人脸数量
-	_dispose(_faceDetector);
-	//人脸关键点
-	_dispose(faceLandmarker_type_0);
-	_dispose(faceLandmarker_type_1);
-	_dispose(faceLandmarker_type_2);
-	//提取人脸特征值
-	_dispose(_faceRecognizer_type_0);
-	_dispose(_faceRecognizer_type_1);
-	_dispose(_faceRecognizer_type_2);
-	//活体检测
-	_dispose(_faceAntiSpoofing);
-	_dispose(_faceAntiSpoofing_global);
-	_dispose(_faceAntiSpoofing_video);
-	_dispose(_faceAntiSpoofing_video_global);
-
+/// <summary>
+/// 释放眼睛状态检测句柄
+/// </summary>
+/// <param name="handler"></param>
+/// <returns></returns>
+View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector* handler) 
+{
+	_dispose(handler);
 }
 
+#pragma endregion
+
+#pragma endregion

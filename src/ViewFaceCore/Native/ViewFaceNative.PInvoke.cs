@@ -15,6 +15,8 @@ namespace ViewFaceCore.Native
 
         private static string modelPath;
 
+        #region Common
+
         /// <summary>
         /// 设置人脸模型的目录
         /// </summary>
@@ -47,6 +49,21 @@ namespace ViewFaceCore.Native
         [DllImport(LibraryName, EntryPoint = "Free", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Free(IntPtr address);
 
+        #endregion
+
+        #region FaceDetector(人脸检测)
+
+        /// <summary>
+        /// 获取人脸检测句柄
+        /// </summary>
+        /// <param name="faceSize"></param>
+        /// <param name="threshold"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="maxHeight"></param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "GetFaceDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceDetectorHandler(double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000);
+
         /// <summary>
         /// 人脸检测器
         /// </summary>
@@ -60,9 +77,22 @@ namespace ViewFaceCore.Native
         /// <param name="maxHeight">可检测的图像最大高度。默认值2000。</param>
         /// <param name="type">模型类型。0：face_detector；1：mask_detector；2：mask_detector。</param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "Detector", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr Detector(ref FaceImage img, ref int size,
-            double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000);
+        [DllImport(LibraryName, EntryPoint = "FaceDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr FaceDetector(IntPtr handler, ref FaceImage img, ref int size);
+
+        /// <summary>
+        /// 释放人脸检测句柄
+        /// </summary>
+        /// <param name="handler"></param>
+        [DllImport(LibraryName, EntryPoint = "DisposeFaceDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeFaceDetector(IntPtr handler);
+
+        #endregion
+
+        #region FaceMark
+
+        [DllImport(LibraryName, EntryPoint = "GetFaceLandmarkerHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceLandmarkerHandler(int type = 0);
 
         /// <summary>
         /// 获取人脸关键点
@@ -71,10 +101,19 @@ namespace ViewFaceCore.Native
         /// <param name="img">图像信息</param>
         /// <param name="faceRect">人脸位置信息</param>
         /// <param name="size">关键点数量</param>
-        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "FaceMark", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr FaceMark(ref FaceImage img, FaceRect faceRect, ref long size, int type = 0);
+        public extern static IntPtr FaceMark(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref long size);
+
+        [DllImport(LibraryName, EntryPoint = "DisposeFaceLandmarker", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeFaceLandmarker(IntPtr handler);
+
+        #endregion
+
+        #region FaceRecognizer
+
+        [DllImport(LibraryName, EntryPoint = "GetFaceRecognizerHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceRecognizerHandler(int type = 0);
 
         /// <summary>
         /// 提取人脸特征值
@@ -85,8 +124,11 @@ namespace ViewFaceCore.Native
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "Extract", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr Extract(ref FaceImage img, FaceMarkPoint[] points, ref int size, int type = 0);
+        [DllImport(LibraryName, EntryPoint = "FaceRecognizerExtract", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr FaceRecognizerExtract(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int size);
+
+        [DllImport(LibraryName, EntryPoint = "DisposeFaceRecognizer", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeFaceRecognizer(IntPtr handler);
 
         /// <summary>
         /// 计算相似度
@@ -98,6 +140,18 @@ namespace ViewFaceCore.Native
         [DllImport(LibraryName, EntryPoint = "Compare", CallingConvention = CallingConvention.Cdecl)]
         public extern static float Compare(float[] lhs, float[] rhs, int size);
 
+        #endregion
+
+        #region FaceAntiSpoofing（活体检测）
+
+        /// <summary>
+        /// 获取活体检测器句柄
+        /// </summary>
+        /// <param name="global">是否启用全局检测</param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "GetFaceAntiSpoofingHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceAntiSpoofingHandler(bool global);
+
         /// <summary>
         /// 活体检测器
         /// <para>单帧检测</para>
@@ -108,8 +162,8 @@ namespace ViewFaceCore.Native
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
         [DllImport(LibraryName, EntryPoint = "AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofing(ref FaceImage img,
-            FaceRect faceRect, FaceMarkPoint[] points, bool global);
+        public extern static int AntiSpoofing(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points);
+
         /// <summary>
         /// 活体检测器
         /// <para>视频帧</para>
@@ -125,8 +179,14 @@ namespace ViewFaceCore.Native
         /// </para>
         /// </returns>
         [DllImport(LibraryName, EntryPoint = "AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofingVideo(ref FaceImage img,
-            FaceRect faceRect, FaceMarkPoint[] points, bool global);
+        public extern static int AntiSpoofingVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points);
+
+        [DllImport(LibraryName, EntryPoint = "DisposeFaceAntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeFaceAntiSpoofing(IntPtr handler);
+
+        #endregion
+
+        #region FaceTrack
 
         /// <summary>
         /// 获取人脸跟踪句柄
@@ -139,8 +199,8 @@ namespace ViewFaceCore.Native
         /// <param name="faceSize"></param>
         /// <param name="threshold"></param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "GetFaceTrackHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceTrackHandler(int width, int height, int type = 0, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f);
+        [DllImport(LibraryName, EntryPoint = "GetFaceTrackerHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetFaceTrackerHandler(int width, int height, int type = 0, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f);
 
         /// <summary>
         /// 人脸跟踪信息
@@ -163,8 +223,12 @@ namespace ViewFaceCore.Native
         /// 释放人脸追踪句柄
         /// </summary>
         /// <param name="faceTracker"></param>
-        [DllImport(LibraryName, EntryPoint = "FaceTrackDispose", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void FaceTrackDispose(IntPtr faceTracker);
+        [DllImport(LibraryName, EntryPoint = "DisposeFaceTracker", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeFaceTracker(IntPtr faceTracker);
+
+        #endregion
+
+        #region 质量评估
 
         /// <summary>
         /// 亮度评估。
@@ -336,25 +400,55 @@ namespace ViewFaceCore.Native
         [DllImport(LibraryName, EntryPoint = "Quality_NoMask", CallingConvention = CallingConvention.Cdecl)]
         public extern static void QualityOfNoMask(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
+        #endregion
+
+        #region 年龄/性别/眼睛状态检测
+        #region 年龄预测
+
+        [DllImport(LibraryName, EntryPoint = "GetAgePredictorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetAgePredictorHandler();
+
         /// <summary>
         /// 人脸年龄预测。
         /// </summary>
+        /// <param name="handler">句柄</param>
         /// <param name="img">图像宽高通道信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
         [DllImport(LibraryName, EntryPoint = "PredictAge", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AgePredictor(ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
+        public extern static int PredictAge(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+
+        [DllImport(LibraryName, EntryPoint = "DisposeAgePredictor", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeAgePredictor(IntPtr handler);
+
+        #endregion
+
+        #region 性别预测
+
+        [DllImport(LibraryName, EntryPoint = "GetGenderPredictorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetGenderPredictorHandler();
 
         /// <summary>
-        /// 人脸性别预测。
+        /// 人脸性别预测
         /// </summary>
+        /// <param name="handler">句柄</param>
         /// <param name="img">图像宽高通道信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
         [DllImport(LibraryName, EntryPoint = "PredictGender", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int GenderPredictor(ref FaceImage img, FaceMarkPoint[] points, int pointsLength);
+        public extern static int PredictGender(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+
+        [DllImport(LibraryName, EntryPoint = "DisposeGenderPredictor", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeGenderPredictor(IntPtr handler);
+
+        #endregion
+
+        #region 眼睛状态检测
+
+        [DllImport(LibraryName, EntryPoint = "GetEyeStateDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetEyeStateDetectorHandler();
 
         /// <summary>
         /// 眼睛状态检测。
@@ -365,11 +459,13 @@ namespace ViewFaceCore.Native
         /// <param name="left_eye"></param>
         /// <param name="right_eye"></param>
         /// <returns></returns>
-        [DllImport(LibraryName, EntryPoint = "EyeDetector", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EyeStateDetector(ref FaceImage img, FaceMarkPoint[] points, int pointsLength,
-            ref int left_eye, ref int right_eye);
+        [DllImport(LibraryName, EntryPoint = "EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void EyeStateDetector(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
 
-        [DllImport(LibraryName, EntryPoint = "Dispose", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void Dispose();
+        [DllImport(LibraryName, EntryPoint = "DisposeEyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeEyeStateDetector(IntPtr handler);
+
+        #endregion
+        #endregion
     }
 }

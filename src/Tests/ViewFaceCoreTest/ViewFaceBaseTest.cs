@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using ViewFaceCore;
+using ViewFaceCore.Core.Interface;
 
 namespace ViewFaceCoreTest
 {
@@ -14,7 +15,7 @@ namespace ViewFaceCoreTest
         public void FaceDetectorTest()
         {
             using Bitmap bitmap = (Bitmap)Image.FromFile(imagePath);
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
         }
@@ -23,7 +24,7 @@ namespace ViewFaceCoreTest
         public void FaceMarkTest()
         {
             using Bitmap bitmap = (Bitmap)Image.FromFile(imagePath);
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
             var points = viewFace.FaceMark(bitmap, info).ToList();

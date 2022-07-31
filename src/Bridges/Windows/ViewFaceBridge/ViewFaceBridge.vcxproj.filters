@@ -1,2 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" />
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="seetaEx">
+      <UniqueIdentifier>{5d9ef1eb-5211-4743-8518-bf9bf3ed0c7b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Shared\seetaEx\QualityOfClarityEx.h">
+      <Filter>seetaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\seetaEx\QualityOfNoMask.h">
+      <Filter>seetaEx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Shared\bridge.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Shared\bridge.cpp" />
+  </ItemGroup>
+</Project>

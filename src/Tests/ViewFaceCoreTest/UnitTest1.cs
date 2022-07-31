@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using ViewFaceCore;
+using ViewFaceCore.Core.Interface;
 
 namespace ViewFaceCoreTest
 {
@@ -13,7 +14,7 @@ namespace ViewFaceCoreTest
         public void FaceDetectorTest()
         {
             using System.Drawing.Bitmap bitmap = (System.Drawing.Bitmap)System.Drawing.Image.FromFile(@"images\Jay_3.jpg");
-            ViewFace viewFace = new ViewFace();
+            BaseViewFace viewFace = new BaseViewFace();
 
             for (int i = 0; i < 1000; i++)
             {
