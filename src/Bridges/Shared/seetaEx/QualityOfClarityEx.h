@@ -1,7 +1,7 @@
 #pragma once
-#include "../../../SeetaFace/index/build/include/seeta/QualityOfLBN.h"
-#include "../../../SeetaFace/index/build/include/seeta/QualityStructure.h"
-#include "../../../SeetaFace/index/build/include/seeta/FaceLandmarker.h"
+#include "seeta/QualityOfLBN.h"
+#include "seeta/QualityStructure.h"
+#include "seeta/FaceLandmarker.h"
 
 using namespace std;
 namespace seeta {
