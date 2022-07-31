@@ -31,7 +31,7 @@ namespace ViewFaceCore
         /// <param name="face"></param>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="ViewFace.DetectorConfig"/> 重新检测。</returns>
-        public static async Task<IEnumerable<FaceInfo>> FaceDetectorAsync(this ViewFace face, FaceImage image)
+        public static async Task<FaceInfo[]> FaceDetectorAsync(this ViewFace face, FaceImage image)
             => await Task.Run(() => face.FaceDetector(image));
 
         /// <summary>
@@ -48,12 +48,12 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public static async Task<IEnumerable<FaceMarkPoint>> FaceMarkAsync(this ViewFace face, FaceImage image, FaceInfo info)
+        public static async Task<FaceMarkPoint[]> FaceMarkAsync(this ViewFace face, FaceImage image, FaceInfo info)
             => await Task.Run(() => face.FaceMark(image, info));
 
         /// <summary>
         /// 提取人脸特征值。
-        /// <para><see cref="ViewFace.Extract(FaceImage, IEnumerable{FaceMarkPoint})"/> 的异步版本。</para>
+        /// <para><see cref="ViewFace.Extract(FaceImage, FaceMarkPoint[])"/> 的异步版本。</para>
         /// <para>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer">ViewFaceCore.model.face_recognizer</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">ViewFaceCore.model.face_recognizer_mask</a><br/>
@@ -64,12 +64,12 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points"></param>
         /// <returns></returns>
-        public static async Task<IEnumerable<float>> ExtractAsync(this ViewFace face, FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public static async Task<float[]> ExtractAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
             => await Task.Run(() => face.Extract(image, points));
 
         /// <summary>
         /// 活体检测器。
-        /// <para><see cref="ViewFace.AntiSpoofing(FaceImage, FaceInfo, IEnumerable{FaceMarkPoint}, bool)"/> 的异步版本。</para>
+        /// <para><see cref="ViewFace.AntiSpoofing(FaceImage, FaceInfo, FaceMarkPoint[], bool)"/> 的异步版本。</para>
         /// <para>
         /// 单帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
         /// 需通过 <see cref="ViewFace.FaceDetector(FaceImage)"/> 获取 <paramref name="info"/> 参数<br/>
@@ -86,12 +86,12 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="global"></param>
         /// <returns></returns>
-        public static async Task<AntiSpoofingStatus> AntiSpoofingAsync(this ViewFace face, FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global = false)
+        public static async Task<AntiSpoofingStatus> AntiSpoofingAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
             => await Task.Run(() => face.AntiSpoofing(image, info, points, global));
 
         /// <summary>
         /// 活体检测器。
-        /// <para><see cref="ViewFace.AntiSpoofingVideo(FaceImage, FaceInfo, IEnumerable{FaceMarkPoint}, bool)"/> 的异步版本。</para>
+        /// <para><see cref="ViewFace.AntiSpoofingVideo(FaceImage, FaceInfo, FaceMarkPoint[], bool)"/> 的异步版本。</para>
         /// <para>
         /// 视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
         /// 需通过 <see cref="ViewFace.FaceDetector(FaceImage)"/> 获取 <paramref name="info"/> 参数<br/>
@@ -109,12 +109,12 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns></returns>
-        public static async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync(this ViewFace face, FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global)
+        public static async Task<AntiSpoofingStatus> AntiSpoofingVideoAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global)
             => await Task.Run(() => face.AntiSpoofingVideo(image, info, points, global));
 
         /// <summary>
         /// 人脸质量评估
-        /// <para><see cref="ViewFace.FaceQuality(FaceImage, FaceInfo, IEnumerable{FaceMarkPoint}, QualityType)"/> 的异步版本。</para>
+        /// <para><see cref="ViewFace.FaceQuality(FaceImage, FaceInfo, FaceMarkPoint[], QualityType)"/> 的异步版本。</para>
         /// </summary>
         /// <param name="face"></param>
         /// <param name="image">人脸图像信息</param>
@@ -122,13 +122,13 @@ namespace ViewFaceCore
         /// <param name="points"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static async Task<QualityResult> FaceQualityAsync(this ViewFace face, FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, QualityType type)
+        public static async Task<QualityResult> FaceQualityAsync(this ViewFace face, FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
             => await Task.Run(() => face.FaceQuality(image, info, points, type));
 
         /// <summary>
         /// 年龄预测。
         /// <para>
-        /// <see cref="ViewFace.FaceAgePredictor(FaceImage, IEnumerable{FaceMarkPoint})"/> 的异步版本。<br />
+        /// <see cref="ViewFace.FaceAgePredictor(FaceImage, FaceMarkPoint[])"/> 的异步版本。<br />
         /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">ViewFaceCore.model.age_predictor</a> 
         /// </para>
         /// </summary>
@@ -136,13 +136,13 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<int> FaceAgePredictorAsync(this ViewFace face, FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public static async Task<int> FaceAgePredictorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
             => await Task.Run(() => face.FaceAgePredictor(image, points));
 
         /// <summary>
         /// 性别预测。
         /// <para>
-        /// <see cref="ViewFace.FaceGenderPredictor(FaceImage, IEnumerable{FaceMarkPoint})"/> 的异步版本。<br />
+        /// <see cref="ViewFace.FaceGenderPredictor(FaceImage, FaceMarkPoint[])"/> 的异步版本。<br />
         /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.gender_predictor">ViewFaceCore.model.gender_predictor</a> 
         /// </para>
         /// </summary>
@@ -150,13 +150,13 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<Gender> FaceGenderPredictorAsync(this ViewFace face, FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public static async Task<Gender> FaceGenderPredictorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
             => await Task.Run(() => face.FaceGenderPredictor(image, points));
 
         /// <summary>
         /// 眼睛状态检测。
         /// <para>
-        /// <see cref="ViewFace.FaceEyeStateDetector(FaceImage, IEnumerable{FaceMarkPoint})"/> 的异步版本。<br />
+        /// <see cref="ViewFace.FaceEyeStateDetector(FaceImage, FaceMarkPoint[])"/> 的异步版本。<br />
         /// 眼睛的左右是相对图片内容而言的左右 <br />
         /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.eye_state">ViewFaceCore.model.eye_state</a> 
         /// </para>
@@ -165,7 +165,7 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点 数组</param>
         /// <returns></returns>
-        public static async Task<EyeStateResult> FaceEyeStateDetectorAsync(this ViewFace face, FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public static async Task<EyeStateResult> FaceEyeStateDetectorAsync(this ViewFace face, FaceImage image, FaceMarkPoint[] points)
             => await Task.Run(() => face.FaceEyeStateDetector(image, points));
     }
 }

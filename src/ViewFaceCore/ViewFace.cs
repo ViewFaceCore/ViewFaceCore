@@ -74,7 +74,7 @@ namespace ViewFaceCore
         /// </summary>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
-        public IEnumerable<FaceInfo> FaceDetector(FaceImage image)
+        public FaceInfo[] FaceDetector(FaceImage image)
         {
             lock (_faceDetectorLocker)
             {
@@ -82,15 +82,17 @@ namespace ViewFaceCore
                 var ptr = ViewFaceNative.Detector(ref image, ref size, DetectorConfig.FaceSize, DetectorConfig.Threshold, DetectorConfig.MaxWidth, DetectorConfig.MaxHeight);
                 if (ptr != IntPtr.Zero)
                 {
+                    FaceInfo[] result = new FaceInfo[size];
                     for (int i = 0; i < size; i++)
                     {
                         int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
-                        var info = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
-                        yield return info;
+                        result[i] = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
                     }
                     ViewFaceNative.Free(ptr);
+                    return result;
                 }
             }
+            return new FaceInfo[0];
         }
 
         private readonly static object _faceMarkLocker = new object();
@@ -107,7 +109,7 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public IEnumerable<FaceMarkPoint> FaceMark(FaceImage image, FaceInfo info)
+        public FaceMarkPoint[] FaceMark(FaceImage image, FaceInfo info)
         {
             lock (_faceMarkLocker)
             {
@@ -115,15 +117,16 @@ namespace ViewFaceCore
                 var ptr = ViewFaceNative.FaceMark(ref image, info.Location, ref size, (int)MarkType);
                 if (ptr != IntPtr.Zero)
                 {
+                    FaceMarkPoint[] result = new FaceMarkPoint[size];
                     for (int i = 0; i < size; i++)
                     {
                         var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                        var point = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
-                        yield return point;
+                        result[i] = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
                     }
                     ViewFaceNative.Free(ptr);
                 }
             }
+            return new FaceMarkPoint[0];
         }
 
         private readonly static object _extractLocker = new object();
@@ -139,12 +142,12 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">人脸关键点数据</param>
         /// <returns></returns>
-        public float[] Extract(FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public float[] Extract(FaceImage image, FaceMarkPoint[] points)
         {
             lock (_extractLocker)
             {
                 int size = 0;
-                var ptr = ViewFaceNative.Extract(ref image, points.ToArray(), ref size, (int)FaceType);
+                var ptr = ViewFaceNative.Extract(ref image, points, ref size, (int)FaceType);
                 if (ptr != IntPtr.Zero)
                 {
                     try
@@ -219,8 +222,8 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns>活体检测状态</returns>
-        public AntiSpoofingStatus AntiSpoofing(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global = false)
-            => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(ref image, info.Location, points.ToArray(), global);
+        public AntiSpoofingStatus AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+            => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(ref image, info.Location, points, global);
 
         /// <summary>
         /// 活体检测器。(视频帧图片)
@@ -234,8 +237,8 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="global">是否启用全局检测能力</param>
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-        public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, bool global = false)
-            => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(ref image, info.Location, points.ToArray(), global);
+        public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points, bool global = false)
+            => (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(ref image, info.Location, points, global);
 
         /// <summary>
         /// 人脸质量评估
@@ -245,7 +248,7 @@ namespace ViewFaceCore
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="type">质量评估类型</param>
         /// <returns></returns>
-        public QualityResult FaceQuality(FaceImage image, FaceInfo info, IEnumerable<FaceMarkPoint> points, QualityType type)
+        public QualityResult FaceQuality(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
         {
             int level = -1;
             float score = -1;
@@ -253,33 +256,33 @@ namespace ViewFaceCore
             switch (type)
             {
                 case QualityType.Brightness:
-                    ViewFaceNative.QualityOfBrightness(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score,
+                    ViewFaceNative.QualityOfBrightness(ref image, info.Location, points, points.Length, ref level, ref score,
                         QualityConfig.Brightness.V0, QualityConfig.Brightness.V1, QualityConfig.Brightness.V2, QualityConfig.Brightness.V3);
                     break;
                 case QualityType.Clarity:
-                    ViewFaceNative.QualityOfClarity(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score, QualityConfig.Clarity.Low, QualityConfig.Clarity.High);
+                    ViewFaceNative.QualityOfClarity(ref image, info.Location, points, points.Length, ref level, ref score, QualityConfig.Clarity.Low, QualityConfig.Clarity.High);
                     break;
                 case QualityType.Integrity:
-                    ViewFaceNative.QualityOfIntegrity(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score,
+                    ViewFaceNative.QualityOfIntegrity(ref image, info.Location, points, points.Length, ref level, ref score,
                         QualityConfig.Integrity.Low, QualityConfig.Integrity.High);
                     break;
                 case QualityType.Pose:
-                    ViewFaceNative.QualityOfPose(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score);
+                    ViewFaceNative.QualityOfPose(ref image, info.Location, points, points.Length, ref level, ref score);
                     break;
                 case QualityType.PoseEx:
-                    ViewFaceNative.QualityOfPoseEx(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score,
+                    ViewFaceNative.QualityOfPoseEx(ref image, info.Location, points, points.Length, ref level, ref score,
                        QualityConfig.PoseEx.YawLow, QualityConfig.PoseEx.YawHigh,
                        QualityConfig.PoseEx.PitchLow, QualityConfig.PoseEx.PitchHigh,
                        QualityConfig.PoseEx.RollLow, QualityConfig.PoseEx.RollHigh);
                     break;
                 case QualityType.Resolution:
-                    ViewFaceNative.QualityOfResolution(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score, QualityConfig.Resolution.Low, QualityConfig.Resolution.High);
+                    ViewFaceNative.QualityOfResolution(ref image, info.Location, points, points.Length, ref level, ref score, QualityConfig.Resolution.Low, QualityConfig.Resolution.High);
                     break;
                 case QualityType.ClarityEx:
-                    ViewFaceNative.QualityOfClarityEx(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score, QualityConfig.ClarityEx.BlurThresh);
+                    ViewFaceNative.QualityOfClarityEx(ref image, info.Location, points, points.Length, ref level, ref score, QualityConfig.ClarityEx.BlurThresh);
                     break;
                 case QualityType.Structure:
-                    ViewFaceNative.QualityOfNoMask(ref image, info.Location, points.ToArray(), points.Count(), ref level, ref score);
+                    ViewFaceNative.QualityOfNoMask(ref image, info.Location, points, points.Length, ref level, ref score);
                     break;
             }
 
@@ -296,9 +299,9 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
-        public int FaceAgePredictor(FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public int FaceAgePredictor(FaceImage image, FaceMarkPoint[] points)
         {
-            return ViewFaceNative.AgePredictor(ref image, points.ToArray(), points.Count());
+            return ViewFaceNative.AgePredictor(ref image, points, points.Length);
         }
 
         /// <summary>
@@ -310,9 +313,9 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
-        public Gender FaceGenderPredictor(FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public Gender FaceGenderPredictor(FaceImage image, FaceMarkPoint[] points)
         {
-            return (Gender)ViewFaceNative.GenderPredictor(ref image, points.ToArray(), points.Count());
+            return (Gender)ViewFaceNative.GenderPredictor(ref image, points, points.Length);
         }
 
         /// <summary>
@@ -325,10 +328,10 @@ namespace ViewFaceCore
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns></returns>
-        public EyeStateResult FaceEyeStateDetector(FaceImage image, IEnumerable<FaceMarkPoint> points)
+        public EyeStateResult FaceEyeStateDetector(FaceImage image, FaceMarkPoint[] points)
         {
             int left_eye = 0, right_eye = 0;
-            ViewFaceNative.EyeStateDetector(ref image, points.ToArray(), points.Count(), ref left_eye, ref right_eye);
+            ViewFaceNative.EyeStateDetector(ref image, points, points.Length, ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
         }
 

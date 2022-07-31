@@ -33,7 +33,7 @@ namespace ConsoleApp1
             //FaceQualityTest();
 
             //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-            FaceTrackTest();
+            //FaceTrackTest();
 
             //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
             //ExtractTest();
@@ -48,7 +48,7 @@ namespace ConsoleApp1
             //FaceEyeStateDetectorTest();
 
             //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-            //CompareTest();
+            CompareTest();
 
             Console.WriteLine("Hello, World!");
         }
@@ -208,9 +208,9 @@ namespace ConsoleApp1
             using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
             using (ViewFace viewFace = new ViewFace())
             {
+                var p0 = GetExtract(viewFace, bitmap0);
                 Worker((sw, i) =>
                 {
-                    var p0 = GetExtract(viewFace, bitmap0);
                     var p1 = GetExtract(viewFace, bitmap1);
 
                     float result = viewFace.Compare(p0, p1);
@@ -222,11 +222,11 @@ namespace ConsoleApp1
 
         #region Helpers
 
-        private static IEnumerable<FaceMarkPoint> GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
+        private static FaceMarkPoint[] GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
         {
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
-            return viewFace.FaceMark(bitmap, info).ToList();
+            return viewFace.FaceMark(bitmap, info);
         }
 
         private static float[] GetExtract(ViewFace viewFace, SKBitmap bitmap)

@@ -20,7 +20,12 @@ namespace ViewFaceCoreSkiaSharpTest
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using ViewFace viewFace = new ViewFace();
 
-            var infos = viewFace.FaceDetector(bitmap).ToList();
+            var infos = viewFace.FaceDetector(bitmap);
+            var a = infos.Any();
+            var b = infos.Any();
+            var c = infos.Any();
+            var d = infos.Any();
+
             Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
 
             var infos1 = viewFace.FaceDetector(bitmap).ToArray();
@@ -111,11 +116,11 @@ namespace ViewFaceCoreSkiaSharpTest
 
         #region Helpers
 
-        private IEnumerable<FaceMarkPoint> GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
+        private FaceMarkPoint[] GetFaceMarkPoint(ViewFace viewFace, SKBitmap bitmap)
         {
             var infos = viewFace.FaceDetector(bitmap);
             var info = infos.First();
-            return viewFace.FaceMark(bitmap, info).ToList();
+            return viewFace.FaceMark(bitmap, info);
         }
 
         private float[] GetExtract(ViewFace viewFace, SKBitmap bitmap)

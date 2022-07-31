@@ -11,7 +11,8 @@ namespace ViewFaceCore
 {
     public sealed class FaceTrack : IDisposable
     {
-        private IntPtr _handle = IntPtr.Zero;
+        private readonly IntPtr _handle = IntPtr.Zero;
+        private readonly static object _trackLocker = new object();
 
         public FaceTrack(FaceTrackerConfig trackerConfig)
         {
@@ -39,19 +40,22 @@ namespace ViewFaceCore
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
         public FaceTrackInfo[] Track(FaceImage image)
         {
-            int size = 0;
-            var ptr = ViewFaceNative.FaceTrack(_handle, ref image, ref size);
-            if (ptr != IntPtr.Zero)
+            lock (_trackLocker)
             {
-                FaceTrackInfo[] result = new FaceTrackInfo[size];
-                for (int i = 0; i < size; i++)
+                int size = 0;
+                var ptr = ViewFaceNative.FaceTrack(_handle, ref image, ref size);
+                if (ptr != IntPtr.Zero)
                 {
-                    int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
-                    var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
-                    result[i] = info;
+                    FaceTrackInfo[] result = new FaceTrackInfo[size];
+                    for (int i = 0; i < size; i++)
+                    {
+                        int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
+                        var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
+                        result[i] = info;
+                    }
+                    ViewFaceNative.Free(ptr);
+                    return result;
                 }
-                ViewFaceNative.Free(ptr);
-                return result;
             }
             return new FaceTrackInfo[0];
         }
@@ -61,12 +65,18 @@ namespace ViewFaceCore
         /// </summary>
         public void Reset()
         {
-            ViewFaceNative.FaceTrackReset(_handle);
+            lock (_trackLocker)
+            {
+                ViewFaceNative.FaceTrackReset(_handle);
+            }
         }
 
         public void Dispose()
         {
-            ViewFaceNative.FaceTrackDispose(_handle);
+            lock (_trackLocker)
+            {
+                ViewFaceNative.FaceTrackDispose(_handle);
+            }
         }
     }
 }
