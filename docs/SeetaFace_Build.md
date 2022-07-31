@@ -16,13 +16,19 @@ sudo apt install git gcc g++ cmake -y
 git clone --recursive https://github.com/ViewFaceCore/ViewFaceCore.git
 ```
 
-3. 授权编译脚本  
+3. 下载SeetaFace6源码
 ```shell
-cd ViewFaceCore/scripts/SeetaFace6
+mkdir ViewFaceCore/src/SeetaFace && cd ViewFaceCore/src/SeetaFace
+git clone --recursive https://github.com/SeetaFace6Open/index
+```
+
+4. 授权编译脚本  
+```shell
+cd ../../scripts/SeetaFace6/
 sudo chmod +x build.*.sh
 ```
 
-4. 开始编译（x64平台）
+5. 开始编译（x64平台）
 ```shell
 sudo ./build.linux.x64.sh
 ```
