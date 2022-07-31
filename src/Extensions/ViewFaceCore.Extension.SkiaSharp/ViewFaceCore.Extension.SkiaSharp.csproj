@@ -1,16 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<!--Library Info-->
 	<PropertyGroup>
 		<TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
+		<Authors>WithSalt</Authors>
+		<Version>0.3.6</Version>
+		<OutputType>Library</OutputType>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net462'">
-		<PackageReference Include="SkiaSharp">
-			<Version>2.88.0</Version>
-		</PackageReference>
-	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	<!--Package Reference-->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'netstandard2.0'">
 		<PackageReference Include="SkiaSharp">
 			<Version>2.88.0</Version>
 		</PackageReference>
@@ -20,10 +24,30 @@
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" />
 	</ItemGroup>
 
+	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
 
 	<Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
+
+	<!--Package Info-->
+	<ItemGroup>
+		<None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\..\..\assets\logos\WithSalt-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>ViewFaceCore.Extension.SkiaSharp</PackageId>
+		<Authors>WithSalt</Authors>
+		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
+		<PackageVersion>$(Version)</PackageVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIcon>WithSalt-Logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
+		<Description>ViewFaceCore 的 SkiaSharp 实现。</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
+	</PropertyGroup>
 
 </Project>

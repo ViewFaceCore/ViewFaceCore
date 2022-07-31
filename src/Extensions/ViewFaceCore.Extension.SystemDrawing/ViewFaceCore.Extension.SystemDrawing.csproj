@@ -1,19 +1,47 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<!--Library Info-->
 	<PropertyGroup>
-		<TargetFrameworks>net40;net45;net461;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net40;net45;net461;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<Authors>View</Authors>
+		<Version>0.3.6</Version>
+		<OutputType>Library</OutputType>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-	</ItemGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<!--Package Reference-->
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
 		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
 	</ItemGroup>
 
+	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
 
 	<Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
+
+	<!--Package Info-->
+	<ItemGroup>
+		<None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\..\..\assets\logos\View-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>ViewFaceCore.Extension.SystemDrawing</PackageId>
+		<Authors>View</Authors>
+		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
+		<PackageVersion>$(Version)</PackageVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIcon>View-Logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
+		<Description>ViewFaceCore 的 System.Drawing 实现。</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
+	</PropertyGroup>
 
 </Project>

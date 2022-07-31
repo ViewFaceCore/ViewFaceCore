@@ -4,8 +4,8 @@
 	<PropertyGroup>
 		<TargetFrameworks>net40;net45;net461;netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
 		<Platforms>AnyCPU</Platforms>
-		<Authors>View</Authors>
-		<Version>0.3.5</Version>
+		<Authors>View, WithSalt</Authors>
+		<Version>0.3.6</Version>
 		<OutputType>Library</OutputType>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
@@ -18,32 +18,23 @@
 	<!--Package Info-->
 	<ItemGroup>
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="README.md" Pack="true" PackagePath="" />
 		<None Include="..\..\assets\logos\View-Logo.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 
 	<PropertyGroup>
 		<PackageId>ViewFaceCore</PackageId>
-		<Authors>View</Authors>
+		<Authors>View, WithSalt</Authors>
 		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
 		<PackageVersion>$(Version)</PackageVersion>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>View-Logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
-		<Description>一款基于 SeetaFace6 实现的 .NET 平台的人脸识别库。
-支持多 .NET 目标，支持 Windows(x64/x86)、Linux(arm/arm64/x64)。
-
-Windows-x64 支持库 : ViewFaceCore.runtime.win.x64
-Windows-x86 支持库 : ViewFaceCore.runtime.win.x86
-Ubuntu-x64 支持库 : ViewFaceCore.runtime.ubuntu.20.04.x64
-Linux-arm 支持库 : ViewFaceCore.runtime.linux.arm
-Linux-arm64 支持库 : ViewFaceCore.runtime.linux.arm64
-
-可按需添加模型包 : ViewFaceCore.model.*
-或添加所有模型包 : ViewFaceCore.all_models
-		</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Description>一个基于 SeetaFace6 实现的 .NET 平台的人脸识别库。支持 Windows(x64/x86)、Linux(arm/arm64/x64)。</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
-	
+
 	</PropertyGroup>
 
 </Project>
