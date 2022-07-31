@@ -46,15 +46,21 @@ namespace ViewFaceCore.Core
                 var ptr = ViewFaceNative.FaceTrack(_handle, ref image, ref size);
                 if (ptr != IntPtr.Zero)
                 {
-                    FaceTrackInfo[] result = new FaceTrackInfo[size];
-                    for (int i = 0; i < size; i++)
+                    try
                     {
-                        int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
-                        var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
-                        result[i] = info;
+                        FaceTrackInfo[] result = new FaceTrackInfo[size];
+                        for (int i = 0; i < size; i++)
+                        {
+                            int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
+                            var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
+                            result[i] = info;
+                        }
+                        return result;
                     }
-                    ViewFaceNative.Free(ptr);
-                    return result;
+                    finally
+                    {
+                        ViewFaceNative.Free(ptr);
+                    }
                 }
             }
             return new FaceTrackInfo[0];

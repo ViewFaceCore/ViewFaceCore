@@ -53,7 +53,10 @@ View_Api void GetModelPath(char** path)
 // 释放由 malloc 分配的内存
 View_Api void Free(shared_ptr<void>* address)
 {
-	free(address);
+	try {
+		free(address);
+	}
+	catch (int e) {}
 }
 
 #pragma endregion
@@ -251,7 +254,7 @@ View_Api float Compare(const float* lhs, const float* rhs, int size)
 
 #pragma endregion
 
-#pragma region FaceAntiSpoofing（活体检测）
+#pragma region FaceAntiSpoofing
 
 View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const bool global) {
 	if (global) {
@@ -311,7 +314,7 @@ View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler) {
 
 #pragma endregion
 
-#pragma region FaceTracker(人脸追踪)
+#pragma region FaceTracker
 
 /// <summary>
 /// 获取人脸追踪句柄
@@ -385,7 +388,7 @@ View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler) {
 
 #pragma endregion
 
-#pragma region 质量评估
+#pragma region Quality
 
 // 亮度评估
 View_Api void Quality_Brightness(const SeetaImageData& img
@@ -486,9 +489,9 @@ View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect
 
 #pragma endregion
 
-#pragma region 年龄/性别/眼睛状态检测
+#pragma region AgePredictor/GenderPredictor/EyeStateDetector
 
-#pragma region 年龄预测
+#pragma region AgePredictor
 
 /// <summary>
 /// 获取年龄预测句柄
@@ -532,7 +535,7 @@ View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
 
 #pragma endregion
 
-#pragma region 性别预测
+#pragma region GenderPredictor
 
 /// <summary>
 /// 获取性别预测句柄
@@ -572,7 +575,7 @@ View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
 
 #pragma endregion
 
-#pragma region 眼睛状态检测
+#pragma region EyeStateDetector
 
 /// <summary>
 /// 获取眼睛状态检测句柄

@@ -51,13 +51,20 @@ namespace ViewFaceCore.Core
                 var ptr = ViewFaceNative.FaceMark(_handle, ref image, info.Location, ref size);
                 if (ptr != IntPtr.Zero)
                 {
-                    FaceMarkPoint[] result = new FaceMarkPoint[size];
-                    for (int i = 0; i < size; i++)
+                    try
                     {
-                        var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                        result[i] = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
+                        FaceMarkPoint[] result = new FaceMarkPoint[size];
+                        for (int i = 0; i < size; i++)
+                        {
+                            var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
+                            result[i] = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
+                        }
+                        return result;
                     }
-                    ViewFaceNative.Free(ptr);
+                    finally
+                    {
+                        ViewFaceNative.Free(ptr);
+                    }
                 }
             }
             return new FaceMarkPoint[0];
