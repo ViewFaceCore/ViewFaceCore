@@ -5,7 +5,7 @@ using System.Text;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
-namespace ViewFaceCore.Core.Predictor
+namespace ViewFaceCore.Core
 {
     /// <summary>
     /// 眼睛状态检测。<br />

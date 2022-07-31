@@ -89,7 +89,7 @@ namespace ViewFaceCore.Core
             bool haveFace = false;
             foreach (var bitmap in bitmaps)
             {
-                var infos = faceDetector.Detector(bitmap);
+                var infos = faceDetector.Detect(bitmap);
                 if (faceIndex >= 0 && faceIndex < infos.Length)
                 {
                     haveFace = true;

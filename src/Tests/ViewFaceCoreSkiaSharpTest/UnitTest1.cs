@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using ViewFaceCore;
 using ViewFaceCore.Core;
-using ViewFaceCore.Core.Interface;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCoreSkiaSharpTest
@@ -17,119 +16,221 @@ namespace ViewFaceCoreSkiaSharpTest
         private readonly static string imagePath1 = @"images\Jay_4.jpg";
 
         [TestMethod]
-        public void FaceDetectorTest1()
+        public void FaceDetectorAndFaceMarkTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using BaseViewFace viewFace = new BaseViewFace();
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
 
-            var infos = viewFace.FaceDetector(bitmap);
-            var a = infos.Any();
-            var b = infos.Any();
-            var c = infos.Any();
-            var d = infos.Any();
+            Stopwatch sw = Stopwatch.StartNew();
 
-            Assert.IsTrue(infos.Any() && infos.First().Score > 0 && infos.First().Location.X > 0 && infos.First().Location.Y > 0 && infos.First().Location.Width > 0 && infos.First().Location.Height > 0);
-
-            var infos1 = viewFace.FaceDetector(bitmap).ToArray();
-        }
-
-        [TestMethod]
-        public void FaceMarkTest1()
-        {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using BaseViewFace viewFace = new BaseViewFace();
-            var infos = viewFace.FaceDetector(bitmap);
+            var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
-            var points = viewFace.FaceMark(bitmap, info).ToList();
-            System.Console.WriteLine(points.Count);
-            Assert.IsTrue(points.Any());
+            var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
+
+            sw.Stop();
+            Debug.WriteLine($"{nameof(FaceMark.Mark)}识别，结果：{markPoints.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+
+            Assert.IsTrue(markPoints.Any());
         }
 
         [TestMethod]
-        public void ExtractTest1()
+        public void FaceQualityTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            BaseViewFace viewFace = new BaseViewFace();
-            var result = viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+            using var bitmap = ConvertImage(imagePath);
+            using FaceQuality faceQuality = new FaceQuality();
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+
+            var info = faceDetector.Detect(bitmap).First();
+            var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var brightnessResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Brightness);
+            Debug.WriteLine($"{QualityType.Brightness}评估，结果：{brightnessResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var resolutionResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Resolution);
+            Debug.WriteLine($"{QualityType.Resolution}评估，结果：{resolutionResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var clarityResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Clarity);
+            Debug.WriteLine($"{QualityType.Clarity}评估，结果：{clarityResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var clarityExResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.ClarityEx);
+            Debug.WriteLine($"{QualityType.ClarityEx}评估，结果：{clarityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var integrityExResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Integrity);
+            Debug.WriteLine($"{QualityType.Integrity}评估，结果：{integrityExResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var structureeResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Structure);
+            Debug.WriteLine($"{QualityType.Structure}评估，结果：{structureeResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var poseResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.Pose);
+            Debug.WriteLine($"{QualityType.Pose}评估，结果：{poseResult}，耗时：{sw.ElapsedMilliseconds}ms");
+            sw.Restart();
+            var poseExeResult = faceQuality.Detect(bitmap, info, markPoints, QualityType.PoseEx);
+            Debug.WriteLine($"{QualityType.PoseEx}评估，结果：{poseExeResult}，耗时：{sw.ElapsedMilliseconds}ms");
+
+            sw.Stop();
+            Assert.IsTrue(true);
+        }
+
+        /// <summary>
+        /// 活体检测测试
+        /// </summary>
+        [TestMethod]
+        public void AntiSpoofingTest()
+        {
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing();
+            var info = faceDetector.Detect(bitmap).First();
+            var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+
+            sw.Stop();
+            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+        }
+
+        /// <summary>
+        /// 人脸追踪测试
+        /// </summary>
+        [TestMethod]
+        public void FaceTrackTest()
+        {
+            using var bitmap = ConvertImage(imagePath);
+            using FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
+
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var result = faceTrack.Track(bitmap).ToList();
+            sw.Stop();
+            Debug.WriteLine($"{nameof(FaceTrack.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result.Any());
         }
 
+        /// <summary>
+        /// 人脸特征值测试
+        /// </summary>
         [TestMethod]
-        public void FaceTrackTest1()
+        public void ExtractTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using FaceRecognizer faceRecognizer = new FaceRecognizer();
 
-            using (FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height)))
-            {
-                var result = faceTrack.Track(bitmap).ToList();
-                if (result == null || !result.Any())
-                {
-                    Assert.Fail();
-                }
-                faceTrack.Reset();
-            }
+            Stopwatch sw = Stopwatch.StartNew();
 
-            Debug.WriteLine("FaceTrack is disposed");
+            var result = faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap)).ToList();
+
+            sw.Stop();
+            Debug.WriteLine($"{nameof(FaceRecognizer.Extract)}检测，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+            Assert.IsTrue(result.Any());
         }
 
+        /// <summary>
+        /// 年龄预测
+        /// </summary>
         [TestMethod]
-        public void AntiSpoofingTest1()
+        public void FaceAgePredictorTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            BaseViewFace viewFace = new BaseViewFace();
-            var infos = viewFace.FaceDetector(bitmap);
-            var info = infos.First();
-            var markPoints = GetFaceMarkPoint(viewFace, bitmap);
-            var result = viewFace.AntiSpoofing(bitmap, info, markPoints);
-            Assert.IsTrue(result == AntiSpoofingStatus.Real);
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using AgePredictor agePredictor = new AgePredictor();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var result = agePredictor.PredictAge(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            sw.Stop();
+            Debug.WriteLine($"{nameof(AgePredictor.PredictAge)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            Assert.IsTrue(result > 10);
         }
 
+        /// <summary>
+        /// 性别预测
+        /// </summary>
         [TestMethod]
-        public void AntiSpoofingTest2()
+        public void FaceGenderPredictorTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            BaseViewFace viewFace = new BaseViewFace();
-            var infos = viewFace.FaceDetector(bitmap);
-            var info = infos.First();
-            var markPoints = GetFaceMarkPoint(viewFace, bitmap);
-            for (int i = 0; i < 1000; i++)
-            {
-                var result = viewFace.AntiSpoofing(bitmap, info, markPoints);
-                Assert.IsTrue(result == AntiSpoofingStatus.Real);
-                Debug.WriteLine($"第{i + 1}次检测，正常！");
-            }
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using GenderPredictor genderPredictor = new GenderPredictor();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var result = genderPredictor.PredictGender(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+
+            sw.Stop();
+            Debug.WriteLine($"{nameof(GenderPredictor.PredictGender)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            Assert.IsTrue(result == Gender.Male);
         }
 
+        /// <summary>
+        /// 眼睛状态检测
+        /// </summary>
+        [TestMethod]
+        public void FaceEyeStateDetectorTest()
+        {
+            using var bitmap = ConvertImage(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using EyeStateDetector eyeStateDetector = new EyeStateDetector();
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var result = eyeStateDetector.Detect(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            sw.Stop();
+            Debug.WriteLine($"{nameof(EyeStateDetector.Detect)}检测，结果：{result.ToString()}，耗时：{sw.ElapsedMilliseconds}ms");
+            Assert.IsTrue(result.LeftEyeState == EyeState.Open);
+        }
+
+        /// <summary>
+        /// 人脸对比测试
+        /// </summary>
         [TestMethod]
         public void CompareTest()
         {
-            using SKBitmap bitmap0 = SKBitmap.Decode(imagePath);
-            using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
-            using BaseViewFace viewFace = new BaseViewFace();
+            using var bitmap0 = ConvertImage(imagePath);
+            using var bitmap1 = ConvertImage(imagePath1);
 
-            var p0 = GetExtract(viewFace, bitmap0);
-            var p1 = GetExtract(viewFace, bitmap1);
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceMark faceMark = new FaceMark();
+            using FaceRecognizer recognizer = new FaceRecognizer();
 
-            float result = viewFace.Compare(p0, p1);
-            bool isSelf = viewFace.IsSelf(p0, p1);
+            Stopwatch sw = Stopwatch.StartNew();
+
+            var p0 = GetExtract(recognizer, faceDetector, faceMark, bitmap0);
+            var p1 = GetExtract(recognizer, faceDetector, faceMark, bitmap1);
+
+            float result = recognizer.Compare(p0, p1);
+            bool isSelf = recognizer.IsSelf(p0, p1);
+            sw.Stop();
+            Debug.WriteLine($"{nameof(FaceRecognizer.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(isSelf);
         }
 
-
         #region Helpers
 
-        private FaceMarkPoint[] GetFaceMarkPoint(BaseViewFace viewFace, SKBitmap bitmap)
+        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceMark faceMark, object bitmap)
         {
-            var infos = viewFace.FaceDetector(bitmap);
+            var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
-            return viewFace.FaceMark(bitmap, info);
+            return faceMark.Mark(bitmap, info);
         }
 
-        private float[] GetExtract(BaseViewFace viewFace, SKBitmap bitmap)
+        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceMark faceMark, object bitmap)
         {
-            return viewFace.Extract(bitmap, GetFaceMarkPoint(viewFace, bitmap));
+            return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }
 
+        public SKBitmap ConvertImage(string path)
+        {
+            return SKBitmap.Decode(imagePath);
+        }
         #endregion
     }
 }

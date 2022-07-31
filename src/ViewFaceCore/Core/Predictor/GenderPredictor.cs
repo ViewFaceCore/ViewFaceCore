@@ -5,7 +5,7 @@ using System.Text;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
-namespace ViewFaceCore.Core.Predictor
+namespace ViewFaceCore.Core
 {
     /// <summary>
     /// 性别预测。
@@ -34,11 +34,16 @@ namespace ViewFaceCore.Core.Predictor
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
-        public int PredictGender(FaceImage image, FaceMarkPoint[] points)
+        public Gender PredictGender(FaceImage image, FaceMarkPoint[] points)
         {
             lock (_locker)
             {
-                return ViewFaceNative.PredictGender(_handle, ref image, points);
+                int result = ViewFaceNative.PredictGender(_handle, ref image, points);
+                if (Enum.TryParse(result.ToString(), out Gender gender))
+                {
+                    return gender;
+                }
+                return Gender.Unknown;
             }
         }
 

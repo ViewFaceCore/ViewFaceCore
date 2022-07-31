@@ -11,18 +11,13 @@ namespace ViewFaceCore.Core
     /// <summary>
     /// 质量评估
     /// </summary>
-    public sealed class QualityAssessment : BaseViewFace, IDisposable
+    public sealed class FaceQuality : BaseViewFace, IDisposable
     {
         private readonly QualityConfig _qualityConfig = null;
 
-        public QualityAssessment()
+        public FaceQuality(QualityConfig qualityConfig = null)
         {
-            _qualityConfig = new QualityConfig();
-        }
-
-        public QualityAssessment(QualityConfig qualityConfig)
-        {
-            _qualityConfig = qualityConfig;
+            _qualityConfig = qualityConfig ?? new QualityConfig();
         }
 
         /// <summary>
@@ -33,7 +28,7 @@ namespace ViewFaceCore.Core
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="type">质量评估类型</param>
         /// <returns></returns>
-        public QualityResult FaceQuality(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
+        public QualityResult Detect(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
         {
             int level = -1;
             float score = -1;
