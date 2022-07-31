@@ -1,6 +1,6 @@
 #pragma once
-#include "seeta/QualityStructure.h"
-#include "seeta/FaceLandmarker.h"
+#include "../seeta/QualityStructure.h"
+#include "../seeta/FaceLandmarker.h"
 using namespace std;
 
 namespace seeta {

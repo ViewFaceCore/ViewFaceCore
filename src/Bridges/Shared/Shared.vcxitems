@@ -14,7 +14,42 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)bridge.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfClarityEx.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfNoMask.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\AgePredictor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CFaceDetector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CFaceInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CStruct.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CTrackingFaceInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\EyeStateDetector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceAntiSpoofing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceDatabase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceDetector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceLandmarker.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceRecognizer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceTracker.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\GenderPredictor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\MaskDetector.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\PoseEstimator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityAssessor.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfBrightness.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfClarity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfIntegrity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfLBN.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfPose.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfPoseEx.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfResolution.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityStructure.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceDetectorConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceLandmarkerConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceRecognizerConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaMaskDetectorConfig.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\Stream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\Struct.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)bridge.cpp" />
   </ItemGroup>
 </Project>

@@ -1,16 +1,119 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="seeta">
+      <UniqueIdentifier>{12790c4e-bca7-42af-97a2-6a3378d36aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="seeta\Common">
+      <UniqueIdentifier>{f7040305-cb54-4104-9b68-5cfaf956d6da}</UniqueIdentifier>
+    </Filter>
     <Filter Include="seetaEx">
-      <UniqueIdentifier>{43dc6f4f-8ee2-4ed0-b88f-9c6db18ff7ba}</UniqueIdentifier>
+      <UniqueIdentifier>{aa21502a-16e5-4b82-babf-2dd531eb83fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CStruct.h">
+      <Filter>seeta\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\Struct.h">
+      <Filter>seeta\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\AgePredictor.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CFaceDetector.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CFaceInfo.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CStream.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\CTrackingFaceInfo.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\EyeStateDetector.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceAntiSpoofing.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceDatabase.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceDetector.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceLandmarker.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceRecognizer.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\FaceTracker.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\GenderPredictor.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\MaskDetector.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\PoseEstimator.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityAssessor.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfBrightness.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfClarity.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfIntegrity.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfLBN.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfPose.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfPoseEx.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityOfResolution.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\QualityStructure.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceDetectorConfig.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceLandmarkerConfig.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaFaceRecognizerConfig.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\SeetaMaskDetectorConfig.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)seeta\Stream.h">
+      <Filter>seeta</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfClarityEx.h">
       <Filter>seetaEx</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfNoMask.h">
       <Filter>seetaEx</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)bridge.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)bridge.cpp" />
   </ItemGroup>
 </Project>

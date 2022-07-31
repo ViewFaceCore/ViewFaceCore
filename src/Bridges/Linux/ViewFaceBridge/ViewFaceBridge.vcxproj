@@ -139,20 +139,16 @@
     <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
     <TargetName>lib$(ProjectName)</TargetName>
   </PropertyGroup>
-  <ItemGroup>
-    <ClCompile Include="ViewFaceBridge.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="environment.h" />
-  </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libtennis.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -161,6 +157,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libtennis.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -168,7 +165,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_pentium.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_sandy_bridge.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -177,6 +175,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm/libtennis.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -185,6 +184,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib/arm64/libtennis.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -193,6 +193,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_pentium.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_sandy_bridge.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaAgePredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaAuthorize.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaEyeStateDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceAntiSpoofingX600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceDetector600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceLandmarker600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceRecognizer610.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaFaceTracking600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaGenderPredictor600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaMaskDetector200.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaPoseEstimation600.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libSeetaQualityAssessor300.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis.so;$(RemoteRootDir)/SeetaFace/index/build/lib64/libtennis_haswell.so;%(AdditionalDependencies)</AdditionalDependencies>
@@ -201,6 +202,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\SeetaFace\index\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LINUX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

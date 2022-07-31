@@ -1,37 +1,17 @@
-#include "environment.h"
-
-#ifndef STDCALL
-#define STDCALL 
-#endif // !STDCALL
-
-#ifndef View_Api
-#define View_Api 
-#endif // !View_Api
+#include "bridge.h"
 
 
-#include "seeta/FaceDetector.h"
-#include "seeta/FaceLandmarker.h"
-#include "seeta/FaceRecognizer.h"
-#include "seeta/FaceAntiSpoofing.h"
-#include "seeta/FaceTracker.h"
-#include "seeta/MaskDetector.h"
+#if WINDOWS
 
-#include "seeta/QualityOfBrightness.h"
-#include "seeta/QualityOfClarity.h"
-#include "seeta/QualityOfIntegrity.h"
-#include "seeta/QualityOfPose.h"
-#include "seeta/QualityOfPoseEx.h"
-#include "seeta/QualityOfResolution.h"
+#define STDCALL _stdcall
+#define View_Api extern "C" __declspec(dllexport)
 
-#include "seetaEx/QualityOfClarityEx.h"
-#include "seetaEx/QualityOfNoMask.h"
+#elif LINUX
 
-#include "seeta/AgePredictor.h"
-#include "seeta/GenderPredictor.h"
-#include "seeta/EyeStateDetector.h"
+#define STDCALL __attribute__((stdcall))
+#define View_Api extern "C"
 
-#include <iostream>
-#include <string>
+#endif // WINDOWS or LINUX
 
 using namespace std;
 using namespace seeta;
