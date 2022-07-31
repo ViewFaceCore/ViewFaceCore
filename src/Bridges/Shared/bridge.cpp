@@ -1,6 +1,5 @@
 #include "bridge.h"
 
-
 #if WINDOWS
 
 #define STDCALL _stdcall
