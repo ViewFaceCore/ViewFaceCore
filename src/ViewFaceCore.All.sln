@@ -18,6 +18,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore", "ViewFaceCore\ViewFaceCore.csproj", "{A80BBE13-C15C-40BB-B03F-85FAC11B03DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtimes", "Runtimes", "{2979B369-318B-4DE4-A115-75D00294725E}"
+	ProjectSection(SolutionItems) = preProject
+		Runtimes\pack.all.bat = Runtimes\pack.all.bat
+		Runtimes\README.md = Runtimes\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{E277C41E-DE26-47CB-B0C5-8689ADFDFB89}"
 EndProject

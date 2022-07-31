@@ -2,10 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.runtime.win.x86</id>
-		<version>6.0.2</version>
+		<version>0.0.0</version>
 		<authors>View, SeetaFace</authors>
 		<owners>ViewFaceCore</owners>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<license type="file">SeetaFace_LICENSE</license>
+		<readme>LICENSE</readme>
 		<icon>View-Logo.png</icon>
 		<description>ViewFaceCore Native libraries for Windows-x86</description>
 	</metadata>
@@ -42,6 +44,8 @@
 		<file src="..\..\SeetaFace\index\build\bin\x86\SeetaQualityAssessor300d.dll" target="build\viewfacecore\win\x86\SeetaQualityAssessor300d.dll" />
 
 		<file src="ViewFaceCore.runtime.win.x86.targets" target="build\ViewFaceCore.runtime.win.x86.targets" />
-		<file src="..\..\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\..\assets\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
+		<file src="..\..\..\LICENSE" target="LICENSE" />
 	</files>
 </package>

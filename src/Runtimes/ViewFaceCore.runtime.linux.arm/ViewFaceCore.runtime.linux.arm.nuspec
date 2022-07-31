@@ -2,10 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>ViewFaceCore.runtime.linux.arm</id>
-		<version>6.0.2</version>
+		<version>0.0.0</version>
 		<authors>WithSalt, SeetaFace</authors>
 		<owners>ViewFaceCore</owners>
-		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<license type="file">SeetaFace_LICENSE</license>
+		<readme>LICENSE</readme>
 		<icon>WithSalt-Logo.png</icon>
 		<description>ViewFaceCore Native libraries for Linux-arm</description>
 	</metadata>
@@ -27,6 +29,8 @@
 		<file src="..\..\SeetaFace\index\build\lib\arm\libSeetaQualityAssessor300.so" target="build\viewfacecore\linux\arm\libSeetaQualityAssessor300.so" />
 
 		<file src="ViewFaceCore.runtime.linux.arm.targets" target="build\ViewFaceCore.runtime.linux.arm.targets" />
-		<file src="..\..\Images\WithSalt-Logo.png" target="WithSalt-Logo.png" />
+		<file src="..\..\..\assets\logos\WithSalt-Logo.png" target="WithSalt-Logo.png" />
+		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
+		<file src="..\..\..\LICENSE" target="LICENSE" />
 	</files>
 </package>
