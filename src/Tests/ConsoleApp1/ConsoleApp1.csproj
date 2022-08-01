@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj" />
+		<ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.ubuntu.20.04.x64\ViewFaceCore.runtime.ubuntu.20.04.x64.csproj" />
 		<ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
