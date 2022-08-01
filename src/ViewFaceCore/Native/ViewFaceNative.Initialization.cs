@@ -16,6 +16,8 @@ namespace ViewFaceCore.Native
         [DllImport("kernel32", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool SetDllDirectory(string path);
 
+        private static string _libraryPath = null;
+
         /// <summary>
         /// 获取本机库目录
         /// </summary>
@@ -23,6 +25,8 @@ namespace ViewFaceCore.Native
         {
             get
             {
+                if (!string.IsNullOrEmpty(_libraryPath))
+                    return _libraryPath;
                 string architecture, platform;
                 switch (RuntimeInformation.ProcessArchitecture)
                 {
@@ -33,16 +37,40 @@ namespace ViewFaceCore.Native
                     default: throw new PlatformNotSupportedException($"不支持的处理器体系结构: {RuntimeInformation.ProcessArchitecture}");
                 }
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                { platform = "win"; }
+                    platform = "win";
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                { platform = "linux"; }
+                    platform = "linux";
                 else
-                { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
-
-                var libraryPath = Path.Combine(FaceGlobalConfig.BasePath, "viewfacecore", platform, architecture);
+                    throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}");
+                string libraryPath;
+                if (!TryCombinePath(out libraryPath, "viewfacecore", platform, architecture))
+                    throw new DirectoryNotFoundException("Not found library path.");
                 if (Directory.Exists(libraryPath))
-                { return libraryPath; }
-                else { throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}"); }
+                {
+                    _libraryPath = libraryPath;
+                    return _libraryPath;
+                }
+                else
+                    throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}");
+            }
+        }
+
+        /// <summary>
+        /// 模型路径（避免重复去获取路径）
+        /// </summary>
+        private static string _modelsPath = null;
+
+        private static string ModelsPath
+        {
+            get
+            {
+                string modelsPath;
+                if (TryCombinePath(out modelsPath, "viewfacecore", "models"))
+                {
+                    _modelsPath = modelsPath;
+                    return modelsPath;
+                }
+                throw new DirectoryNotFoundException("Not found models path.");
             }
         }
 
@@ -124,6 +152,48 @@ namespace ViewFaceCore.Native
 #else
             throw new PlatformNotSupportedException($"不支持的 .NET 平台: {RuntimeInformation.FrameworkDescription}");
 #endif
+            //设置模型位置
+            ViewFaceNative.SetModelPath(ModelsPath);
+        }
+
+        private static bool TryCombinePath(out string path, params string[] paths)
+        {
+            string[] prepareCombinePaths = new string[paths.Length + 1];
+            for (int i = 0; i < paths.Length; i++)
+            {
+                prepareCombinePaths[i + 1] = paths[i];
+            }
+            path = CombinePath(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ViewFaceNative)).Location), prepareCombinePaths);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return true;
+            }
+            path = CombinePath(AppDomain.CurrentDomain.BaseDirectory, prepareCombinePaths);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return true;
+            }
+            path = CombinePath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), prepareCombinePaths);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private static string CombinePath(string basePath, string[] paths)
+        {
+            if (paths == null || paths.Length < 1)
+            {
+                return null;
+            }
+            paths[0] = basePath;
+            string outPath = Path.Combine(paths) + Path.DirectorySeparatorChar;
+            if (Directory.Exists(outPath))
+            {
+                return outPath;
+            }
+            return null;
         }
 
     }

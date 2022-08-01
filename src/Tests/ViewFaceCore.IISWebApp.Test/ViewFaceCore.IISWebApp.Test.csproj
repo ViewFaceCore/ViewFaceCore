@@ -151,10 +151,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="images\Jay_3.jpg">
+    <Content Include="Content\images\Jay_3.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="images\Jay_4.jpg">
+    <Content Include="Content\images\Jay_4.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
@@ -203,13 +203,9 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj">
-      <Project>{084290c4-31d7-44f4-9f2a-1351857aa01f}</Project>
-      <Name>ViewFaceCore.Extension.SkiaSharp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Models\ViewFaceCore.all_models\ViewFaceCore.all_models.csproj">
-      <Project>{e93763b6-8a59-452c-903c-1f883df64c40}</Project>
-      <Name>ViewFaceCore.all_models</Name>
+    <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj">
+      <Project>{d5e1e633-99b7-4ec0-87e8-932dad2e81eb}</Project>
+      <Name>ViewFaceCore.Extension.SystemDrawing</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj">
       <Project>{1ced5cc3-5fca-4e84-8706-04e509fe2e61}</Project>
@@ -255,9 +251,39 @@
     <Error Condition="!Exists('..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.2.88.0\build\net462\SkiaSharp.NativeAssets.macOS.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.macOS.2.88.0\build\net462\SkiaSharp.NativeAssets.macOS.targets'))" />
     <Error Condition="!Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.2.88.0\build\net462\SkiaSharp.NativeAssets.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SkiaSharp.NativeAssets.Win32.2.88.0\build\net462\SkiaSharp.NativeAssets.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.age_predictor.6.0.4\build\ViewFaceCore.model.age_predictor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.age_predictor.6.0.4\build\ViewFaceCore.model.age_predictor.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.eye_state.6.0.4\build\ViewFaceCore.model.eye_state.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.eye_state.6.0.4\build\ViewFaceCore.model.eye_state.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_detector.6.0.4\build\ViewFaceCore.model.face_detector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_detector.6.0.4\build\ViewFaceCore.model.face_detector.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_landmarker_mask_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_mask_pts5.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_landmarker_mask_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_mask_pts5.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_landmarker_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_pts5.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_landmarker_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_pts5.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_landmarker_pts68.6.0.4\build\ViewFaceCore.model.face_landmarker_pts68.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_landmarker_pts68.6.0.4\build\ViewFaceCore.model.face_landmarker_pts68.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_recognizer.6.0.4\build\ViewFaceCore.model.face_recognizer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_recognizer.6.0.4\build\ViewFaceCore.model.face_recognizer.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_recognizer_light.6.0.4\build\ViewFaceCore.model.face_recognizer_light.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_recognizer_light.6.0.4\build\ViewFaceCore.model.face_recognizer_light.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.face_recognizer_mask.6.0.4\build\ViewFaceCore.model.face_recognizer_mask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.face_recognizer_mask.6.0.4\build\ViewFaceCore.model.face_recognizer_mask.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.fas_first.6.0.4\build\ViewFaceCore.model.fas_first.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.fas_first.6.0.4\build\ViewFaceCore.model.fas_first.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.fas_second.6.0.4\build\ViewFaceCore.model.fas_second.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.fas_second.6.0.4\build\ViewFaceCore.model.fas_second.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.gender_predictor.6.0.4\build\ViewFaceCore.model.gender_predictor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.gender_predictor.6.0.4\build\ViewFaceCore.model.gender_predictor.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.mask_detector.6.0.4\build\ViewFaceCore.model.mask_detector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.mask_detector.6.0.4\build\ViewFaceCore.model.mask_detector.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.pose_estimation.6.0.4\build\ViewFaceCore.model.pose_estimation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.pose_estimation.6.0.4\build\ViewFaceCore.model.pose_estimation.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.4\build\ViewFaceCore.model.quality_lbn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.quality_lbn.6.0.4\build\ViewFaceCore.model.quality_lbn.targets'))" />
   </Target>
   <Import Project="..\..\packages\SkiaSharp.NativeAssets.macOS.2.88.0\build\net462\SkiaSharp.NativeAssets.macOS.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.macOS.2.88.0\build\net462\SkiaSharp.NativeAssets.macOS.targets')" />
   <Import Project="..\..\packages\SkiaSharp.NativeAssets.Win32.2.88.0\build\net462\SkiaSharp.NativeAssets.Win32.targets" Condition="Exists('..\..\packages\SkiaSharp.NativeAssets.Win32.2.88.0\build\net462\SkiaSharp.NativeAssets.Win32.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.age_predictor.6.0.4\build\ViewFaceCore.model.age_predictor.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.age_predictor.6.0.4\build\ViewFaceCore.model.age_predictor.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.eye_state.6.0.4\build\ViewFaceCore.model.eye_state.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.eye_state.6.0.4\build\ViewFaceCore.model.eye_state.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_detector.6.0.4\build\ViewFaceCore.model.face_detector.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_detector.6.0.4\build\ViewFaceCore.model.face_detector.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_landmarker_mask_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_mask_pts5.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_landmarker_mask_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_mask_pts5.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_landmarker_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_pts5.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_landmarker_pts5.6.0.4\build\ViewFaceCore.model.face_landmarker_pts5.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_landmarker_pts68.6.0.4\build\ViewFaceCore.model.face_landmarker_pts68.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_landmarker_pts68.6.0.4\build\ViewFaceCore.model.face_landmarker_pts68.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_recognizer.6.0.4\build\ViewFaceCore.model.face_recognizer.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_recognizer.6.0.4\build\ViewFaceCore.model.face_recognizer.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_recognizer_light.6.0.4\build\ViewFaceCore.model.face_recognizer_light.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_recognizer_light.6.0.4\build\ViewFaceCore.model.face_recognizer_light.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.face_recognizer_mask.6.0.4\build\ViewFaceCore.model.face_recognizer_mask.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_recognizer_mask.6.0.4\build\ViewFaceCore.model.face_recognizer_mask.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.fas_first.6.0.4\build\ViewFaceCore.model.fas_first.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.fas_first.6.0.4\build\ViewFaceCore.model.fas_first.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.fas_second.6.0.4\build\ViewFaceCore.model.fas_second.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.fas_second.6.0.4\build\ViewFaceCore.model.fas_second.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.gender_predictor.6.0.4\build\ViewFaceCore.model.gender_predictor.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.gender_predictor.6.0.4\build\ViewFaceCore.model.gender_predictor.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.mask_detector.6.0.4\build\ViewFaceCore.model.mask_detector.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.mask_detector.6.0.4\build\ViewFaceCore.model.mask_detector.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.pose_estimation.6.0.4\build\ViewFaceCore.model.pose_estimation.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.pose_estimation.6.0.4\build\ViewFaceCore.model.pose_estimation.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.model.quality_lbn.6.0.4\build\ViewFaceCore.model.quality_lbn.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.4\build\ViewFaceCore.model.quality_lbn.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

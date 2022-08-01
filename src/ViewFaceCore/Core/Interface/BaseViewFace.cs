@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using ViewFaceCore.Configs;
-using ViewFaceCore.Exceptions;
-using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
@@ -17,14 +8,6 @@ namespace ViewFaceCore.Core
     /// </summary>
     public abstract class BaseViewFace : IFormattable
     {
-        public BaseViewFace()
-        {
-            if (!FaceGlobalConfig.IsInitialized)
-            {
-                FaceGlobalConfig.Init();
-            }
-        }
-
         /// <summary>
         /// 获取或设置模型路径
         /// </summary>
