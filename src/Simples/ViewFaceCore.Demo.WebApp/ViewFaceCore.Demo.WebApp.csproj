@@ -16,10 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj" />
-	  <ProjectReference Include="..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
-	  <ProjectReference Include="..\ViewFaceCore.Extension.Host\ViewFaceCore.Extension.Host.csproj" />
-	  <ProjectReference Include="..\ViewFaceCore\ViewFaceCore.csproj" />
+	  <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.Host\ViewFaceCore.Extension.Host.csproj" />
+	  <ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SkiaSharp\ViewFaceCore.Extension.SkiaSharp.csproj" />
+	  <ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
+	  <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
 
 </Project>
