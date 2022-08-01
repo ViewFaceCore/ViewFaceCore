@@ -64,6 +64,8 @@ namespace ViewFaceCore.Native
         {
             get
             {
+                if (!string.IsNullOrEmpty(_modelsPath))
+                    return _modelsPath;
                 string modelsPath;
                 if (TryCombinePath(out modelsPath, "viewfacecore", "models"))
                 {
