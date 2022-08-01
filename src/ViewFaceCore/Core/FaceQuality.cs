@@ -15,9 +15,9 @@ namespace ViewFaceCore.Core
     {
         private readonly QualityConfig _qualityConfig = null;
 
-        public FaceQuality(QualityConfig qualityConfig = null)
+        public FaceQuality(QualityConfig config = null)
         {
-            _qualityConfig = qualityConfig ?? new QualityConfig();
+            _qualityConfig = config ?? new QualityConfig();
         }
 
         /// <summary>

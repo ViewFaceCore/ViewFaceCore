@@ -256,18 +256,28 @@ View_Api float Compare(const float* lhs, const float* rhs, int size)
 
 #pragma region FaceAntiSpoofing
 
-View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const bool global) {
+View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const int videoFrameCount = 10
+	, const float boxThresh = 0.8
+	, const float clarity = 0.3
+	, const float reality = 0.8
+	, const bool global = false)
+{
+	seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
 	if (global) {
 		ModelSetting setting;
 		setting.append(modelPath + "fas_first.csta");
 		setting.append(modelPath + "fas_second.csta");
-		return new seeta::v6::FaceAntiSpoofing(setting);
+		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
 	else {
 		ModelSetting setting;
 		setting.append(modelPath + "fas_first.csta");
-		return new seeta::v6::FaceAntiSpoofing(setting);
+		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
+	faceAntiSpoofing->SetVideoFrameCount(videoFrameCount);
+	faceAntiSpoofing->SetBoxThresh(boxThresh);
+	faceAntiSpoofing->SetThreshold(clarity, reality);
+	return faceAntiSpoofing;
 }
 
 /// <summary>

@@ -14,15 +14,15 @@ namespace ViewFaceCore.Core
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
 
-        public FaceTrack(FaceTrackerConfig trackerConfig)
+        public FaceTrack(FaceTrackerConfig config)
         {
-            _handle = ViewFaceNative.GetFaceTrackerHandler(trackerConfig.Width
-                , trackerConfig.Height
-                , trackerConfig.Type
-                , trackerConfig.Stable
-                , trackerConfig.Interval
-                , trackerConfig.FaceSize
-                , trackerConfig.Threshold);
+            _handle = ViewFaceNative.GetFaceTrackerHandler(config.Width
+                , config.Height
+                , config.Type
+                , config.Stable
+                , config.Interval
+                , config.FaceSize
+                , config.Threshold);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face track handler failed.");

@@ -150,7 +150,11 @@ namespace ViewFaceCore.Native
         /// <param name="global">是否启用全局检测</param>
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "GetFaceAntiSpoofingHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceAntiSpoofingHandler(bool global);
+        public extern static IntPtr GetFaceAntiSpoofingHandler(int videoFrameCount = 10
+            , float boxThresh = 0.8f
+            , float clarity = 0.3f
+            , float reality = 0.8f
+            , bool global = false);
 
         /// <summary>
         /// 活体检测器

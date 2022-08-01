@@ -18,9 +18,9 @@ namespace ViewFaceCore.Core
         private readonly static object _locker = new object();
         public FaceDetectorConfig DetectorConfig { get; private set; }
 
-        public FaceDetector(FaceDetectorConfig detectorConfig = null)
+        public FaceDetector(FaceDetectorConfig config = null)
         {
-            this.DetectorConfig = detectorConfig ?? new FaceDetectorConfig();
+            this.DetectorConfig = config ?? new FaceDetectorConfig();
             _handle = ViewFaceNative.GetFaceDetectorHandler(this.DetectorConfig.FaceSize
                 , this.DetectorConfig.Threshold
                 , this.DetectorConfig.MaxWidth

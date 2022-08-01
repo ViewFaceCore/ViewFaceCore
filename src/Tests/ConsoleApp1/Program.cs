@@ -30,7 +30,7 @@ namespace ConsoleApp1
                 //活体检测测试，通过24h测试，20220728
                 AntiSpoofingTest();
 
-                //质量评估测试，开始：2022-07-28 09:57，结束：,结果：通过
+                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
                 FaceQualityTest();
 
                 //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
@@ -119,7 +119,13 @@ namespace ConsoleApp1
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceMark faceMark = new FaceMark();
-            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing();
+            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing(new ViewFaceCore.Configs.FaceAntiSpoofingConfig()
+            {
+                VideoFrameCount = 20,
+                BoxThresh = 0.9f,
+                Global = false,
+                Threshold = new ViewFaceCore.Configs.FaceAntiSpoofingConfigThreshold(0.4f, 0.8f)
+            });
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
 
@@ -224,7 +230,7 @@ namespace ConsoleApp1
             using FaceDetector faceDetector = new FaceDetector();
             using FaceMark faceMark = new FaceMark();
             using FaceRecognizer recognizer = new FaceRecognizer();
-            
+
             Worker((sw, i) =>
             {
                 var p0 = GetExtract(recognizer, faceDetector, faceMark, bitmap0);
@@ -267,7 +273,7 @@ namespace ConsoleApp1
                 sw.Stop();
                 i++;
 
-                if(sw2.ElapsedMilliseconds > 1 * 60 * 1000)
+                if (sw2.ElapsedMilliseconds > 1 * 60 * 1000)
                 {
                     break;
                 }

@@ -16,15 +16,21 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
+        public FaceAntiSpoofingConfig FaceAntiSpoofingConfig { get; private set; }
 
         /// <summary>
         /// 活体检测器
         /// </summary>
         /// <param name="global">是否启用全局检测能力</param>
         /// <exception cref="Exception"></exception>
-        public FaceAntiSpoofing(bool global = false)
+        public FaceAntiSpoofing(FaceAntiSpoofingConfig config = null)
         {
-            _handle = ViewFaceNative.GetFaceAntiSpoofingHandler(global);
+            this.FaceAntiSpoofingConfig = config ?? new FaceAntiSpoofingConfig();
+            _handle = ViewFaceNative.GetFaceAntiSpoofingHandler(this.FaceAntiSpoofingConfig.VideoFrameCount
+                , this.FaceAntiSpoofingConfig.BoxThresh
+                , this.FaceAntiSpoofingConfig.Threshold.Clarity
+                , this.FaceAntiSpoofingConfig.Threshold.Reality
+                , this.FaceAntiSpoofingConfig.Global);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face anti spoofing handler failed.");

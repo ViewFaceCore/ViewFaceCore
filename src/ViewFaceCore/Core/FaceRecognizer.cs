@@ -28,9 +28,9 @@ namespace ViewFaceCore.Core
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// <exception cref="Exception"></exception>
-        public FaceRecognizer(FaceCompareConfig compareConfig = null)
+        public FaceRecognizer(FaceCompareConfig config = null)
         {
-            this.CompareConfig = compareConfig ?? new FaceCompareConfig();
+            this.CompareConfig = config ?? new FaceCompareConfig();
             _handle = ViewFaceNative.GetFaceRecognizerHandler((int)CompareConfig.FaceType);
             if (_handle == IntPtr.Zero)
             {
