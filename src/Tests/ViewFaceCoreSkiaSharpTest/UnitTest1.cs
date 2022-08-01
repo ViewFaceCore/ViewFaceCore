@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ViewFaceCore;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
@@ -14,6 +15,40 @@ namespace ViewFaceCoreSkiaSharpTest
     {
         private readonly static string imagePath = @"images\Jay_3.jpg";
         private readonly static string imagePath1 = @"images\Jay_4.jpg";
+
+        [TestMethod]
+        public void DisposableTest()
+        {
+            FaceDetector faceDetector = new FaceDetector();
+            faceDetector.Dispose();
+
+            FaceMark faceMark = new FaceMark();
+            faceMark.Dispose();
+
+            FaceRecognizer faceRecognizer = new FaceRecognizer();
+            faceRecognizer.Dispose();
+
+            AgePredictor agePredictor = new AgePredictor();
+            agePredictor.Dispose();
+
+            EyeStateDetector eyeStateDetector = new EyeStateDetector();
+            eyeStateDetector.Dispose();
+
+            GenderPredictor genderPredictor = new GenderPredictor();
+            genderPredictor.Dispose();
+
+            FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing();
+            faceAntiSpoofing.Dispose();
+
+            FaceQuality faceQuality = new FaceQuality();
+            faceQuality.Dispose();
+
+            FaceTrack faceTrack = new FaceTrack(new FaceTrackerConfig(1920, 1080));
+            faceTrack.Dispose();
+
+            Assert.IsTrue(true);
+        }
+
 
         [TestMethod]
         public void FaceDetectorAndFaceMarkTest()

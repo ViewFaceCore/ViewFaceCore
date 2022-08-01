@@ -23,7 +23,8 @@ using namespace seeta;
 /// <typeparam name="T"></typeparam>
 /// <param name="ptr"></param>
 template<typename T>
-void _dispose(T& ptr) {
+void _dispose(T& ptr) 
+{
 	if (ptr != nullptr) {
 		try {
 			delete ptr;
@@ -318,7 +319,8 @@ View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing* handler, const Seeta
 	return status;
 }
 
-View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler) {
+View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler) 
+{
 	_dispose(handler);
 }
 
@@ -343,7 +345,8 @@ View_Api seeta::v6::FaceTracker* GetFaceTrackerHandler(const int width
 	, const bool stable = false
 	, const int interval = 10
 	, const int faceSize = 20
-	, const float threshold = 0.9) {
+	, const float threshold = 0.9) 
+{
 	seeta::v6::FaceTracker* faceTracker = new seeta::v6::FaceTracker(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")), width, height);
 	faceTracker->SetVideoStable(stable);
 	faceTracker->SetMinFaceSize(faceSize);
@@ -380,7 +383,8 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* handler,
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler) {
+View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler) 
+{
 	if (handler == nullptr) {
 		return;
 	}
@@ -392,7 +396,8 @@ View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler) {
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler) {
+View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler) 
+{
 	_dispose(handler);
 }
 
