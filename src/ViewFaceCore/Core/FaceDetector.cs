@@ -18,6 +18,11 @@ namespace ViewFaceCore.Core
         private readonly static object _locker = new object();
         public FaceDetectorConfig DetectorConfig { get; private set; }
 
+        /// <summary>
+        /// 识别人脸的信息。
+        /// </summary>
+        /// <param name="config"></param>
+        /// <exception cref="Exception"></exception>
         public FaceDetector(FaceDetectorConfig config = null)
         {
             this.DetectorConfig = config ?? new FaceDetectorConfig();

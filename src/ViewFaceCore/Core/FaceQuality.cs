@@ -15,6 +15,10 @@ namespace ViewFaceCore.Core
     {
         private readonly QualityConfig _qualityConfig = null;
 
+        /// <summary>
+        /// 质量评估
+        /// </summary>
+        /// <param name="config"></param>
         public FaceQuality(QualityConfig config = null)
         {
             _qualityConfig = config ?? new QualityConfig();

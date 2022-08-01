@@ -18,7 +18,7 @@ namespace ViewFaceCore.Core
         private readonly static object _locker = new object();
 
         /// <summary>
-        /// 
+        /// 识别指定的人脸信息的关键点坐标。
         /// </summary>
         /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
         /// <exception cref="Exception"></exception>
