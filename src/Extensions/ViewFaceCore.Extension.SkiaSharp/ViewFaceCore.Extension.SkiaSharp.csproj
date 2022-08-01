@@ -2,7 +2,7 @@
 
 	<!--Library Info-->
 	<PropertyGroup>
-		<TargetFrameworks>net462;netstandard2.0</TargetFrameworks>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>WithSalt</Authors>
 		<Version>0.3.6</Version>
 		<OutputType>Library</OutputType>
@@ -21,7 +21,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.0" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
 	</ItemGroup>
 
 	<!--Project Reference-->

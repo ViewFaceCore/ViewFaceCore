@@ -25,13 +25,13 @@ namespace ConsoleApp1
             while (true)
             {
                 //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //FaceDetectorAndFaceMarkTest();
+                FaceDetectorAndFaceMarkTest();
 
-                ////活体检测测试，通过24h测试，20220728
-                //AntiSpoofingTest();
+                //活体检测测试，通过24h测试，20220728
+                AntiSpoofingTest();
 
-                ////质量评估测试，开始：2022-07-28 09:57，结束：,结果：通过
-                //FaceQualityTest();
+                //质量评估测试，开始：2022-07-28 09:57，结束：,结果：通过
+                FaceQualityTest();
 
                 //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
                 FaceTrackTest();

@@ -2,6 +2,8 @@
   "profiles": {
     "ConsoleApp1": {
       "commandName": "Project",
+      "remoteDebugEnabled": false,
+      "authenticationMode": "Windows",
       "nativeDebugging": true
     }
   }
