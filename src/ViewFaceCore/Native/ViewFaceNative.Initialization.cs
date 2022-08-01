@@ -158,6 +158,8 @@ namespace ViewFaceCore.Native
             ViewFaceNative.SetModelPath(ModelsPath);
         }
 
+        public static string GetLibraryPath() => LibraryPath;
+
         private static bool TryCombinePath(out string path, params string[] paths)
         {
             string[] prepareCombinePaths = new string[paths.Length + 1];

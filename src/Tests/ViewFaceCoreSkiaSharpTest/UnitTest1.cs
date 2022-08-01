@@ -49,6 +49,16 @@ namespace ViewFaceCoreSkiaSharpTest
             Assert.IsTrue(true);
         }
 
+        [TestMethod]
+        public void ToStringTest()
+        {
+            using FaceDetector faceDetector = new FaceDetector();
+
+            string name = faceDetector.ToString();
+
+            Assert.IsNotNull(name);
+        }
+
 
         [TestMethod]
         public void FaceDetectorAndFaceMarkTest()

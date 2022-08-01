@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Threading;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
@@ -6,12 +9,17 @@ namespace ViewFaceCore.Core
     /// <summary>
     /// 基类
     /// </summary>
-    public abstract class BaseViewFace : IFormattable
+    public abstract class BaseViewFace : IViewFace, IFormattable
     {
         /// <summary>
-        /// 获取或设置模型路径
+        /// 获取模型路径
         /// </summary>
         public string ModelPath { get => ViewFaceNative.GetModelPath(); }
+
+        /// <summary>
+        /// 获取库路径
+        /// </summary>
+        public string LibraryPath { get => ViewFaceNative.GetLibraryPath(); }
 
         #region IFormattable
         /// <summary>
@@ -35,14 +43,16 @@ namespace ViewFaceCore.Core
         /// <returns></returns>
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            //string mtips = nameof(ModelPath), otips = "OperatingSystem", atips = "ProcessArchitecture";
-
-            //if ((formatProvider ?? Thread.CurrentThread.CurrentCulture) is CultureInfo cultureInfo && cultureInfo.Name.StartsWith("zh"))
-            //{ mtips = "模型路径"; otips = "操作系统"; atips = "进程架构"; }
-
-            //return $"{{{mtips}:{ModelPath}, {otips}:{RuntimeInformation.OSDescription}, {atips}:{RuntimeInformation.ProcessArchitecture}}}";
-
-            return "";
+            string ntips = "CurrentModule", mtips = nameof(ModelPath), otips = "OperatingSystem", atips = "ProcessArchitecture", ltips = "LibraryPath";
+            if ((formatProvider ?? Thread.CurrentThread.CurrentCulture) is CultureInfo cultureInfo && cultureInfo.Name.StartsWith("zh"))
+            {
+                ntips = "当前模块";
+                mtips = "模型路径";
+                otips = "操作系统";
+                atips = "进程架构";
+                ltips = "库路径";
+            }
+            return $"{{{ntips}:{this.GetType().Name}, {otips}:{RuntimeInformation.OSDescription}, {atips}:{RuntimeInformation.ProcessArchitecture}, {mtips}:{ModelPath}, {ltips}:{LibraryPath}}}";
         }
 
         #endregion
