@@ -122,6 +122,47 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector* handler)
 
 #pragma endregion
 
+#pragma region MaskDetector
+
+/// <summary>
+/// 创建人脸识别句柄（口罩识别）
+/// </summary>
+/// <param name="deviceType"></param>
+/// <returns></returns>
+View_Api seeta::MaskDetector* GetMaskDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+{
+	return new seeta::v2::MaskDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
+}
+
+/// <summary>
+/// 口罩检测
+/// </summary>
+/// <param name="handler"></param>
+/// <param name="img"></param>
+/// <param name="size"></param>
+/// <returns></returns>
+View_Api bool PlotMask(seeta::v2::MaskDetector* handler, const SeetaImageData& img, const SeetaRect faceRect, float* score)
+{
+	if (handler == nullptr) {
+		return 0;
+	}
+	bool result = handler->detect(img, faceRect, score);
+	return result;
+}
+
+/// <summary>
+/// 释放口罩识别句柄
+/// </summary>
+/// <param name="faceDetector"></param>
+/// <returns></returns>
+View_Api void DisposeMaskDetector(seeta::v2::MaskDetector* handler)
+{
+	_dispose(handler);
+}
+
+#pragma endregion
+
+
 #pragma region FaceMark
 
 /// <summary>

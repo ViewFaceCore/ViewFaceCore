@@ -18,14 +18,6 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="bridge.h" />
-    <ClInclude Include="seetaEx\QualityOfClarityEx.h" />
-    <ClInclude Include="seetaEx\QualityOfNoMask.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="bridge.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
