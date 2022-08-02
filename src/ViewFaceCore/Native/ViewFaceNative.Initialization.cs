@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -155,7 +156,7 @@ namespace ViewFaceCore.Native
             throw new PlatformNotSupportedException($"不支持的 .NET 平台: {RuntimeInformation.FrameworkDescription}");
 #endif
             //设置模型位置
-            ViewFaceNative.SetModelPath(ModelsPath);
+            SetModelPath(ModelsPath);
         }
 
         public static string GetLibraryPath() => LibraryPath;
@@ -167,10 +168,20 @@ namespace ViewFaceCore.Native
             {
                 prepareCombinePaths[i + 1] = paths[i];
             }
-            path = CombinePath(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ViewFaceNative)).Location), prepareCombinePaths);
-            if (!string.IsNullOrWhiteSpace(path))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return true;
+                //windiws环境下，如果当前进程名称包含iis或者w3wp，优先返回
+                string processName = Process.GetCurrentProcess().ProcessName;
+                if (!string.IsNullOrEmpty(processName)
+                    && (processName.IndexOf("iis", StringComparison.OrdinalIgnoreCase) >= 0
+                    || processName.IndexOf("w3wp", StringComparison.OrdinalIgnoreCase) >= 0))
+                {
+                    path = CombinePath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), prepareCombinePaths);
+                    if (!string.IsNullOrWhiteSpace(path))
+                    {
+                        return true;
+                    }
+                }
             }
             path = CombinePath(AppDomain.CurrentDomain.BaseDirectory, prepareCombinePaths);
             if (!string.IsNullOrWhiteSpace(path))
@@ -178,6 +189,11 @@ namespace ViewFaceCore.Native
                 return true;
             }
             path = CombinePath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), prepareCombinePaths);
+            if (!string.IsNullOrWhiteSpace(path))
+            {
+                return true;
+            }
+            path = CombinePath(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ViewFaceNative)).Location), prepareCombinePaths);
             if (!string.IsNullOrWhiteSpace(path))
             {
                 return true;

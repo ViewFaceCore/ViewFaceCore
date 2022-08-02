@@ -1,24 +1,20 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ViewFaceCore.Core;
+using ViewFaceCore.IISWebApp.Test.Services;
 
 namespace ViewFaceCore.IISWebApp.Test.Controllers
 {
     public class HomeController : Controller
     {
         private readonly static string _imagePath = @"images\Jay_3.jpg";
-        private readonly FaceDetector _faceDetector = null;
-
-        public HomeController()
-        {
-            _faceDetector = new FaceDetector();
-        }
 
         public ActionResult Index()
         {
@@ -27,18 +23,11 @@ namespace ViewFaceCore.IISWebApp.Test.Controllers
             {
                 return Content($"图片'_imagePath'不存在！");
             }
-            try
+            using (var bitmap = (Bitmap)Image.FromFile(imagePath))
             {
-                using (var bitmap = (Bitmap)Image.FromFile(imagePath))
-                {
-                    var result = _faceDetector.Detect(bitmap);
-                    ViewBag.Message = $"识别到了{result.Length}个人脸信息，人脸信息：{(result.Length > 0 ? result[0].ToString() : "莫球得")}";
-                    return View();
-                }
-            }
-            finally
-            {
-                _faceDetector.Dispose();
+                var result = ViewFaceCoreService.Instance.FaceDetector.Detect(bitmap);
+                ViewBag.Message = $"当前进程名称：{Process.GetCurrentProcess().ProcessName}，识别到了{result.Length}个人脸信息，人脸信息：{(result.Length > 0 ? result[0].ToString() : "莫球得")}";
+                return View();
             }
         }
 
