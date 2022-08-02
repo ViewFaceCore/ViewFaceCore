@@ -47,6 +47,9 @@ namespace ViewFaceCoreSkiaSharpTest
             FaceTracker faceTrack = new FaceTracker(new FaceTrackerConfig(1920, 1080));
             faceTrack.Dispose();
 
+            MaskDetector maskDetector = new MaskDetector();
+            maskDetector.Dispose();
+
             Assert.IsTrue(true);
         }
 
@@ -265,14 +268,23 @@ namespace ViewFaceCoreSkiaSharpTest
         [TestMethod]
         public void MaskDetectorTest()
         {
-            using var bitmap_nomask = ConvertImage(imagePath);
-            using var bitmap_mask = ConvertImage(maskImagePath);
+            //using var bitmap_nomask = SKBitmap.Decode(imagePath);
+            using var bitmap_mask = SKBitmap.Decode(maskImagePath);
 
             using MaskDetector maskDetector = new MaskDetector();
             using FaceDetector faceDetector = new FaceDetector();
+            //FaceType需要用口罩模型
+            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
+            {
+                FaceType = FaceType.Mask
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker();
+
 
             var info = faceDetector.Detect(bitmap_mask).First();
             bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
+
+            var p0 = GetExtract(faceRecognizer, faceDetector, faceMark, bitmap_mask);
 
             Assert.IsTrue(result);
         }

@@ -19,7 +19,7 @@ namespace ViewFaceCore.Core
         public MaskDetectConfig DetectConfig { get; private set; }
 
         /// <summary>
-        /// 识别人脸的信息。
+        /// 口罩人脸识别
         /// </summary>
         /// <param name="config"></param>
         /// <exception cref="Exception"></exception>

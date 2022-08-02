@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ViewFaceCore;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
@@ -29,31 +30,31 @@ namespace ConsoleApp1
                 MaskDetectorTest();
 
                 //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //FaceDetectorAndFaceMarkTest();
+                FaceDetectorAndFaceMarkTest();
 
-                ////活体检测测试，通过24h测试，20220728
-                //AntiSpoofingTest();
+                //活体检测测试，通过24h测试，20220728
+                AntiSpoofingTest();
 
-                ////质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
-                //FaceQualityTest();
+                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
+                FaceQualityTest();
 
-                ////人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-                //FaceTrackTest();
+                //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+                FaceTrackTest();
 
-                ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //ExtractTest();
+                //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                ExtractTest();
 
-                ////年龄预测测试
-                //FaceAgePredictorTest();
+                //年龄预测测试
+                FaceAgePredictorTest();
 
-                ////性别预测测试
-                //FaceGenderPredictorTest();
+                //性别预测测试
+                FaceGenderPredictorTest();
 
-                ////眼睛状态检测测试
-                //FaceEyeStateDetectorTest();
+                //眼睛状态检测测试
+                FaceEyeStateDetectorTest();
 
-                ////人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //CompareTest();
+                //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -257,11 +258,20 @@ namespace ConsoleApp1
 
             using MaskDetector maskDetector = new MaskDetector();
             using FaceDetector faceDetector = new FaceDetector();
+            //FaceType需要用口罩模型
+            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
+            {
+                FaceType = FaceType.Mask
+            });
 
             var info = faceDetector.Detect(bitmap_mask).First();
-            bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
-
             
+            Worker((sw, i) =>
+            {
+                bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
+                logger.Info($"第{i + 1}次{nameof(MaskDetector.PlotMask)}戴口罩检测，结果：{result}，置信度：{score}，耗时：{sw.ElapsedMilliseconds}ms");
+            });
+
         }
 
         #region Helpers
@@ -294,7 +304,7 @@ namespace ConsoleApp1
                 sw.Stop();
                 i++;
 
-                if (sw2.ElapsedMilliseconds > 1 * 60 * 1000)
+                if (sw2.ElapsedMilliseconds > 1 * 10 * 1000)
                 {
                     break;
                 }
