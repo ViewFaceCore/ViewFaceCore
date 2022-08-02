@@ -89,6 +89,39 @@ namespace ViewFaceCore.Native
 
         #endregion
 
+        #region MaskDetector（口罩识别）
+
+        /// <summary>
+        /// 获取口罩识别句柄
+        /// </summary>
+        /// <param name="faceSize"></param>
+        /// <param name="threshold"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="maxHeight"></param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "GetMaskDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr GetMaskDetectorHandler(int deviceType = 0);
+
+        /// <summary>
+        /// 口罩检测
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="img"></param>
+        /// <param name="faceRect"></param>
+        /// <param name="score">一般性的，score超过0.5，则认为是检测带上了口罩。</param>
+        /// <returns></returns>
+        [DllImport(LibraryName, EntryPoint = "PlotMask", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool PlotMask(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref float score);
+
+        /// <summary>
+        /// 释放口罩识别句柄
+        /// </summary>
+        /// <param name="handler"></param>
+        [DllImport(LibraryName, EntryPoint = "DisposeMaskDetector", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void DisposeMaskDetector(IntPtr handler);
+
+        #endregion
+
         #region FaceMark
 
         [DllImport(LibraryName, EntryPoint = "GetFaceLandmarkerHandler", CallingConvention = CallingConvention.Cdecl)]

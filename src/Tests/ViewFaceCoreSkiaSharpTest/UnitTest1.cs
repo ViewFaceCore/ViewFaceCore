@@ -15,6 +15,7 @@ namespace ViewFaceCoreSkiaSharpTest
     {
         private readonly static string imagePath = @"images\Jay_3.jpg";
         private readonly static string imagePath1 = @"images\Jay_4.jpg";
+        private readonly static string maskImagePath = @"images\mask_01.jpeg";
 
         [TestMethod]
         public void DisposableTest()
@@ -256,6 +257,24 @@ namespace ViewFaceCoreSkiaSharpTest
             sw.Stop();
             Debug.WriteLine($"{nameof(FaceRecognizer.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(isSelf);
+        }
+
+        /// <summary>
+        /// 口罩识别测试
+        /// </summary>
+        [TestMethod]
+        public void MaskDetectorTest()
+        {
+            using var bitmap_nomask = ConvertImage(imagePath);
+            using var bitmap_mask = ConvertImage(maskImagePath);
+
+            using MaskDetector maskDetector = new MaskDetector();
+            using FaceDetector faceDetector = new FaceDetector();
+
+            var info = faceDetector.Detect(bitmap_mask).First();
+            bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
+
+            Assert.IsTrue(result);
         }
 
         #region Helpers

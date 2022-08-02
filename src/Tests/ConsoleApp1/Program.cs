@@ -14,6 +14,7 @@ namespace ConsoleApp1
         private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private readonly static string imagePath = @"images\Jay_3.jpg";
         private readonly static string imagePath1 = @"images\Jay_4.jpg";
+        private readonly static string maskImagePath = @"images\mask_01.jpeg";
         private readonly static string logPath = "logs";
 
         static void Main(string[] args)
@@ -24,32 +25,35 @@ namespace ConsoleApp1
             }
             while (true)
             {
+                //口罩识别测试
+                MaskDetectorTest();
+
                 //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                FaceDetectorAndFaceMarkTest();
+                //FaceDetectorAndFaceMarkTest();
 
-                //活体检测测试，通过24h测试，20220728
-                AntiSpoofingTest();
+                ////活体检测测试，通过24h测试，20220728
+                //AntiSpoofingTest();
 
-                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
-                FaceQualityTest();
+                ////质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
+                //FaceQualityTest();
 
-                //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-                FaceTrackTest();
+                ////人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+                //FaceTrackTest();
 
-                //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                ExtractTest();
+                ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //ExtractTest();
 
-                //年龄预测测试
-                FaceAgePredictorTest();
+                ////年龄预测测试
+                //FaceAgePredictorTest();
 
-                //性别预测测试
-                FaceGenderPredictorTest();
+                ////性别预测测试
+                //FaceGenderPredictorTest();
 
-                //眼睛状态检测测试
-                FaceEyeStateDetectorTest();
+                ////眼睛状态检测测试
+                //FaceEyeStateDetectorTest();
 
-                //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                CompareTest();
+                ////人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -241,6 +245,23 @@ namespace ConsoleApp1
                 logger.Info($"第{i + 1}次{nameof(FaceRecognizer.Compare)}相似度检测，结果：{result}，是否为同一人：{isSelf}，耗时：{sw.ElapsedMilliseconds}ms");
             });
 
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private static void MaskDetectorTest()
+        {
+            using var bitmap_nomask = SKBitmap.Decode(imagePath);
+            using var bitmap_mask = SKBitmap.Decode(maskImagePath);
+
+            using MaskDetector maskDetector = new MaskDetector();
+            using FaceDetector faceDetector = new FaceDetector();
+
+            var info = faceDetector.Detect(bitmap_mask).First();
+            bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
+
+            
         }
 
         #region Helpers

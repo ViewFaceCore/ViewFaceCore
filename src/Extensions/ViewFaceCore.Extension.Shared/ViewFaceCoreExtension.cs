@@ -159,5 +159,22 @@ namespace ViewFaceCore
                 return viewFace.Track(faceImage);
             }
         }
+
+        /// <summary>
+        /// 戴口罩人脸识别
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="maskDetector"></param>
+        /// <param name="image"></param>
+        /// <param name="info"></param>
+        /// <param name="score"></param>
+        /// <returns></returns>
+        public static bool PlotMask<T>(this MaskDetector maskDetector, T image, FaceInfo info, out float score) where T : class
+        {
+            using (var faceImage = image.ToFaceImage())
+            {
+                return maskDetector.PlotMask(faceImage, info, out score);
+            }
+        }
     }
 }

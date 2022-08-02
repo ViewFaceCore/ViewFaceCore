@@ -16,21 +16,21 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
-        public FaceDetectorConfig DetectorConfig { get; private set; }
+        public FaceDetectConfig DetectConfig { get; private set; }
 
         /// <summary>
         /// 识别人脸的信息。
         /// </summary>
         /// <param name="config"></param>
         /// <exception cref="Exception"></exception>
-        public FaceDetector(FaceDetectorConfig config = null)
+        public FaceDetector(FaceDetectConfig config = null)
         {
-            this.DetectorConfig = config ?? new FaceDetectorConfig();
-            _handle = ViewFaceNative.GetFaceDetectorHandler(this.DetectorConfig.FaceSize
-                , this.DetectorConfig.Threshold
-                , this.DetectorConfig.MaxWidth
-                , this.DetectorConfig.MaxHeight
-                , (int)this.DetectorConfig.DeviceType);
+            this.DetectConfig = config ?? new FaceDetectConfig();
+            _handle = ViewFaceNative.GetFaceDetectorHandler(this.DetectConfig.FaceSize
+                , this.DetectConfig.Threshold
+                , this.DetectConfig.MaxWidth
+                , this.DetectConfig.MaxHeight
+                , (int)this.DetectConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face detector handler failed.");
@@ -40,11 +40,11 @@ namespace ViewFaceCore.Core
         /// <summary>
         /// 识别 <paramref name="image"/> 中的人脸，并返回人脸的信息。
         /// <para>
-        /// 可以通过 <see cref="DetectorConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+        /// 可以通过 <see cref="DetectConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
         /// </para>
         /// </summary>
         /// <param name="image">人脸图像信息</param>
-        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectorConfig"/> 重新检测。</returns>
+        /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="DetectConfig"/> 重新检测。</returns>
         public FaceInfo[] Detect(FaceImage image)
         {
             lock (_locker)

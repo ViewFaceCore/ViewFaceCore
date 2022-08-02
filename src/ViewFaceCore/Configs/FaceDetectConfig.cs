@@ -3,7 +3,7 @@
     /// <summary>
     /// 人脸检测器配置
     /// </summary>
-    public class FaceDetectorConfig : BaseConfig
+    public class FaceDetectConfig : BaseConfig
     {
         /// <summary>
         /// 设置最小人脸。
@@ -41,7 +41,7 @@
         /// <param name="faceDetector"></param>
         /// <param name="facesize"></param>
         /// <returns></returns>
-        public FaceDetectorConfig SetFaceSize(double facesize)
+        public FaceDetectConfig SetFaceSize(double facesize)
         {
             this.FaceSize = facesize;
             return this;
@@ -53,7 +53,7 @@
         /// <param name="faceDetector"></param>
         /// <param name="threshold"></param>
         /// <returns></returns>
-        public FaceDetectorConfig SetThreshold(double threshold)
+        public FaceDetectConfig SetThreshold(double threshold)
         {
             this.Threshold = threshold;
             return this;
@@ -65,7 +65,7 @@
         /// <param name="faceDetector"></param>
         /// <param name="maxWidth"></param>
         /// <returns></returns>
-        public FaceDetectorConfig SetMaxWidth(double maxWidth)
+        public FaceDetectConfig SetMaxWidth(double maxWidth)
         {
             this.MaxWidth = maxWidth;
             return this;
@@ -77,7 +77,7 @@
         /// <param name="faceDetector"></param>
         /// <param name="maxHeight"></param>
         /// <returns></returns>
-        public FaceDetectorConfig SetMaxHeight(double maxHeight)
+        public FaceDetectConfig SetMaxHeight(double maxHeight)
         {
             this.MaxHeight = maxHeight;
             return this;
