@@ -120,7 +120,28 @@ EyeStateDetector::EyeStateDetector(const seeta::ModelSetting &setting)
 EyeStateDetector::EyeStateDetector(const SeetaModelSetting &setting)
 ```
 
-#### 4. win10,vs2019,vc14环境下编译OpenRoleZoo报错
+#### 4. 口罩识别错误  
+**修复方式：**  
+
+修改`MaskDetector.h`的17行  
+```cpp
+SEETA_API explicit MaskDetector(const seeta::ModelSetting &setting = seeta::ModelSetting() );
+```
+改为  
+```cpp
+SEETA_API explicit MaskDetector(const SeetaModelSetting &setting);
+```
+
+修改`MaskDetector.cpp`的427行  
+```cpp
+MaskDetector::MaskDetector(const seeta::ModelSetting &setting)
+```
+改为  
+```cpp
+MaskDetector::MaskDetector(const SeetaModelSetting &setting)
+```
+
+#### 5. win10,vs2019,vc14环境下编译OpenRoleZoo报错
 
 **来自：** https://github.com/SeetaFace6Open/index/issues/4  
 **修复方式：**  

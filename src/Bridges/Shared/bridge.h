@@ -21,7 +21,6 @@
 #include "../../SeetaFace/index/build/include/seeta/GenderPredictor.h"
 #include "../../SeetaFace/index/build/include/seeta/EyeStateDetector.h"
 
-
 #include <iostream>
 #include <string>
 #include <math.h>

@@ -18,46 +18,51 @@ using namespace seeta;
 #pragma region Common
 
 /// <summary>
-/// ÊÍ·Å
+/// é‡Šæ”¾
 /// </summary>
 /// <typeparam name="T"></typeparam>
 /// <param name="ptr"></param>
-template<typename T>
-void _dispose(T& ptr)
+template <typename T>
+void _dispose(T &ptr)
 {
-	if (ptr != nullptr) {
-		try {
+	if (ptr != nullptr)
+	{
+		try
+		{
 			delete ptr;
 			ptr = nullptr;
 		}
-		catch (int e) {
-
+		catch (int e)
+		{
 		}
 	}
 }
 
-// Ä£ĞÍËùÔÚÂ·¾¶
+// æ¨¡å‹æ‰€åœ¨è·¯å¾„
 string modelPath = "./viewfacecore/models/";
 
-// ÉèÖÃÈËÁ³Ä£ĞÍÄ¿Â¼
-View_Api void SetModelPath(const char* path)
+// è®¾ç½®äººè„¸æ¨¡å‹ç›®å½•
+View_Api void SetModelPath(const char *path)
 {
 	modelPath = path;
 }
 
-// »ñÈ¡ÈËÁ³Ä£ĞÍÄ¿Â¼
-View_Api void GetModelPath(char** path)
+// è·å–äººè„¸æ¨¡å‹ç›®å½•
+View_Api void GetModelPath(char **path)
 {
 	strcpy(*path, modelPath.c_str());
 }
 
-// ÊÍ·ÅÓÉ malloc ·ÖÅäµÄÄÚ´æ
-View_Api void Free(void* address)
+// é‡Šæ”¾ç”± malloc åˆ†é…çš„å†…å­˜
+View_Api void Free(void *address)
 {
-	try {
+	try
+	{
 		free(address);
 	}
-	catch (int e) {}
+	catch (int e)
+	{
+	}
 }
 
 #pragma endregion
@@ -65,20 +70,16 @@ View_Api void Free(void* address)
 #pragma region FaceDetector
 
 /// <summary>
-/// ´´½¨ÈËÁ³Ê¶±ğ¾ä±ú
+/// åˆ›å»ºäººè„¸è¯†åˆ«å¥æŸ„
 /// </summary>
 /// <param name="faceSize"></param>
 /// <param name="threshold"></param>
 /// <param name="maxWidth"></param>
 /// <param name="maxHeight"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceDetector* GetFaceDetectorHandler(const double faceSize = 20
-	, const double threshold = 0.9
-	, const double maxWidth = 2000
-	, const double maxHeight = 2000
-	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceDetector *GetFaceDetectorHandler(const double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceDetector* faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
+	seeta::v6::FaceDetector *faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
 	faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
 	faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
 	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
@@ -87,35 +88,38 @@ View_Api seeta::v6::FaceDetector* GetFaceDetectorHandler(const double faceSize =
 }
 
 /// <summary>
-/// »ñÈ¡ÈËÁ³ÊıÁ¿
+/// è·å–äººè„¸æ•°é‡
 /// </summary>
 /// <param name="faceDetector"></param>
 /// <param name="img"></param>
 /// <param name="size"></param>
 /// <returns></returns>
-View_Api SeetaFaceInfo* FaceDetector(seeta::v6::FaceDetector* handler, const SeetaImageData& img, int* size)
+View_Api SeetaFaceInfo *FaceDetector(seeta::v6::FaceDetector *handler, const SeetaImageData &img, int *size)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return 0;
 	}
 	auto faces = handler->detect_v2(img);
 	*size = faces.size();
-	SeetaFaceInfo* _infos = (SeetaFaceInfo*)malloc((*size) * sizeof(SeetaFaceInfo));
-	if (_infos == nullptr) {
+	SeetaFaceInfo *_infos = (SeetaFaceInfo *)malloc((*size) * sizeof(SeetaFaceInfo));
+	if (_infos == nullptr)
+	{
 		return 0;
 	}
-	for (int i = 0; i < faces.size(); i++) {
+	for (int i = 0; i < faces.size(); i++)
+	{
 		_infos[i] = faces[i];
 	}
 	return _infos;
 }
 
 /// <summary>
-/// ÊÍ·ÅÈËÁ³Ê¶±ğ¾ä±ú
+/// é‡Šæ”¾äººè„¸è¯†åˆ«å¥æŸ„
 /// </summary>
 /// <param name="faceDetector"></param>
 /// <returns></returns>
-View_Api void DisposeFaceDetector(seeta::v6::FaceDetector* handler)
+View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 {
 	_dispose(handler);
 }
@@ -125,25 +129,26 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector* handler)
 #pragma region MaskDetector
 
 /// <summary>
-/// ´´½¨ÈËÁ³Ê¶±ğ¾ä±ú£¨¿ÚÕÖÊ¶±ğ£©
+/// åˆ›å»ºäººè„¸è¯†åˆ«å¥æŸ„ï¼ˆå£ç½©è¯†åˆ«ï¼‰
 /// </summary>
 /// <param name="deviceType"></param>
 /// <returns></returns>
-View_Api seeta::MaskDetector* GetMaskDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v2::MaskDetector *GetMaskDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	return new seeta::v2::MaskDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
 }
 
 /// <summary>
-/// ¿ÚÕÖ¼ì²â
+/// å£ç½©æ£€æµ‹
 /// </summary>
 /// <param name="handler"></param>
 /// <param name="img"></param>
 /// <param name="size"></param>
 /// <returns></returns>
-View_Api bool PlotMask(seeta::v2::MaskDetector* handler, const SeetaImageData& img, const SeetaRect faceRect, float* score)
+View_Api bool PlotMask(seeta::v2::MaskDetector *handler, const SeetaImageData &img, const SeetaRect faceRect, float *score)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return 0;
 	}
 	bool result = handler->detect(img, faceRect, score);
@@ -151,26 +156,25 @@ View_Api bool PlotMask(seeta::v2::MaskDetector* handler, const SeetaImageData& i
 }
 
 /// <summary>
-/// ÊÍ·Å¿ÚÕÖÊ¶±ğ¾ä±ú
+/// é‡Šæ”¾å£ç½©è¯†åˆ«å¥æŸ„
 /// </summary>
 /// <param name="faceDetector"></param>
 /// <returns></returns>
-View_Api void DisposeMaskDetector(seeta::v2::MaskDetector* handler)
+View_Api void DisposeMaskDetector(seeta::v2::MaskDetector *handler)
 {
 	_dispose(handler);
 }
 
 #pragma endregion
 
-
 #pragma region FaceMark
 
 /// <summary>
-/// »ñÈ¡ÈËÁ³¹Ø¼üµã¾ä±ú
+/// è·å–äººè„¸å…³é”®ç‚¹å¥æŸ„
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceLandmarker* GetFaceLandmarkerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceLandmarker *GetFaceLandmarkerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	switch (type)
 	{
@@ -186,29 +190,33 @@ View_Api seeta::v6::FaceLandmarker* GetFaceLandmarkerHandler(const int type = 0,
 }
 
 /// <summary>
-/// ÈËÁ³¹Ø¼üµãÆ÷
+/// äººè„¸å…³é”®ç‚¹å™¨
 /// </summary>
 /// <param name="img"></param>
 /// <param name="faceRect"></param>
 /// <param name="size"></param>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api SeetaPointF* FaceMark(seeta::v6::FaceLandmarker* handler, const SeetaImageData& img, const SeetaRect faceRect, long* size)
+View_Api SeetaPointF *FaceMark(seeta::v6::FaceLandmarker *handler, const SeetaImageData &img, const SeetaRect faceRect, long *size)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return 0;
 	}
 	*size = handler->number();
 	std::vector<SeetaPointF> _points = handler->mark(img, faceRect);
 
 	*size = _points.size();
-	if (!_points.empty()) {
-		SeetaPointF* points = (SeetaPointF*)malloc((*size) * sizeof(SeetaPointF));
-		if (points == nullptr) {
+	if (!_points.empty())
+	{
+		SeetaPointF *points = (SeetaPointF *)malloc((*size) * sizeof(SeetaPointF));
+		if (points == nullptr)
+		{
 			return 0;
 		}
-		SeetaPointF* start = points;
-		for (auto iter = _points.begin(); iter != _points.end(); iter++) {
+		SeetaPointF *start = points;
+		for (auto iter = _points.begin(); iter != _points.end(); iter++)
+		{
 			*start = *iter;
 			start++;
 		}
@@ -217,7 +225,7 @@ View_Api SeetaPointF* FaceMark(seeta::v6::FaceLandmarker* handler, const SeetaIm
 	return 0;
 }
 
-View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker* handler)
+View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker *handler)
 {
 	_dispose(handler);
 }
@@ -227,11 +235,11 @@ View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker* handler)
 #pragma region FaceRecognizer
 
 /// <summary>
-/// »ñÈ¡ÈËÁ³ÌØÕ÷Öµ¾ä±ú
+/// è·å–äººè„¸ç‰¹å¾å€¼å¥æŸ„
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceRecognizer* GetFaceRecognizerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceRecognizer *GetFaceRecognizerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	switch (type)
 	{
@@ -247,24 +255,25 @@ View_Api seeta::v6::FaceRecognizer* GetFaceRecognizerHandler(const int type = 0,
 }
 
 /// <summary>
-/// ÌáÈ¡ÈËÁ³ÌØÕ÷Öµ
+/// æå–äººè„¸ç‰¹å¾å€¼
 /// </summary>
 /// <param name="img"></param>
 /// <param name="points"></param>
 /// <param name="size"></param>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api float* FaceRecognizerExtract(const seeta::v6::FaceRecognizer* handler, const SeetaImageData& img, const SeetaPointF* points, int* size)
+View_Api float *FaceRecognizerExtract(const seeta::v6::FaceRecognizer *handler, const SeetaImageData &img, const SeetaPointF *points, int *size)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return 0;
 	}
 	*size = handler->GetExtractFeatureSize();
 	std::shared_ptr<float> _features(new float[*size], std::default_delete<float[]>());
 	handler->Extract(img, points, _features.get());
 
-	float* source = _features.get();
-	float* features = (float*)malloc(*size * sizeof(float));
+	float *source = _features.get();
+	float *features = (float *)malloc(*size * sizeof(float));
 	if (features != nullptr)
 	{
 		memcpy(features, source, *size * sizeof(float));
@@ -272,22 +281,23 @@ View_Api float* FaceRecognizerExtract(const seeta::v6::FaceRecognizer* handler, 
 	return features;
 }
 
-View_Api void DisposeFaceRecognizer(const seeta::v6::FaceRecognizer* handler)
+View_Api void DisposeFaceRecognizer(const seeta::v6::FaceRecognizer *handler)
 {
 	_dispose(handler);
 }
 
 /// <summary>
-/// ÈËÁ³ÌØÕ÷ÖµÏàËÆ¶È¼ÆËã
+/// äººè„¸ç‰¹å¾å€¼ç›¸ä¼¼åº¦è®¡ç®—
 /// </summary>
 /// <param name="lhs"></param>
 /// <param name="rhs"></param>
 /// <param name="size"></param>
 /// <returns></returns>
-View_Api float Compare(const float* lhs, const float* rhs, int size)
+View_Api float Compare(const float *lhs, const float *rhs, int size)
 {
 	float sum = 0;
-	for (int i = 0; i < size; ++i) {
+	for (int i = 0; i < size; ++i)
+	{
 		sum += *lhs * *rhs;
 		++lhs;
 		++rhs;
@@ -299,25 +309,22 @@ View_Api float Compare(const float* lhs, const float* rhs, int size)
 
 #pragma region FaceAntiSpoofing
 
-View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const int videoFrameCount = 10
-	, const float boxThresh = 0.8
-	, const float clarity = 0.3
-	, const float reality = 0.8
-	, const bool global = false
-	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceAntiSpoofing *GetFaceAntiSpoofingHandler(const int videoFrameCount = 10, const float boxThresh = 0.8, const float clarity = 0.3, const float reality = 0.8, const bool global = false, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
-	if (global) {
+	seeta::v6::FaceAntiSpoofing *faceAntiSpoofing = nullptr;
+	if (global)
+	{
 		ModelSetting setting;
+		setting.set_device(deviceType);
 		setting.append(modelPath + "fas_first.csta");
 		setting.append(modelPath + "fas_second.csta");
-		setting.set_device(deviceType);
 		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
-	else {
+	else
+	{
 		ModelSetting setting;
-		setting.append(modelPath + "fas_first.csta");
 		setting.set_device(deviceType);
+		setting.append(modelPath + "fas_first.csta");
 		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
 	faceAntiSpoofing->SetVideoFrameCount(videoFrameCount);
@@ -327,16 +334,17 @@ View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const int video
 }
 
 /// <summary>
-/// »îÌå¼ì²â - µ¥Ö¡
+/// æ´»ä½“æ£€æµ‹ - å•å¸§
 /// </summary>
 /// <param name="img"></param>
 /// <param name="faceRect"></param>
 /// <param name="points"></param>
 /// <param name="global"></param>
 /// <returns></returns>
-View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points)
+View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing *handler, const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return -1;
 	}
 	auto state = handler->Predict(img, faceRect, points);
@@ -344,16 +352,17 @@ View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing* handler, const Seet
 }
 
 /// <summary>
-/// »îÌå¼ì²â - ÊÓÆµ
+/// æ´»ä½“æ£€æµ‹ - è§†é¢‘
 /// </summary>
 /// <param name="img"></param>
 /// <param name="faceRect"></param>
 /// <param name="points"></param>
 /// <param name="global"></param>
 /// <returns></returns>
-View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points)
+View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing *handler, const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return -1;
 	}
 	auto status = handler->PredictVideo(img, faceRect, points);
@@ -364,7 +373,7 @@ View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing* handler, const Seeta
 	return status;
 }
 
-View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler)
+View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing *handler)
 {
 	_dispose(handler);
 }
@@ -374,7 +383,7 @@ View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler)
 #pragma region FaceTracker
 
 /// <summary>
-/// »ñÈ¡ÈËÁ³×·×Ù¾ä±ú
+/// è·å–äººè„¸è¿½è¸ªå¥æŸ„
 /// </summary>
 /// <param name="width"></param>
 /// <param name="height"></param>
@@ -384,15 +393,9 @@ View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler)
 /// <param name="faceSize"></param>
 /// <param name="threshold"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceTracker* GetFaceTrackerHandler(const int width
-	, const int height
-	, const bool stable = false
-	, const int interval = 10
-	, const int faceSize = 20
-	, const float threshold = 0.9
-	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceTracker *GetFaceTrackerHandler(const int width, const int height, const bool stable = false, const int interval = 10, const int faceSize = 20, const float threshold = 0.9, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceTracker* faceTracker = new seeta::v6::FaceTracker(ModelSetting(modelPath + "face_detector.csta", deviceType), width, height);
+	seeta::v6::FaceTracker *faceTracker = new seeta::v6::FaceTracker(ModelSetting(modelPath + "face_detector.csta", deviceType), width, height);
 	faceTracker->SetVideoStable(stable);
 	faceTracker->SetMinFaceSize(faceSize);
 	faceTracker->SetThreshold(threshold);
@@ -401,21 +404,22 @@ View_Api seeta::v6::FaceTracker* GetFaceTrackerHandler(const int width
 }
 
 /// <summary>
-/// »ñÈ¡¸ú×ÙµÄÈËÁ³¸öÊı
+/// è·å–è·Ÿè¸ªçš„äººè„¸ä¸ªæ•°
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <param name="img"></param>
 /// <param name="size"></param>
 /// <returns></returns>
-View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* handler, const SeetaImageData& img, int* size)
+View_Api SeetaTrackingFaceInfo *FaceTrack(const seeta::v6::FaceTracker *handler, const SeetaImageData &img, int *size)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return 0;
 	}
 	auto cfaces = handler->Track(img);
 	std::vector<SeetaTrackingFaceInfo> faces(cfaces.data, cfaces.data + cfaces.size);
 	*size = faces.size();
-	SeetaTrackingFaceInfo* _infos = new SeetaTrackingFaceInfo[*size];
+	SeetaTrackingFaceInfo *_infos = new SeetaTrackingFaceInfo[*size];
 	for (int i = 0; i < faces.size(); i++)
 	{
 		_infos[i] = faces[i];
@@ -424,24 +428,25 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* handler,
 }
 
 /// <summary>
-/// ÖØÖÃ×·×Ù
+/// é‡ç½®è¿½è¸ª
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler)
+View_Api void FaceTrackReset(seeta::v6::FaceTracker *handler)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return;
 	}
 	handler->Reset();
 }
 
 /// <summary>
-/// ÊÍ·Å×·×Ù¶ÔÏó
+/// é‡Šæ”¾è¿½è¸ªå¯¹è±¡
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler)
+View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker *handler)
 {
 	_dispose(handler);
 }
@@ -450,17 +455,8 @@ View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler)
 
 #pragma region Quality
 
-// ÁÁ¶ÈÆÀ¹À
-View_Api void Quality_Brightness(const SeetaImageData& img
-	, const SeetaRect faceRect
-	, const SeetaPointF* points
-	, const int pointsLength
-	, int* level
-	, float* score
-	, const float v0 = 70
-	, const float v1 = 100
-	, const float v2 = 210
-	, const float v3 = 230)
+// äº®åº¦è¯„ä¼°
+View_Api void Quality_Brightness(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score, const float v0 = 70, const float v1 = 100, const float v2 = 210, const float v3 = 230)
 {
 	seeta::v3::QualityOfBrightness quality_Brightness(v0, v1, v2, v3);
 	auto result = quality_Brightness.check(img, faceRect, points, pointsLength);
@@ -469,8 +465,8 @@ View_Api void Quality_Brightness(const SeetaImageData& img
 	*score = result.score;
 }
 
-// ÇåÎú¶ÈÆÀ¹À
-View_Api void Quality_Clarity(const SeetaImageData& img, const SeetaRect faceRect, const  SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 0.1f, const float high = 0.2f)
+// æ¸…æ™°åº¦è¯„ä¼°
+View_Api void Quality_Clarity(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score, const float low = 0.1f, const float high = 0.2f)
 {
 	seeta::v3::QualityOfClarity quality_Clarity(low, high);
 	auto result = quality_Clarity.check(img, faceRect, points, pointsLength);
@@ -479,8 +475,8 @@ View_Api void Quality_Clarity(const SeetaImageData& img, const SeetaRect faceRec
 	*score = result.score;
 }
 
-// ÍêÕû¶ÈÆÀ¹À
-View_Api void Quality_Integrity(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 10, const float high = 1.5f)
+// å®Œæ•´åº¦è¯„ä¼°
+View_Api void Quality_Integrity(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score, const float low = 10, const float high = 1.5f)
 {
 	seeta::v3::QualityOfIntegrity quality_Integrity(low, high);
 	auto result = quality_Integrity.check(img, faceRect, points, pointsLength);
@@ -489,8 +485,8 @@ View_Api void Quality_Integrity(const SeetaImageData& img, const SeetaRect faceR
 	*score = result.score;
 }
 
-// ×ËÌ¬ÆÀ¹À
-View_Api void Quality_Pose(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
+// å§¿æ€è¯„ä¼°
+View_Api void Quality_Pose(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score)
 {
 	seeta::v3::QualityOfPose quality_Pose;
 	auto result = quality_Pose.check(img, faceRect, points, pointsLength);
@@ -499,9 +495,9 @@ View_Api void Quality_Pose(const SeetaImageData& img, const SeetaRect faceRect, 
 	*score = result.score;
 }
 
-// ×ËÌ¬ (Éî¶È)ÆÀ¹À
-View_Api void Quality_PoseEx(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score,
-	const float yawLow = 25, const float yawHigh = 10, const float pitchLow = 20, const float pitchHigh = 10, const float rollLow = 33.33f, const float rollHigh = 16.67f)
+// å§¿æ€ (æ·±åº¦)è¯„ä¼°
+View_Api void Quality_PoseEx(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score,
+							 const float yawLow = 25, const float yawHigh = 10, const float pitchLow = 20, const float pitchHigh = 10, const float rollLow = 33.33f, const float rollHigh = 16.67f)
 {
 	seeta::v3::QualityOfPoseEx quality_PoseEx(ModelSetting(modelPath + "pose_estimation.csta"));
 	quality_PoseEx.set(QualityOfPoseEx::YAW_LOW_THRESHOLD, yawLow);
@@ -517,8 +513,8 @@ View_Api void Quality_PoseEx(const SeetaImageData& img, const SeetaRect faceRect
 	*score = result.score;
 }
 
-// ·Ö±æÂÊÆÀ¹À
-View_Api void Quality_Resolution(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float low = 80, const float high = 120)
+// åˆ†è¾¨ç‡è¯„ä¼°
+View_Api void Quality_Resolution(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score, const float low = 80, const float high = 120)
 {
 	seeta::v3::QualityOfResolution quality_Resolution(low, high);
 	auto result = quality_Resolution.check(img, faceRect, points, pointsLength);
@@ -527,8 +523,8 @@ View_Api void Quality_Resolution(const SeetaImageData& img, const SeetaRect face
 	*score = result.score;
 }
 
-// ÇåÎú¶È (Éî¶È)ÆÀ¹À
-View_Api void Quality_ClarityEx(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float blur_thresh = 0.8f)
+// æ¸…æ™°åº¦ (æ·±åº¦)è¯„ä¼°
+View_Api void Quality_ClarityEx(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score, const float blur_thresh = 0.8f)
 {
 	seeta::QualityOfClarityEx quality_ClarityEx(blur_thresh, modelPath);
 	auto result = quality_ClarityEx.check(img, faceRect, points, pointsLength);
@@ -537,8 +533,8 @@ View_Api void Quality_ClarityEx(const SeetaImageData& img, const SeetaRect faceR
 	*score = result.score;
 }
 
-// ÕÚµ²ÆÀ¹À
-View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
+// é®æŒ¡è¯„ä¼°
+View_Api void Quality_NoMask(const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points, const int pointsLength, int *level, float *score)
 {
 	seeta::QualityOfNoMask quality_NoMask(modelPath);
 	auto result = quality_NoMask.check(img, faceRect, points, pointsLength);
@@ -549,46 +545,49 @@ View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect
 
 #pragma endregion
 
-#pragma region AgePredictor/GenderPredictor/EyeStateDetector
+#pragma region AgePredictor / GenderPredictor / EyeStateDetector
 
 #pragma region AgePredictor
 
 /// <summary>
-/// »ñÈ¡ÄêÁäÔ¤²â¾ä±ú
+/// è·å–å¹´é¾„é¢„æµ‹å¥æŸ„
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::AgePredictor* GetAgePredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::AgePredictor *GetAgePredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	return new seeta::v6::AgePredictor(ModelSetting(modelPath + "age_predictor.csta", deviceType));
 }
 
 /// <summary>
-/// ÄêÁäÔ¤²â
+/// å¹´é¾„é¢„æµ‹
 /// </summary>
 /// <param name="img"></param>
 /// <param name="points"></param>
 /// <returns></returns>
-View_Api int PredictAge(seeta::v6::AgePredictor* handler, const SeetaImageData& img, const SeetaPointF* points)
+View_Api int PredictAge(seeta::v6::AgePredictor *handler, const SeetaImageData &img, const SeetaPointF *points)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return -1;
 	}
 	int age = 0;
 	bool result = handler->PredictAgeWithCrop(img, points, age);
-	if (result) {
+	if (result)
+	{
 		return age;
 	}
-	else {
+	else
+	{
 		return -1;
 	}
 }
 
 /// <summary>
-/// ÊÍ·ÅÄêÁäÔ¤²â¾ä±ú
+/// é‡Šæ”¾å¹´é¾„é¢„æµ‹å¥æŸ„
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
+View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor *handler)
 {
 	_dispose(handler);
 }
@@ -598,37 +597,44 @@ View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
 #pragma region GenderPredictor
 
 /// <summary>
-/// »ñÈ¡ĞÔ±ğÔ¤²â¾ä±ú
+/// è·å–æ€§åˆ«é¢„æµ‹å¥æŸ„
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::GenderPredictor *GetGenderPredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	return new seeta::v6::GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta", deviceType));
 }
 
 /// <summary>
-/// ĞÔ±ğÔ¤²â
+/// æ€§åˆ«é¢„æµ‹
 /// </summary>
 /// <param name="img"></param>
 /// <param name="points"></param>
 /// <returns></returns>
-View_Api int PredictGender(seeta::v6::GenderPredictor* handler, const SeetaImageData& img, const SeetaPointF* points)
+View_Api int PredictGender(seeta::v6::GenderPredictor *handler, const SeetaImageData &img, const SeetaPointF *points)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return -1;
 	}
 	GenderPredictor::GENDER gender = GenderPredictor::GENDER::MALE;
 	auto result = handler->PredictGenderWithCrop(img, points, gender);
-	if (result) { return gender; }
-	else { return -1; }
+	if (result)
+	{
+		return gender;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 /// <summary>
-/// ÊÍ·ÅĞÔ±ğÔ¤²â¾ä±ú
+/// é‡Šæ”¾æ€§åˆ«é¢„æµ‹å¥æŸ„
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
+View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor *handler)
 {
 	_dispose(handler);
 }
@@ -638,38 +644,35 @@ View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
 #pragma region EyeStateDetector
 
 /// <summary>
-/// »ñÈ¡ÑÛ¾¦×´Ì¬¼ì²â¾ä±ú
+/// è·å–çœ¼ç›çŠ¶æ€æ£€æµ‹å¥æŸ„
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::EyeStateDetector *GetEyeStateDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	return new seeta::v6::EyeStateDetector(ModelSetting(modelPath + "eye_state.csta", deviceType));
 }
 
 /// <summary>
-/// ÑÛ¾¦×´Ì¬¼ì²â
+/// çœ¼ç›çŠ¶æ€æ£€æµ‹
 /// </summary>
 /// <param name="img"></param>
 /// <param name="points"></param>
 /// <returns></returns>
-View_Api void EyeStateDetector(seeta::v6::EyeStateDetector* handler
-	, const SeetaImageData& img
-	, const SeetaPointF* points
-	, EyeStateDetector::EYE_STATE& left_eye
-	, EyeStateDetector::EYE_STATE& right_eye)
+View_Api void EyeStateDetector(seeta::v6::EyeStateDetector *handler, const SeetaImageData &img, const SeetaPointF *points, EyeStateDetector::EYE_STATE &left_eye, EyeStateDetector::EYE_STATE &right_eye)
 {
-	if (handler == nullptr) {
+	if (handler == nullptr)
+	{
 		return;
 	}
 	handler->Detect(img, points, left_eye, right_eye);
 }
 
 /// <summary>
-/// ÊÍ·ÅÑÛ¾¦×´Ì¬¼ì²â¾ä±ú
+/// é‡Šæ”¾çœ¼ç›çŠ¶æ€æ£€æµ‹å¥æŸ„
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector* handler)
+View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector *handler)
 {
 	_dispose(handler);
 }
