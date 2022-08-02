@@ -62,7 +62,7 @@ namespace ViewFaceCore.Native
         /// <param name="maxHeight"></param>
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "GetFaceDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceDetectorHandler(double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000);
+        public extern static IntPtr GetFaceDetectorHandler(double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int deviceType = 0);
 
         /// <summary>
         /// 人脸检测器
@@ -92,7 +92,7 @@ namespace ViewFaceCore.Native
         #region FaceMark
 
         [DllImport(LibraryName, EntryPoint = "GetFaceLandmarkerHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceLandmarkerHandler(int type = 0);
+        public extern static IntPtr GetFaceLandmarkerHandler(int type = 0, int deviceType = 0);
 
         /// <summary>
         /// 获取人脸关键点
@@ -113,7 +113,7 @@ namespace ViewFaceCore.Native
         #region FaceRecognizer
 
         [DllImport(LibraryName, EntryPoint = "GetFaceRecognizerHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceRecognizerHandler(int type = 0);
+        public extern static IntPtr GetFaceRecognizerHandler(int type = 0, int deviceType = 0);
 
         /// <summary>
         /// 提取人脸特征值
@@ -154,7 +154,8 @@ namespace ViewFaceCore.Native
             , float boxThresh = 0.8f
             , float clarity = 0.3f
             , float reality = 0.8f
-            , bool global = false);
+            , bool global = false
+            , int deviceType = 0);
 
         /// <summary>
         /// 活体检测器
@@ -204,7 +205,7 @@ namespace ViewFaceCore.Native
         /// <param name="threshold"></param>
         /// <returns></returns>
         [DllImport(LibraryName, EntryPoint = "GetFaceTrackerHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetFaceTrackerHandler(int width, int height, int type = 0, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f);
+        public extern static IntPtr GetFaceTrackerHandler(int width, int height, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int deviceType = 0);
 
         /// <summary>
         /// 人脸跟踪信息
@@ -410,7 +411,7 @@ namespace ViewFaceCore.Native
         #region 年龄预测
 
         [DllImport(LibraryName, EntryPoint = "GetAgePredictorHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetAgePredictorHandler();
+        public extern static IntPtr GetAgePredictorHandler(int deviceType = 0);
 
         /// <summary>
         /// 人脸年龄预测。
@@ -431,7 +432,7 @@ namespace ViewFaceCore.Native
         #region 性别预测
 
         [DllImport(LibraryName, EntryPoint = "GetGenderPredictorHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetGenderPredictorHandler();
+        public extern static IntPtr GetGenderPredictorHandler(int deviceType = 0);
 
         /// <summary>
         /// 人脸性别预测
@@ -452,7 +453,7 @@ namespace ViewFaceCore.Native
         #region 眼睛状态检测
 
         [DllImport(LibraryName, EntryPoint = "GetEyeStateDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr GetEyeStateDetectorHandler();
+        public extern static IntPtr GetEyeStateDetectorHandler(int deviceType = 0);
 
         /// <summary>
         /// 眼睛状态检测。

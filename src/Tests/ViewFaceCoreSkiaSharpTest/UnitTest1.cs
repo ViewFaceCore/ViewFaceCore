@@ -22,7 +22,7 @@ namespace ViewFaceCoreSkiaSharpTest
             FaceDetector faceDetector = new FaceDetector();
             faceDetector.Dispose();
 
-            FaceMark faceMark = new FaceMark();
+            FaceLandmarker faceMark = new FaceLandmarker();
             faceMark.Dispose();
 
             FaceRecognizer faceRecognizer = new FaceRecognizer();
@@ -43,7 +43,7 @@ namespace ViewFaceCoreSkiaSharpTest
             FaceQuality faceQuality = new FaceQuality();
             faceQuality.Dispose();
 
-            FaceTrack faceTrack = new FaceTrack(new FaceTrackerConfig(1920, 1080));
+            FaceTracker faceTrack = new FaceTracker(new FaceTrackerConfig(1920, 1080));
             faceTrack.Dispose();
 
             Assert.IsTrue(true);
@@ -65,7 +65,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
 
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -74,7 +74,7 @@ namespace ViewFaceCoreSkiaSharpTest
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceMark.Mark)}识别，结果：{markPoints.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceLandmarker.Mark)}识别，结果：{markPoints.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
 
             Assert.IsTrue(markPoints.Any());
         }
@@ -85,7 +85,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using var bitmap = ConvertImage(imagePath);
             using FaceQuality faceQuality = new FaceQuality();
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
@@ -128,7 +128,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing();
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
@@ -148,13 +148,13 @@ namespace ViewFaceCoreSkiaSharpTest
         public void FaceTrackTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
+            using FaceTracker faceTrack = new FaceTracker(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
 
             Stopwatch sw = Stopwatch.StartNew();
 
             var result = faceTrack.Track(bitmap).ToList();
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceTrack.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceTracker.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result.Any());
         }
 
@@ -166,7 +166,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceRecognizer faceRecognizer = new FaceRecognizer();
 
             Stopwatch sw = Stopwatch.StartNew();
@@ -186,7 +186,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using AgePredictor agePredictor = new AgePredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -204,7 +204,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using GenderPredictor genderPredictor = new GenderPredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -223,7 +223,7 @@ namespace ViewFaceCoreSkiaSharpTest
         {
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using EyeStateDetector eyeStateDetector = new EyeStateDetector();
             Stopwatch sw = Stopwatch.StartNew();
 
@@ -243,7 +243,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using var bitmap1 = ConvertImage(imagePath1);
 
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceRecognizer recognizer = new FaceRecognizer();
 
             Stopwatch sw = Stopwatch.StartNew();
@@ -260,14 +260,14 @@ namespace ViewFaceCoreSkiaSharpTest
 
         #region Helpers
 
-        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceMark faceMark, object bitmap)
+        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
         {
             var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
             return faceMark.Mark(bitmap, info);
         }
 
-        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceMark faceMark, object bitmap)
+        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
         {
             return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }

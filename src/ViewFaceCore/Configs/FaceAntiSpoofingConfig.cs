@@ -8,7 +8,7 @@ namespace ViewFaceCore.Configs
     /// <summary>
     /// 活体检测配置
     /// </summary>
-    public class FaceAntiSpoofingConfig
+    public class FaceAntiSpoofingConfig : BaseConfig
     {
 
         /// <summary>

@@ -23,7 +23,7 @@ using namespace seeta;
 /// <typeparam name="T"></typeparam>
 /// <param name="ptr"></param>
 template<typename T>
-void _dispose(T& ptr) 
+void _dispose(T& ptr)
 {
 	if (ptr != nullptr) {
 		try {
@@ -75,9 +75,10 @@ View_Api void Free(void* address)
 View_Api seeta::v6::FaceDetector* GetFaceDetectorHandler(const double faceSize = 20
 	, const double threshold = 0.9
 	, const double maxWidth = 2000
-	, const double maxHeight = 2000)
+	, const double maxHeight = 2000
+	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceDetector* faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", SEETA_DEVICE_AUTO));
+	seeta::v6::FaceDetector* faceDetector = new seeta::v6::FaceDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
 	faceDetector->set(FaceDetector::Property::PROPERTY_MIN_FACE_SIZE, faceSize);
 	faceDetector->set(FaceDetector::Property::PROPERTY_THRESHOLD, threshold);
 	faceDetector->set(FaceDetector::Property::PROPERTY_MAX_IMAGE_WIDTH, maxWidth);
@@ -128,16 +129,16 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector* handler)
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceLandmarker* GetFaceLandmarkerHandler(const int type = 0)
+View_Api seeta::v6::FaceLandmarker* GetFaceLandmarkerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	switch (type)
 	{
 	case 0:
-		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts68.csta", deviceType));
 	case 1:
-		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_mask_pts5.csta", deviceType));
 	case 2:
-		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceLandmarker(ModelSetting(modelPath + "face_landmarker_pts5.csta", deviceType));
 	default:
 		throw "Unsupport type.";
 	}
@@ -189,16 +190,16 @@ View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker* handler)
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api seeta::v6::FaceRecognizer* GetFaceRecognizerHandler(const int type = 0)
+View_Api seeta::v6::FaceRecognizer* GetFaceRecognizerHandler(const int type = 0, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	switch (type)
 	{
 	case 0:
-		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer.csta", deviceType));
 	case 1:
-		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_mask.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_mask.csta", deviceType));
 	case 2:
-		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_light.csta", SEETA_DEVICE_AUTO));
+		return new seeta::v6::FaceRecognizer(ModelSetting(modelPath + "face_recognizer_light.csta", deviceType));
 	default:
 		throw "Unsupport type.";
 	}
@@ -261,18 +262,21 @@ View_Api seeta::v6::FaceAntiSpoofing* GetFaceAntiSpoofingHandler(const int video
 	, const float boxThresh = 0.8
 	, const float clarity = 0.3
 	, const float reality = 0.8
-	, const bool global = false)
+	, const bool global = false
+	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
 	seeta::v6::FaceAntiSpoofing* faceAntiSpoofing = nullptr;
 	if (global) {
 		ModelSetting setting;
 		setting.append(modelPath + "fas_first.csta");
 		setting.append(modelPath + "fas_second.csta");
+		setting.set_device(deviceType);
 		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
 	else {
 		ModelSetting setting;
 		setting.append(modelPath + "fas_first.csta");
+		setting.set_device(deviceType);
 		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
 	faceAntiSpoofing->SetVideoFrameCount(videoFrameCount);
@@ -319,7 +323,7 @@ View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing* handler, const Seeta
 	return status;
 }
 
-View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler) 
+View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler)
 {
 	_dispose(handler);
 }
@@ -341,13 +345,13 @@ View_Api void DisposeFaceAntiSpoofing(seeta::v6::FaceAntiSpoofing* handler)
 /// <returns></returns>
 View_Api seeta::v6::FaceTracker* GetFaceTrackerHandler(const int width
 	, const int height
-	, const int type = 0
 	, const bool stable = false
 	, const int interval = 10
 	, const int faceSize = 20
-	, const float threshold = 0.9) 
+	, const float threshold = 0.9
+	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceTracker* faceTracker = new seeta::v6::FaceTracker(ModelSetting(modelPath + (type == 0 ? "face_detector.csta" : "mask_detector.csta")), width, height);
+	seeta::v6::FaceTracker* faceTracker = new seeta::v6::FaceTracker(ModelSetting(modelPath + "face_detector.csta", deviceType), width, height);
 	faceTracker->SetVideoStable(stable);
 	faceTracker->SetMinFaceSize(faceSize);
 	faceTracker->SetThreshold(threshold);
@@ -383,7 +387,7 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(const seeta::v6::FaceTracker* handler,
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler) 
+View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler)
 {
 	if (handler == nullptr) {
 		return;
@@ -396,7 +400,7 @@ View_Api void FaceTrackReset(seeta::v6::FaceTracker* handler)
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler) 
+View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker* handler)
 {
 	_dispose(handler);
 }
@@ -512,9 +516,9 @@ View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect
 /// »ñÈ¡ÄêÁäÔ¤²â¾ä±ú
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::AgePredictor* GetAgePredictorHandler()
+View_Api seeta::v6::AgePredictor* GetAgePredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	return new seeta::v6::AgePredictor(ModelSetting(modelPath + "age_predictor.csta", SEETA_DEVICE_AUTO));
+	return new seeta::v6::AgePredictor(ModelSetting(modelPath + "age_predictor.csta", deviceType));
 }
 
 /// <summary>
@@ -556,9 +560,9 @@ View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor* handler)
 /// »ñÈ¡ÐÔ±ðÔ¤²â¾ä±ú
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler()
+View_Api seeta::v6::GenderPredictor* GetGenderPredictorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	return new seeta::v6::GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta", SEETA_DEVICE_AUTO));
+	return new seeta::v6::GenderPredictor(ModelSetting(modelPath + "gender_predictor.csta", deviceType));
 }
 
 /// <summary>
@@ -596,9 +600,9 @@ View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor* handler)
 /// »ñÈ¡ÑÛ¾¦×´Ì¬¼ì²â¾ä±ú
 /// </summary>
 /// <returns></returns>
-View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler()
+View_Api seeta::v6::EyeStateDetector* GetEyeStateDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	return new seeta::v6::EyeStateDetector(ModelSetting(modelPath + "eye_state.csta", SEETA_DEVICE_AUTO));
+	return new seeta::v6::EyeStateDetector(ModelSetting(modelPath + "eye_state.csta", deviceType));
 }
 
 /// <summary>

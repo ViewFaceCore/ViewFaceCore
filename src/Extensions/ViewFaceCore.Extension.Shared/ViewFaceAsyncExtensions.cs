@@ -30,7 +30,7 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public static async Task<FaceMarkPoint[]> MarkAsync<T>(this FaceMark viewFace, T image, FaceInfo info) where T : class
+        public static async Task<FaceMarkPoint[]> MarkAsync<T>(this FaceLandmarker viewFace, T image, FaceInfo info) where T : class
             => await Task.Run(() => viewFace.Mark(image, info));
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace ViewFaceCore
         /// </summary>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public static async Task<FaceTrackInfo[]> TrackAsync<T>(this FaceTrack viewFace, T image) where T : class
+        public static async Task<FaceTrackInfo[]> TrackAsync<T>(this FaceTracker viewFace, T image) where T : class
             => await Task.Run(() => viewFace.Track(image));
     }
 }

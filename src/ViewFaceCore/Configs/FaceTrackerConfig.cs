@@ -3,7 +3,7 @@
     /// <summary>
     /// 人脸跟踪器配置
     /// </summary>
-    public class FaceTrackerConfig
+    public class FaceTrackerConfig : BaseConfig
     {
         /// <summary>
         /// 视频宽度
@@ -14,11 +14,6 @@
         /// 视频高度
         /// </summary>
         public int Height { get; set; }
-
-        /// <summary>
-        /// 模型类型。0：face_detector；1：mask_detector；
-        /// </summary>
-        public int Type { get; set; }
 
         /// <summary>
         /// 设置可检测的人脸大小，为人脸宽和高乘积的二次根值。
@@ -50,14 +45,6 @@
         {
             this.Width = width;
             this.Height = height;
-            this.Type = 0;
-        }
-
-        public FaceTrackerConfig(int width, int height, int type)
-        {
-            this.Width = width;
-            this.Height = height;
-            this.Type = type;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ViewFaceCore.Configs
     /// <summary>
     /// 质量评估配置。
     /// </summary>
-    public class QualityConfig
+    public class QualityConfig : BaseConfig
     {
         /// <summary>
         /// 获取或设置亮度评估配置。

@@ -23,7 +23,7 @@ namespace ViewFaceCore.Extension.Host
             //人脸检测
             services.TryAddSingleton<FaceDetector>(new FaceDetector());
             //人脸标记
-            services.TryAddSingleton(new FaceMark());
+            services.TryAddSingleton(new FaceLandmarker());
             //人脸识别
             services.TryAddSingleton(new FaceRecognizer());
             return services;

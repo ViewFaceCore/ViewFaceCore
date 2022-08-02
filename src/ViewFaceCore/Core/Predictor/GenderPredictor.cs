@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
@@ -15,10 +16,12 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
+        public GenderPredictConfig GenderPredictConfig { get; private set; }
 
-        public GenderPredictor()
+        public GenderPredictor(GenderPredictConfig config = null)
         {
-            _handle = ViewFaceNative.GetGenderPredictorHandler();
+            this.GenderPredictConfig = config ?? new GenderPredictConfig();
+            _handle = ViewFaceNative.GetGenderPredictorHandler((int)this.GenderPredictConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get gender predictor handler failed.");

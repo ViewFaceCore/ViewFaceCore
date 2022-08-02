@@ -29,7 +29,8 @@ namespace ViewFaceCore.Core
             _handle = ViewFaceNative.GetFaceDetectorHandler(this.DetectorConfig.FaceSize
                 , this.DetectorConfig.Threshold
                 , this.DetectorConfig.MaxWidth
-                , this.DetectorConfig.MaxHeight);
+                , this.DetectorConfig.MaxHeight
+                , (int)this.DetectorConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face detector handler failed.");

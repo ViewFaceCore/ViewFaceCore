@@ -9,20 +9,20 @@ using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
 {
-    public sealed class FaceTrack : BaseViewFace, IDisposable
+    public sealed class FaceTracker : BaseViewFace, IDisposable
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
 
-        public FaceTrack(FaceTrackerConfig config)
+        public FaceTracker(FaceTrackerConfig config)
         {
             _handle = ViewFaceNative.GetFaceTrackerHandler(config.Width
                 , config.Height
-                , config.Type
                 , config.Stable
                 , config.Interval
                 , config.FaceSize
-                , config.Threshold);
+                , config.Threshold
+                , (int)config.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face track handler failed.");

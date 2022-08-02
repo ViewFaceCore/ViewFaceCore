@@ -30,7 +30,8 @@ namespace ViewFaceCore.Core
                 , this.FaceAntiSpoofingConfig.BoxThresh
                 , this.FaceAntiSpoofingConfig.Threshold.Clarity
                 , this.FaceAntiSpoofingConfig.Threshold.Reality
-                , this.FaceAntiSpoofingConfig.Global);
+                , this.FaceAntiSpoofingConfig.Global
+                , (int)this.FaceAntiSpoofingConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face anti spoofing handler failed.");
@@ -90,7 +91,7 @@ namespace ViewFaceCore.Core
         public AntiSpoofingStatus AntiSpoofingVideo(IEnumerable<FaceImage> bitmaps, int faceIndex = 0)
         {
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             var result = AntiSpoofingStatus.Detecting;
             bool haveFace = false;
             foreach (var bitmap in bitmaps)

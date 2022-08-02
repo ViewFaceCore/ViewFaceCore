@@ -27,7 +27,7 @@ namespace ViewFaceCore
         /// <param name="info">指定的人脸信息</param>
         /// <exception cref="MarkException"/>
         /// <returns>若失败，则返回结果 Length == 0</returns>
-        public static FaceMarkPoint[] Mark<T>(this FaceMark viewFace, T image, FaceInfo info) where T : class
+        public static FaceMarkPoint[] Mark<T>(this FaceLandmarker viewFace, T image, FaceInfo info) where T : class
         {
             using (var faceImage = image.ToFaceImage())
             {
@@ -152,7 +152,7 @@ namespace ViewFaceCore
         /// </summary>
         /// <param name="image">人脸图像信息</param>
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
-        public static FaceTrackInfo[] Track<T>(this FaceTrack viewFace, T image) where T : class
+        public static FaceTrackInfo[] Track<T>(this FaceTracker viewFace, T image) where T : class
         {
             using (var faceImage = image.ToFaceImage())
             {

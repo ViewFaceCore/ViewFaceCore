@@ -6,14 +6,14 @@ namespace ViewFaceCore.Configs
     /// <summary>
     /// 人脸对比阈值配置
     /// </summary>
-    public class FaceCompareConfig
+    public class FaceRecognizeConfig : BaseConfig
     {
-        public FaceCompareConfig()
+        public FaceRecognizeConfig()
         {
             FaceType = FaceType.Normal;
         }
 
-        public FaceCompareConfig(FaceType faceType)
+        public FaceRecognizeConfig(FaceType faceType)
         {
             FaceType = faceType;
         }

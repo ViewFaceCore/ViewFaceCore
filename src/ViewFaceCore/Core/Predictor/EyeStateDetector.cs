@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
@@ -15,10 +16,12 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
+        public EyeStateDetectConfig EyeStateDetectConfig { get; private set; }
 
-        public EyeStateDetector()
+        public EyeStateDetector(EyeStateDetectConfig config = null)
         {
-            _handle = ViewFaceNative.GetEyeStateDetectorHandler();
+            this.EyeStateDetectConfig = config ?? new EyeStateDetectConfig();
+            _handle = ViewFaceNative.GetEyeStateDetectorHandler((int)this.EyeStateDetectConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get eye state detector handler failed.");

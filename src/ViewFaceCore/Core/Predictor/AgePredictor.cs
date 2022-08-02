@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Model;
 using ViewFaceCore.Native;
 
@@ -14,10 +15,12 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
+        public AgePredictConfig AgePredictConfig { get; private set; }
 
-        public AgePredictor()
+        public AgePredictor(AgePredictConfig config = null)
         {
-            _handle = ViewFaceNative.GetAgePredictorHandler();
+            this.AgePredictConfig = config ?? new AgePredictConfig();
+            _handle = ViewFaceNative.GetAgePredictorHandler((int)AgePredictConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get age predictor handler failed.");

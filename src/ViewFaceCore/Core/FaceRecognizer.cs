@@ -16,7 +16,7 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
-        public FaceCompareConfig CompareConfig { get; private set; }
+        public FaceRecognizeConfig CompareConfig { get; private set; }
 
         /// <summary>
         /// 
@@ -28,10 +28,10 @@ namespace ViewFaceCore.Core
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// <exception cref="Exception"></exception>
-        public FaceRecognizer(FaceCompareConfig config = null)
+        public FaceRecognizer(FaceRecognizeConfig config = null)
         {
-            this.CompareConfig = config ?? new FaceCompareConfig();
-            _handle = ViewFaceNative.GetFaceRecognizerHandler((int)CompareConfig.FaceType);
+            this.CompareConfig = config ?? new FaceRecognizeConfig();
+            _handle = ViewFaceNative.GetFaceRecognizerHandler((int)CompareConfig.FaceType, (int)CompareConfig.DeviceType);
             if (_handle == IntPtr.Zero)
             {
                 throw new Exception("Get face recognizer handler failed.");
@@ -100,7 +100,7 @@ namespace ViewFaceCore.Core
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
-        public bool IsSelf(float similarity) => similarity > FaceCompareConfig.GetThreshold(this.CompareConfig.FaceType);
+        public bool IsSelf(float similarity) => similarity > FaceRecognizeConfig.GetThreshold(this.CompareConfig.FaceType);
 
         /// <summary>
         /// 判断两个特征值是否为同一个人。

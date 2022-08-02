@@ -24,32 +24,32 @@ namespace ConsoleApp1
             }
             while (true)
             {
-                //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                FaceDetectorAndFaceMarkTest();
+                ////人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //FaceDetectorAndFaceMarkTest();
 
-                //活体检测测试，通过24h测试，20220728
-                AntiSpoofingTest();
+                ////活体检测测试，通过24h测试，20220728
+                //AntiSpoofingTest();
 
-                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
-                FaceQualityTest();
+                ////质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
+                //FaceQualityTest();
 
-                //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+                ////人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
                 FaceTrackTest();
 
-                //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                ExtractTest();
+                ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //ExtractTest();
 
-                //年龄预测测试
-                FaceAgePredictorTest();
+                ////年龄预测测试
+                //FaceAgePredictorTest();
 
-                //性别预测测试
-                FaceGenderPredictorTest();
+                ////性别预测测试
+                //FaceGenderPredictorTest();
 
-                //眼睛状态检测测试
-                FaceEyeStateDetectorTest();
+                ////眼睛状态检测测试
+                //FaceEyeStateDetectorTest();
 
-                //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                CompareTest();
+                ////人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -59,7 +59,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             Stopwatch sw = new Stopwatch();
 
             Worker((sw, i) =>
@@ -68,7 +68,7 @@ namespace ConsoleApp1
                 var info = infos.First();
                 var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
 
-                logger.Info($"第{i + 1}次{nameof(FaceMark.Mark)}识别，结果：{markPoints.Length}，耗时：{sw.ElapsedMilliseconds}ms");
+                logger.Info($"第{i + 1}次{nameof(FaceLandmarker.Mark)}识别，结果：{markPoints.Length}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 
@@ -77,7 +77,7 @@ namespace ConsoleApp1
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceQuality faceQuality = new FaceQuality();
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
@@ -118,7 +118,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing(new ViewFaceCore.Configs.FaceAntiSpoofingConfig()
             {
                 VideoFrameCount = 20,
@@ -142,7 +142,7 @@ namespace ConsoleApp1
         private static void FaceTrackTest()
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
-            using FaceTrack faceTrack = new FaceTrack(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
+            using FaceTracker faceTrack = new FaceTracker(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
             Worker((sw, i) =>
             {
                 var result = faceTrack.Track(bitmap).ToList();
@@ -151,7 +151,7 @@ namespace ConsoleApp1
                     Console.WriteLine("GG...");
                     return;
                 }
-                logger.Info($"第{i + 1}次{nameof(FaceTrack.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
+                logger.Info($"第{i + 1}次{nameof(FaceTracker.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 
@@ -162,7 +162,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceRecognizer faceRecognizer = new FaceRecognizer();
             Worker((sw, i) =>
             {
@@ -178,7 +178,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using AgePredictor agePredictor = new AgePredictor();
             Worker((sw, i) =>
             {
@@ -194,7 +194,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using GenderPredictor genderPredictor = new GenderPredictor();
             Worker((sw, i) =>
             {
@@ -210,7 +210,7 @@ namespace ConsoleApp1
         {
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using EyeStateDetector eyeStateDetector = new EyeStateDetector();
             Worker((sw, i) =>
             {
@@ -228,7 +228,7 @@ namespace ConsoleApp1
             using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
 
             using FaceDetector faceDetector = new FaceDetector();
-            using FaceMark faceMark = new FaceMark();
+            using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceRecognizer recognizer = new FaceRecognizer();
 
             Worker((sw, i) =>
@@ -245,14 +245,14 @@ namespace ConsoleApp1
 
         #region Helpers
 
-        private static FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceMark faceMark, SKBitmap bitmap)
+        private static FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
         {
             var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
             return faceMark.Mark(bitmap, info);
         }
 
-        private static float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceMark faceMark, SKBitmap bitmap)
+        private static float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
         {
             return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }

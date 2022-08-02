@@ -3,7 +3,7 @@
     /// <summary>
     /// 人脸检测器配置
     /// </summary>
-    public class FaceDetectorConfig
+    public class FaceDetectorConfig : BaseConfig
     {
         /// <summary>
         /// 设置最小人脸。
