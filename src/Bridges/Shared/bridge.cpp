@@ -135,7 +135,7 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 /// <returns></returns>
 View_Api seeta::v2::MaskDetector *GetMaskDetectorHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	return new seeta::v2::MaskDetector(ModelSetting(modelPath + "face_detector.csta", deviceType));
+	return new seeta::v2::MaskDetector(ModelSetting(modelPath + "mask_detector.csta", deviceType));
 }
 
 /// <summary>
