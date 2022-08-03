@@ -41,12 +41,12 @@ namespace ViewFaceCore.Configs
         public FaceAntiSpoofingConfigThreshold Threshold { get; set; } = new FaceAntiSpoofingConfigThreshold(0.3f, 0.8f);
 
         /// <summary>
-        /// 是否开启全局检测模型，默认false
+        /// 是否开启全局检测模型，默认true。目前存在未知问题，为false时无法在Linux中使用
         /// </summary>
         /// <remarks>
         /// 活体检测识别器可以加载一个局部检测模型或者局部检测模型+全局检测模型。
         /// </remarks>
-        public bool Global { get; set; } = false;
+        public bool Global { get; set; } = true;
     }
 
     public class FaceAntiSpoofingConfigThreshold
