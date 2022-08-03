@@ -117,6 +117,17 @@ namespace ViewFaceCore
         /// <returns>人脸信息集合。若 <see cref="Array.Length"/> == 0 ，代表未检测到人脸信息。如果图片中确实有人脸，可以修改 <see cref="TrackerConfig"/> 重新检测。</returns>
         public static async Task<FaceTrackInfo[]> TrackAsync<T>(this FaceTracker viewFace, T image) where T : class
             => await Task.Run(() => viewFace.Track(image));
+
+        /// <summary>
+        /// 戴口罩人脸识别
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="viewFace"></param>
+        /// <param name="image">人脸图像信息</param>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static async Task<PlotMaskResult> PlotMaskAsync<T>(this MaskDetector viewFace, T image, FaceInfo info) where T : class
+            => await Task.Run(() => viewFace.PlotMask(image, info));
     }
 }
 

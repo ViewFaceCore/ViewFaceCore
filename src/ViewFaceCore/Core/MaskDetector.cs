@@ -40,13 +40,13 @@ namespace ViewFaceCore.Core
         /// <param name="info"></param>
         /// <param name="score">一般性的，score超过0.5，则认为是检测带上了口罩</param>
         /// <returns></returns>
-        public bool PlotMask(FaceImage image, FaceInfo info, out float score)
+        public PlotMaskResult PlotMask(FaceImage image, FaceInfo info)
         {
             lock (_locker)
             {
-                score = 0;
-                bool result = ViewFaceNative.PlotMask(_handle, ref image, info.Location, ref score);
-                return result;
+                float score = 0;
+                bool status = ViewFaceNative.PlotMask(_handle, ref image, info.Location, ref score);
+                return new PlotMaskResult(score, status);
             }
         }
 

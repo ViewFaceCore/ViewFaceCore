@@ -282,11 +282,11 @@ namespace ViewFaceCoreSkiaSharpTest
 
 
             var info = faceDetector.Detect(bitmap_mask).First();
-            bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
+            var result = maskDetector.PlotMask(bitmap_mask, info);
 
             var p0 = GetExtract(faceRecognizer, faceDetector, faceMark, bitmap_mask);
 
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Status);
         }
 
         #region Helpers

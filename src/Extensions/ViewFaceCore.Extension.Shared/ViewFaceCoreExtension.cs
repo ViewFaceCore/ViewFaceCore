@@ -169,11 +169,11 @@ namespace ViewFaceCore
         /// <param name="info"></param>
         /// <param name="score"></param>
         /// <returns></returns>
-        public static bool PlotMask<T>(this MaskDetector maskDetector, T image, FaceInfo info, out float score) where T : class
+        public static PlotMaskResult PlotMask<T>(this MaskDetector maskDetector, T image, FaceInfo info) where T : class
         {
             using (var faceImage = image.ToFaceImage())
             {
-                return maskDetector.PlotMask(faceImage, info, out score);
+                return maskDetector.PlotMask(faceImage, info);
             }
         }
     }

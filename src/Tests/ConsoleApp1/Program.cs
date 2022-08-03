@@ -271,8 +271,8 @@ namespace ConsoleApp1
 
             Worker((sw, i) =>
             {
-                bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
-                logger.Info($"第{i + 1}次{nameof(MaskDetector.PlotMask)}戴口罩检测，结果：{result}，置信度：{score}，耗时：{sw.ElapsedMilliseconds}ms");
+                var result = maskDetector.PlotMask(bitmap_mask, info);
+                logger.Info($"第{i + 1}次{nameof(MaskDetector.PlotMask)}戴口罩检测，结果：{result.Status}，置信度：{result.Score}，耗时：{sw.ElapsedMilliseconds}ms");
             });
 
         }
