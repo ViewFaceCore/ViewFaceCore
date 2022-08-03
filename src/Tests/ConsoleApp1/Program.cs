@@ -13,9 +13,9 @@ namespace ConsoleApp1
     internal class Program
     {
         private readonly static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-        private readonly static string imagePath = @"images\Jay_3.jpg";
-        private readonly static string imagePath1 = @"images\Jay_4.jpg";
-        private readonly static string maskImagePath = @"images\mask_01.jpeg";
+        private readonly static string imagePath = @"images/Jay_3.jpg";
+        private readonly static string imagePath1 = @"images/Jay_4.jpg";
+        private readonly static string maskImagePath = @"images/mask_01.jpeg";
         private readonly static string logPath = "logs";
 
         static void Main(string[] args)
@@ -27,34 +27,34 @@ namespace ConsoleApp1
             while (true)
             {
                 //口罩识别测试
-                MaskDetectorTest();
+                //MaskDetectorTest();
 
-                //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                FaceDetectorAndFaceMarkTest();
+                ////人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //FaceDetectorAndFaceMarkTest();
 
-                //活体检测测试，通过24h测试，20220728
+                ////活体检测测试，通过24h测试，20220728
                 AntiSpoofingTest();
 
-                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
-                FaceQualityTest();
+                ////质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
+                //FaceQualityTest();
 
-                //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-                FaceTrackTest();
+                ////人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+                //FaceTrackTest();
 
-                //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                ExtractTest();
+                ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //ExtractTest();
 
-                //年龄预测测试
-                FaceAgePredictorTest();
+                ////年龄预测测试
+                //FaceAgePredictorTest();
 
-                //性别预测测试
-                FaceGenderPredictorTest();
+                ////性别预测测试
+                //FaceGenderPredictorTest();
 
-                //眼睛状态检测测试
-                FaceEyeStateDetectorTest();
+                ////眼睛状态检测测试
+                //FaceEyeStateDetectorTest();
 
-                //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                CompareTest();
+                ////人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                //CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -124,18 +124,13 @@ namespace ConsoleApp1
             using SKBitmap bitmap = SKBitmap.Decode(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
-            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing(new ViewFaceCore.Configs.FaceAntiSpoofingConfig()
-            {
-                VideoFrameCount = 20,
-                BoxThresh = 0.9f,
-                Global = false,
-                Threshold = new ViewFaceCore.Configs.FaceAntiSpoofingConfigThreshold(0.4f, 0.8f)
-            });
+            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing();
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
 
             Worker((sw, i) =>
             {
+                logger.Info("开始活体识别");
                 var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
                 logger.Info($"第{i + 1}次{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             });
@@ -253,6 +248,10 @@ namespace ConsoleApp1
         /// </summary>
         private static void MaskDetectorTest()
         {
+            if (!File.Exists(imagePath))
+            {
+                throw new Exception("图像不存在！");
+            }
             using var bitmap_nomask = SKBitmap.Decode(imagePath);
             using var bitmap_mask = SKBitmap.Decode(maskImagePath);
 
@@ -265,7 +264,7 @@ namespace ConsoleApp1
             });
 
             var info = faceDetector.Detect(bitmap_mask).First();
-            
+
             Worker((sw, i) =>
             {
                 bool result = maskDetector.PlotMask(bitmap_mask, info, out float score);
@@ -304,7 +303,7 @@ namespace ConsoleApp1
                 sw.Stop();
                 i++;
 
-                if (sw2.ElapsedMilliseconds > 1 * 10 * 1000)
+                if (sw2.ElapsedMilliseconds > 1 * 3 * 1000)
                 {
                     break;
                 }

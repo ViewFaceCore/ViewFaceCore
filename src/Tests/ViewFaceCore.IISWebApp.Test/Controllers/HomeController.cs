@@ -14,7 +14,7 @@ namespace ViewFaceCore.IISWebApp.Test.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly static string _imagePath = @"images\Jay_3.jpg";
+        private readonly static string _imagePath = @"images/Jay_3.jpg";
 
         public ActionResult Index()
         {

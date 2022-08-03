@@ -13,9 +13,9 @@ namespace ViewFaceCoreSkiaSharpTest
     [TestClass]
     public class UnitTest1
     {
-        private readonly static string imagePath = @"images\Jay_3.jpg";
-        private readonly static string imagePath1 = @"images\Jay_4.jpg";
-        private readonly static string maskImagePath = @"images\mask_01.jpeg";
+        private readonly static string imagePath = @"images/Jay_3.jpg";
+        private readonly static string imagePath1 = @"images/Jay_4.jpg";
+        private readonly static string maskImagePath = @"images/mask_01.jpeg";
 
         [TestMethod]
         public void DisposableTest()
