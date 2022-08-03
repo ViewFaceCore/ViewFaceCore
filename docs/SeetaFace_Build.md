@@ -132,7 +132,7 @@ SEETA_API explicit MaskDetector(const seeta::ModelSetting &setting = seeta::Mode
 SEETA_API explicit MaskDetector(const SeetaModelSetting &setting);
 ```
 
-修改`MaskDetector.cpp`的427行  
+修改`MaskDetector.cpp`的442行  
 ```cpp
 MaskDetector::MaskDetector(const seeta::ModelSetting &setting)
 ```
