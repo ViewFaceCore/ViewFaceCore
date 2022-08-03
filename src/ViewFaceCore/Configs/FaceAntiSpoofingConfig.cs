@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace ViewFaceCore.Configs
@@ -40,13 +41,29 @@ namespace ViewFaceCore.Configs
         /// </remarks>
         public FaceAntiSpoofingConfigThreshold Threshold { get; set; } = new FaceAntiSpoofingConfigThreshold(0.3f, 0.8f);
 
+        private bool _global = true;
+
         /// <summary>
-        /// 是否开启全局检测模型，默认true。目前存在未知问题，为false时无法在Linux中使用
+        /// 是否开启全局检测模型，默认true
         /// </summary>
         /// <remarks>
         /// 活体检测识别器可以加载一个局部检测模型或者局部检测模型+全局检测模型。
         /// </remarks>
-        public bool Global { get; set; } = true;
+        public bool Global
+        {
+            get
+            {
+                return _global;
+            }
+            set
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && !value)
+                {
+                    throw new NotSupportedException("活体检测{局部检测模型}在Linux中存在问题，暂不支持在Linux中设置此选项为false");
+                }
+                _global = value;
+            }
+        }
     }
 
     public class FaceAntiSpoofingConfigThreshold
