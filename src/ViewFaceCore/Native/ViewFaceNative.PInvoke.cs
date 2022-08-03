@@ -200,7 +200,7 @@ namespace ViewFaceCore.Native
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
         [DllImport(LibraryName, EntryPoint = "AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofing(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points);
+        public extern static int AntiSpoofing(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
 
         /// <summary>
         /// 活体检测器
@@ -217,7 +217,7 @@ namespace ViewFaceCore.Native
         /// </para>
         /// </returns>
         [DllImport(LibraryName, EntryPoint = "AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofingVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points);
+        public extern static int AntiSpoofingVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] pointsref, ref float clarity, ref float reality);
 
         [DllImport(LibraryName, EntryPoint = "DisposeFaceAntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
         public extern static void DisposeFaceAntiSpoofing(IntPtr handler);

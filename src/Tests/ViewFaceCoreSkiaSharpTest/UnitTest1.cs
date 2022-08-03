@@ -142,7 +142,7 @@ namespace ViewFaceCoreSkiaSharpTest
             var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
         }
 
         /// <summary>

@@ -49,11 +49,14 @@ namespace ViewFaceCore.Core
         /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>活体检测状态</returns>
-        public AntiSpoofingStatus AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
+        public AntiSpoofingResult AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
         {
             lock (_locker)
             {
-                return (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(_handle, ref image, info.Location, points);
+                float clarity = 0;
+                float reality = 0;
+                AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(_handle, ref image, info.Location, points, ref clarity, ref reality);
+                return new AntiSpoofingResult(status, clarity, reality);
             }
         }
 
@@ -68,49 +71,15 @@ namespace ViewFaceCore.Core
         /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-        public AntiSpoofingStatus AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
+        public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
         {
             lock (_locker)
             {
-                return (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(_handle, ref image, info.Location, points);
+                float clarity = 0;
+                float reality = 0;
+                AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(_handle, ref image, info.Location, points, ref clarity, ref reality);
+                return new AntiSpoofingResult(status, clarity, reality);
             }
-        }
-
-        /// <summary>
-        /// 活体检测器。
-        /// <para>
-        /// 视频帧图片，由 <paramref name="global"/> 指定是否启用全局检测能力 <br />
-        /// </para>
-        /// <para>如果返回结果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</para>
-        /// </summary>
-        /// <param name="viewFace"></param>
-        /// <param name="bitmaps">一组图片信息，即视频帧的 <see cref="FaceImage"/> 数组</param>
-        /// <param name="faceIndex">指定要识别的人脸索引</param>
-        /// <param name="global">是否启用全局检测能力</param>
-        /// <returns></returns>
-        public AntiSpoofingStatus AntiSpoofingVideo(IEnumerable<FaceImage> bitmaps, int faceIndex = 0)
-        {
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            var result = AntiSpoofingStatus.Detecting;
-            bool haveFace = false;
-            foreach (var bitmap in bitmaps)
-            {
-                var infos = faceDetector.Detect(bitmap);
-                if (faceIndex >= 0 && faceIndex < infos.Length)
-                {
-                    haveFace = true;
-                    var points = faceMark.Mark(bitmap, infos[faceIndex]);
-                    var status = AntiSpoofingVideo(bitmap, infos[faceIndex], points);
-                    if (status == AntiSpoofingStatus.Detecting)
-                    { continue; }
-                    else { result = status; }
-                }
-            }
-            if (haveFace)
-            { return result; }
-            else
-            { return AntiSpoofingStatus.Error; }
         }
 
         public void Dispose()

@@ -341,13 +341,19 @@ View_Api seeta::v6::FaceAntiSpoofing *GetFaceAntiSpoofingHandler(const int video
 /// <param name="points"></param>
 /// <param name="global"></param>
 /// <returns></returns>
-View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing *handler, const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points)
+View_Api int AntiSpoofing(seeta::v6::FaceAntiSpoofing *handler
+	, const SeetaImageData &img
+	, const SeetaRect faceRect
+	, const SeetaPointF *points
+	, float* clarity
+	, float* reality)
 {
 	if (handler == nullptr)
 	{
 		return -1;
 	}
-	auto state = handler->Predict(img, faceRect, points);
+	FaceAntiSpoofing::Status state = handler->Predict(img, faceRect, points);
+	handler->GetPreFrameScore(clarity, reality);
 	return state;
 }
 
@@ -359,13 +365,19 @@ View_Api int AntiSpoofing(const seeta::v6::FaceAntiSpoofing *handler, const Seet
 /// <param name="points"></param>
 /// <param name="global"></param>
 /// <returns></returns>
-View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing *handler, const SeetaImageData &img, const SeetaRect faceRect, const SeetaPointF *points)
+View_Api int AntiSpoofingVideo(seeta::v6::FaceAntiSpoofing *handler
+	, const SeetaImageData &img
+	, const SeetaRect faceRect
+	, const SeetaPointF *points
+	, float* clarity
+	, float* reality)
 {
 	if (handler == nullptr)
 	{
 		return -1;
 	}
 	auto status = handler->PredictVideo(img, faceRect, points);
+	handler->GetPreFrameScore(clarity, reality);
 	if (status != FaceAntiSpoofing::Status::DETECTING)
 	{
 		handler->ResetVideo();

@@ -56,7 +56,7 @@ namespace ViewFaceCore
         /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>活体检测状态</returns>
-        public static AntiSpoofingStatus AntiSpoofing<T>(this FaceAntiSpoofing viewFace, T image, FaceInfo info, FaceMarkPoint[] points) where T : class
+        public static AntiSpoofingResult AntiSpoofing<T>(this FaceAntiSpoofing viewFace, T image, FaceInfo info, FaceMarkPoint[] points) where T : class
         {
             using (var faceImage = image.ToFaceImage())
             {
@@ -71,7 +71,7 @@ namespace ViewFaceCore
         /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-        public static AntiSpoofingStatus AntiSpoofingVideo<T>(this FaceAntiSpoofing viewFace, T image, FaceInfo info, FaceMarkPoint[] points) where T : class
+        public static AntiSpoofingResult AntiSpoofingVideo<T>(this FaceAntiSpoofing viewFace, T image, FaceInfo info, FaceMarkPoint[] points) where T : class
         {
             using (var faceImage = image.ToFaceImage())
             {
