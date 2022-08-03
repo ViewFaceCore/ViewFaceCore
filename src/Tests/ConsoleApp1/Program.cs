@@ -121,7 +121,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void AntiSpoofingTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath1);
+            using SKBitmap bitmap = SKBitmap.Decode(maskImagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             logger.Info("开始加载活体识别....");
@@ -129,12 +129,13 @@ namespace ConsoleApp1
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
 
+            using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing(new FaceAntiSpoofingConfig()
+            {
+                Global = true
+            });
+
             Worker((sw, i) =>
             {
-                using FaceAntiSpoofing faceAntiSpoofing = new FaceAntiSpoofing(new FaceAntiSpoofingConfig()
-                {
-                    Global = false
-                });
                 var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
                 logger.Info($"第{i + 1}次{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
             });

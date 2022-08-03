@@ -225,7 +225,7 @@ View_Api SeetaPointF *FaceMark(seeta::v6::FaceLandmarker *handler, const SeetaIm
 	return 0;
 }
 
-View_Api void DisposeFaceLandmarker(const seeta::v6::FaceLandmarker *handler)
+View_Api void DisposeFaceLandmarker(seeta::v6::FaceLandmarker *handler)
 {
 	_dispose(handler);
 }
@@ -262,7 +262,7 @@ View_Api seeta::v6::FaceRecognizer *GetFaceRecognizerHandler(const int type = 0,
 /// <param name="size"></param>
 /// <param name="type"></param>
 /// <returns></returns>
-View_Api float *FaceRecognizerExtract(const seeta::v6::FaceRecognizer *handler, const SeetaImageData &img, const SeetaPointF *points, int *size)
+View_Api float *FaceRecognizerExtract(seeta::v6::FaceRecognizer *handler, const SeetaImageData &img, const SeetaPointF *points, int *size)
 {
 	if (handler == nullptr)
 	{
@@ -281,7 +281,7 @@ View_Api float *FaceRecognizerExtract(const seeta::v6::FaceRecognizer *handler, 
 	return features;
 }
 
-View_Api void DisposeFaceRecognizer(const seeta::v6::FaceRecognizer *handler)
+View_Api void DisposeFaceRecognizer(seeta::v6::FaceRecognizer *handler)
 {
 	_dispose(handler);
 }
@@ -309,24 +309,19 @@ View_Api float Compare(const float *lhs, const float *rhs, int size)
 
 #pragma region FaceAntiSpoofing
 
-View_Api seeta::v6::FaceAntiSpoofing *GetFaceAntiSpoofingHandler(const int videoFrameCount = 10, const float boxThresh = 0.8, const float clarity = 0.3, const float reality = 0.8, const bool global = false, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
+View_Api seeta::v6::FaceAntiSpoofing *GetFaceAntiSpoofingHandler(const int videoFrameCount = 10
+	, const float boxThresh = 0.8
+	, const float clarity = 0.3
+	, const float reality = 0.8
+	, const bool global = false
+	, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
-	seeta::v6::FaceAntiSpoofing *faceAntiSpoofing = nullptr;
+	ModelSetting setting(modelPath + "fas_first.csta", deviceType);
 	if (global)
 	{
-		ModelSetting setting;
-		setting.set_device(deviceType);
-		setting.append(modelPath + "fas_first.csta");
 		setting.append(modelPath + "fas_second.csta");
-		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	}
-	else
-	{
-		ModelSetting setting;
-		setting.set_device(deviceType);
-		setting.append(modelPath + "fas_first.csta");
-		faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
-	}
+	seeta::v6::FaceAntiSpoofing *faceAntiSpoofing = new seeta::v6::FaceAntiSpoofing(setting);
 	faceAntiSpoofing->SetVideoFrameCount(videoFrameCount);
 	faceAntiSpoofing->SetBoxThresh(boxThresh);
 	faceAntiSpoofing->SetThreshold(clarity, reality);
@@ -422,7 +417,7 @@ View_Api seeta::v6::FaceTracker *GetFaceTrackerHandler(const int width, const in
 /// <param name="img"></param>
 /// <param name="size"></param>
 /// <returns></returns>
-View_Api SeetaTrackingFaceInfo *FaceTrack(const seeta::v6::FaceTracker *handler, const SeetaImageData &img, int *size)
+View_Api SeetaTrackingFaceInfo *FaceTrack(seeta::v6::FaceTracker *handler, const SeetaImageData &img, int *size)
 {
 	if (handler == nullptr)
 	{
@@ -458,7 +453,7 @@ View_Api void FaceTrackReset(seeta::v6::FaceTracker *handler)
 /// </summary>
 /// <param name="faceTracker"></param>
 /// <returns></returns>
-View_Api void DisposeFaceTracker(const seeta::v6::FaceTracker *handler)
+View_Api void DisposeFaceTracker(seeta::v6::FaceTracker *handler)
 {
 	_dispose(handler);
 }
@@ -599,7 +594,7 @@ View_Api int PredictAge(seeta::v6::AgePredictor *handler, const SeetaImageData &
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeAgePredictor(const seeta::v6::AgePredictor *handler)
+View_Api void DisposeAgePredictor(seeta::v6::AgePredictor *handler)
 {
 	_dispose(handler);
 }
@@ -646,7 +641,7 @@ View_Api int PredictGender(seeta::v6::GenderPredictor *handler, const SeetaImage
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeGenderPredictor(const seeta::v6::GenderPredictor *handler)
+View_Api void DisposeGenderPredictor(seeta::v6::GenderPredictor *handler)
 {
 	_dispose(handler);
 }
@@ -684,7 +679,7 @@ View_Api void EyeStateDetector(seeta::v6::EyeStateDetector *handler, const Seeta
 /// </summary>
 /// <param name="handler"></param>
 /// <returns></returns>
-View_Api void DisposeEyeStateDetector(const seeta::v6::EyeStateDetector *handler)
+View_Api void DisposeEyeStateDetector(seeta::v6::EyeStateDetector *handler)
 {
 	_dispose(handler);
 }

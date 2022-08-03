@@ -268,7 +268,7 @@ namespace ViewFaceCoreSkiaSharpTest
         [TestMethod]
         public void MaskDetectorTest()
         {
-            //using var bitmap_nomask = SKBitmap.Decode(imagePath);
+            //using var bitmap_mask = SKBitmap.Decode(imagePath);
             using var bitmap_mask = SKBitmap.Decode(maskImagePath);
 
             using MaskDetector maskDetector = new MaskDetector();
@@ -279,7 +279,6 @@ namespace ViewFaceCoreSkiaSharpTest
                 FaceType = FaceType.Mask
             });
             using FaceLandmarker faceMark = new FaceLandmarker();
-
 
             var info = faceDetector.Detect(bitmap_mask).First();
             var result = maskDetector.PlotMask(bitmap_mask, info);
