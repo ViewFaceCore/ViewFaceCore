@@ -57,10 +57,13 @@ namespace ViewFaceCore.Configs
             }
             set
             {
+#if !DEBUG
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && !value)
                 {
                     throw new NotSupportedException("活体检测{局部检测模型}在Linux中存在问题，暂不支持在Linux中设置此选项为false");
                 }
+
+#endif
                 _global = value;
             }
         }
