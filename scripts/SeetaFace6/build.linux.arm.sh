@@ -97,6 +97,7 @@ build_seeta_TenniS() {
     -DTS_BUILD_TEST=OFF \
     -DTS_BUILD_TOOLS=OFF \
     -DTS_ON_ARM=ON \
+	-DTS_ON_ARMV7=ON \
     -DTS_USE_NEON=OFF || exit
 
   echo -e "\n>>> Making TenniS"
