@@ -17,6 +17,11 @@ env_setup() {
   mkdir -p "$BUILD_PATH_BASE"
   mkdir -p "$BUILD_PATH_SEETA"
   mkdir -p "$INSTALL_PATH_SEETA"
+  
+  if [ -d $BUILD_PATH_BASE ]; then 
+    echo 'Delete exists build path';  
+    rm -rf $BUILD_PATH_BASE;
+  fi
 
   export BUILD_HOME
   export BUILD_PATH_BASE

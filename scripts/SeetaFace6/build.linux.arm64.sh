@@ -13,6 +13,11 @@ env_setup() {
   BUILD_PATH_SEETA="$BUILD_PATH_BASE"/temp
   INSTALL_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace
   SOURCE_PATH_SEETA="$BUILD_HOME"/../../src/SeetaFace/index
+  
+  if [ -d $BUILD_PATH_BASE ]; then 
+    echo 'Delete exists build path';  
+    rm -rf $BUILD_PATH_BASE;
+  fi
 
   mkdir -p "$BUILD_PATH_BASE"
   mkdir -p "$BUILD_PATH_SEETA"
