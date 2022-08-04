@@ -18,11 +18,6 @@ env_setup() {
   mkdir -p "$BUILD_PATH_SEETA"
   mkdir -p "$INSTALL_PATH_SEETA"
   
-  if [ -d $BUILD_PATH_BASE ]; then 
-    echo 'Delete exists build path';  
-    rm -rf $BUILD_PATH_BASE;
-  fi
-
   export BUILD_HOME
   export BUILD_PATH_BASE
   export BUILD_PATH_SEETA
@@ -31,6 +26,14 @@ env_setup() {
 
   CORES="-j"$(grep -c "processor" </proc/cpuinfo)
   export CORES
+  
+  echo "BUILD_HOME: $BUILD_HOME"
+  echo "Build Path: $BUILD_PATH_BASE"
+  
+  if [ -d $BUILD_PATH_BASE ]; then 
+    echo 'Delete existing build target folder...';  
+    rm -rf $BUILD_PATH_BASE;
+  fi
 }
 
 build_seeta_OpenRoleZoo() {
@@ -168,10 +171,8 @@ build_seeta() {
 }
 
 echo "==========Start Building=========="
-env_setup
-echo "BUILD_HOME: $BUILD_HOME"
-echo "Build Path: $BUILD_PATH_BASE"
 
+env_setup
 build_seeta
 
 echo "==========Build Finished!=========="

@@ -13,11 +13,6 @@ env_setup() {
   BUILD_PATH_SEETA="$BUILD_PATH_BASE"/temp
   INSTALL_PATH_SEETA="$BUILD_PATH_BASE"/SeetaFace
   SOURCE_PATH_SEETA="$BUILD_HOME"/../../src/SeetaFace/index
-  
-  if [ -d $BUILD_PATH_BASE ]; then 
-    echo 'Delete exists build path';  
-    rm -rf $BUILD_PATH_BASE;
-  fi
 
   mkdir -p "$BUILD_PATH_BASE"
   mkdir -p "$BUILD_PATH_SEETA"
@@ -31,6 +26,14 @@ env_setup() {
 
   CORES="-j"$(grep -c "processor" </proc/cpuinfo)
   export CORES
+  
+  echo "BUILD_HOME: $BUILD_HOME"
+  echo "Build Path: $BUILD_PATH_BASE"
+  
+  if [ -d $BUILD_PATH_BASE ]; then 
+    echo 'Delete existing build target folder...';  
+    rm -rf $BUILD_PATH_BASE;
+  fi
 }
 
 build_seeta_OpenRoleZoo() {
@@ -168,10 +171,8 @@ build_seeta() {
 }
 
 echo "==========Start Building=========="
-env_setup
-echo "BUILD_HOME: $BUILD_HOME"
-echo "Build Path: $BUILD_PATH_BASE"
 
+env_setup
 build_seeta
 
 echo "==========Build Finished!=========="
