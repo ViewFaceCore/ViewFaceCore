@@ -146,3 +146,19 @@ MaskDetector::MaskDetector(const SeetaModelSetting &setting)
 **来自：** https://github.com/SeetaFace6Open/index/issues/4  
 **修复方式：**  
 修改代码`OpenRoleZoo/include/orz/mem/pot.h`，在第9行`#include<memory>`后面插入一行`#include <functional>`补充所需要的头文件。
+
+#### 6. TenniS Windows下编译报错
+报错：`'towlower': is not a member of 'std'`  
+**修复方式：**  
+修改代码`TenniS\src\compiler\argparse.cpp`，第21行
+```cpp
+std::transform(cvt.begin(), cvt.end(), cvt.begin(), std::towlower);
+```
+改为  
+```cpp
+std::transform(cvt.begin(), cvt.end(), cvt.begin(), ::tolower);
+```
+添加头文件引用
+```cpp
+#include <algorithm>
+```
