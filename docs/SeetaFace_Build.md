@@ -156,7 +156,7 @@ std::transform(cvt.begin(), cvt.end(), cvt.begin(), std::towlower);
 ```
 改为  
 ```cpp
-std::transform(cvt.begin(), cvt.end(), cvt.begin(), ::tolower);
+std::transform(cvt.begin(), cvt.end(), cvt.begin(), std::tolower);
 ```
 添加头文件引用
 ```cpp
