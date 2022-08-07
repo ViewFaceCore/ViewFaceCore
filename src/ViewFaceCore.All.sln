@@ -93,13 +93,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.model.quality_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "Tests\ConsoleApp1\ConsoleApp1.csproj", "{1141407A-9DD9-4016-8CF8-3DCBD881FBDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.Host", "Extensions\ViewFaceCore.Extension.Host\ViewFaceCore.Extension.Host.csproj", "{8AA59620-F432-407B-882A-2D4B6CA4A9C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.DependencyInjection", "Extensions\ViewFaceCore.Extension.Host\ViewFaceCore.Extension.DependencyInjection.csproj", "{8AA59620-F432-407B-882A-2D4B6CA4A9C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.WebApp", "Simples\ViewFaceCore.Demo.WebApp\ViewFaceCore.Demo.WebApp.csproj", "{6ECB7270-4B9B-4BB2-BC6A-7E6E6DCFB1AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.IISWebApp.Test", "Tests\ViewFaceCore.IISWebApp.Test\ViewFaceCore.IISWebApp.Test.csproj", "{F91045F1-7E9E-4379-B9BF-298C72192FDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Extension.ImageSharp", "Extensions\ViewFaceCore.Extension.ImageSharp\ViewFaceCore.Extension.ImageSharp.csproj", "{CCC4179C-28C3-4BE8-B823-F1165808AF48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.ImageSharp", "Extensions\ViewFaceCore.Extension.ImageSharp\ViewFaceCore.Extension.ImageSharp.csproj", "{CCC4179C-28C3-4BE8-B823-F1165808AF48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

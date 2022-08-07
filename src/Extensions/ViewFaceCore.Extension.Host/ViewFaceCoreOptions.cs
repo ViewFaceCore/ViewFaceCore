@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ViewFaceCore.Extension.Host
+namespace ViewFaceCore.Extension.DependencyInjection
 {
     /// <summary>
     /// 转入选项

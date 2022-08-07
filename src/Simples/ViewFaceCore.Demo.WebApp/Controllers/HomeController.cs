@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using ViewFaceCore.Core;
 using ViewFaceCore.Demo.WebApp.Models;
+using ViewFaceCore.Extension.DependencyInjection;
 
 namespace ViewFaceCore.Demo.WebApp.Controllers
 {
@@ -9,9 +11,11 @@ namespace ViewFaceCore.Demo.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IViewFaceFactory faceFactory)
         {
             _logger = logger;
+
+            FaceDetector faceDetector = faceFactory.Get<FaceDetector>();
         }
 
         public IActionResult Index()
