@@ -10,6 +10,7 @@ Linux脚本来源：https://blog.ofortune.xyz/2020/08/30/seetaface6-intro/
 ```shell
 sudo apt install git gcc g++ cmake -y
 ```
+PS: 如果armhf无法安装g++，提示"libtirpc-dev : Depends: libtirpc3 (= 1.3.1-1) but 1.3.1-1+deb11u1 is to be installed"，下载"https://packages.debian.org/bullseye/armhf/libtirpc3/download"，使用dkpg -i重新安装。  
 
 2. 下载ViewFaceCore源码  
 ```shell
