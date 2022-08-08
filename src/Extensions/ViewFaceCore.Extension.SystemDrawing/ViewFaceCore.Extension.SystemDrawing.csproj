@@ -2,7 +2,7 @@
 
 	<!--Library Info-->
 	<PropertyGroup>
-		<TargetFrameworks>net40;net45;net461;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>net40;net45;net461;netstandard2.0;</TargetFrameworks>
 		<Authors>View</Authors>
 		<Version>0.3.6</Version>
 		<OutputType>Library</OutputType>

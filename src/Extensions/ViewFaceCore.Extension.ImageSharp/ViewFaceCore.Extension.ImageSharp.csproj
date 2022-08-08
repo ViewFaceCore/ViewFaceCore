@@ -1,10 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <Authors>WithSalt</Authors>
+	  <Version>0.3.6</Version>
+	  <OutputType>Library</OutputType>
+	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\assets\logos\WithSalt-Logo.png" Link="WithSalt-Logo.png">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+    <None Include="..\..\..\LICENSE" Link="LICENSE">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
@@ -13,5 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
   </ItemGroup>
+
+  <Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
 
 </Project>
