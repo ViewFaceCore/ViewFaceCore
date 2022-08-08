@@ -10,6 +10,8 @@ namespace ViewFaceCore.Extension.DependencyInjection
     /// </summary>
     public class ViewFaceCoreOptions
     {
+        internal static string OptionName = "ViewFaceCoreOptions";
+
         #region 基础模块
 
         public FaceDetectConfig FaceDetectConfig { get; set; }
@@ -29,51 +31,51 @@ namespace ViewFaceCore.Extension.DependencyInjection
         /// <summary>
         /// 是否开启活体检测
         /// </summary>
-        public bool IsEnableFaceAntiSpoofing { get; set; }
+        public bool IsEnableFaceAntiSpoofing { get; set; } = false;
 
-        public FaceAntiSpoofingConfig FaceAntiSpoofingConfig { get; set; }
+        public FaceAntiSpoofingConfig FaceAntiSpoofingConfig { get; set; } = null;
 
         /// <summary>
         /// 是否开启年龄预测
         /// </summary>
-        public bool IsEnableAgePredict { get; set; }
+        public bool IsEnableAgePredict { get; set; } = false;
 
-        public AgePredictConfig AgePredictConfig { get; set; }
+        public AgePredictConfig AgePredictConfig { get; set; } = null;
 
         /// <summary>
         /// 是否启用眼睛状态检测
         /// </summary>
-        public bool IsEnableEyeStateDetect { get; set; }
+        public bool IsEnableEyeStateDetect { get; set; } = false;
 
-        public EyeStateDetectConfig EyeStateDetectConfig { get; set; }
+        public EyeStateDetectConfig EyeStateDetectConfig { get; set; } = null;
 
         /// <summary>
         /// 是否启用性别检测
         /// </summary>
-        public bool IsEnableGenderPredict { get; set; }
+        public bool IsEnableGenderPredict { get; set; } = false;
 
-        public GenderPredictConfig GenderPredictConfig { get; set; }
+        public GenderPredictConfig GenderPredictConfig { get; set; } = null;
 
         /// <summary>
         /// 是否启用人脸追踪
         /// </summary>
-        public bool IsEnableFaceTrack { get; set; }
+        public bool IsEnableFaceTrack { get; set; } = false;
 
-        public FaceTrackerConfig FaceTrackerConfig { get; set; }
+        public FaceTrackerConfig FaceTrackerConfig { get; set; } = new FaceTrackerConfig(3000, 3000);
 
         /// <summary>
         /// 是否启用口罩识别
         /// </summary>
-        public bool IsEnablMaskDetect { get; set; }
+        public bool IsEnablMaskDetect { get; set; } = false;
 
-        public MaskDetectConfig MaskDetectConfig { get; set; }
+        public MaskDetectConfig MaskDetectConfig { get; set; } = null;
 
         /// <summary>
         /// 是否启用质量检测
         /// </summary>
-        public bool IsEnableQuality { get; set; }
+        public bool IsEnableQuality { get; set; } = false;
 
-        public QualityConfig QualityConfig { get; set; }
+        public QualityConfig QualityConfig { get; set; } = null;
 
     }
 }
