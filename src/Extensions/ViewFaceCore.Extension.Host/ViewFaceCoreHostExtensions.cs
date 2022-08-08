@@ -18,38 +18,52 @@ namespace ViewFaceCore.Extension.DependencyInjection
                 services.Configure("ViewFaceCoreOptions", option);
 
                 var options = GetOptions(services);
-                if(options == null)
+                if (options == null)
                 {
                     throw new Exception("Can not get view face core options.");
                 }
                 //添加默认的能力
-                AddViewFaceCore(services);
-                if (options.IsEnableFaceAntiSpoofing)
+                //人脸检测
+                services.TryAddSingleton(new FaceDetector(options.FaceDetectConfig));
+                //人脸标记
+                services.TryAddSingleton(new FaceLandmarker(options.FaceLandmarkConfig));
+                //人脸识别
+                services.TryAddSingleton(new FaceRecognizer(options.FaceRecognizeConfig));
+                //活体检测
+                if (options.IsEnableAll || options.IsEnableFaceAntiSpoofing)
                 {
-                    //活体检测
-                    services.TryAddSingleton(new FaceAntiSpoofing());
+                    services.TryAddSingleton(new FaceAntiSpoofing(options.FaceAntiSpoofingConfig));
                 }
 
-                return services;
-            }
-            finally
-            {
-                var exists = services.Where(p => p.ServiceType == typeof(IViewFaceFactory)).ToList();
-                exists?.ForEach(e => { services.Remove(e); });
-                services.TryAddSingleton<IViewFaceFactory>(new ViewFaceFactory(services));
-            }
-        }
+                if (options.IsEnableAll || options.IsEnableAgePredict)
+                {
+                    services.TryAddSingleton(new AgePredictor(options.AgePredictConfig));
+                }
 
-        public static IServiceCollection AddViewFaceCore(this IServiceCollection services)
-        {
-            try
-            {
-                //人脸检测
-                services.TryAddSingleton(new FaceDetector());
-                //人脸标记
-                services.TryAddSingleton(new FaceLandmarker());
-                //人脸识别
-                services.TryAddSingleton(new FaceRecognizer());
+                if (options.IsEnableAll || options.IsEnableEyeStateDetect)
+                {
+                    services.TryAddSingleton(new EyeStateDetector(options.EyeStateDetectConfig));
+                }
+
+                if (options.IsEnableAll || options.IsEnableGenderPredict)
+                {
+                    services.TryAddSingleton(new GenderPredictor(options.GenderPredictConfig));
+                }
+
+                if (options.IsEnableAll || options.IsEnableFaceTrack)
+                {
+                    services.TryAddSingleton(new FaceTracker(options.FaceTrackerConfig));
+                }
+
+                if (options.IsEnableAll || options.IsEnablMaskDetect)
+                {
+                    services.TryAddSingleton(new MaskDetector(options.MaskDetectConfig));
+                }
+
+                if (options.IsEnableAll || options.IsEnableQuality)
+                {
+                    services.TryAddSingleton(new FaceQuality(options.QualityConfig));
+                }
                 return services;
             }
             finally

@@ -14,7 +14,7 @@ namespace ViewFaceCore.Demo.WebApp
             //添加人脸识别能力
             builder.Services.AddViewFaceCore(o =>
             {
-                o.IsEnableFaceAntiSpoofing = true;
+                o.IsEnableAll = true;
             });
 
             // Add services to the container.
