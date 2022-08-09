@@ -62,14 +62,14 @@ namespace ViewFaceCore
                 {
                     width = bitmap.Width;
                     height = bitmap.Height;
-                    return ConvertToBGRByte(bitmap, channels);
+                    return ConvertToByte(bitmap, channels);
                 }
             }
             else
             {
                 width = source.Width;
                 height = source.Height;
-                return ConvertToBGRByte(source, channels);
+                return ConvertToByte(source, channels);
             }
         }
 
@@ -101,7 +101,7 @@ namespace ViewFaceCore
         /// <param name="channels"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private static byte[] ConvertToBGRByte(SKBitmap source, int channels)
+        private static byte[] ConvertToByte(SKBitmap source, int channels)
         {
             byte[] array = source.Bytes;
             if (array == null || array.Length == 0)

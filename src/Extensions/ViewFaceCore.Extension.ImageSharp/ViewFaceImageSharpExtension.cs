@@ -1,13 +1,8 @@
 ﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.ColorSpaces.Conversion;
-using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore
@@ -64,7 +59,7 @@ namespace ViewFaceCore
             {
                 width = source.Width;
                 height = source.Height;
-                return ConvertToBGRByte(source, channels);
+                return ConvertToByte((Image<Bgra32>)source, channels);
             }
             else
             {
@@ -72,7 +67,7 @@ namespace ViewFaceCore
                 {
                     width = bitmap.Width;
                     height = bitmap.Height;
-                    return ConvertToBGRByte(source, channels);
+                    return ConvertToByte((Image<Bgra32>)bitmap, channels);
                 }
             }
         }
@@ -84,23 +79,17 @@ namespace ViewFaceCore
         /// <param name="channels"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private static byte[] ConvertToBGRByte(Image<Bgra32> source, int channels)
+        private static byte[] ConvertToByte(Image<Bgra32> source, int channels)
         {
-            byte[] array;
-
-            byte[] pixelBytes = new byte[source.Width * source.Height * Unsafe.SizeOf<Rgba32>()];
+            byte[] pixelBytes = new byte[source.Width * source.Height * Unsafe.SizeOf<Bgra32>()];
             source.CopyPixelDataTo(pixelBytes);
-
-            Rgba32[] pixelArray = new Rgba32[source.Width * source.Height];
-            source.GetPixelSpan(pixelArray);
-
-            byte[] bgra = new byte[array.Length / 4 * channels];
+            byte[] bgra = new byte[pixelBytes.Length / 4 * channels];
             // brga
             int j = 0;
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < pixelBytes.Length; i++)
             {
                 if ((i + 1) % 4 == 0) continue;
-                bgra[j] = array[i];
+                bgra[j] = pixelBytes[i];
                 j++;
             }
             return bgra;
