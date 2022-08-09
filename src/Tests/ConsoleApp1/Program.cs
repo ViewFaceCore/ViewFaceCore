@@ -1,4 +1,4 @@
-﻿using SkiaSharp;
+﻿using SixLabors.ImageSharp;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -27,34 +27,34 @@ namespace ConsoleApp1
             while (true)
             {
                 //口罩识别测试
-                //MaskDetectorTest();
+                MaskDetectorTest();
 
-                ////人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //FaceDetectorAndFaceMarkTest();
+                //人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                FaceDetectorAndFaceMarkTest();
 
-                ////活体检测测试，通过24h测试，20220728
+                //活体检测测试，通过24h测试，20220728
                 AntiSpoofingTest();
 
-                ////质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
-                //FaceQualityTest();
+                //质量评估测试，开始：2022 - 07 - 28 09:57，结束：,结果：通过
+                FaceQualityTest();
 
-                ////人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
-                //FaceTrackTest();
+                //人脸追踪测试，开始：2022/07/29 16:45:18，结束：2022/07/29 17:50:01,结果：通过
+                FaceTrackTest();
 
-                ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //ExtractTest();
+                //人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                ExtractTest();
 
-                ////年龄预测测试
-                //FaceAgePredictorTest();
+                //年龄预测测试
+                FaceAgePredictorTest();
 
-                ////性别预测测试
-                //FaceGenderPredictorTest();
+                //性别预测测试
+                FaceGenderPredictorTest();
 
-                ////眼睛状态检测测试
-                //FaceEyeStateDetectorTest();
+                //眼睛状态检测测试
+                FaceEyeStateDetectorTest();
 
-                ////人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                //CompareTest();
+                //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
+                CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -62,7 +62,7 @@ namespace ConsoleApp1
 
         private static void FaceDetectorAndFaceMarkTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             Stopwatch sw = new Stopwatch();
@@ -79,7 +79,7 @@ namespace ConsoleApp1
 
         private static void FaceQualityTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceQuality faceQuality = new FaceQuality();
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
@@ -121,7 +121,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void AntiSpoofingTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(maskImagePath);
+            using var bitmap = ConvertImage(maskImagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             logger.Info("开始加载活体识别....");
@@ -146,7 +146,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void FaceTrackTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceTracker faceTrack = new FaceTracker(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
             Worker((sw, i) =>
             {
@@ -165,7 +165,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void ExtractTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceRecognizer faceRecognizer = new FaceRecognizer();
@@ -181,7 +181,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void FaceAgePredictorTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             using AgePredictor agePredictor = new AgePredictor();
@@ -197,7 +197,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void FaceGenderPredictorTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             using GenderPredictor genderPredictor = new GenderPredictor();
@@ -213,7 +213,7 @@ namespace ConsoleApp1
         /// </summary>
         private static void FaceEyeStateDetectorTest()
         {
-            using SKBitmap bitmap = SKBitmap.Decode(imagePath);
+            using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
             using EyeStateDetector eyeStateDetector = new EyeStateDetector();
@@ -229,8 +229,8 @@ namespace ConsoleApp1
         /// </summary>
         private static void CompareTest()
         {
-            using SKBitmap bitmap0 = SKBitmap.Decode(imagePath);
-            using SKBitmap bitmap1 = SKBitmap.Decode(imagePath1);
+            using var bitmap0 = ConvertImage(imagePath);
+            using var bitmap1 = ConvertImage(imagePath1);
 
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
@@ -257,8 +257,8 @@ namespace ConsoleApp1
             {
                 throw new Exception("图像不存在！");
             }
-            using var bitmap_nomask = SKBitmap.Decode(imagePath);
-            using var bitmap_mask = SKBitmap.Decode(maskImagePath);
+            using var bitmap_nomask = ConvertImage(imagePath);
+            using var bitmap_mask = ConvertImage(maskImagePath);
 
             using MaskDetector maskDetector = new MaskDetector();
             using FaceDetector faceDetector = new FaceDetector();
@@ -280,14 +280,14 @@ namespace ConsoleApp1
 
         #region Helpers
 
-        private static FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
+        private static FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, Image bitmap)
         {
             var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
             return faceMark.Mark(bitmap, info);
         }
 
-        private static float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
+        private static float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, Image bitmap)
         {
             return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }
@@ -314,6 +314,11 @@ namespace ConsoleApp1
                 }
             }
             sw2.Stop();
+        }
+
+        public static Image ConvertImage(string path)
+        {
+            return Image.Load(imagePath);
         }
 
         #endregion
