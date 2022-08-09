@@ -16,8 +16,7 @@ namespace ViewFaceCore
         public static FaceImage ToFaceImage(this SKBitmap image)
         {
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
-            FaceImage faceImage = new FaceImage(width, height, channels, data);
-            return faceImage;
+            return new FaceImage(width, height, channels, data);
         }
 
         /// <summary>

@@ -1,8 +1,16 @@
 ﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.ColorSpaces.Conversion;
+using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.PixelFormats;
 using System;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Extension.ImageSharp
+namespace ViewFaceCore
 {
     public static class ViewFaceImageSharpExtension
     {
@@ -14,8 +22,7 @@ namespace ViewFaceCore.Extension.ImageSharp
         public static FaceImage ToFaceImage(this Image image)
         {
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
-            FaceImage faceImage = new FaceImage(width, height, channels, data);
-            return faceImage;
+            return new FaceImage(width, height, channels, data);
         }
 
         /// <summary>
@@ -53,25 +60,50 @@ namespace ViewFaceCore.Extension.ImageSharp
                 throw new ArgumentNullException(nameof(source));
             }
             channels = 3;
-            width = source.Width;
-            height = source.Height;
-            //if (source.ColorType != targetColorType)
-            //{
-            //    using (SKBitmap bitmap = ConvertToBgra8888(source))
-            //    {
-            //        width = bitmap.Width;
-            //        height = bitmap.Height;
-            //        return ConvertToBGRByte(bitmap, channels);
-            //    }
-            //}
-            //else
-            //{
-            //    width = source.Width;
-            //    height = source.Height;
-            //    return ConvertToBGRByte(source, channels);
-            //}
+            if (source.GetType()?.GenericTypeArguments?.Any(p => p == typeof(Bgra32)) == true)
+            {
+                width = source.Width;
+                height = source.Height;
+                return ConvertToBGRByte(source, channels);
+            }
+            else
+            {
+                using (var bitmap = source.CloneAs<Bgra32>())
+                {
+                    width = bitmap.Width;
+                    height = bitmap.Height;
+                    return ConvertToBGRByte(source, channels);
+                }
+            }
+        }
 
-            return new byte[channels];
+        /// <summary>
+        /// 转为BGR Bytes
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="channels"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private static byte[] ConvertToBGRByte(Image<Bgra32> source, int channels)
+        {
+            byte[] array;
+
+            byte[] pixelBytes = new byte[source.Width * source.Height * Unsafe.SizeOf<Rgba32>()];
+            source.CopyPixelDataTo(pixelBytes);
+
+            Rgba32[] pixelArray = new Rgba32[source.Width * source.Height];
+            source.GetPixelSpan(pixelArray);
+
+            byte[] bgra = new byte[array.Length / 4 * channels];
+            // brga
+            int j = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                if ((i + 1) % 4 == 0) continue;
+                bgra[j] = array[i];
+                j++;
+            }
+            return bgra;
         }
     }
 }

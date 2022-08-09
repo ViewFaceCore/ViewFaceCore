@@ -13,14 +13,8 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
-	<!--Package Reference-->
-	<ItemGroup Condition="'$(TargetFramework)' == 'net462' or '$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="SkiaSharp">
-			<Version>2.88.0</Version>
-		</PackageReference>
-	</ItemGroup>
-
 	<ItemGroup>
+		<PackageReference Include="SkiaSharp" Version="2.88.0" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
 	</ItemGroup>
