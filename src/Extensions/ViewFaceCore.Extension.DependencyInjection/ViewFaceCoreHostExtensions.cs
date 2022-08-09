@@ -11,10 +11,14 @@ namespace ViewFaceCore.Extension.DependencyInjection
 {
     public static class ViewFaceCoreHostExtensions
     {
-        public static IServiceCollection AddViewFaceCore(this IServiceCollection services, Action<ViewFaceCoreOptions> option)
+        public static IServiceCollection AddViewFaceCore(this IServiceCollection services, Action<ViewFaceCoreOptions> option = null)
         {
             try
             {
+                if(option == null)
+                {
+                    option = (o) =>{ };
+                }
                 services.Configure(ViewFaceCoreOptions.OptionName, option);
                 var options = GetOptions(services);
                 if (options == null)

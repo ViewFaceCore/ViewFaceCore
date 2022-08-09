@@ -16,6 +16,7 @@ namespace ViewFaceCore.Demo.WebApp.Controllers
             _logger = logger;
 
             FaceDetector faceDetector = faceFactory.Get<FaceDetector>();
+            FaceAntiSpoofing antiSpoofing = faceFactory.Get<FaceAntiSpoofing>();
         }
 
         public IActionResult Index()

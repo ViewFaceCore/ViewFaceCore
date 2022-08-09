@@ -12,10 +12,7 @@ namespace ViewFaceCore.Demo.WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             //添加人脸识别能力
-            builder.Services.AddViewFaceCore(o =>
-            {
-                o.IsEnableAll = true;
-            });
+            builder.Services.AddViewFaceCore();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
