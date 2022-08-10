@@ -20,6 +20,7 @@
 ## ⭐&nbsp;快速开始
 - ### 受支持的 .NET 框架 和 操作系统  
 
+
    | 目标框架 |最低版本 | 操作系统 |
    | :-: |:-: | :-: |
    | .NET Framework |4.0 | win ( x64/x86 ) |
@@ -27,42 +28,46 @@
    | .NET / .NET Core |3.1、5.0、6.0、7.0 | win ( x64/x86 )、linux ( arm/arm64/x64 ) |
 
 - ### 简单的人脸信息检测  
-   - 以 Windows x64 为例
-   1. 使用 [nuget](https://www.nuget.org) 安装依赖
+   - 以 Windows x64 为例  
+   1. 使用 [nuget](https://www.nuget.org) 安装依赖  
+   
       | 包名称 | 最小版本 | 生成文件夹 | 说明 |
       | :- | :-: | - | - |
-      | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.5` | —— | ViewFaceCore .NET 核心库 |
-      | [ViewFaceCore.model.face_detector](https://www.nuget.org/packages/ViewFaceCore.model.face_detector) | `6.0.0` | `models` | 人脸检测的模型支持 |
-      | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `6.0.2` | `viewfacecore\win\x64` | Windows-x64 的本机运行时 |
-	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | `6.0.2` |  —— | SkiaSharp图像处理扩展 |
+      | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.6` | —— | ViewFaceCore .NET 核心库 |
+      | [ViewFaceCore.all_models](https://www.nuget.org/packages/ViewFaceCore.all_models) | `6.0.6` | `models` | 人脸检测的模型支持(图省事可以直接安装这个) |
+      | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `6.0.6` | `viewfacecore\win\x64` | Windows-x64 的本机运行时，其它平台自行选择安装，可安装多个 |
+	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | `6.0.6` |  —— | SkiaSharp图像处理扩展，ImageSharp、SkiaSharp、System.Drawing三选一 |
 
    2. 获取人脸信息  
       ```csharp
-      using System;
-      using System.Drawing;
-      using ViewFaceCore.Sharp;
-      
-      namespace YourFaceProject
-      {
-          class Program
-          {
-              static void Main(string[] args)
-              {
-                  ViewFace face = new ViewFace();
-                  string filename = @"[your face image file path]";
-                  Bitmap bitmap = (Bitmap)Image.FromFile(filename);
-                  var infos = face.FaceDetector(bitmap);
-                  Console.WriteLine($"识别到的人脸数量：{infos.Length} 。人脸信息：\n");
-                  Console.WriteLine($"No.\t人脸置信度\t位置信息");
-                  for (int i = 0; i < infos.Length; i++)
-                  {
-                      Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
-                  }
-                  Console.Read();
-              }
-          }
-      }
+		using SkiaSharp;
+		using System;
+		using ViewFaceCore.Core;
+		using ViewFaceCore.Model;
+
+		namespace ViewFaceCore.Demo.ConsoleApp
+		{
+			internal class Program
+			{
+				private readonly static string imagePath = @"images/Jay_3.jpg";
+
+				static void Main(string[] args)
+				{
+					using var bitmap = SKBitmap.Decode(imagePath);
+					using FaceDetector faceDetector = new FaceDetector();
+					FaceInfo[] infos = faceDetector.Detect(bitmap);
+					Console.WriteLine($"识别到的人脸数量：{infos.Length} 个人脸信息：\n");
+					Console.WriteLine($"No.\t人脸置信度\t位置信息");
+					for (int i = 0; i < infos.Length; i++)
+					{
+						Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
+					}
+					Console.ReadKey();
+				}
+			}
+		}
       ```
+更多案例可以下载源码查看Demo。
 
 
 ## 🔧&nbsp;构建

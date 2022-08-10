@@ -18,6 +18,9 @@ namespace ViewFaceCore.Demo.ConsoleApp
         {
             Console.WriteLine("Hello, ViewFaceCore!");
 
+            //人脸识别Demo
+            FaceDetectorDemo();
+
             //戴口罩识别Demo
             MaskDetectorDemo();
 
@@ -28,6 +31,20 @@ namespace ViewFaceCore.Demo.ConsoleApp
             AntiSpoofingDemo();
 
             Console.ReadKey();
+        }
+
+        static void FaceDetectorDemo()
+        {
+            using var bitmap = SKBitmap.Decode(imagePath0);
+            using FaceDetector faceDetector = new FaceDetector();
+            FaceInfo[] infos = faceDetector.Detect(bitmap);
+            Console.WriteLine($"识别到的人脸数量：{infos.Length} 个人脸信息：\n");
+            Console.WriteLine($"No.\t人脸置信度\t位置信息");
+            for (int i = 0; i < infos.Length; i++)
+            {
+                Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
+            }
+            Console.WriteLine();
         }
 
         static void MaskDetectorDemo()
