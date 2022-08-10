@@ -2,6 +2,14 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
+		<Authors>WithSalt</Authors>
+		<Version>0.3.6</Version>
+		<OutputType>Library</OutputType>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -11,8 +19,28 @@
 		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
 	</ItemGroup>
 
+	<!--Project Reference-->
 	<ItemGroup>
 	  <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
+	
+	<!--Package Info-->
+	<ItemGroup>
+		<None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\..\..\assets\logos\WithSalt-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>ViewFaceCore.Extension.DependencyInjection</PackageId>
+		<Authors>WithSalt</Authors>
+		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
+		<PackageVersion>$(Version)</PackageVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIcon>WithSalt-Logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
+		<Description>ViewFaceCore 的 ImageSharp 实现。</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
+	</PropertyGroup>
 
 </Project>
