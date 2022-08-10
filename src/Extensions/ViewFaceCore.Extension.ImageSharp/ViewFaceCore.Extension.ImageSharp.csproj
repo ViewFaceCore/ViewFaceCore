@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!--Library Info-->
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>WithSalt</Authors>
@@ -8,25 +9,38 @@
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<None Include="..\..\..\assets\logos\WithSalt-Logo.png" Link="WithSalt-Logo.png">
-			<PackagePath></PackagePath>
-			<Pack>true</Pack>
-		</None>
-		<None Include="..\..\..\LICENSE" Link="LICENSE">
-			<PackagePath></PackagePath>
-			<Pack>true</Pack>
-		</None>
-	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
 	</ItemGroup>
 
+	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
 
 	<Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
+
+	<!--Package Info-->
+	<ItemGroup>
+		<None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
+		<None Include="..\..\..\assets\logos\WithSalt-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PackageId>ViewFaceCore.Extension.ImageSharp</PackageId>
+		<Authors>WithSalt</Authors>
+		<PackageTags>seetaface viewface face-identification face-recognition 人脸识别</PackageTags>
+		<PackageVersion>$(Version)</PackageVersion>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageIcon>WithSalt-Logo.png</PackageIcon>
+		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
+		<Description>ViewFaceCore 的 ImageSharp 实现。</Description>
+		<PackageReleaseNotes></PackageReleaseNotes>
+	</PropertyGroup>
 
 </Project>

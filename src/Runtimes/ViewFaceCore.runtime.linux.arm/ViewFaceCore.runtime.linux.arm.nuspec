@@ -7,7 +7,6 @@
 		<owners>ViewFaceCore</owners>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<license type="file">SeetaFace_LICENSE</license>
-		<readme>LICENSE</readme>
 		<icon>WithSalt-Logo.png</icon>
 		<description>ViewFaceCore Native libraries for Linux-arm</description>
 	</metadata>
@@ -31,6 +30,5 @@
 		<file src="ViewFaceCore.runtime.linux.arm.targets" target="build\ViewFaceCore.runtime.linux.arm.targets" />
 		<file src="..\..\..\assets\logos\WithSalt-Logo.png" target="WithSalt-Logo.png" />
 		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
-		<file src="..\..\..\LICENSE" target="LICENSE" />
 	</files>
 </package>

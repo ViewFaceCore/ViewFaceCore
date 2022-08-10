@@ -7,7 +7,6 @@
 		<owners>ViewFaceCore</owners>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<license type="file">SeetaFace_LICENSE</license>
-		<readme>LICENSE</readme>
 		<icon>View-Logo.png</icon>
 		<description>VC++ Native libraries for Windows (x64/x86)</description>
 	</metadata>
@@ -31,6 +30,5 @@
 		<file src="ViewFaceCore.runtime.win.vc.targets" target="build\ViewFaceCore.runtime.win.vc.targets" />
 		<file src="..\..\..\assets\logos\View-Logo.png" target="View-Logo.png" />
 		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
-		<file src="..\..\..\LICENSE" target="LICENSE" />
 	</files>
 </package>

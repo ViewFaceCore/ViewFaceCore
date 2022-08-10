@@ -3,12 +3,11 @@
 	<metadata>
 		<id>ViewFaceCore.runtime.ubuntu.20.04.x64</id>
 		<version>0.0.0</version>
-		<authors>View, SeetaFace</authors>
+		<authors>WithSalt, SeetaFace</authors>
 		<owners>ViewFaceCore</owners>
 		<requireLicenseAcceptance>true</requireLicenseAcceptance>
 		<license type="file">SeetaFace_LICENSE</license>
-		<readme>LICENSE</readme>
-		<icon>View-Logo.png</icon>
+		<icon>WithSalt-Logo.png</icon>
 		<description>ViewFaceCore Native libraries for Linux-x64 (Ubuntu 20.04)</description>
 	</metadata>
 	<files>
@@ -32,8 +31,7 @@
 		<file src="..\..\SeetaFace\index\build\lib64\libSeetaQualityAssessor300.so" target="build\viewfacecore\linux\x64\libSeetaQualityAssessor300.so" />
 
 		<file src="ViewFaceCore.runtime.ubuntu.20.04.x64.targets" target="build\ViewFaceCore.runtime.ubuntu.20.04.x64.targets" />
-		<file src="..\..\..\assets\logos\View-Logo.png" target="View-Logo.png" />
+		<file src="..\..\..\assets\logos\WithSalt-Logo.png" target="WithSalt-Logo.png" />
 		<file src="..\..\..\SeetaFace_LICENSE" target="SeetaFace_LICENSE" />
-		<file src="..\..\..\LICENSE" target="LICENSE" />
 	</files>
 </package>
