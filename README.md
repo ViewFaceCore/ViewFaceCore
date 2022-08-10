@@ -34,7 +34,7 @@
       | 包名称 | 最小版本 | 生成文件夹 | 说明 |
       | :- | :-: | - | - |
       | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | `0.3.6` | —— | ViewFaceCore .NET 核心库 |
-      | [ViewFaceCore.all_models](https://www.nuget.org/packages/ViewFaceCore.all_models) | `6.0.6` | `models` | 人脸检测的模型支持(图省事可以直接安装这个) |
+      | [ViewFaceCore.all_models](https://www.nuget.org/packages/ViewFaceCore.all_models) | `6.0.6` | `viewfacecore\models` | 人脸检测的模型支持(图省事可以直接安装这个) |
       | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `6.0.6` | `viewfacecore\win\x64` | Windows-x64 的本机运行时，其它平台自行选择安装，可安装多个 |
 	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | `6.0.6` |  —— | SkiaSharp图像处理扩展，ImageSharp、SkiaSharp、System.Drawing三选一 |
 
