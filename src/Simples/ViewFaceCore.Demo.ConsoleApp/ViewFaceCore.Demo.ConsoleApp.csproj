@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ViewFaceCore" Version="0.3.6" />
+    <PackageReference Include="ViewFaceCore.all_models" Version="6.0.6" />
+    <PackageReference Include="ViewFaceCore.Extension.SkiaSharp" Version="0.3.6" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm" Version="6.0.6" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm64" Version="6.0.6" />
+    <PackageReference Include="ViewFaceCore.runtime.ubuntu.20.04.x64" Version="6.0.6" />
+    <PackageReference Include="ViewFaceCore.runtime.win.vc" Version="6.0.0" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x64" Version="6.0.6" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x86" Version="6.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="images\Jay_3.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="images\Jay_4.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="images\mask_01.jpeg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
