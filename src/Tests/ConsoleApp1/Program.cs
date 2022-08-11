@@ -27,7 +27,7 @@ namespace ConsoleApp1
             while (true)
             {
                 //口罩识别测试
-                //MaskDetectorTest();
+                MaskDetectorTest();
 
                 ////人脸识别和标记测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
                 //FaceDetectorAndFaceMarkTest();
@@ -54,7 +54,7 @@ namespace ConsoleApp1
                 //FaceEyeStateDetectorTest();
 
                 //人脸对比测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                CompareTest();
+                //CompareTest();
             }
 
             Console.WriteLine("Hello, World!");
@@ -260,7 +260,13 @@ namespace ConsoleApp1
             using var bitmap_nomask = ConvertImage(imagePath);
             using var bitmap_mask = ConvertImage(maskImagePath);
 
-            using MaskDetector maskDetector = new MaskDetector();
+            using MaskDetector maskDetector = new MaskDetector(new MaskDetectConfig()
+            {
+                LogEvent = (string log) =>
+                {
+                    logger.Info(log);
+                }
+            });
             using FaceDetector faceDetector = new FaceDetector();
             //FaceType需要用口罩模型
             using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()

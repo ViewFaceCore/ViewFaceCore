@@ -15,5 +15,19 @@ namespace ViewFaceCore.Configs
         /// 目前只能作用CPU，GPU无法使用
         /// </remarks>
         public DeviceType DeviceType { get; set; } = DeviceType.AUTO;
+
+        public Action<string> LogEvent { get; set; }
+
+        /// <summary>
+        /// 对外写日志
+        /// </summary>
+        /// <param name="log"></param>
+        internal void WriteLog(string log)
+        {
+            if (LogEvent != null)
+            {
+                LogEvent(log);
+            }
+        }
     }
 }

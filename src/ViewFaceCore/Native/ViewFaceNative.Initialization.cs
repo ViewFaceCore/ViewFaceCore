@@ -43,16 +43,10 @@ namespace ViewFaceCore.Native
                     platform = "linux";
                 else
                     throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}");
-                string libraryPath;
-                if (!TryCombinePath(out libraryPath, "viewfacecore", platform, architecture))
-                    throw new DirectoryNotFoundException("Not found library path.");
-                if (Directory.Exists(libraryPath))
-                {
-                    _libraryPath = libraryPath;
-                    return _libraryPath;
-                }
-                else
-                    throw new DirectoryNotFoundException($"找不到本机库目录: {libraryPath}");
+                if (!TryCombinePath(out string libraryPath, "viewfacecore", platform, architecture))
+                    throw new DirectoryNotFoundException("Can not found library path.");
+                _libraryPath = libraryPath;
+                return _libraryPath;
             }
         }
 
@@ -67,13 +61,12 @@ namespace ViewFaceCore.Native
             {
                 if (!string.IsNullOrEmpty(_modelsPath))
                     return _modelsPath;
-                string modelsPath;
-                if (TryCombinePath(out modelsPath, "viewfacecore", "models"))
+                if (TryCombinePath(out string modelsPath, "viewfacecore", "models"))
                 {
                     _modelsPath = modelsPath;
                     return modelsPath;
                 }
-                throw new DirectoryNotFoundException("Not found models path.");
+                throw new DirectoryNotFoundException("Can not found models path.");
             }
         }
 
