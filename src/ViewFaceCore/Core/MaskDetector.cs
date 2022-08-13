@@ -46,7 +46,7 @@ namespace ViewFaceCore.Core
             {
                 float score = 0;
                 bool status = ViewFaceNative.PlotMask(_handle, ref image, info.Location, ref score);
-                return new PlotMaskResult(score, status);
+                return new PlotMaskResult(score, status, status && score > this.DetectConfig.Threshold);
             }
         }
 
