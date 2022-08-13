@@ -17,11 +17,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-	</ItemGroup>
-
-	<!--Project Reference-->
-	<ItemGroup>
-	  <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+		<PackageReference Include="ViewFaceCore" Version="0.3.7" />
 	</ItemGroup>
 	
 	<!--Package Info-->

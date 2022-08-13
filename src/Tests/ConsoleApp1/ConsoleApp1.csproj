@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NLog" Version="5.0.1" />
-		<PackageReference Include="ViewFaceCore.all_models" Version="6.0.5" />
+		<PackageReference Include="NLog" Version="5.0.2" />
+		<PackageReference Include="ViewFaceCore.all_models" Version="6.0.7" />
 	</ItemGroup>
 
 	<ItemGroup>
