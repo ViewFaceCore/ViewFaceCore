@@ -35,14 +35,14 @@ namespace ViewFaceCore.Native
                     case Architecture.X64: architecture = "x64"; break;
                     case Architecture.Arm: architecture = "arm"; break;
                     case Architecture.Arm64: architecture = "arm64"; break;
-                    default: throw new PlatformNotSupportedException($"不支持的处理器体系结构: {RuntimeInformation.ProcessArchitecture}");
+                    default: throw new PlatformNotSupportedException($"Unsupported processor architecture: {RuntimeInformation.ProcessArchitecture}");
                 }
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     platform = "win";
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                     platform = "linux";
                 else
-                    throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}");
+                    throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
                 if (!TryCombinePath(out string libraryPath, "viewfacecore", platform, architecture))
                     throw new DirectoryNotFoundException("Can not found library path.");
                 _libraryPath = libraryPath;
@@ -108,7 +108,7 @@ namespace ViewFaceCore.Native
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             { SetDllDirectory(LibraryPath); }
             else
-            { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
+            { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
 #elif NETCOREAPP3_1_OR_GREATER
             #region Resolver Libraries on Linux
             // Author: <a href="https://github.com/withsalt">withsalt</a>
@@ -120,7 +120,7 @@ namespace ViewFaceCore.Native
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             { format = "lib{0}.so"; }
             else
-            { throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}"); }
+            { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
 
             foreach (var library in Libraries)
             {
@@ -128,10 +128,10 @@ namespace ViewFaceCore.Native
                 if (File.Exists(libraryPath))
                 {
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
-                    { throw new BadImageFormatException($"加载本机库失败: {library}"); }
+                    { throw new BadImageFormatException($"NativeLibrary.Load can not load library {library}."); }
                 }
                 else if(!libraryPath.Contains("tennis_"))
-                { throw new FileNotFoundException($"找不到本机库：{libraryPath}"); }
+                { throw new FileNotFoundException($"Can not found library {libraryPath}."); }
             }
 
             NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
@@ -146,7 +146,7 @@ namespace ViewFaceCore.Native
             });
             #endregion
 #else
-            throw new PlatformNotSupportedException($"不支持的 .NET 平台: {RuntimeInformation.FrameworkDescription}");
+            throw new PlatformNotSupportedException($"Unsupported .net runtime {RuntimeInformation.FrameworkDescription}");
 #endif
             //设置模型位置
             SetModelPath(ModelsPath);

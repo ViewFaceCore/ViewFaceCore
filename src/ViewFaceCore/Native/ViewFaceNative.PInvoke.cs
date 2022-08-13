@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Native
@@ -24,13 +25,16 @@ namespace ViewFaceCore.Native
         #region Common
 
         /// <summary>
-        /// 设置人脸模型的目录
+        /// 设置人脸模型的目录（Windows）
         /// </summary>
         /// <param name="path"></param>
         [DllImport(LIBRARY_NAME, EntryPoint = "SetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         private extern static void SetModelPathWindows(string path);
 
-
+        /// <summary>
+        /// 设置人脸模型的目录（Linux）
+        /// </summary>
+        /// <param name="path"></param>
         [DllImport(LIBRARY_NAME, EntryPoint = "SetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         private extern static void SetModelPathLinux(byte[] path);
 
@@ -49,8 +53,13 @@ namespace ViewFaceCore.Native
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
                 SetModelPathLinux(Encoding.UTF8.GetBytes(path));
             else
-                throw new PlatformNotSupportedException($"不支持的操作系统: {RuntimeInformation.OSDescription}");
+                throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
+
+            if (!path.Equals(GetModelPath()))
+                throw new ViewFaceInitException($"Set model path to '{path}' failed, failed to verify this path.");
         }
+
+        private static string _modelPath = null;
 
         /// <summary>
         /// 获取人脸模型的目录
@@ -60,6 +69,10 @@ namespace ViewFaceCore.Native
         private extern static void GetModelPath(StringBuilder outPath, ref int size);
         public static string GetModelPath()
         {
+            if (!string.IsNullOrWhiteSpace(_modelPath))
+            {
+                return _modelPath;
+            }
             StringBuilder result = new StringBuilder(MAX_PATH_LENGTH);
             int size = 0;
             GetModelPath(result, ref size);
@@ -67,7 +80,8 @@ namespace ViewFaceCore.Native
             {
                 throw new NotSupportedException($"The path is too long, not support path more than {MAX_PATH_LENGTH} byte.");
             }
-            return result.ToString();
+            _modelPath = result?.ToString();
+            return _modelPath;
         }
 
         /// <summary>
