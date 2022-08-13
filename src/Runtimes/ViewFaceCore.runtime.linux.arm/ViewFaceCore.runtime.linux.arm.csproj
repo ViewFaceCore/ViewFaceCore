@@ -6,7 +6,7 @@
 
 	<!--项目引用方式-->
 	<ItemGroup>
-		<None Include="..\..\Bridges\Linux\ViewFaceBridge\bin\Release\ARM\libViewFaceBridge.so" Link="viewfacecore\linux\arm\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="..\..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\ARM\libViewFaceBridge.so" Link="viewfacecore\linux\arm\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
 		
 		<None Include="..\..\SeetaFace\index\build\lib\arm\libtennis.so" Link="viewfacecore\linux\arm\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\lib\arm\libSeetaAgePredictor600.so" Link="viewfacecore\linux\arm\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />

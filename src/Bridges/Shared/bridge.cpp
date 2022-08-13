@@ -1,4 +1,6 @@
 #include "bridge.h"
+#include "common/str.h"
+#include "common/common.h"
 
 #if WINDOWS
 
@@ -17,41 +19,48 @@ using namespace seeta;
 
 #pragma region Common
 
-/// <summary>
-/// 释放
-/// </summary>
-/// <typeparam name="T"></typeparam>
-/// <param name="ptr"></param>
-template <typename T>
-void _dispose(T &ptr)
-{
-	if (ptr != nullptr)
-	{
-		try
-		{
-			delete ptr;
-			ptr = nullptr;
-		}
-		catch (int e)
-		{
-		}
-	}
-}
-
 // 模型所在路径
 string modelPath = "./viewfacecore/models/";
 
+#if WINDOWS
+
 // 设置人脸模型目录
-View_Api void SetModelPath(const char *path)
+View_Api void SetModelPath(const wchar_t* path)
+{
+	wstring wstrModelPath(path);
+	modelPath = str::wstr_to_str(wstrModelPath);
+}
+
+// 获取人脸模型目录
+View_Api void GetModelPath(wchar_t* outPath, int* size)
+{
+	wstring path = str::str_to_wstr(modelPath);
+	*size = path.length();
+	if (*size > 1024) {
+		return;
+	}
+	wcscpy(outPath, path.c_str());
+}
+
+#elif LINUX
+
+// 设置人脸模型目录
+View_Api void SetModelPath(const char* path)
 {
 	modelPath = path;
 }
 
 // 获取人脸模型目录
-View_Api void GetModelPath(char **path)
+View_Api void GetModelPath(char* outPath, int* size)
 {
-	strcpy(*path, modelPath.c_str());
+	*size = modelPath.length();
+	if (*size > 1024) {
+		return;
+	}
+	strcpy(outPath, modelPath.c_str());
 }
+
+#endif
 
 // 释放由 malloc 分配的内存
 View_Api void Free(void *address)

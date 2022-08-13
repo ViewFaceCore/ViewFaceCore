@@ -4,6 +4,9 @@
     <Filter Include="seetaEx">
       <UniqueIdentifier>{aa21502a-16e5-4b82-babf-2dd531eb83fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{dec5f71e-1dde-4be3-a09c-c7075029c0dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)seetaEx\QualityOfClarityEx.h">
@@ -13,8 +16,17 @@
       <Filter>seetaEx</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)bridge.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)common\str.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)common\common.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)bridge.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)common\str.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
