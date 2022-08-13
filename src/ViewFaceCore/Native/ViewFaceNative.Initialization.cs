@@ -110,10 +110,6 @@ namespace ViewFaceCore.Native
             else
             { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
 #elif NETCOREAPP3_1_OR_GREATER
-            #region Resolver Libraries on Linux
-            // Author: <a href="https://github.com/withsalt">withsalt</a>
-            // 预加载 ViewFaceBridge 的所有依赖库
-
             string format;
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             { format = "{0}.dll"; }
@@ -130,21 +126,17 @@ namespace ViewFaceCore.Native
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                     { throw new BadImageFormatException($"NativeLibrary.Load can not load library {library}."); }
                 }
-                else if(!libraryPath.Contains("tennis_"))
+                else if(!libraryPath.StartsWith("tennis_"))
                 { throw new FileNotFoundException($"Can not found library {libraryPath}."); }
             }
 
-            NativeLibrary.SetDllImportResolver(Assembly.GetExecutingAssembly(), (libraryName, assembly, searchPath) =>
+            NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ViewFaceNative)), (libraryName, assembly, searchPath) =>
             {
-                var library = "ViewFaceBridge";
-                if (libraryName.Equals(library, StringComparison.OrdinalIgnoreCase))
-                {
-                    string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
-                    return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.AssemblyDirectory);
-                }
-                return IntPtr.Zero;
+                if (!libraryName.Equals(LIBRARY_NAME, StringComparison.OrdinalIgnoreCase))
+                    return IntPtr.Zero;
+                string libraryPath = Path.Combine(LibraryPath, string.Format(format, LIBRARY_NAME));
+                return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.AssemblyDirectory);
             });
-            #endregion
 #else
             throw new PlatformNotSupportedException($"Unsupported .net runtime {RuntimeInformation.FrameworkDescription}");
 #endif
