@@ -11,17 +11,26 @@ namespace ViewFaceCore.Model
     [StructLayout(LayoutKind.Sequential)]
     public struct FaceInfo : IFormattable
     {
-        private readonly FaceRect pos;
-        private readonly float score;
+        private FaceRect pos;
+        private float score;
 
         /// <summary>
         /// 人脸置信度
         /// </summary>
-        public float Score => score;
+        public float Score
+        {
+            get { return score; }
+            internal set { score = value; }
+        }
+
         /// <summary>
         /// 人脸位置
         /// </summary>
-        public FaceRect Location => pos;
+        public FaceRect Location
+        {
+            get { return pos; }
+            internal set { pos = value; }
+        }
 
         #region IFormattable
         /// <summary>

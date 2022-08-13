@@ -1,7 +1,7 @@
 @echo off
 
 set configuration=Release
-set version=6.0.6
+set version=6.0.7
 set output=..\packages
 
 echo ====================== pack ViewFaceCore.runtime.win.x64 ======================

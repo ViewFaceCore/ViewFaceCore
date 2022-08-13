@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>WithSalt</Authors>
-		<Version>0.3.6</Version>
+		<Version>0.3.7</Version>
 		<OutputType>Library</OutputType>
 		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
