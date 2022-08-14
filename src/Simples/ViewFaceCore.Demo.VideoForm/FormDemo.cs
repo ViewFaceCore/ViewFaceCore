@@ -1,4 +1,4 @@
-﻿using Accord.Video.DirectShow;
+﻿using AForge.Video.DirectShow;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

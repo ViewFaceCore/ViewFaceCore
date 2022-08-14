@@ -59,5 +59,19 @@ namespace ViewFaceCore.Model
             return $"{{{ptips}:{Pid}, {stips}:{Score}, {ltips}:{Location.ToString(format, formatProvider)}}}";
         }
         #endregion
+
+        /// <summary>
+        /// FaceTrackInfo转换为FaceInfo
+        /// </summary>
+        /// <param name="faceTrackInfo"></param>
+        /// <returns></returns>
+        public FaceInfo ToFaceInfo()
+        {
+            return new FaceInfo()
+            {
+                Score = this.Score,
+                Location = this.Location,
+            };
+        }
     }
 }

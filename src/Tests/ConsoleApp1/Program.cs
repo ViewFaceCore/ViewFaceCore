@@ -57,8 +57,6 @@ namespace ConsoleApp1
                 //人脸对比测试，开始：2022 / 07 / 30 00:12:51，结束：2022 / 07 / 30 09:04:30，结果：通过
                 CompareTest();
             }
-
-            Console.WriteLine("Hello, World!");
         }
 
         private static void FaceDetectorAndFaceMarkTest()
