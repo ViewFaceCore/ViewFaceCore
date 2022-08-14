@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ViewFaceCore.Demo.VideoForm")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("beisen.com")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ViewFaceCore.Demo.VideoForm")]
-[assembly: AssemblyCopyright("Copyright © beisen.com 2022")]
+[assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1efbb425-4938-425d-a05d-e105946588a7")]
+[assembly: Guid("bdc69cf5-9577-42b0-b1dd-ba877f31d3f3")]
 
 // Version information for an assembly consists of the following four values:
 //

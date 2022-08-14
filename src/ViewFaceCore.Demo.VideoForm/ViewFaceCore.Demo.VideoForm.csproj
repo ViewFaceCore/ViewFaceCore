@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1EFBB425-4938-425D-A05D-E105946588A7}</ProjectGuid>
+    <ProjectGuid>{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ViewFaceCore.Demo.VideoForm</RootNamespace>
     <AssemblyName>ViewFaceCore.Demo.VideoForm</AssemblyName>
@@ -24,10 +24,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,23 +35,35 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    <Reference Include="Accord, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.3.8.0\lib\net462\Accord.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Controls, Version=2.2.5.0, Culture=neutral, PublicKeyToken=a8ac264d1dc6b9d9, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.Controls.2.2.5\lib\AForge.Controls.dll</HintPath>
+    <Reference Include="Accord.Controls, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Controls.3.8.0\lib\net462\Accord.Controls.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Imaging, Version=2.2.5.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.Imaging.2.2.5\lib\AForge.Imaging.dll</HintPath>
+    <Reference Include="Accord.Controls.Imaging, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Controls.Imaging.3.8.0\lib\net462\Accord.Controls.Imaging.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Math, Version=2.2.5.0, Culture=neutral, PublicKeyToken=abba2e25397ee8c9, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.Math.2.2.5\lib\AForge.Math.dll</HintPath>
+    <Reference Include="Accord.Imaging, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Imaging.3.8.0\lib\net462\Accord.Imaging.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    <Reference Include="Accord.MachineLearning, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.MachineLearning.3.8.0\lib\net462\Accord.MachineLearning.dll</HintPath>
     </Reference>
-    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
-      <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+    <Reference Include="Accord.Math, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net462\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Math.3.8.0\lib\net462\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Statistics.3.8.0\lib\net462\Accord.Statistics.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Video.3.8.0\lib\net462\Accord.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video.DirectShow, Version=3.8.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Video.DirectShow.3.8.0\lib\net462\Accord.Video.DirectShow.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,6 +84,9 @@
     </Reference>
     <Reference Include="ViewFaceCore.Extension.SystemDrawing, Version=0.3.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ViewFaceCore.Extension.SystemDrawing.0.3.7\lib\net461\ViewFaceCore.Extension.SystemDrawing.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph, Version=5.1.7.430, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZedGraph.5.1.7\lib\net35-Client\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -112,12 +126,17 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="License-LGPL.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Accord.3.8.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.0\build\Accord.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.3.8.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.8.0\build\Accord.targets'))" />
     <Error Condition="!Exists('..\packages\ViewFaceCore.model.age_predictor.6.0.7\build\ViewFaceCore.model.age_predictor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.model.age_predictor.6.0.7\build\ViewFaceCore.model.age_predictor.targets'))" />
     <Error Condition="!Exists('..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets'))" />
     <Error Condition="!Exists('..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets'))" />
@@ -135,9 +154,8 @@
     <Error Condition="!Exists('..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets'))" />
     <Error Condition="!Exists('..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets'))" />
     <Error Condition="!Exists('..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets'))" />
+    <Error Condition="!Exists('..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets'))" />
   </Target>
-  <Import Project="..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets" Condition="Exists('..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" />
   <Import Project="..\packages\ViewFaceCore.model.age_predictor.6.0.7\build\ViewFaceCore.model.age_predictor.targets" Condition="Exists('..\packages\ViewFaceCore.model.age_predictor.6.0.7\build\ViewFaceCore.model.age_predictor.targets')" />
   <Import Project="..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets" Condition="Exists('..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets')" />
   <Import Project="..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets" Condition="Exists('..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets')" />
@@ -155,5 +173,5 @@
   <Import Project="..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets" Condition="Exists('..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" />
   <Import Project="..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets" Condition="Exists('..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets')" />
   <Import Project="..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets" Condition="Exists('..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets')" />
-  <Import Project="..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" />
+  <Import Project="..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets" Condition="Exists('..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" />
 </Project>

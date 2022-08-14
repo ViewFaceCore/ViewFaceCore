@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.WebApp", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.ConsoleApp", "Simples\ViewFaceCore.Demo.ConsoleApp\ViewFaceCore.Demo.ConsoleApp.csproj", "{EEB67CAD-4667-4325-A14E-8427372CB568}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Demo.VideoForm", "ViewFaceCore.Demo.VideoForm\ViewFaceCore.Demo.VideoForm.csproj", "{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{EEB67CAD-4667-4325-A14E-8427372CB568}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEB67CAD-4667-4325-A14E-8427372CB568}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEB67CAD-4667-4325-A14E-8427372CB568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +36,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{79A8B1BC-CE16-418C-A709-7F0D6D910F07} = {2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}
 		{EEB67CAD-4667-4325-A14E-8427372CB568} = {2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}
+		{BDC69CF5-9577-42B0-B1DD-BA877F31D3F3} = {2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80AB26C7-63C8-4E0F-B40C-21B9AEE7EE41}

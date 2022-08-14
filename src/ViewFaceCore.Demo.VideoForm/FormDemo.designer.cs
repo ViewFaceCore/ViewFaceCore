@@ -32,7 +32,7 @@
             this.ButtonStart = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.FacePictureBox = new System.Windows.Forms.PictureBox();
-            this.VideoPlayer = new AForge.Controls.VideoSourcePlayer();
+            this.VideoPlayer = new Accord.Controls.VideoSourcePlayer();
             this.CheckBoxFaceProperty = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.CheckBoxFPS = new System.Windows.Forms.CheckBox();
@@ -226,7 +226,7 @@
         private System.Windows.Forms.Button ButtonStart;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.PictureBox FacePictureBox;
-        private AForge.Controls.VideoSourcePlayer VideoPlayer;
+        private Accord.Controls.VideoSourcePlayer VideoPlayer;
         private System.Windows.Forms.CheckBox CheckBoxFaceProperty;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox CheckBoxFPS;

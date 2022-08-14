@@ -27,8 +27,9 @@ namespace ViewFaceCore.Demo.VideoForm
         FaceRecognizer _faceRecognizer = null;
         //FaceType需要用口罩模型
         FaceRecognizer _maskFaceRecognizer = null;
-
+        //年龄预测
         AgePredictor _agePredictor = null;
+        //性别预测
         GenderPredictor _genderPredictor = null;
         //人脸追踪
         FaceTracker _faceTracker = null;
