@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ViewFaceCore.Extension.DependencyInjection;
 
-namespace ViewFaceCore.Demo.WebApp
+namespace ViewFaceCore.Example.WebApp
 {
     public class Program
     {

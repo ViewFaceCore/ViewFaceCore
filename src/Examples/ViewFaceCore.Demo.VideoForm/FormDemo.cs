@@ -13,7 +13,7 @@ using ViewFaceCore.Core;
 using ViewFaceCore.Extensions;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Demo.VideoForm
+namespace ViewFaceCore.Example.VideoForm
 {
     public partial class FormDemo : Form
     {

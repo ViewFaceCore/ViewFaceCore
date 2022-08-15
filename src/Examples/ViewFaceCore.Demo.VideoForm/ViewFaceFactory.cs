@@ -7,7 +7,7 @@ using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Demo.VideoForm
+namespace ViewFaceCore.Example.VideoForm
 {
     internal class ViewFaceFactory : IDisposable
     {

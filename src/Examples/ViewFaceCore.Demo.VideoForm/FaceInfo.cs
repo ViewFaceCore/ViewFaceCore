@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Demo.VideoForm
+namespace ViewFaceCore.Example.VideoForm
 {
     internal class FaceInfo
     {

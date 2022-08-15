@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simples", "Simples", "{2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.WebApp", "Simples\ViewFaceCore.Demo.WebApp\ViewFaceCore.Demo.WebApp.csproj", "{79A8B1BC-CE16-418C-A709-7F0D6D910F07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Examples.WebApp", "Examples\ViewFaceCore.Demo.WebApp\ViewFaceCore.Demo.WebApp.csproj", "{79A8B1BC-CE16-418C-A709-7F0D6D910F07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.ConsoleApp", "Simples\ViewFaceCore.Demo.ConsoleApp\ViewFaceCore.Demo.ConsoleApp.csproj", "{EEB67CAD-4667-4325-A14E-8427372CB568}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Examples.ConsoleApp", "Examples\ViewFaceCore.Demo.ConsoleApp\ViewFaceCore.Demo.ConsoleApp.csproj", "{EEB67CAD-4667-4325-A14E-8427372CB568}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{DDEBEF3C-DEC0-4794-BFC9-9589D939CFE4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.DependencyInjection", "Extensions\ViewFaceCore.Extension.DependencyInjection\ViewFaceCore.Extension.DependencyInjection.csproj", "{16548705-7914-49CE-9CED-1A3E6759521E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Demo.VideoForm", "Simples\ViewFaceCore.Demo.VideoForm\ViewFaceCore.Demo.VideoForm.csproj", "{828ECF52-ADCD-446B-A8A4-95033CDE4584}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Example.VideoForm", "Examples\ViewFaceCore.Demo.VideoForm\ViewFaceCore.Demo.VideoForm.csproj", "{828ECF52-ADCD-446B-A8A4-95033CDE4584}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

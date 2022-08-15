@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ViewFaceCore.Demo.VideoForm
+namespace ViewFaceCore.Example.VideoForm
 {
     internal static class Program
     {

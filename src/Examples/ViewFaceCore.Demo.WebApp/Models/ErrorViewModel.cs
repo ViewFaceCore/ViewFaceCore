@@ -1,4 +1,4 @@
-namespace ViewFaceCore.Demo.WebApp.Models
+namespace ViewFaceCore.Example.WebApp.Models
 {
     public class ErrorViewModel
     {

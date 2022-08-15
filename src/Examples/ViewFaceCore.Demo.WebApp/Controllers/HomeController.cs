@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using ViewFaceCore.Core;
-using ViewFaceCore.Demo.WebApp.Models;
+using ViewFaceCore.Example.WebApp.Models;
 using ViewFaceCore.Extension.DependencyInjection;
 
-namespace ViewFaceCore.Demo.WebApp.Controllers
+namespace ViewFaceCore.Example.WebApp.Controllers
 {
     public class HomeController : Controller
     {

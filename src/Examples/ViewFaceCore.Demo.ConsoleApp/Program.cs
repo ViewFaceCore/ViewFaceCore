@@ -6,7 +6,7 @@ using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Demo.ConsoleApp
+namespace ViewFaceCore.Example.ConsoleApp
 {
     internal class Program
     {

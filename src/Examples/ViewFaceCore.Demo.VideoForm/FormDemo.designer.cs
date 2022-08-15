@@ -1,4 +1,4 @@
-﻿namespace ViewFaceCore.Demo.VideoForm
+﻿namespace ViewFaceCore.Example.VideoForm
 {
     partial class FormDemo
     {

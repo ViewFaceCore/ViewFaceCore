@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtimes", "Runtimes", "{29
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{E277C41E-DE26-47CB-B0C5-8689ADFDFB89}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simples", "Simples", "{2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{2BEC960C-7BF8-4CD0-929A-1EAEFAE2BA0E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2780DF13-BDD3-4FC4-A5EB-FFB915255F05}"
 EndProject
@@ -91,7 +91,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.model.quality_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "Tests\ConsoleApp1\ConsoleApp1.csproj", "{1141407A-9DD9-4016-8CF8-3DCBD881FBDD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.WebApp", "Simples\ViewFaceCore.Demo.WebApp\ViewFaceCore.Demo.WebApp.csproj", "{6ECB7270-4B9B-4BB2-BC6A-7E6E6DCFB1AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Example.WebApp", "Examples\ViewFaceCore.Demo.WebApp\ViewFaceCore.Example.WebApp.csproj", "{6ECB7270-4B9B-4BB2-BC6A-7E6E6DCFB1AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.DependencyInjection", "Extensions\ViewFaceCore.Extension.DependencyInjection\ViewFaceCore.Extension.DependencyInjection.csproj", "{DB02C833-48CB-49E4-A84C-696CD3FB2BC1}"
 EndProject
@@ -99,9 +99,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCoreImageSharpTest"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Extension.ImageSharp", "Extensions\ViewFaceCore.Extension.ImageSharp\ViewFaceCore.Extension.ImageSharp.csproj", "{F9DA2529-A46A-4A24-AFF4-A55872796C45}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Demo.ConsoleApp", "Simples\ViewFaceCore.Demo.ConsoleApp\ViewFaceCore.Demo.ConsoleApp.csproj", "{78A5E9E0-AAF6-49B6-AC64-1E49C4E8CC50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.Example.ConsoleApp", "Examples\ViewFaceCore.Demo.ConsoleApp\ViewFaceCore.Example.ConsoleApp.csproj", "{78A5E9E0-AAF6-49B6-AC64-1E49C4E8CC50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Demo.VideoForm", "Simples\ViewFaceCore.Demo.VideoForm\ViewFaceCore.Demo.VideoForm.csproj", "{828ECF52-ADCD-446B-A8A4-95033CDE4584}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewFaceCore.Example.VideoForm", "Examples\ViewFaceCore.Demo.VideoForm\ViewFaceCore.Example.VideoForm.csproj", "{828ECF52-ADCD-446B-A8A4-95033CDE4584}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
