@@ -7,7 +7,7 @@ using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Example.VideoForm
+namespace ViewFaceCore.Demo.VideoForm
 {
     internal class ViewFaceFactory : IDisposable
     {
@@ -78,7 +78,7 @@ namespace ViewFaceCore.Example.VideoForm
                         if (_faceTracker == null)
                             _faceTracker = new FaceTracker(new FaceTrackerConfig(this.Width, this.Height)
                             {
-                                FaceSize = 80,
+                                FaceSize = 20,
                                 Stable = true,
                             });
                         return _faceTracker as T;
