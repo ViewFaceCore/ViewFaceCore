@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ViewFaceCore.Example.VideoForm
+namespace ViewFaceCore.Demo.VideoForm
 {
     internal static class Program
     {
@@ -16,7 +16,7 @@ namespace ViewFaceCore.Example.VideoForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormDemo());
+            Application.Run(new MainForm());
         }
     }
 }

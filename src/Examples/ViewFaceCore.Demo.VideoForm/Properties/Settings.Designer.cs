@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ViewFaceCore.Example.VideoForm.Properties
+namespace ViewFaceCore.Demo.VideoForm.Properties
 {
 
 
