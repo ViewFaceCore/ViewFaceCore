@@ -22,8 +22,8 @@ namespace ViewFaceCore.Demo.VideoForm
 {
     public partial class MainForm : Form
     {
-        private static int _videoWidth = 1280;
-        private static int _videoHeight = 720;
+        private static int _videoWidth = 640;
+        private static int _videoHeight = 480;
 
         public MainForm()
         {
@@ -113,7 +113,13 @@ namespace ViewFaceCore.Demo.VideoForm
                 var videoResolution = videoCapture.VideoCapabilities.Where(p => p.FrameSize.Width == _videoWidth && p.FrameSize.Height == _videoHeight).FirstOrDefault();
                 if (videoResolution == null)
                 {
-                    MessageBox.Show($"摄像头不支持拍摄分辨率为{_videoHeight}x{_videoHeight}的视频，请重新指定分辨率，或更换摄像头！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    List<string> supports = videoCapture.VideoCapabilities.OrderBy(p => p.FrameSize.Width).Select(p => $"{p.FrameSize.Width}x{p.FrameSize.Height}").ToList();
+                    string supportStr = "无，或获取失败";
+                    if (supports.Any())
+                    {
+                        supportStr = string.Join("|", supports);
+                    }
+                    MessageBox.Show($"摄像头不支持拍摄分辨率为{_videoWidth}x{_videoHeight}的视频，请重新指定分辨率。\n支持分辨率：{supportStr}", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 videoCapture.VideoResolution = videoResolution;
