@@ -1,4 +1,5 @@
 ﻿using AForge.Video.DirectShow;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -22,31 +23,41 @@ namespace ViewFaceCore.Demo.VideoForm
 {
     public partial class MainForm : Form
     {
-        private static int _videoWidth = 640;
-        private static int _videoHeight = 480;
+        private const string _enableBtnText = "关闭摄像头";
+        private const string _disableBtnText = "打开摄像头并识别人脸";
+
+        /// <summary>
+        /// 摄像头设备信息集合
+        /// </summary>
+        private FilterInfoCollection _videoDevices;
+
+        private ViewFaceFactory _faceFactory;
+
+        private CameraSettings _cameraSettings;
+
+        private VideoCaptureDevice videoCapture = null;
+        List<double> fpsList = new List<double>();
+        double fps = 0;
+        Stopwatch stopwatchFPS = new Stopwatch();
+        Stopwatch stopwatch = new Stopwatch();
 
         public MainForm()
         {
             InitializeComponent();
 
+            //加载配置
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            _cameraSettings = configuration.GetSection("CameraSettings").Get<CameraSettings>();
+            if (_cameraSettings == null || _cameraSettings.Height == 0 || _cameraSettings.Width == 0)
+            {
+                throw new Exception("加载配置文件appsettings.json失败，请检查配置文件是否存在！");
+            }
         }
 
-        /// <summary>
-        /// 摄像头设备信息集合
-        /// </summary>
-        FilterInfoCollection VideoDevices;
-
-        /// <summary>
-        /// 取消令牌
-        /// </summary>
-        CancellationTokenSource Token { get; set; }
-
-        ViewFaceFactory faceFactory = new ViewFaceFactory(_videoWidth, _videoHeight);
-
-        /// <summary>
-        /// 指示是否应关闭窗体
-        /// </summary>
-        bool IsClose = false;
+        #region Events
 
         /// <summary>
         /// 窗体加载时
@@ -55,12 +66,11 @@ namespace ViewFaceCore.Demo.VideoForm
         /// <param name="e"></param>
         private void Form_Load(object sender, EventArgs e)
         {
-            // 隐藏摄像头画面控件
-            VideoPlayer.Visible = false;
             //初始化VideoDevices
-            VideoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            _videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
             comboBox1.Items.Clear();
-            foreach (FilterInfo info in VideoDevices)
+            foreach (FilterInfo info in _videoDevices)
             {
                 comboBox1.Items.Add(info.Name);
             }
@@ -68,10 +78,16 @@ namespace ViewFaceCore.Demo.VideoForm
             {
                 comboBox1.SelectedIndex = 0;
             }
+            ButtonStart.Text = _disableBtnText;
             //默认禁用拍照按钮
             ButtonSave.Enabled = false;
 
-            ButtonStart_Click(null, null);
+            if (_videoDevices.Count > 0)
+            {
+                _faceFactory = new ViewFaceFactory(_cameraSettings.Width, _cameraSettings.Height);
+            }
+            CheckBoxDetect.Checked = false;
+            //ButtonStart_Click(null, null);
         }
 
         /// <summary>
@@ -81,14 +97,9 @@ namespace ViewFaceCore.Demo.VideoForm
         /// <param name="e"></param>
         private void Form_Closing(object sender, FormClosingEventArgs e)
         {
+            Thread.Sleep(100);
             //释放人脸识别对象
-            faceFactory.Dispose();
-            Token?.Cancel();
-            if (!IsClose && VideoPlayer.IsRunning)
-            { // 若摄像头开启时，点击关闭是暂不关闭，并设置关闭窗口的标识，待摄像头等设备关闭后，再关闭窗体。
-                e.Cancel = true;
-                IsClose = true;
-            }
+            _faceFactory?.Dispose();
         }
 
         /// <summary>
@@ -98,77 +109,196 @@ namespace ViewFaceCore.Demo.VideoForm
         /// <param name="e"></param>
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            if (VideoPlayer.IsRunning)
+            if (ButtonStart.Text == _enableBtnText)
             {
-                Token?.Cancel();
-                ButtonStart.Text = "打开摄像头并识别人脸";
-                ButtonSave.Enabled = false;
+                Stop();
+            }
+            else if (ButtonStart.Text == _disableBtnText)
+            {
+                Start();
             }
             else
             {
-                if (comboBox1.SelectedIndex == -1)
-                    return;
-                FilterInfo info = VideoDevices[comboBox1.SelectedIndex];
-                VideoCaptureDevice videoCapture = new VideoCaptureDevice(info.MonikerString);
-                var videoResolution = videoCapture.VideoCapabilities.Where(p => p.FrameSize.Width == _videoWidth && p.FrameSize.Height == _videoHeight).FirstOrDefault();
-                if (videoResolution == null)
-                {
-                    List<string> supports = videoCapture.VideoCapabilities.OrderBy(p => p.FrameSize.Width).Select(p => $"{p.FrameSize.Width}x{p.FrameSize.Height}").ToList();
-                    string supportStr = "无，或获取失败";
-                    if (supports.Any())
-                    {
-                        supportStr = string.Join("|", supports);
-                    }
-                    MessageBox.Show($"摄像头不支持拍摄分辨率为{_videoWidth}x{_videoHeight}的视频，请重新指定分辨率。\n支持分辨率：{supportStr}", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                videoCapture.VideoResolution = videoResolution;
-                VideoPlayer.VideoSource = videoCapture;
-                VideoPlayer.Start();
-
-                ButtonStart.Text = "关闭摄像头";
-                Token = new CancellationTokenSource();
-
-                StartDetector(Token.Token);
-                ButtonSave.Enabled = true;
+                MessageBox.Show($"Emmmm...姿势不对~~~", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// 持续检测一次人脸，直到停止。
+        /// 
         /// </summary>
-        /// <param name="token">取消标记</param>
-        private async void StartDetector(CancellationToken token)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckBoxDetect_CheckedChanged(object sender, EventArgs e)
         {
-            List<double> fpsList = new List<double>();
-            double fps = 0;
-            Stopwatch stopwatchFPS = new Stopwatch();
-            Stopwatch stopwatch = new Stopwatch();
-            while (VideoPlayer.IsRunning && !token.IsCancellationRequested)
+            CheckBoxFaceProperty.Enabled = CheckBoxDetect.Checked;
+            CheckBoxFaceMask.Enabled = CheckBoxDetect.Checked;
+        }
+
+        private void 人员管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserManageForm userManageForm = new UserManageForm();
+            userManageForm.Show();
+        }
+
+        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("乌拉~", "关于", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ButtonSave_Click(object sender, EventArgs e)
+        {
+            if (_isTakingPicture)
             {
-                if (CheckBoxFPS.Checked)
+                MessageBox.Show("拍照中...请稍后再试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            ButtonSave.Enabled = false;
+            _ = Task.Run(() =>
+            {
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                SetTakingPictureStatus(true);
+                while (stopwatch.ElapsedMilliseconds < 3000 && _isTakingPicture)
                 {
-                    stopwatch.Restart();
-                    if (!stopwatchFPS.IsRunning)
-                    { stopwatchFPS.Start(); }
+                    Thread.Sleep(1);
                 }
-                Bitmap bitmap = VideoPlayer.GetCurrentVideoFrame(); // 获取摄像头画面 
+                if (takePhotos.IsEmpty)
+                {
+                    SetButtonStatus(ButtonSave, true);
+                    SetTakingPictureStatus(false);
+                    MessageBox.Show("拍照失败，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!takePhotos.TryDequeue(out TakePhotoInfo takePhotoInfo))
+                {
+                    SetButtonStatus(ButtonSave, true);
+                    SetTakingPictureStatus(false);
+                    MessageBox.Show("拍照失败，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (takePhotos.Count > 0)
+                {
+                    int count = takePhotos.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        takePhotos.TryDequeue(out _);
+                    }
+                }
+                SetButtonStatus(ButtonSave, true);
+                if (takePhotoInfo.FaceTrackInfos == null || !takePhotoInfo.FaceTrackInfos.Any())
+                {
+                    _ = MessageBox.Show("未识别到任何人脸信息！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                //打开保存框
+                UserInfoForm saveUser = new UserInfoForm(takePhotoInfo);
+                saveUser.ShowDialog();
+            });
+        }
+
+
+        #endregion
+
+        private void Stop()
+        {
+            if (videoCapture == null)
+            {
+                SetButtonText(this.ButtonStart, _disableBtnText);
+                SetButtonStatus(this.ButtonSave, false);
+            }
+            //表示停止
+            if (videoCapture.IsRunning)
+            {
+                videoCapture.SignalToStop();
+                videoCapture.WaitForStop();
+                //置空
+                DrawPictureBox(null);
+            }
+            videoCapture = null;
+            SetButtonText(this.ButtonStart, _disableBtnText);
+            SetButtonStatus(this.ButtonSave, false);
+            SetButtonStatus(this.ButtonStart, true);
+        }
+
+        private void Start()
+        {
+            if (videoCapture != null)
+            {
+                Stop();
+            }
+            if (comboBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show($"没有找到可用的摄像头！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            videoCapture = new VideoCaptureDevice(_videoDevices[comboBox1.SelectedIndex].MonikerString);
+            var videoResolution = videoCapture.VideoCapabilities.Where(p => p.FrameSize.Width == _cameraSettings.Width && p.FrameSize.Height == _cameraSettings.Height).FirstOrDefault();
+            if (videoResolution == null)
+            {
+                List<string> supports = videoCapture.VideoCapabilities.OrderBy(p => p.FrameSize.Width).Select(p => $"{p.FrameSize.Width}x{p.FrameSize.Height}").ToList();
+                string supportStr = "无，或获取失败";
+                if (supports.Any())
+                {
+                    supportStr = string.Join("|", supports);
+                }
+                MessageBox.Show($"摄像头不支持拍摄分辨率为{_cameraSettings.Width}x{_cameraSettings.Height}的视频，请重新指定分辨率。\n支持分辨率：{supportStr}", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            videoCapture.VideoResolution = videoResolution;
+            videoCapture.NewFrame += CaptureFrameEvent;
+
+            //等有视频帧之后在启用按钮
+            SetButtonStatus(this.ButtonStart, false);
+            SetButtonStatus(this.ButtonSave, false);
+            SetButtonText(this.ButtonStart, _enableBtnText);
+
+            videoCapture.Start();
+        }
+
+        private bool _isTakingPicture = false;
+        private readonly static object _locker = new object();
+
+        private ConcurrentQueue<TakePhotoInfo> takePhotos = new ConcurrentQueue<TakePhotoInfo>();
+        
+        private async void CaptureFrameEvent(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            if (this.ButtonStart.Enabled == false)
+            {
+                SetButtonStatus(this.ButtonStart, true);
+            }
+            if (this.ButtonSave.Enabled == false)
+            {
+                SetButtonStatus(this.ButtonSave, true);
+            }
+            if (CheckBoxFPS.Checked)
+            {
+                stopwatch.Restart();
+                if (!stopwatchFPS.IsRunning)
+                {
+                    stopwatchFPS.Start();
+                }
+            }
+            using (Bitmap bitmap = eventArgs.Frame.DeepClone())
+            {
                 if (bitmap == null)
                 {
-                    await Task.Delay(10);
-                    PictureBoxDispose(bitmap);
-                    continue;
+                    DrawPictureBox(bitmap);
+                    return;
                 }
                 if (!CheckBoxDetect.Checked)
                 {
-                    await Task.Delay(1000 / 60);
-                    PictureBoxDispose(bitmap);
-                    continue;
+                    DrawPictureBox(bitmap);
+                    return;
                 }
                 List<Models.FaceInfo> faceInfos = new List<Models.FaceInfo>();
                 using (FaceImage faceImage = bitmap.ToFaceImage())
                 {
-                    var infos = await Task.Run(() => faceFactory.Get<FaceTracker>().Track(faceImage));
+                    var infos = await Task.Run(() => _faceFactory.Get<FaceTracker>().Track(faceImage));
                     //拍摄照片
                     if (_isTakingPicture)
                     {
@@ -191,14 +321,14 @@ namespace ViewFaceCore.Demo.VideoForm
                             Model.FaceInfo info = infos[i].ToFaceInfo();
                             if (CheckBoxFaceMask.Checked)
                             {
-                                var maskStatus = await Task.Run(() => faceFactory.Get<MaskDetector>().PlotMask(faceImage, info));
+                                var maskStatus = await Task.Run(() => _faceFactory.Get<MaskDetector>().PlotMask(faceImage, info));
                                 faceInfo.HasMask = maskStatus.Masked;
                             }
                             if (CheckBoxFaceProperty.Checked)
                             {
-                                var points = await Task.Run(() => faceFactory.Get<FaceLandmarker>().Mark(faceImage, info));
-                                faceInfo.Age = await Task.Run(() => faceFactory.Get<AgePredictor>().PredictAge(faceImage, points));
-                                faceInfo.Gender = await Task.Run(() => faceFactory.Get<GenderPredictor>().PredictGender(faceImage, points));
+                                var points = await Task.Run(() => _faceFactory.Get<FaceLandmarker>().Mark(faceImage, info));
+                                faceInfo.Age = await Task.Run(() => _faceFactory.Get<AgePredictor>().PredictAge(faceImage, points));
+                                faceInfo.Gender = await Task.Run(() => _faceFactory.Get<GenderPredictor>().PredictGender(faceImage, points));
                             }
                         }
                         faceInfos.Add(faceInfo);
@@ -238,6 +368,7 @@ namespace ViewFaceCore.Demo.VideoForm
                             }
                         }
                     }
+                    //计算fps
                     if (CheckBoxFPS.Checked)
                     {
                         stopwatch.Stop();
@@ -259,128 +390,58 @@ namespace ViewFaceCore.Demo.VideoForm
                         g.DrawString($"{fps:#.#} FPS", new Font("微软雅黑", 24), Brushes.Green, new Point(10, 10));
                     }
                 }
-                PictureBoxDispose(bitmap);
-            }
 
-            VideoPlayer?.SignalToStop();
-            VideoPlayer?.WaitForStop();
-            FacePictureBox.Image = null;
-            if (IsClose)
-            {
-                Close();
+                DrawPictureBox(bitmap);
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CheckBoxDetect_CheckedChanged(object sender, EventArgs e)
+        private void DrawPictureBox(Bitmap source)
         {
-            CheckBoxFaceProperty.Enabled = CheckBoxDetect.Checked;
-        }
-
-        private void PictureBoxDispose(Bitmap bitmap)
-        {
-            FacePictureBox.Image?.Dispose();
-            FacePictureBox.Image = bitmap;
-        }
-
-        private void 人员管理ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            UserManageForm userManageForm = new UserManageForm();
-            userManageForm.Show();
-        }
-
-        private void 退出ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void 关于ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("乌拉~", "关于", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private bool _isTakingPicture = false;
-        private readonly static object _locker = new object();
-
-        private ConcurrentQueue<TakePhotoInfo> takePhotos = new ConcurrentQueue<TakePhotoInfo>();
-
-        private void ButtonSave_Click(object sender, EventArgs e)
-        {
-            if (_isTakingPicture)
+            if (FacePictureBox.InvokeRequired)
             {
-                MessageBox.Show("拍照中...请稍后再试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                FacePictureBox.Invoke(new Action(() =>
+                {
+                    FacePictureBox.Image?.Dispose();
+                    FacePictureBox.Image = source;
+                    FacePictureBox.Refresh();
+                }));
             }
-            ButtonSave.Enabled = false;
-            _ = Task.Run(() =>
+            else
             {
-                Stopwatch stopwatch = new Stopwatch();
-                stopwatch.Start();
-                SetTakingPictureStatus(true);
-                while (stopwatch.ElapsedMilliseconds < 3000 && _isTakingPicture)
-                {
-                    Thread.Sleep(1);
-                }
-                if (takePhotos.IsEmpty)
-                {
-                    MessageBox.Show("拍照失败，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (!takePhotos.TryDequeue(out TakePhotoInfo takePhotoInfo))
-                {
-                    MessageBox.Show("拍照失败，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (takePhotos.Count > 0)
-                {
-                    int count = takePhotos.Count;
-                    for (int i = 0; i < count; i++)
-                    {
-                        takePhotos.TryDequeue(out _);
-                    }
-                }
-                Action setBtnEnable = new Action(() => { ButtonSave.Enabled = true; });
-                if (ButtonSave.InvokeRequired)
-                    ButtonSave.Invoke(setBtnEnable);
-                else
-                    setBtnEnable();
-
-                if (takePhotoInfo.FaceTrackInfos == null || !takePhotoInfo.FaceTrackInfos.Any())
-                {
-                    _ = MessageBox.Show("未识别到任何人脸信息！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                //打开保存框
-                UserInfoForm saveUser = new UserInfoForm(takePhotoInfo);
-                saveUser.ShowDialog();
-            });
+                FacePictureBox.Image?.Dispose();
+                FacePictureBox.Image = source;
+                FacePictureBox.Refresh();
+            }
         }
 
         private void SetTakingPictureStatus(bool status)
         {
             lock (_locker)
             {
+                if (!status && !_isTakingPicture)
+                {
+                    return;
+                }
                 _isTakingPicture = status;
             }
         }
 
-        public Bitmap DeepClone(Bitmap bitmap)
+        private void SetButtonStatus(Button button, bool status)
         {
-            Bitmap dstBitmap = null;
-            using (MemoryStream mStream = new MemoryStream())
-            {
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(mStream, bitmap);
-                mStream.Seek(0, SeekOrigin.Begin);//指定当前流的位置为流的开头。
-                dstBitmap = (Bitmap)bf.Deserialize(mStream);
-                mStream.Close();
-            }
-            return dstBitmap;
+            Action setBtnEnable = new Action(() => { button.Enabled = status; });
+            if (button.InvokeRequired)
+                button.Invoke(setBtnEnable);
+            else
+                setBtnEnable();
+        }
 
+        private void SetButtonText(Button button, string text)
+        {
+            Action setBtnText = new Action(() => { button.Text = text; });
+            if (button.InvokeRequired)
+                button.Invoke(setBtnText);
+            else
+                button.Text = text;
         }
     }
 }

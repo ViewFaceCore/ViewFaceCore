@@ -7,6 +7,7 @@
 		<Version>0.3.7</Version>
 		<OutputType>Library</OutputType>
 		<LangVersion>latest</LangVersion>
+		<Platforms>AnyCPU;x64;x86</Platforms>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
