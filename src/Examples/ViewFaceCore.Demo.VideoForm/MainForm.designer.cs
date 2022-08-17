@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.ButtonStart = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.VideoPlayer = new AForge.Controls.VideoSourcePlayer();
             this.CheckBoxFaceProperty = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.CheckBoxFaceMask = new System.Windows.Forms.CheckBox();
@@ -77,16 +76,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(109, 20);
             this.comboBox1.TabIndex = 2;
-            // 
-            // VideoPlayer
-            // 
-            this.VideoPlayer.Location = new System.Drawing.Point(20, 44);
-            this.VideoPlayer.Margin = new System.Windows.Forms.Padding(2);
-            this.VideoPlayer.Name = "VideoPlayer";
-            this.VideoPlayer.Size = new System.Drawing.Size(181, 134);
-            this.VideoPlayer.TabIndex = 5;
-            this.VideoPlayer.Text = "videoSourcePlayer1";
-            this.VideoPlayer.VideoSource = null;
             // 
             // CheckBoxFaceProperty
             // 
@@ -211,20 +200,20 @@
             this.toolStripDropDownButton1.Image = global::ViewFaceCore.Demo.VideoForm.Properties.Resources.manage;
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(61, 22);
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(62, 22);
             this.toolStripDropDownButton1.Text = "管理";
             // 
             // 人员管理ToolStripMenuItem
             // 
             this.人员管理ToolStripMenuItem.Name = "人员管理ToolStripMenuItem";
-            this.人员管理ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.人员管理ToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.人员管理ToolStripMenuItem.Text = "人员管理";
             this.人员管理ToolStripMenuItem.Click += new System.EventHandler(this.人员管理ToolStripMenuItem_Click);
             // 
             // 退出ToolStripMenuItem
             // 
             this.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem";
-            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.退出ToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.退出ToolStripMenuItem.Text = "退出";
             this.退出ToolStripMenuItem.Click += new System.EventHandler(this.退出ToolStripMenuItem_Click);
             // 
@@ -235,7 +224,7 @@
             this.toolStripDropDownButton2.Image = global::ViewFaceCore.Demo.VideoForm.Properties.Resources.about;
             this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(61, 22);
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(62, 22);
             this.toolStripDropDownButton2.Text = "关于";
             // 
             // 关于ToolStripMenuItem
@@ -279,7 +268,6 @@
             this.Controls.Add(this.ButtonSave);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.VideoPlayer);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.ButtonStart);
             this.Controls.Add(this.FacePictureBox);
@@ -305,7 +293,6 @@
         private System.Windows.Forms.Button ButtonStart;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.PictureBox FacePictureBox;
-        private AForge.Controls.VideoSourcePlayer VideoPlayer;
         private System.Windows.Forms.CheckBox CheckBoxFaceProperty;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox CheckBoxFPS;
