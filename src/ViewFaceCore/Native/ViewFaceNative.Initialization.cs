@@ -77,9 +77,6 @@ namespace ViewFaceCore.Native
         {
             "SeetaAuthorize",
             "tennis",
-            "tennis_haswell",
-            "tennis_pentium",
-            "tennis_sandy_bridge",
             "SeetaMaskDetector200",
             "SeetaAgePredictor600",
             "SeetaEyeStateDetector200",
