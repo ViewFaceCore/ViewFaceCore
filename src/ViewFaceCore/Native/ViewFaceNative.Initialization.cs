@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using ViewFaceCore.Configs;
-using ViewFaceCore.Core;
+
+#if NETCOREAPP3_1_OR_GREATER
+using System.Runtime.Intrinsics.X86;
+#endif
 
 namespace ViewFaceCore.Native
 {
@@ -75,10 +77,10 @@ namespace ViewFaceCore.Native
         /// </summary>
         private static readonly List<string> Libraries = new List<string>()
         {
-            "SeetaAuthorize",
             "tennis",
             "tennis_haswell",
             "tennis_pentium",
+            "SeetaAuthorize",
             "tennis_sandy_bridge",
             "SeetaMaskDetector200",
             "SeetaAgePredictor600",
@@ -120,14 +122,23 @@ namespace ViewFaceCore.Native
 
             foreach (var library in Libraries)
             {
+                //不支持Avx2
+                if (!Avx2.IsSupported && (library.Contains("tennis_haswell") || library.Contains("tennis_sandy_bridge"))) continue;
+                //不支持Fma
+                if (!Fma.IsSupported && library.Contains("tennis_sandy_bridge")) continue;
+                //Combine Library Path
                 string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
                 if (File.Exists(libraryPath))
                 {
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
-                    { throw new BadImageFormatException($"NativeLibrary.Load can not load library {library}."); }
+                    {
+                        throw new BadImageFormatException($"Can not load native library {libraryPath}.");
+                    }
                 }
-                else if(!libraryPath.Contains("tennis_"))
-                { throw new FileNotFoundException($"Can not found library {libraryPath}."); }
+                else if (!libraryPath.Contains("tennis_"))
+                {
+                    throw new FileNotFoundException($"Can not found library {libraryPath}.");
+                }
             }
 
             NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ViewFaceNative)), (libraryName, assembly, searchPath) =>
