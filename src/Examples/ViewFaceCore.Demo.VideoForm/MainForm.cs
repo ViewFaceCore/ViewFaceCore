@@ -1,22 +1,17 @@
 ﻿using AForge.Video.DirectShow;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Demo.VideoForm.Extensions;
 using ViewFaceCore.Demo.VideoForm.Models;
 using ViewFaceCore.Demo.VideoForm.Utils;
-using ViewFaceCore.Extensions;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Demo.VideoForm

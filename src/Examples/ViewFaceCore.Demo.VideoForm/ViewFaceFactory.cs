@@ -16,7 +16,7 @@ namespace ViewFaceCore.Demo.VideoForm
 
         public ViewFaceFactory(int width, int height)
         {
-            this.Width = width; 
+            this.Width = width;
             this.Height = height;
         }
 
@@ -33,13 +33,13 @@ namespace ViewFaceCore.Demo.VideoForm
         //人脸追踪
         FaceTracker _faceTracker = null;
 
-        public T Get<T>() where T: BaseViewFace
+        public T Get<T>() where T : BaseViewFace
         {
             switch (typeof(T).Name)
             {
                 case nameof(MaskDetector):
                     {
-                        if(_maskDetector == null)
+                        if (_maskDetector == null)
                             _maskDetector = new MaskDetector();
                         return _maskDetector as T;
                     }
@@ -58,7 +58,11 @@ namespace ViewFaceCore.Demo.VideoForm
                 case nameof(FaceRecognizer):
                     {
                         if (_faceRecognizer == null)
+                        {
+                            var config = new FaceRecognizeConfig(FaceType.Normal);
+                            config.SetThreshold(FaceType.Normal, 0.7f);
                             _faceRecognizer = new FaceRecognizer();
+                        }
                         return _faceRecognizer as T;
                     }
                 case nameof(AgePredictor):
@@ -90,16 +94,15 @@ namespace ViewFaceCore.Demo.VideoForm
             }
         }
 
-        
+
 
         public FaceRecognizer GetFaceRecognizerWithMask()
         {
-            if(_maskFaceRecognizer == null)
+            if (_maskFaceRecognizer == null)
             {
-                _maskFaceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
-                {
-                    FaceType = FaceType.Mask,
-                });
+                var config = new FaceRecognizeConfig(FaceType.Mask);
+                config.SetThreshold(FaceType.Mask, 0.6f);
+                _maskFaceRecognizer = new FaceRecognizer();
             }
             return _maskFaceRecognizer;
         }
