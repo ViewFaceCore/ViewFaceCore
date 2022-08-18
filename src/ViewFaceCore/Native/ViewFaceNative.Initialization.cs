@@ -77,6 +77,9 @@ namespace ViewFaceCore.Native
         {
             "SeetaAuthorize",
             "tennis",
+            "tennis_haswell",
+            "tennis_pentium",
+            "tennis_sandy_bridge",
             "SeetaMaskDetector200",
             "SeetaAgePredictor600",
             "SeetaEyeStateDetector200",
@@ -123,7 +126,7 @@ namespace ViewFaceCore.Native
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                     { throw new BadImageFormatException($"NativeLibrary.Load can not load library {library}."); }
                 }
-                else
+                else if(!libraryPath.Contains("tennis_"))
                 { throw new FileNotFoundException($"Can not found library {libraryPath}."); }
             }
 
