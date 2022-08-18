@@ -123,7 +123,7 @@ namespace ViewFaceCore.Native
                     if (NativeLibrary.Load(libraryPath) == IntPtr.Zero)
                     { throw new BadImageFormatException($"NativeLibrary.Load can not load library {library}."); }
                 }
-                else if(!libraryPath.StartsWith("tennis_"))
+                else
                 { throw new FileNotFoundException($"Can not found library {libraryPath}."); }
             }
 
