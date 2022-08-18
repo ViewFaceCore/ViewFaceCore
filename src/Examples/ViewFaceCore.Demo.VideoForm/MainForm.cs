@@ -384,7 +384,7 @@ namespace ViewFaceCore.Demo.VideoForm
                         List<Models.FaceInfo> faceInfos = new List<Models.FaceInfo>();
                         using (FaceImage faceImage = bitmap.ToFaceImage())
                         {
-                            var infos = await Task.Run(() => faceFactory.Get<FaceTracker>().Track(faceImage));
+                            var infos = await faceFactory.Get<FaceTracker>().TrackAsync(faceImage);
                             for (int i = 0; i < infos.Length; i++)
                             {
 
@@ -398,7 +398,7 @@ namespace ViewFaceCore.Demo.VideoForm
                                     Model.FaceInfo info = infos[i].ToFaceInfo();
                                     if (CheckBoxFaceMask.Checked)
                                     {
-                                        var maskStatus = await Task.Run(() => faceFactory.Get<MaskDetector>().PlotMask(faceImage, info));
+                                        var maskStatus = await faceFactory.Get<MaskDetector>().PlotMaskAsync(faceImage, info);
                                         faceInfo.HasMask = maskStatus.Masked;
                                     }
                                     if (CheckBoxFaceProperty.Checked)
@@ -412,8 +412,8 @@ namespace ViewFaceCore.Demo.VideoForm
                                         {
                                             faceRecognizer = faceFactory.Get<FaceRecognizer>();
                                         }
-                                        var points = await Task.Run(() => faceFactory.Get<FaceLandmarker>().Mark(faceImage, info));
-                                        float[] extractData = await Task.Run(() => faceRecognizer.Extract(faceImage, points));
+                                        var points = await faceFactory.Get<FaceLandmarker>().MarkAsync(faceImage, info);
+                                        float[] extractData = await faceRecognizer.ExtractAsync(faceImage, points);
 
                                         UserInfo userInfo = CacheManager.Instance.Get(faceRecognizer, extractData);
                                         if (userInfo != null)
@@ -435,8 +435,8 @@ namespace ViewFaceCore.Demo.VideoForm
                                         }
                                         else
                                         {
-                                            faceInfo.Age = await Task.Run(() => faceFactory.Get<AgePredictor>().PredictAge(faceImage, points));
-                                            faceInfo.Gender = await Task.Run(() => faceFactory.Get<GenderPredictor>().PredictGender(faceImage, points));
+                                            faceInfo.Age = await faceFactory.Get<AgePredictor>().PredictAgeAsync(faceImage, points);
+                                            faceInfo.Gender = await faceFactory.Get<GenderPredictor>().PredictGenderAsync(faceImage, points);
                                         }
                                     }
                                 }
