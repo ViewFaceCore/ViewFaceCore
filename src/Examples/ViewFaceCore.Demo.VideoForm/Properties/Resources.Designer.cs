@@ -79,5 +79,15 @@ namespace ViewFaceCore.Demo.VideoForm.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap 选项 {
+            get {
+                object obj = ResourceManager.GetObject("选项", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

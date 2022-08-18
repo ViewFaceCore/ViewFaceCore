@@ -8,10 +8,8 @@ using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Demo.VideoForm.Models
 {
-    public class TakePhotoInfo
+    public class UserInfoFormParam
     {
-        public FaceTrackInfo[] FaceTrackInfos { get; set; }
-
         public Bitmap Bitmap { get; set; }
 
         public UserInfo UserInfo { get; set; }

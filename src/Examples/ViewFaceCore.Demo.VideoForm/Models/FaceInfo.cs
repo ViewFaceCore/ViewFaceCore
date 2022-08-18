@@ -44,5 +44,7 @@ namespace ViewFaceCore.Demo.VideoForm.Models
                 return "未知";
             }
         }
+
+        public string Name { get; set; }
     }
 }

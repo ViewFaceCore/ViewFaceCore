@@ -92,6 +92,7 @@ namespace ViewFaceCore.Demo.VideoForm
                         {
                             UpdateRow(item.Key, item.Value);
                         }
+                        CacheManager.Instance.Refesh();
                         MessageBox.Show("保存成功！", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
@@ -167,13 +168,14 @@ namespace ViewFaceCore.Demo.VideoForm
                                     {
                                         userDataGrid.Rows.RemoveAt(e.RowIndex);
                                     }
+                                    CacheManager.Instance.Refesh();
                                 }
                             }
                         }
                         break;
                     case "查看":
                         {
-                            UserInfoForm userInfoForm = new UserInfoForm(new TakePhotoInfo()
+                            UserInfoForm userInfoForm = new UserInfoForm(new UserInfoFormParam()
                             {
                                 UserInfo = userInfo,
                                 Bitmap = Base64.StringToImage(userInfo.Image),
