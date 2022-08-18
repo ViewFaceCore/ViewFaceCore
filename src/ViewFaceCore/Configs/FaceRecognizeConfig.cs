@@ -23,7 +23,7 @@ namespace ViewFaceCore.Configs
         /// <summary>
         /// 人脸相似度阈值
         /// </summary>
-        private static Dictionary<FaceType, float> Threshold { get; } = new Dictionary<FaceType, float>()
+        private Dictionary<FaceType, float> Threshold { get; } = new Dictionary<FaceType, float>()
         {
             { FaceType.Normal, 0.62f },
             { FaceType.Mask, 0.48f },
@@ -40,7 +40,8 @@ namespace ViewFaceCore.Configs
         /// </summary>
         /// <param name="type">指定的人脸识别模型</param>
         /// <returns></returns>
-        public static float GetThreshold(FaceType type) => Threshold[type];
+        public float GetThreshold(FaceType type) => Threshold[type];
+
         /// <summary>
         /// 设置指定人脸识别模型的相似度阈值。
         /// <para>
@@ -54,6 +55,6 @@ namespace ViewFaceCore.Configs
         /// </summary>
         /// <param name="type">指定的人脸识别模型</param>
         /// <param name="score">相似度阈值</param>
-        public static void SetThreshold(FaceType type, float score) => Threshold[type] = score;
+        public void SetThreshold(FaceType type, float score) => Threshold[type] = score;
     }
 }
