@@ -19,7 +19,7 @@ namespace ViewFaceCore.Demo.VideoForm.Utils
             }
             using (MemoryStream ms = new MemoryStream())
             {
-                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 byte[] arr = new byte[ms.Length];
                 ms.Position = 0;
                 ms.Read(arr, 0, (int)ms.Length);

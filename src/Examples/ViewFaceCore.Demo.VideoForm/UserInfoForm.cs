@@ -19,10 +19,10 @@ namespace ViewFaceCore.Demo.VideoForm
 {
     public partial class UserInfoForm : Form
     {
-        private readonly TakePhotoInfo _takePhotoInfo = null;
+        private readonly UserInfoFormParam _takePhotoInfo = null;
         private UserInfo _globalUserInfo = new UserInfo();
 
-        public UserInfoForm(TakePhotoInfo takePhotoInfo)
+        public UserInfoForm(UserInfoFormParam takePhotoInfo)
         {
             _takePhotoInfo = takePhotoInfo;
             InitializeComponent();
@@ -46,6 +46,8 @@ namespace ViewFaceCore.Demo.VideoForm
             if (_takePhotoInfo.ReadOnly)
             {
                 //查看模式
+                this.Text = $"查看【{_takePhotoInfo.UserInfo.Name}】信息";
+
                 if (_takePhotoInfo?.UserInfo == null)
                 {
                     MessageBox.Show("未获取到人员信息，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -56,33 +58,21 @@ namespace ViewFaceCore.Demo.VideoForm
                 SetUIStatus(false);
                 this.btnClear.Visible = false;
                 this.btnSave.Visible = false;
-                this.Text = $"查看【{_takePhotoInfo.UserInfo.Name}】信息";
 
-                SetTextBoxText(this.tbName, _takePhotoInfo.UserInfo.Name);
-                SetTextBoxText(this.tbAge, _takePhotoInfo.UserInfo.Age.ToString());
-                SetTextBoxText(this.tbPhone, _takePhotoInfo.UserInfo.Phone);
-                SetTextBoxText(this.tbRemark, _takePhotoInfo.UserInfo.Remark);
-                SetComboBoxValue(this.comboBoxGender, (int)_takePhotoInfo.UserInfo.Gender);
+                FormHelper.SetTextBoxText(this.tbName, _takePhotoInfo.UserInfo.Name);
+                FormHelper.SetTextBoxText(this.tbAge, _takePhotoInfo.UserInfo.Age.ToString());
+                FormHelper.SetTextBoxText(this.tbPhone, _takePhotoInfo.UserInfo.Phone);
+                FormHelper.SetTextBoxText(this.tbRemark, _takePhotoInfo.UserInfo.Remark);
+                SetGenderComboBoxValue(this.comboBoxGender, (int)_takePhotoInfo.UserInfo.Gender);
                 this.pictureBoxUser.Image = _takePhotoInfo.Bitmap;
             }
             else
             {
-                this.Text = "保存用户信息";
                 //编辑模式
-                if (_takePhotoInfo?.FaceTrackInfos == null || _takePhotoInfo?.FaceTrackInfos?.Any() != true)
-                {
-                    MessageBox.Show("未获取到人脸信息，请重试！", "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Close();
-                    return;
-                }
-                //画方框
-                DrawingFaceInfo(_takePhotoInfo.Bitmap, _takePhotoInfo.FaceTrackInfos.Select(p => new Models.FaceInfo()
-                {
-                    Location = p.Location,
-                }).ToList());
+                this.Text = "保存用户信息";
                 this.pictureBoxUser.Image = _takePhotoInfo.Bitmap;
                 //识别人脸
-                FaceDetector(_takePhotoInfo.Bitmap.DeepClone(), _takePhotoInfo.FaceTrackInfos[0].ToFaceInfo());
+                FaceDetector(_takePhotoInfo.Bitmap.DeepClone());
             }
         }
 
@@ -113,6 +103,7 @@ namespace ViewFaceCore.Demo.VideoForm
                     db.UserInfo.Add(userInfo);
                     if (db.SaveChanges() > 0)
                     {
+                        CacheManager.Instance.Refesh();
                         this.Close();
                         _ = Task.Run(() =>
                         {
@@ -151,7 +142,7 @@ namespace ViewFaceCore.Demo.VideoForm
             }
         }
 
-        private void FaceDetector(Bitmap bitmap, Model.FaceInfo faceInfo)
+        private void FaceDetector(Bitmap bitmap)
         {
             _ = Task.Run(() =>
             {
@@ -159,17 +150,22 @@ namespace ViewFaceCore.Demo.VideoForm
                 try
                 {
                     SetUIStatus(false);
-                    SetLabelStatus("人脸检测中...", true);
+                    FormHelper.SetLabelStatus(labelStatus, "人脸检测中...", true);
 
                     using (FaceImage faceImage = bitmap.ToFaceImage())
                     {
-                        FaceMarkPoint[] markPoints = faceFactory.Get<FaceLandmarker>().Mark(bitmap, faceInfo);
+                        Model.FaceInfo[] faceInfos = faceFactory.Get<FaceDetector>().Detect(faceImage);
+                        if (faceInfos == null || !faceInfos.Any())
+                        {
+                            throw new Exception("未获取到人脸信息！");
+                        }
+                        FaceMarkPoint[] markPoints = faceFactory.Get<FaceLandmarker>().Mark(bitmap, faceInfos[0]);
                         if (markPoints == null)
                         {
                             throw new Exception("检测人脸信息失败：标记人脸失败！");
                         }
                         MaskDetector maskDetector = faceFactory.Get<MaskDetector>();
-                        PlotMaskResult maskResult = maskDetector.PlotMask(bitmap, faceInfo);
+                        PlotMaskResult maskResult = maskDetector.PlotMask(bitmap, faceInfos[0]);
                         if (maskResult.Masked)
                         {
                             throw new Exception("人脸不能有任何遮挡或者戴有口罩！");
@@ -202,90 +198,49 @@ namespace ViewFaceCore.Demo.VideoForm
 
                         #region 设置默认输入框值
 
-                        SetTextBoxText(tbName, _globalUserInfo.Name);
-                        SetTextBoxText(tbAge, _globalUserInfo.Age.ToString());
-                        SetComboBoxValue(comboBoxGender, (int)_globalUserInfo.Gender);
+                        FormHelper.SetTextBoxText(tbName, _globalUserInfo.Name);
+                        FormHelper.SetTextBoxText(tbAge, _globalUserInfo.Age.ToString());
+                        SetGenderComboBoxValue(comboBoxGender, (int)_globalUserInfo.Gender);
 
+                        //画方框
+                        DrawingFaceInfo(bitmap, new List<Models.FaceInfo>(){
+                            new Models.FaceInfo()
+                            {
+                                Location = faceInfos[0].Location,
+                            }
+                        });
+                        FormHelper.SetPictureBoxImage(this.pictureBoxUser, bitmap.DeepClone());
                         #endregion
                     }
-
-                    SetLabelStatus("人脸检测完成！", true);
+                    _globalUserInfo.Image = Base64.BitmapToString(bitmap);
+                    FormHelper.SetLabelStatus(labelStatus, "人脸检测完成！", true);
                     SetUIStatus(true);
                 }
                 catch (Exception ex)
                 {
-                    SetLabelStatus(ex.Message, true);
+                    FormHelper.SetLabelStatus(labelStatus, ex.Message, true);
                     MessageBox.Show(ex.Message, "警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
-                    faceFactory.Dispose();
-                    bitmap.Dispose();
+                    faceFactory?.Dispose();
+                    bitmap?.Dispose();
                 }
             });
         }
 
         private void SetUIStatus(bool status)
         {
-            SetControl(this.tbName, status);
-            SetControl(this.tbAge, status);
-            SetControl(this.comboBoxGender, status);
-            SetControl(this.tbPhone, status);
-            SetControl(this.tbRemark, status);
-            SetControl(this.btnClear, status);
-            SetControl(this.btnSave, status);
+            FormHelper.SetControlStatus(this.tbName, status);
+            FormHelper.SetControlStatus(this.tbAge, status);
+            FormHelper.SetControlStatus(this.comboBoxGender, status);
+            FormHelper.SetControlStatus(this.tbPhone, status);
+            FormHelper.SetControlStatus(this.tbRemark, status);
+            FormHelper.SetControlStatus(this.btnClear, status);
+            FormHelper.SetControlStatus(this.btnSave, status);
         }
 
-        private void SetControl(Control control, bool status)
-        {
-            if (control.InvokeRequired)
-            {
-                control.Invoke(new Action(() =>
-                {
-                    control.Enabled = status;
-                }));
-            }
-            else
-            {
-                control.Enabled = status;
-            }
-        }
-
-        private void SetLabelStatus(string message, bool status)
-        {
-            if (labelStatus.InvokeRequired)
-            {
-                labelStatus.Invoke(new Action(() =>
-                {
-                    labelStatus.Text = message;
-                    labelStatus.Visible = true;
-                }));
-            }
-            else
-            {
-                labelStatus.Text = message;
-                labelStatus.Visible = true;
-            }
-        }
-
-        private void SetTextBoxText(TextBox tb, string text)
-        {
-            if (tb == null)
-                return;
-            if (tb.InvokeRequired)
-            {
-                tb.Invoke(new Action(() =>
-                {
-                    tb.Text = text;
-                }));
-            }
-            else
-            {
-                tb.Text = text;
-            }
-        }
-
-        private void SetComboBoxValue(ComboBox comboBox, int value)
+        private void SetGenderComboBoxValue(ComboBox comboBox, int value)
         {
             Action action = new Action(() =>
             {
@@ -345,8 +300,7 @@ namespace ViewFaceCore.Demo.VideoForm
                 EnumModel model = comboBoxGender.SelectedItem as EnumModel;
                 gender = (GenderEnum)(model.Value);
             }
-            string bitmapString = Base64.BitmapToString(_takePhotoInfo?.Bitmap);
-            if (string.IsNullOrWhiteSpace(bitmapString))
+            if (string.IsNullOrWhiteSpace(_globalUserInfo.Image))
             {
                 throw new Exception("图片不能为空！");
             }
@@ -357,7 +311,7 @@ namespace ViewFaceCore.Demo.VideoForm
                 Gender = gender,
                 Remark = tbRemark.Text,
                 Phone = tbPhone.Text,
-                Image = Base64.BitmapToString(_takePhotoInfo?.Bitmap),
+                Image = _globalUserInfo.Image,
                 Extract = _globalUserInfo.Extract,
                 IsDelete = false,
                 CreateTime = DateTime.Now,

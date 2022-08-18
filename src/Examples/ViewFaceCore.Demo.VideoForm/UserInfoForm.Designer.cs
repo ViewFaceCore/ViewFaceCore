@@ -99,7 +99,7 @@
             this.labelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelStatus.AutoSize = true;
             this.labelStatus.ForeColor = System.Drawing.Color.Red;
-            this.labelStatus.Location = new System.Drawing.Point(21, 434);
+            this.labelStatus.Location = new System.Drawing.Point(21, 431);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(29, 12);
             this.labelStatus.TabIndex = 14;
@@ -211,7 +211,7 @@
             this.tbName.Size = new System.Drawing.Size(180, 27);
             this.tbName.TabIndex = 2;
             // 
-            // SaveUserForm
+            // UserInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -219,7 +219,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.pictureBoxUser);
             this.MinimumSize = new System.Drawing.Size(500, 300);
-            this.Name = "SaveUserForm";
+            this.Name = "UserInfoForm";
             this.Text = "保存用户信息";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SaveUserForm_FormClosing);
             this.Load += new System.EventHandler(this.SaveUserForm_Load);
