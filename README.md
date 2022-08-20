@@ -36,7 +36,7 @@
       | [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | [![](https://img.shields.io/nuget/v/ViewFaceCore.svg)](https://www.nuget.org/packages/ViewFaceCore) | —— | ViewFaceCore .NET 核心库 |
       | [ViewFaceCore.all_models](https://www.nuget.org/packages/ViewFaceCore.all_models) | [![](https://img.shields.io/nuget/v/ViewFaceCore.all_models.svg)](https://www.nuget.org/packages/ViewFaceCore.all_models) | `viewfacecore\models` | 人脸检测的模型支持(图省事可以直接安装这个) |
       | [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | [![](https://img.shields.io/nuget/v/ViewFaceCore.runtime.win.x64.svg)](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `viewfacecore\win\x64` | Windows-x64 的本机运行时，其它平台自行选择安装，可安装多个 |
-	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SkiaSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) |  —— | SkiaSharp图像处理扩展，ImageSharp、SkiaSharp、System.Drawing三选一 |
+	  | [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | <span style="display:inline-block;width:150px"> [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SkiaSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) </span> |  —— | SkiaSharp图像处理扩展，ImageSharp、SkiaSharp、System.Drawing三选一 |
 
    2. 获取人脸信息  
       ```csharp
@@ -76,9 +76,9 @@
 	
 	| Nuget包名  | 版本  |  说明 |  
 	| ------------ | ------------ | ------------ |
-	| ViewFaceCore.Extension.SkiaSharp  | [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SkiaSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp)  |  SkiaSharp图形扩展  |
-	| ViewFaceCore.Extension.ImageSharp  | [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.ImageSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.ImageSharp)   | ImageSharp图形扩展  |
-	| ViewFaceCore.Extension.SystemDrawing  | [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SystemDrawing.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SystemDrawing)   | System.Drawing图形扩展，微软不再支持System.Drawing跨平台了，但是这个包目前还是跨平台支持的  |
+	| ViewFaceCore.Extension.SkiaSharp  | <span style="display:inline-block;width:150px"> [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SkiaSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) </span>  |  SkiaSharp图形扩展  |
+	| ViewFaceCore.Extension.ImageSharp  |  <span style="display:inline-block;width:150px"> [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.ImageSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.ImageSharp) </span>  | ImageSharp图形扩展  |
+	| ViewFaceCore.Extension.SystemDrawing  |  <span style="display:inline-block;width:150px"> [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SystemDrawing.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SystemDrawing) </span>  | System.Drawing图形扩展，微软不再支持System.Drawing跨平台了，但是这个包目前还是跨平台支持的  |
 	
 
 ## 🔧 开发
@@ -119,19 +119,19 @@
 	```shell
 	src
 	└─SeetaFace
-		└─index
-			└─build
-				├─bin
-				│  ├─x64
-				│  └─x86
-				├─cmake
-				├─include
-				├─lib
-				│  ├─arm
-				│  ├─arm64
-				│  ├─x64
-				│  └─x86
-				└─lib64
+	   └─index
+	      └─build
+	         ├─bin
+	         │  ├─x64
+	         │  └─x86
+	         ├─cmake
+	         ├─include
+	         ├─lib
+	         │  ├─arm
+	         │  ├─arm64
+	         │  ├─x64
+	         │  └─x86
+	         └─lib64
 	```
 	- #### 我要编译SeetaFace6  
 	1. SeetaFace6官方编译方式
