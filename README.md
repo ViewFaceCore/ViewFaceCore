@@ -8,7 +8,7 @@
 
 <br/>
 
-—— [📄 关于](#📄&nbsp;关于) &nbsp;| [⭐ 快速开始](#⭐&nbsp;快速开始) &nbsp;| [🔧 开发](#🔧&nbsp;开发) &nbsp;| [📄 文档](#📄&nbsp;文档) &nbsp;| [❓ 常见问题](#❓&nbsp;常见问题) &nbsp;| [📦 使用许可](#📦&nbsp;使用许可) ——
+—— [📄 关于](#📄&nbsp;1. 关于) &nbsp;| [⭐ 快速开始](#⭐&nbsp;2. 快速开始) &nbsp;| [🔧 开发](#🔧&nbsp;3. 开发) &nbsp;| [🔧 基本说明](#🔧&nbsp;4. 基本说明) &nbsp;| [📄 参考文档](#📄&nbsp;5. 参考文档) &nbsp;| [❓ 常见问题](#❓&nbsp;8. 常见问题) &nbsp;| [📦 使用许可](#📦&nbsp;使用许可) ——
 
 </div>
 
@@ -239,9 +239,9 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 
 因为SeetaFace6本身不支持多线程调用，所以在这个库设计的时候，在每个不支持并发操作的功能中通过加锁限制并发调用。可以认为，在单个对象的不同操作中，是线程安全的。  
 
-## 5.1 ViewFaceCore API
+## 5. ViewFaceCore API
 
-#### 5.2 所有API通用配置参数  
+### 5.1 所有API通用配置参数  
 下表时所有API都能使用的配置参数，但是目前并不会生效。  
 
 | 配置项  | 类型  |  默认值 | 说明  |
@@ -249,7 +249,7 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 | DeviceType  | 枚举；支持值：AUTO、CPU、GPU   | AUTO  | 检测所用的设备类型，目前只支持CPU，需要GPU请自行编译[TenniS](https://github.com/TenniS-Open/TenniS "TenniS")  |
 | LogEvent   | Action<string>  | NULL  | 用于输出内部日志，目前未启用  |
 
-#### 5.3 FaceAntiSpoofing（活体检测）  
+### 5.2 FaceAntiSpoofing（活体检测）  
 活体检测API。  
 活体检测识别器可以加载一个`局部检测模型`或者`局部检测模型+全局检测模型`，使用参数`Global`来区分，默认为`True`。当使用`局部检测模型`时，需要安装模型`ViewFaceCore.model.fas_second`。  
 
@@ -314,7 +314,7 @@ public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, Face
 ```
 使用方式同上。  
 
-#### 5.4 FaceDetector（人脸检测）
+### 5.3 FaceDetector（人脸检测）
 
 
 ## 📄 6. 参考文档
