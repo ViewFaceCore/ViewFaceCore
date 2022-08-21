@@ -20,7 +20,7 @@ namespace ViewFaceCore.Core
                 , config.Height
                 , config.Stable
                 , config.Interval
-                , config.FaceSize
+                , config.MinFaceSize
                 , config.Threshold
                 , (int)config.DeviceType);
             if (_handle == IntPtr.Zero)
