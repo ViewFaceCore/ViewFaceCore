@@ -21,6 +21,9 @@ namespace ViewFaceCore.Example.ConsoleApp
             //人脸识别Demo
             FaceDetectorDemo();
 
+            //关键点标记
+            FaceMarkDemo();
+
             //戴口罩识别Demo
             MaskDetectorDemo();
 
@@ -71,6 +74,26 @@ namespace ViewFaceCore.Example.ConsoleApp
 
             var result = faceRecognizer.Extract(bitmap_mask, faceMark.Mark(bitmap_mask, info1));
             Console.WriteLine($"是否识别到人脸：{(result != null && result.Sum() > 1 ? "是" : "否")}");
+            Console.WriteLine();
+        }
+
+        static void FaceMarkDemo()
+        {
+            using var bitmap0 = SKBitmap.Decode(imagePath0);
+            using var faceImage = bitmap0.ToFaceImage();
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            Stopwatch sw = new Stopwatch();
+
+            var infos = faceDetector.Detect(faceImage);
+            var markPoints = faceMark.Mark(faceImage, infos[0]);
+
+            sw.Stop();
+            Console.WriteLine($"识别到的关键点个数：{markPoints.Length}，耗时：{sw.ElapsedMilliseconds}ms");
+            foreach (var item in markPoints)
+            {
+                Console.WriteLine($"X:{item.X}, Y:{item.Y}");
+            }
             Console.WriteLine();
         }
 
