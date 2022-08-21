@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
     public static class ViewFaceSystemDrawingExtension
     {

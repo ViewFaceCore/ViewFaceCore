@@ -2,7 +2,7 @@
 using System;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
     public static class ViewFaceSkiaSharpExtension
     {
