@@ -251,7 +251,8 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 
 ### 5.2 FaceAntiSpoofing（活体检测）  
 活体检测API。  
-活体检测识别器可以加载一个`局部检测模型`或者`局部检测模型+全局检测模型`，使用参数`Global`来区分，默认为`True`。当使用`局部检测模型`时，需要安装模型`ViewFaceCore.model.fas_second`。  
+活体检测识别器可以加载一个`局部检测模型`或者`局部检测模型+全局检测模型`，使用参数`Global`来区分，默认为`True`。  
+当使用`局部检测模型`时，需要安装模型`ViewFaceCore.model.fas_second`。 当使用`局部检测模型+全局检测模型`时，需要安装模型`ViewFaceCore.model.fas_first`和`ViewFaceCore.model.fas_second`。
 
 **配置项`FaceAntiSpoofingConfig`**  
 
@@ -277,7 +278,7 @@ public AntiSpoofingResult AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkP
 入参为需要识别的图像、人脸信息、人脸关键点标记。  
 出参`AntiSpoofingResult`：  
 
-| 配置项  | 类型  |  默认值 | 说明  |
+| 参数  | 类型  |  默认值 | 说明  |
 | ------------ | ------------ | ------------ | ------------ |
 | AntiSpoofingStatus  | 枚举  | - | Error（错误或没有找到指定的人脸索引处的人脸）、Real（真实人脸）、Spoof（攻击人脸（假人脸））、Fuzzy（无法判断（人脸成像质量不好））、Detecting（正在检测）  
 | Clarity  | float  | - | 清晰度  |
@@ -315,6 +316,158 @@ public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, Face
 使用方式同上。  
 
 ### 5.3 FaceDetector（人脸检测）
+人脸检测，输入待检测的图片，输出检测到的每个人脸位置，用矩形表示。  
+人脸检测需要模型`ViewFaceCore.model.face_detector`。一般检测返回的所有人脸的人脸位置数组，并按照置信度从大大小进行排序返回。  
+
+**配置项`FaceDetectConfig`**  
+
+| 配置项  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| FaceSize  | int  | 20  | 最小人脸，最小人脸和检测器性能息息相关。主要方面是速度，使用建议上，我们建议在应用范围内，这个值设定的越大越好。  |
+| Threshold  | double  | 0.9  |检测器阈值。默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。  |
+| MaxWidth  | int  | 2000  | 可检测的图像最大宽度  |
+| MaxHeight  | int  | 2000  | 可检测的图像最大高度  |
+
+更多细节请参考：http://leanote.com/blog/post/5e7d6cecab64412ae60016ef#title-14
+
+**Detect**
+人脸信息检测。  
+```csharp
+public FaceInfo[] Detect(FaceImage image)
+```
+入参：  
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| FaceImage  | object  | -  | 人脸图像信息数据  |
+
+出参：FaceInfo数组  
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| Score  | float  | -  | 人脸置信度  |
+| Location  | FaceRect  | -  | 人脸位置  |
+
+FaceRect：  
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| X  | int  | -  | 左上角点横坐标  |
+| Y  | int  | -  | 左上角点纵坐标  |
+| Width  | int  | -  | 矩形宽度  |
+| Height  | int  | -  | 矩形高度  |
+
+调用示例（识别人脸并标记出来）：  
+```csharp
+using System;
+using System.Drawing;
+using System.Linq;
+using ViewFaceCore;
+using ViewFaceCore.Core;
+using ViewFaceCore.Model;
+
+namespace Demo
+{
+    internal class Program
+    {
+        private readonly static string imagePath = @"images/Jay_3.jpg";
+        private readonly static string outputPath = @"images/Jay_out.jpg";
+
+        static void Main(string[] args)
+        {
+            using var bitmap = (Bitmap)Image.FromFile(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            FaceInfo[] infos = faceDetector.Detect(bitmap);
+            //输出人脸信息
+            Console.WriteLine($"识别到的人脸数量：{infos.Length} 个人脸信息：\n");
+            Console.WriteLine($"No.\t人脸置信度\t位置信息");
+            for (int i = 0; i < infos.Length; i++)
+            {
+                Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
+            }
+            //画方框，标记人脸
+            using (Graphics g = Graphics.FromImage(bitmap))
+            {
+                g.DrawRectangles(new Pen(Color.Red, 4), infos.Select(p => new RectangleF(p.Location.X, p.Location.Y, p.Location.Width, p.Location.Height)).ToArray());
+            }
+            bitmap.Save(outputPath);
+            Console.WriteLine($"输出图片已保存至：{outputPath}");
+            Console.WriteLine();
+        }
+    }
+}
+```
+
+### 5.4 FaceLandmarker（人脸关键点定位器）
+关键定定位输入的是原始图片和人脸检测结果，给出指定人脸上的关键点的依次坐标。  
+这里检测到的5点坐标循序依次为，左眼中心、右眼中心、鼻尖、左嘴角和右嘴角。注意这里的左右是基于图片内容的左右，并不是图片中人的左右，即左眼中心就是图片中左边的眼睛的中心。  
+
+**配置项`FaceLandmarkConfig`**  
+
+| 配置项  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| MarkType  | 枚举  | Light  | 关键点类型  |
+
+MarkType枚举：  
+
+| 枚举值  | 所选模型  | 说明  |
+| ------------ | ------------ | ------------ | 
+| Normal  | ViewFaceCore.model.face_landmarker_pts68  | 68个关键点检测模型  |
+| Light  | ViewFaceCore.model.face_landmarker_pts5  | 5个关键点检测模型  |
+| Mask  | ViewFaceCore.model.face_landmarker_mask_pts5  | 戴口罩关键点检测模型  |
+
+需要注意的是：
+
+> 这里的关键点是指人脸上的关键位置的坐标，在一些表述中也将关键点称之为特征点，但是这个和人脸识别中提取的特征概念没有任何相关性。**并不存在结论，关键点定位越多，人脸识别精度越高。**  
+> 一般的关键点定位和其他的基于人脸的分析是基于5点定位的。而且算法流程确定下来之后，只能使用5点定位。5点定位是后续算法的先验，并不能直接替换。**从经验上来说，5点定位已经足够处理人脸识别或其他相关分析的精度需求，单纯增加关键点个数，只是增加方法的复杂度，并不对最终结果产生直接影响。**
+> 来源：入门教程 2.2 人脸关键点定位器 http://leanote.com/blog/post/5e7d6cecab64412ae60016ef#title-15
+
+**Mark**
+```csharp
+public FaceMarkPoint[] Mark(FaceImage image, FaceInfo info)
+```
+入参：  
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| FaceImage  | object  | -  | 人脸图像信息数据  |
+| FaceInfo  | struct  | -  | 面部信息  |
+
+出参：  
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| FaceMarkPoin[]  | array  | -  | 关键点坐标，坐标循序依次为，左眼中心、右眼中心、鼻尖、左嘴角和右嘴角  |
+
+FaceMarkPoin
+
+| 参数  | 类型  |  默认值 | 说明  |
+| ------------ | ------------ | ------------ | ------------ |
+| X  | int  | -  | 左上角点横坐标  |
+| Y  | int  | -  | 左上角点纵坐标  |
+
+调用示例（识别人脸并标记出来）：  
+```csharp
+static void FaceMarkDemo()
+{
+    using var bitmap0 = SKBitmap.Decode(imagePath0);
+    using var faceImage = bitmap0.ToFaceImage();
+    using FaceDetector faceDetector = new FaceDetector();
+    using FaceLandmarker faceMark = new FaceLandmarker();
+    Stopwatch sw = new Stopwatch();
+
+    var infos = faceDetector.Detect(faceImage);
+    var markPoints = faceMark.Mark(faceImage, infos[0]);
+
+    sw.Stop();
+    Console.WriteLine($"识别到的关键点个数：{markPoints.Length}，耗时：{sw.ElapsedMilliseconds}ms");
+    foreach (var item in markPoints)
+    {
+        Console.WriteLine($"X:{item.X}, Y:{item.Y}");
+    }
+    Console.WriteLine();
+}
+```
 
 
 ## 📄 6. 参考文档
@@ -324,11 +477,11 @@ public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, Face
 
 
 ## ❓ 7. 常见问题
-#### 1、Unable to load DLL 'ViewFaceBridge' or one of its dependencies  
+#### 1. Unable to load DLL 'ViewFaceBridge' or one of its dependencies  
 1. 检查nuget包是否下载完全，编译目标文件夹下面的viewfacecore文件夹中是否有对应平台的依赖文件，比如说windows x64平台，在viewfacecore文件夹下面应该会有win/x64文件夹，文件夹中有很多*.dll文件。  
 2. 缺少vc++依赖，安装nuget包`ViewFaceCore.runtime.win.vc`.[![](https://img.shields.io/nuget/v/ViewFaceCore.runtime.win.vc.svg)](https://www.nuget.org/packages/ViewFaceCore.runtime.win.vc)  
 
-#### 2、开始人脸识别时卡死，然后异常结束，或者报异常：0x00007FFC3FDD104E (tennis.dll) (ConsoleApp1.exe 中)处有未经处理的异常: 0xC000001D: IllegInstruction。  
+#### 2. 开始人脸识别时卡死，然后异常结束，或者报异常：0x00007FFC3FDD104E (tennis.dll) (ConsoleApp1.exe 中)处有未经处理的异常: 0xC000001D: IllegInstruction。  
 原因是tennis使用了不支持的指令集。下表是tennis文件对应支持的指令集。  
 | 文件  | 指令集  | 说明  |
 | ------------ | ------------ | ------------ |
@@ -343,11 +496,8 @@ public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, Face
 ## 📦 8. 使用许可   
 <div align="center">
 
-[Copyright (c) 2021, View](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE)
-    |   
-[*Copyright (c) 2019, SeetaTech*](https://github.com/SeetaFace6Open/index/blob/master/LICENSE)
+[Copyright (c) 2021, View](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE) | [*Copyright (c) 2019, SeetaTech*](https://github.com/SeetaFace6Open/index/blob/master/LICENSE)
 
-</din>
+</div>
 
 > [\[源\]](https://github.com/SeetaFace6Open/index#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) > *`SeetaFace` 开源版可以免费用于商业和个人用途。如果需要更多的商业支持，请联系商务邮件 bd@seetatech.com*
-
