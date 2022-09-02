@@ -12,12 +12,13 @@
 
 </div>
 
-## 📄&nbsp;1. 关于
+
+## 1. 关于
 - 一个基于 [SeetaFace6](https://github.com/SeetaFace6Open/index) 的 .NET 人脸识别解决方案
 - 本项目受到了 [SeetaFaceEngine.Net](https://github.com/iarray/SeetaFaceEngine.Net) 的启发
 - 开源、免费、跨平台 (win/linux)
 
-## ⭐ 2. 快速开始
+## 2. 快速开始
 ### 2.1 受支持的 .NET 框架 和 操作系统  
 
    | 目标框架 |最低版本 | 操作系统 |
@@ -69,8 +70,7 @@ namespace ViewFaceCore.Demo.ConsoleApp
 
 更多案例可以下载源码查看Demo。  
 
-
-## 🔧 3. 开发
+## 3. 二次开发
 ### 3.1 项目结构
 
 ```shell
@@ -131,8 +131,15 @@ src
 参考：https://github.com/ViewFaceCore/ViewFaceCore/blob/main/docs/SeetaFace_Build.md
 	
 ### 3.4 编译SeetaFaceBridge
+#### 3.4.1 编译Windows环境下的SeetaFaceBridge
+通过3.3.1或者3.3.2小节，完成SeetaFace6编译之后，就可以在VS中直接右键->构建SeetaFaceBridge了。
+
+#### 3.4.2 编译Linux环境下的SeetaFaceBridge
+前提条件也是需要通过3.3.1或者3.3.2小节，完成SeetaFace6的编译。  
+有三种方式可以编译Linux环境下的SeetaFaceBridge，WSL、Remote Linux、交叉编译。具体步奏就不一一介绍了，选择自己比较熟悉或者喜欢的方式，building~
 
 ### 3.5 编译ViewFaceCore
+就像编译C#的Hello World一样简单。
 
 ## 4. 基本说明
 
@@ -191,7 +198,7 @@ nuget包如下表所示:
 ### 4.4 调用说明  
 #### 4.4.1 对象生命周期  
 这里的对象的生命周期指的是人脸识别中各个功能对象的生命周期，并不是C#中GC和对象的生命周期。虽然也和C#中对象生命周期密不可分，但是这并不是这一小节的主题，这里不会过多的解释C#语言本身的特性。  
-就拿`FaceDetector`举个例子。在`FaceDetector`的构造函数中  
+用`FaceDetector`举个例子。在`FaceDetector`的构造函数中  
 ```csharp
 public FaceDetector(FaceDetectConfig config = null)
 {
@@ -207,7 +214,8 @@ public FaceDetector(FaceDetectConfig config = null)
     }
 }
 ```
-通过Native调用的方式，调用C++项目ViewFaceBridge中的函数`GetFaceDetectorHandler`获取SeetaFace6中`seeta::v6::FaceDetector`对象的IntPtr句柄。ViewFaceBridge中的函数`GetFaceDetectorHandler`函数代码如下：  
+通过Native调用的方式，调用C++项目ViewFaceBridge中的函数`GetFaceDetectorHandler`获取SeetaFace6中`seeta::v6::FaceDetector`对象的IntPtr句柄。  
+ViewFaceBridge中的函数`GetFaceDetectorHandler`函数代码如下：  
 ```cpp
 View_Api seeta::v6::FaceDetector *GetFaceDetectorHandler(const double faceSize = 20, const double threshold = 0.9, const double maxWidth = 2000, const double maxHeight = 2000, const SeetaDevice deviceType = SEETA_DEVICE_AUTO)
 {
@@ -227,7 +235,7 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 }
 ```
 综上所述，在编写代码的过程中，**一定要使用`using`语句或在结束后调用`Dispose`释放掉对象**。且SeetaFace6对象的构造和释放会比较耗时，其中涉及到模型加载、计算等，建议**尽可能的复用对象以及在需要频繁使用新对象的场景中使用对象池。**  
-而对象复用，又涉及到线程安全的问题。更多关于线程安全的细节，请继续阅读下一节。  
+对象复用，又涉及到线程安全的问题。更多关于线程安全的细节，请继续阅读下一节。  
 
 #### 4.4.2 线程安全  
 > 线程安全也是开发中需要重点关注的特性。然而，线程安全在不同的上下文解释中总会有不同解释。为了避免理解的偏差，这里用几种不同的用例去解释识别器的使用。  
@@ -239,6 +247,43 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 
 因为SeetaFace6本身不支持多线程调用，所以在这个库设计的时候，在每个不支持并发操作的功能中通过加锁限制并发调用。可以认为，在单个对象的不同操作中，是线程安全的。  
 
+#### 4.4.3 初始化配置
+在一些场景下，比如不支持AVX2指令集、需要拿取内部日志等。我们提供了一个全局配置项：`GlobalConfig`，下面的小节将具体介绍支持的特性。
+
+##### 4.4.3.1 输出内部日志
+在生产环境或者某些不方便调试场景下，又出现一些莫名其妙的问题的时候，不妨看看内部日志，说不定有不一样的收获。
+```csharp
+static void Config()
+{
+    //打印内部日志
+    GlobalConfig.SetLog((msg) =>
+    {
+        Console.WriteLine($"[内部日志]{msg}");
+    });
+}
+```
+
+##### 4.4.3.2 特定指令集支持
+x86环境，默认情况下，使用支持AVX2、FMA的tennis神经网络推理系统。但在一些低功耗CPU，比如Intel的J系列和N系列，阉割了AVX2指令集。在这些不支持AVX2或FMA指令集的CPU上面运行时，可能会报异常：0x00007FFC3FDD104E (tennis.dll) (ConsoleApp1.exe 中)处有未经处理的异常: 0xC000001D: IllegInstruction。  
+原因是tennis使用了不支持的指令集。下表是tennis文件对应支持的指令集。  
+
+| 文件  | 指令集  | 说明  |
+| ------------ | ------------ | ------------ |
+| tennis.dll  | AVX2、FMA  | 默认  |
+| tennis_haswell.dll  | AVX2、FMA   |   |
+| tennis_sandy_bridge.dll  | AVX2   |   |
+| tennis_pentium.dll  | SSE2   |   |
+
+但是tennis同样提供了不同指令集上面的解决方案。ViewFaceCore通过一个全局配置项，可以强制使用支持具体指令集的tennis。如下所示：  
+```csharp
+static void Config()
+{
+    //设置只支持SSE2指令集
+    GlobalConfig.SetInstruction(X86Instruction.SSE2);
+}
+```
+需要注意的是，设置指令集支持，必需在初始化任何API之前，否者无效。
+
 ## 5. ViewFaceCore API
 
 ### 5.1 所有API通用配置参数  
@@ -247,12 +292,11 @@ View_Api void DisposeFaceDetector(seeta::v6::FaceDetector *handler)
 | 配置项  | 类型  |  默认值 | 说明  |
 | ------------ |------------ | ------------ | ------------ |
 | DeviceType  | 枚举；支持值：AUTO、CPU、GPU   | AUTO  | 检测所用的设备类型，目前只支持CPU，需要GPU请自行编译[TenniS](https://github.com/TenniS-Open/TenniS "TenniS")  |
-| LogEvent   | Action<string>  | NULL  | 用于输出内部日志，目前未启用  |
 
 ### 5.2 FaceAntiSpoofing（活体检测）  
 活体检测API。  
 活体检测识别器可以加载一个`局部检测模型`或者`局部检测模型+全局检测模型`，使用参数`Global`来区分，默认为`True`。  
-当使用`局部检测模型`时，需要安装模型`ViewFaceCore.model.fas_second`。 当使用`局部检测模型+全局检测模型`时，需要安装模型`ViewFaceCore.model.fas_first`和`ViewFaceCore.model.fas_second`。
+当使用`局部检测模型`时，需要安装模型`ViewFaceCore.model.fas_second`。 当使用`局部检测模型+全局检测模型`时，需要安装模型`ViewFaceCore.model.fas_first`和`ViewFaceCore.model.fas_second`。  
 
 **配置项`FaceAntiSpoofingConfig`**  
 
@@ -470,30 +514,21 @@ static void FaceMarkDemo()
 ```
 
 
-## 📄 6. 参考文档
+## 6. 参考文档
 - [*SeetaFace6 说明*](https://github.com/seetafaceengine/SeetaFace6/blob/master/README.md)
 - [*SeetaFace 各接口说明*](https://github.com/seetafaceengine/SeetaFace6/tree/master/docs)
 - [*SeetaFace 入门教程*](http://leanote.com/blog/post/5e7d6cecab64412ae60016ef)
 
 
-## ❓ 7. 常见问题
-#### 1. Unable to load DLL 'ViewFaceBridge' or one of its dependencies  
-1. 检查nuget包是否下载完全，编译目标文件夹下面的viewfacecore文件夹中是否有对应平台的依赖文件，比如说windows x64平台，在viewfacecore文件夹下面应该会有win/x64文件夹，文件夹中有很多*.dll文件。  
-2. 缺少vc++依赖，安装nuget包`ViewFaceCore.runtime.win.vc`.[![](https://img.shields.io/nuget/v/ViewFaceCore.runtime.win.vc.svg)](https://www.nuget.org/packages/ViewFaceCore.runtime.win.vc)  
+## 7. 常见问题
+1. Unable to load DLL 'ViewFaceBridge' or one of its dependencies  
+	1. 检查nuget包是否下载完全，编译目标文件夹下面的viewfacecore文件夹中是否有对应平台的依赖文件，比如说windows x64平台，在viewfacecore文件夹下面应该会有win/x64文件夹，文件夹中有很多*.dll文件。  
+	2. 缺少vc++依赖，安装nuget包`ViewFaceCore.runtime.win.vc`.[![](https://img.shields.io/nuget/v/ViewFaceCore.runtime.win.vc.svg)](https://www.nuget.org/packages/ViewFaceCore.runtime.win.vc)  
 
-#### 2. 开始人脸识别时卡死，然后异常结束，或者报异常：0x00007FFC3FDD104E (tennis.dll) (ConsoleApp1.exe 中)处有未经处理的异常: 0xC000001D: IllegInstruction。  
-原因是tennis使用了不支持的指令集。下表是tennis文件对应支持的指令集。  
-| 文件  | 指令集  | 说明  |
-| ------------ | ------------ | ------------ |
-| tennis.dll  | AVX2、FMA  | 默认  |
-| tennis_haswell.dll  | AVX2、FMA   |   |
-| tennis_sandy_bridge.dll  | AVX2   |   |
-| tennis_pentium.dll  | SSE2   |   |
+2. 开始人脸识别时卡死，然后异常结束，或者报异常：0x00007FFC3FDD104E (tennis.dll) (ConsoleApp1.exe 中)处有未经处理的异常: 0xC000001D: IllegInstruction。  
+	参考：https://github.com/ViewFaceCore/ViewFaceCore/edit/dev/README.md#4432-%E7%89%B9%E5%AE%9A%E6%8C%87%E4%BB%A4%E9%9B%86%E6%94%AF%E6%8C%81
 
-这个错误主要发生在低功耗CPU上面，低功耗CPU阉割了指令集。如果使用了不支持的指令集就会报这个异常。解决方案是删掉tennis.dll，然后用对应支持的指令集重命名为tennis.dll。比如在Intel奔腾低功耗CPU环境中，将tennis.dll删除，然后将tennis_pentium.dll重命名为tennis.dll。  
-
-
-## 📦 8. 使用许可   
+## 8. 使用许可   
 <div align="center">
 
 [Copyright (c) 2021, View](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE) | [*Copyright (c) 2019, SeetaTech*](https://github.com/SeetaFace6Open/index/blob/master/LICENSE)
