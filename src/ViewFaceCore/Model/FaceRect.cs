@@ -20,14 +20,17 @@ namespace ViewFaceCore.Model
         /// 左上角点横坐标
         /// </summary>
         public int X => x;
+
         /// <summary>
         /// 左上角点纵坐标
         /// </summary>
         public int Y => y;
+
         /// <summary>
         /// 矩形宽度
         /// </summary>
         public int Width => width;
+
         /// <summary>
         /// 矩形高度
         /// </summary>

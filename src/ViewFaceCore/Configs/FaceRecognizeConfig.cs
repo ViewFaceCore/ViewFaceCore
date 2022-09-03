@@ -43,6 +43,13 @@ namespace ViewFaceCore.Configs
         public float GetThreshold(FaceType type) => Threshold[type];
 
         /// <summary>
+        /// 获取默认人脸识别模型的相似度阈值。
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public float GetThreshold() => Threshold[this.FaceType];
+
+        /// <summary>
         /// 设置指定人脸识别模型的相似度阈值。
         /// <para>
         /// 默认阈值是一般场景使用的推荐阈值。一般来说1比1的场景下，该阈值会对应偏低，1比N场景会对应偏高。
@@ -55,6 +62,23 @@ namespace ViewFaceCore.Configs
         /// </summary>
         /// <param name="type">指定的人脸识别模型</param>
         /// <param name="score">相似度阈值</param>
-        public void SetThreshold(FaceType type, float score) => Threshold[type] = score;
+        public FaceRecognizeConfig SetThreshold(FaceType type, float score)
+        {
+            Threshold[type] = score;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置指定人脸识别模型的相似度阈值。
+        /// <para>
+        /// 默认阈值是一般场景使用的推荐阈值。一般来说1比1的场景下，该阈值会对应偏低，1比N场景会对应偏高。
+        /// </para>
+        /// </summary>
+        /// <param name="score">相似度阈值</param>
+        public FaceRecognizeConfig SetThreshold(float score)
+        {
+            Threshold[this.FaceType] = score;
+            return this;
+        }
     }
 }

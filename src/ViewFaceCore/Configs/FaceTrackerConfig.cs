@@ -1,4 +1,6 @@
-﻿namespace ViewFaceCore.Configs
+﻿using System;
+
+namespace ViewFaceCore.Configs
 {
     /// <summary>
     /// 人脸跟踪器配置
@@ -23,16 +25,19 @@
         /// 如果最小人脸参数设置为 <see langword="80"/> 的话，从检测能力上，可以将原图缩小的原来的 <see langword="1/4"/> ，这样从计算复杂度上，能够比最小人脸设置为 <see langword="20"/> 时，提速到 <see langword="16"/> 倍。
         /// </para>
         /// </summary>
-        public int FaceSize { get; set; } = 20;
+        public int MinFaceSize { get; set; } = 20;
+
         /// <summary>
         /// 检测器阈值。
         /// <para>默认值是0.9，合理范围为[0, 1]。这个值一般不进行调整，除了用来处理一些极端情况。这个值设置的越小，漏检的概率越小，同时误检的概率会提高。</para>
         /// </summary>
         public float Threshold { get; set; } = 0.9f;
+
         /// <summary>
         /// 是否进行检测结果的帧间平滑，使得检测结果从视觉上更好一些。
         /// </summary>
         public bool Stable { get; set; } = false;
+
         /// <summary>
         /// 检测间隔
         /// <para>
@@ -45,6 +50,58 @@
         {
             this.Width = width;
             this.Height = height;
+        }
+
+        /// <summary>
+        /// 设置是否进行检测结果的帧间平滑
+        /// </summary>
+        /// <param name="stable"></param>
+        /// <returns></returns>
+        public FaceTrackerConfig SetStable(bool stable)
+        {
+            this.Stable = stable;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置最小检测人脸
+        /// </summary>
+        /// <param name="minFaceSize"></param>
+        /// <returns></returns>
+        public FaceTrackerConfig SetMinFaceSize(int minFaceSize)
+        {
+            if (minFaceSize < 5 || minFaceSize > Math.Min(Width, Height))
+            {
+                throw new ArgumentException($"MinFaceSize value range from {5} to {Math.Min(Width, Height)}", nameof(minFaceSize));
+            }
+            this.MinFaceSize = minFaceSize;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置检测器阈值
+        /// </summary>
+        /// <param name="threshold">阈值</param>
+        /// <returns></returns>
+        public FaceTrackerConfig SetThreshold(float threshold)
+        {
+            if (threshold <= 0 || threshold >= 1f)
+            {
+                throw new ArgumentException($"Threshold value range from 0 to 1", nameof(threshold));
+            }
+            this.Threshold = threshold;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置检测间隔
+        /// </summary>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        public FaceTrackerConfig SetInterval(int interval)
+        {
+            this.Interval = interval;
+            return this;
         }
     }
 }

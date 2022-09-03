@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using ViewFaceCore.Core;
 using ViewFaceCore.Exceptions;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
     /// <summary>
     /// 异步扩展，对于 CPU 绑定的操作直接使用 <see cref="Task.Run(Action)"/> 进行包装。

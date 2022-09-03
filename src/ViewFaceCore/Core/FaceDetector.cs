@@ -61,7 +61,7 @@ namespace ViewFaceCore.Core
                             int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
                             result[i] = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
                         }
-                        return result;
+                        return result.OrderBy(p => p.Score).ToArray();
                     }
                     finally
                     {

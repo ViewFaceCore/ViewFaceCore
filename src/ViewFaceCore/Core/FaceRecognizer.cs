@@ -100,7 +100,7 @@ namespace ViewFaceCore.Core
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
-        public bool IsSelf(float similarity) => similarity > this.CompareConfig.GetThreshold(this.CompareConfig.FaceType);
+        public bool IsSelf(float similarity) => similarity > this.CompareConfig.GetThreshold();
 
         /// <summary>
         /// 判断两个特征值是否为同一个人。

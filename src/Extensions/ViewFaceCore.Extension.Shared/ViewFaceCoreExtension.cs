@@ -1,9 +1,8 @@
 ﻿using System;
-using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
     public static class ViewFaceCoreExtension
     {

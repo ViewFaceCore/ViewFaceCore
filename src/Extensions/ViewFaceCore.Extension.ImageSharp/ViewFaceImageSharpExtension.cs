@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore
+namespace ViewFaceCore.Core
 {
     public static class ViewFaceImageSharpExtension
     {

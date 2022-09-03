@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using ViewFaceCore.Configs;
 
 #if NETCOREAPP3_1_OR_GREATER
 using System.Runtime.Intrinsics.X86;
@@ -30,15 +31,15 @@ namespace ViewFaceCore.Native
             {
                 if (!string.IsNullOrEmpty(_libraryPath))
                     return _libraryPath;
-                string architecture, platform;
-                switch (RuntimeInformation.ProcessArchitecture)
+                string platform;
+                string architecture = RuntimeInformation.ProcessArchitecture switch
                 {
-                    case Architecture.X86: architecture = "x86"; break;
-                    case Architecture.X64: architecture = "x64"; break;
-                    case Architecture.Arm: architecture = "arm"; break;
-                    case Architecture.Arm64: architecture = "arm64"; break;
-                    default: throw new PlatformNotSupportedException($"Unsupported processor architecture: {RuntimeInformation.ProcessArchitecture}");
-                }
+                    Architecture.X86 => "x86",
+                    Architecture.X64 => "x64",
+                    Architecture.Arm => "arm",
+                    Architecture.Arm64 => "arm64",
+                    _ => throw new PlatformNotSupportedException($"Unsupported processor architecture: {RuntimeInformation.ProcessArchitecture}"),
+                };
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     platform = "win";
                 else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
@@ -75,7 +76,7 @@ namespace ViewFaceCore.Native
         /// <summary>
         /// ViewFaceBridge 的所有依赖库。(按照依赖顺序排列)
         /// </summary>
-        private static readonly List<string> Libraries = new List<string>()
+        private static List<string> Libraries = new List<string>()
         {
             "tennis",
             "tennis_haswell",
@@ -106,20 +107,14 @@ namespace ViewFaceCore.Native
         /// <exception cref="PlatformNotSupportedException"></exception>
         static ViewFaceNative()
         {
+            //根据指令集，设置Tennis依赖库
+            ResetTennisDependency();
 #if NETFRAMEWORK || NETSTANDARD
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             { SetDllDirectory(LibraryPath); }
             else
             { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
 #elif NETCOREAPP3_1_OR_GREATER
-            string format;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            { format = "{0}.dll"; }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            { format = "lib{0}.so"; }
-            else
-            { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
-
             foreach (var library in Libraries)
             {
                 //不支持Avx2
@@ -127,7 +122,7 @@ namespace ViewFaceCore.Native
                 //不支持Fma
                 if (!Fma.IsSupported && library.Contains("tennis_sandy_bridge")) continue;
                 //Combine Library Path
-                string libraryPath = Path.Combine(LibraryPath, string.Format(format, library));
+                string libraryPath = GetLibraryFullName(library);
                 if (!File.Exists(libraryPath))
                 {
                     if (library.Contains("tennis_", StringComparison.OrdinalIgnoreCase))
@@ -142,9 +137,9 @@ namespace ViewFaceCore.Native
 
             NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ViewFaceNative)), (libraryName, assembly, searchPath) =>
             {
-                if (!libraryName.Equals(LIBRARY_NAME, StringComparison.OrdinalIgnoreCase))
+                if (!libraryName.Equals(BRIDGE_LIBRARY_NAME, StringComparison.OrdinalIgnoreCase))
                     return IntPtr.Zero;
-                string libraryPath = Path.Combine(LibraryPath, string.Format(format, LIBRARY_NAME));
+                string libraryPath = GetLibraryFullName(BRIDGE_LIBRARY_NAME);
                 return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.AssemblyDirectory);
             });
 #else
@@ -211,5 +206,85 @@ namespace ViewFaceCore.Native
             return null;
         }
 
+        private static void ResetTennisDependency()
+        {
+            //Arm不需要处理
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X86
+                && RuntimeInformation.ProcessArchitecture != Architecture.X64)
+            {
+                return;
+            }
+            switch (GlobalConfig.X86Instruction)
+            {
+                case X86Instruction.AVX2:
+                    {
+                        //只支持AVX2
+                        GlobalConfig.WriteLog("CPU only support AVX2 instruction, will use tennis_sandy_bridge.");
+
+                        List<string> removeLibs = new List<string>() { "tennis_haswell", "tennis_pentium" };
+                        removeLibs.ForEach(p =>
+                        {
+                            if (Libraries.Contains(p))
+                            {
+                                Libraries.Remove(p);
+                            }
+                        });
+                        string supportTennisLibPath = GetLibraryFullName("tennis_sandy_bridge");
+                        if (!File.Exists(supportTennisLibPath))
+                        {
+                            return;
+                        }
+                        string baseTennisLibPath = GetLibraryFullName("tennis");
+                        if (File.Exists(supportTennisLibPath))
+                        {
+                            File.Delete(baseTennisLibPath);
+                        }
+                        File.Copy(supportTennisLibPath, baseTennisLibPath, true);
+                    }
+                    break;
+                case X86Instruction.SSE2:
+                    {
+                        //只支持SSE2
+                        GlobalConfig.WriteLog("CPU only support SSE2 instruction, will use tennis_pentium.");
+
+                        List<string> removeLibs = new List<string>() { "tennis_haswell", "tennis_sandy_bridge" };
+                        removeLibs.ForEach(p =>
+                        {
+                            if (Libraries.Contains(p))
+                            {
+                                Libraries.Remove(p);
+                            }
+                        });
+                        string supportTennisLibPath = GetLibraryFullName("tennis_pentium");
+                        if (!File.Exists(supportTennisLibPath))
+                        {
+                            return;
+                        }
+                        string baseTennisLibPath = GetLibraryFullName("tennis");
+                        if (File.Exists(supportTennisLibPath))
+                        {
+                            File.Delete(baseTennisLibPath);
+                        }
+                        File.Copy(supportTennisLibPath, baseTennisLibPath, true);
+                    }
+                    break;
+            }
+        }
+
+        private static string GetLibraryFullName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("name can not null", nameof(name));
+            }
+            string format;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                format = "{0}.dll";
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                format = "lib{0}.so";
+            else
+                throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
+            return Path.Combine(LibraryPath, string.Format(format, name));
+        }
     }
 }

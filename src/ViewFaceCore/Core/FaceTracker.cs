@@ -16,11 +16,13 @@ namespace ViewFaceCore.Core
 
         public FaceTracker(FaceTrackerConfig config)
         {
+            if (config == null) 
+                throw new ArgumentNullException(nameof(config), $"Param '{nameof(config)}' can not null.");
             _handle = ViewFaceNative.GetFaceTrackerHandler(config.Width
                 , config.Height
                 , config.Stable
                 , config.Interval
-                , config.FaceSize
+                , config.MinFaceSize
                 , config.Threshold
                 , (int)config.DeviceType);
             if (_handle == IntPtr.Zero)

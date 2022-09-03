@@ -13,11 +13,13 @@ namespace ViewFaceCore.Model
         /// </summary>
         [Description("68个关键点")]
         Normal = 0,
+
         /// <summary>
         /// 戴口罩的关键点
         /// </summary>
         [Description("戴口罩的关键点")]
         Mask,
+
         /// <summary>
         /// 5个关键点
         /// </summary>
