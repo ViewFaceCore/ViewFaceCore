@@ -214,7 +214,7 @@ namespace ViewFaceCore.Native
             {
                 return;
             }
-            switch (GlobalConfig.SupportX86Instruction)
+            switch (GlobalConfig.X86Instruction)
             {
                 case X86Instruction.AVX2:
                     {

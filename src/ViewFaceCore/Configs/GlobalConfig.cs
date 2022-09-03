@@ -39,20 +39,31 @@ namespace ViewFaceCore.Configs
 
         #region Instruction
 
+        private static bool _isSetX86Instruction = false;
+
+        private static readonly object _setX86InstructionLocker = new object();
+
         /// <summary>
         /// 在x86环境下支持的指令集
         /// </summary>
-        public static X86Instruction SupportX86Instruction { get; private set; } = X86Instruction.AVX2 | X86Instruction.SSE2 | X86Instruction.FMA;
+        public static X86Instruction X86Instruction { get; private set; } = X86Instruction.AVX2 | X86Instruction.SSE2 | X86Instruction.FMA;
 
         /// <summary>
         /// 设置支持的指令集
         /// </summary>
         /// <param name="instruction"></param>
-        public static void SetInstruction(X86Instruction instruction)
+        public static void SetX86Instruction(X86Instruction instruction)
         {
-            if (RuntimeInformation.ProcessArchitecture == Architecture.X86 || RuntimeInformation.ProcessArchitecture == Architecture.X64)
+            if (_isSetX86Instruction)
+                return;
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X86 && RuntimeInformation.ProcessArchitecture != Architecture.X64)
+                return;
+            lock (_setX86InstructionLocker)
             {
-                SupportX86Instruction = instruction;
+                if (_isSetX86Instruction)
+                    return;
+                _isSetX86Instruction = true;
+                X86Instruction = instruction;
             }
         }
 

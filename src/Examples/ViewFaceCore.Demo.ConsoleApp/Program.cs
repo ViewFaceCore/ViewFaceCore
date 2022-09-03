@@ -2,8 +2,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
+using ViewFaceCore.Extensions;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Example.ConsoleApp
@@ -16,7 +18,7 @@ namespace ViewFaceCore.Example.ConsoleApp
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, ViewFaceCore!");
+            Console.WriteLine("Hello, ViewFaceCore!\n");
 
             //人脸识别Demo
             FaceDetectorDemo();
@@ -32,6 +34,9 @@ namespace ViewFaceCore.Example.ConsoleApp
 
             //活体检测Demo
             AntiSpoofingDemo();
+
+            //提取并对比特征值
+            FaceRecognizerDemo();
 
             Console.ReadKey();
         }
@@ -92,7 +97,7 @@ namespace ViewFaceCore.Example.ConsoleApp
             Console.WriteLine($"识别到的关键点个数：{markPoints.Length}，耗时：{sw.ElapsedMilliseconds}ms");
             foreach (var item in markPoints)
             {
-                Console.WriteLine($"X:{item.X}, Y:{item.Y}");
+                Console.WriteLine($"X:{item.X}\tY:{item.Y}");
             }
             Console.WriteLine();
         }
@@ -156,6 +161,51 @@ namespace ViewFaceCore.Example.ConsoleApp
 
             sw.Stop();
             Console.WriteLine();
+        }
+
+        static void FaceRecognizerDemo()
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            using var faceImage0 = SKBitmap.Decode(imagePath0).ToFaceImage();
+            using var faceImage1 = SKBitmap.Decode(imagePath1).ToFaceImage();
+            //检测人脸信息
+            using FaceDetector faceDetector = new FaceDetector();
+            FaceInfo[] infos0 = faceDetector.Detect(faceImage0);
+            FaceInfo[] infos1 = faceDetector.Detect(faceImage1);
+            //标记人脸位置
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            FaceMarkPoint[] points0 = faceMark.Mark(faceImage0, infos0[0]);
+            FaceMarkPoint[] points1 = faceMark.Mark(faceImage1, infos1[0]);
+            //提取特征值
+            using FaceRecognizer faceRecognizer = new FaceRecognizer();
+            float[] data0 = faceRecognizer.Extract(faceImage0, points0);
+            float[] data1 = faceRecognizer.Extract(faceImage1, points1);
+            //对比特征值
+            bool isSelf = faceRecognizer.IsSelf(data0, data1);
+
+            Console.WriteLine($"识别到的人脸是否为同一人：{isSelf}，对比耗时：{sw.ElapsedMilliseconds}ms");
+            Console.WriteLine();
+            sw.Stop();
+        }
+
+        static void FaceTrackDemo()
+        {
+            using var faceImage = SKBitmap.Decode(imagePath0).ToFaceImage();
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            using FaceTracker faceTrack = new FaceTracker(new FaceTrackerConfig(faceImage.Width, faceImage.Height));
+            var result = faceTrack.Track(faceImage);
+            if (result == null || !result.Any())
+            {
+                Console.WriteLine("未追踪到任何人脸！");
+                return;
+            }
+            foreach (var item in result)
+            {
+                FaceInfo faceInfo = item.ToFaceInfo();
+                //标记人脸
+                var points = faceMark.Mark(faceImage, faceInfo);
+            }
         }
     }
 }
