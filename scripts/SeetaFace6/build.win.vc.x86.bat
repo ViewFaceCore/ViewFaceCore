@@ -88,7 +88,7 @@ exit 0
 		-DSEETA_AUTHORIZE=OFF ^
 		-DSEETA_MODEL_ENCRYPT=ON
 
-	jom -j16 install
+	cmake --build . --target install
 	cd /d %INSTALL_DIR%\lib\%PLATFORM_TARGET%"
 	move /y *.dll "..\..\bin\%PLATFORM_TARGET%"
 GOTO:EOF 
@@ -112,7 +112,7 @@ GOTO:EOF
 		-DORZ_ROOT_DIR="%INSTALL_DIR%" ^
 		-DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%"
 
-	jom -j16 install
+	cmake --build . --target install
 	cd /d %BASE_DIR%\build\lib\%PLATFORM_TARGET%"
 GOTO:EOF 
 
@@ -137,8 +137,10 @@ GOTO:EOF
 		-DTS_USE_OPENMP=ON ^
 		-DTS_USE_SIMD=ON ^
 		-DTS_ON_HASWELL=ON ^
-		-DTS_DYNAMIC_INSTRUCTION=ON
+		-DTS_DYNAMIC_INSTRUCTION=ON ^
+		-DTS_BUILD_TEST=OFF ^
+		-DTS_BUILD_TOOLS=OFF
 
-	jom -j16 install
+	cmake --build . --target install
 	cd /d %BASE_DIR%\build\lib\%PLATFORM_TARGET%"
 GOTO:EOF 
