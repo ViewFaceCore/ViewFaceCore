@@ -12,6 +12,7 @@ namespace ViewFaceCore.Core
     /// 眼睛状态检测。<br />
     /// 眼睛的左右是相对图片内容而言的左右。<br />
     /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.eye_state">eye_state.csta</a>
+    /// </summary>
     public sealed class EyeStateDetector : BaseViewFace, IPredictor
     {
         private readonly IntPtr _handle = IntPtr.Zero;

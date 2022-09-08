@@ -530,12 +530,11 @@ namespace ViewFaceCore.Native
         /// <summary>
         /// 眼睛状态检测。
         /// </summary>
-        /// <param name="img">图像宽高通道信息</param>
-        /// <param name="points">人脸关键点 数组</param>
-        /// <param name="pointsLength">人脸关键点 数组长度</param>
+        /// <param name="handler"></param>
+        /// <param name="img">检测的图像数据</param>
+        /// <param name="points">人脸关键点</param>
         /// <param name="left_eye"></param>
         /// <param name="right_eye"></param>
-        /// <returns></returns>
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
         public extern static void EyeStateDetector(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
 

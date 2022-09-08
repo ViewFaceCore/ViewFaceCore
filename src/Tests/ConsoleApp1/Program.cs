@@ -64,7 +64,6 @@ namespace ConsoleApp1
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector();
             using FaceLandmarker faceMark = new FaceLandmarker();
-            Stopwatch sw = new Stopwatch();
 
             Worker((sw, i) =>
             {

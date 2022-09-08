@@ -3,7 +3,7 @@
 	<!--Library Info-->
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-		<Platforms>AnyCPU;x64;x86</Platforms>
+		<Platforms>AnyCPU;x86;x64</Platforms>
 		<Authors>View, WithSalt</Authors>
 		<Version>0.3.8</Version>
 		<OutputType>Library</OutputType>
