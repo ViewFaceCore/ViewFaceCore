@@ -5,9 +5,13 @@
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Platforms>AnyCPU;x86;x64</Platforms>
+		<UserSecretsId>f10b2799-e6a3-4af0-9b07-a379ae199a91</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>..\..</DockerfileContext>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
 		<PackageReference Include="ViewFaceCore" Version="0.3.7" />
 		<PackageReference Include="ViewFaceCore.all_models" Version="6.0.7" />
 		<PackageReference Include="ViewFaceCore.Extension.SkiaSharp" Version="0.3.7" />
