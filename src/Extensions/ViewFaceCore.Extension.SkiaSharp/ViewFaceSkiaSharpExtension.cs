@@ -1,9 +1,11 @@
 ﻿using SkiaSharp;
 using System;
+using ViewFaceCore.Attributes;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Core
 {
+    [ViewFaceCoreImplementation(typeof(SKBitmap))]
     public static class ViewFaceSkiaSharpExtension
     {
         private const SKColorType targetColorType = SKColorType.Bgra8888;

@@ -23,9 +23,10 @@
 	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false"  />
 	</ItemGroup>
-
-	<Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
 
 	<!--Package Info-->
 	<ItemGroup>

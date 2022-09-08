@@ -16,6 +16,10 @@ namespace ViewFaceCore.Core
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
+
+        /// <summary>
+        /// 人脸检测器配置
+        /// </summary>
         public FaceDetectConfig DetectConfig { get; private set; }
 
         /// <summary>
@@ -72,6 +76,10 @@ namespace ViewFaceCore.Core
             return new FaceInfo[0];
         }
 
+
+        /// <summary>
+        /// <see cref="IDisposable"/>
+        /// </summary>
         public void Dispose()
         {
             lock (_locker)

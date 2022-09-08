@@ -3,10 +3,12 @@ using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using ViewFaceCore.Attributes;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Core
 {
+    [ViewFaceCoreImplementation(typeof(Image))]
     public static class ViewFaceImageSharpExtension
     {
         /// <summary>

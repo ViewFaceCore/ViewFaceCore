@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: Guid("1753a0ab-2521-4c1e-993b-a8294f752f0b")]
 
 // 仅对内部不同图形库的实现公开访问
-[assembly: InternalsVisibleTo("ViewFaceCore.Extension.SystemDrawing")]
+[assembly: InternalsVisibleTo("ViewFaceCore.Extension.ImageSharp")]
 [assembly: InternalsVisibleTo("ViewFaceCore.Extension.SkiaSharp")]
+[assembly: InternalsVisibleTo("ViewFaceCore.Extension.SystemDrawing")]
 

@@ -1,12 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
+using ViewFaceCore.Attributes;
 using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Core
 {
-    public static class ViewFaceSystemDrawingExtension
+    /// <summary>
+    /// 
+    /// </summary>
+    [ViewFaceCoreImplementation(typeof(Bitmap))]
+    public static class ViewFaceCoreSystemDrawingExtension
     {
         /// <summary>
         /// Bitmap convert to FaceImage
@@ -18,28 +25,6 @@ namespace ViewFaceCore.Core
             byte[] data = To24BGRByteArray(image, out int width, out int height, out int channels);
             return new FaceImage(width, height, channels, data);
         }
-
-        /// <summary>
-        /// Bitmap convert to FaceImage
-        /// </summary>
-        /// <typeparam name="T">Only support type of System.Drawing.Bitmap</typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static FaceImage ToFaceImage<T>(this T obj) where T : class
-        {
-            if (obj == null)
-            {
-                throw new ArgumentNullException(nameof(obj));
-            }
-            if (obj is Bitmap bitmap)
-            {
-                return bitmap.ToFaceImage();
-            }
-            throw new Exception($"Not support type:{obj.GetType()}");
-        }
-
-        #region private
 
         /// <summary>
         /// <see cref="Bitmap"/> 转为 3*8bit BGR <see cref="byte"/> 数组。
@@ -80,7 +65,5 @@ namespace ViewFaceCore.Core
                 bitmap.UnlockBits(bitmapData);
             }
         }
-
-        #endregion
     }
 }

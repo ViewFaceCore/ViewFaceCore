@@ -2,7 +2,7 @@
 
 	<!--Library Info-->
 	<PropertyGroup>
-		<TargetFrameworks>net40;net45;net461;netstandard2.0;</TargetFrameworks>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>View</Authors>
 		<Version>0.3.7</Version>
 		<OutputType>Library</OutputType>
@@ -15,16 +15,17 @@
 	</PropertyGroup>
 
 	<!--Package Reference-->
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1'">
+	<ItemGroup>
 		<PackageReference Include="System.Drawing.Common" Version="5.0.3" />
 	</ItemGroup>
 
 	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
+		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false"  />
 	</ItemGroup>
-
-	<Import Project="..\ViewFaceCore.Extension.Shared\ViewFaceCore.Extension.Shared.projitems" Label="Shared" />
 
 	<!--Package Info-->
 	<ItemGroup>
