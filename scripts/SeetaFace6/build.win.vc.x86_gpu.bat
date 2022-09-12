@@ -62,7 +62,7 @@ set buildList=FaceAntiSpoofingX6 FaceBoxes FaceRecognizer6 FaceTracker6 Landmark
 echo 编译结果：%BUILD_TYPE%
 echo 编译架构：%PLATFORM_TARGET%
 echo 编译目标：%INSTALL_DIR%
-echo 使用CUDA：No
+echo 使用CUDA：Yes
 echo 编译结束，请按任意键退出...
 pause > nul
 exit 0
@@ -71,22 +71,15 @@ exit 0
     echo Start build target %1
 	set "BUILD_DIR=%BASE_DIR%\%1\craft\build.win.vc14.%PLATFORM_TARGET%"
 	
-	rem 删除历史编译结果
-	if exist %BASE_DIR%\%1\bin (
-		rmdir /s /q %BASE_DIR%\%1\bin
-	)
-	if exist %BASE_DIR%\%1\build (
-		rmdir /s /q %BASE_DIR%\%1\build
-	)
+	cd /d "%BASE_DIR%\%1\craft"
 	if exist %BUILD_DIR% (
 		rmdir /s /q %BUILD_DIR%
 	)
-	
 	md %BUILD_DIR%
 	cd /d %BUILD_DIR%
 	
 	cmake "%BASE_DIR%\%1" ^
-		-G "NMake Makefiles" ^
+		-G"NMake Makefiles JOM" ^
 		-DCMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
 		-DCONFIGURATION="%BUILD_TYPE%" ^
 		-DPLATFORM="%PLATFORM_TARGET%" ^
@@ -105,6 +98,7 @@ GOTO:EOF
     echo Start build target %1
 	set "BUILD_DIR=%BASE_DIR%\%1\craft\build.win.vc14.%PLATFORM_TARGET%"
 	
+	cd /d "%BASE_DIR%\%1\craft"
 	if exist %BUILD_DIR% (
 		rmdir /s /q %BUILD_DIR%
 	)
@@ -112,7 +106,7 @@ GOTO:EOF
 	cd /d %BUILD_DIR%
 		
 	cmake "%BASE_DIR%\%1" ^
-		-G "NMake Makefiles" ^
+		-G"NMake Makefiles JOM" ^
 		-DCMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
 		-DPLATFORM="%PLATFORM_TARGET%" ^
 		-DOPENSSL_ROOT_DIR="%SSL_HOME%" ^
@@ -124,27 +118,28 @@ GOTO:EOF
 GOTO:EOF 
 
 :fun_build_tenniS
-    echo Start build target %1
-	set "BUILD_DIR=%BASE_DIR%\%1\craft\build.win.vc14.%PLATFORM_TARGET%"
+    echo Start build target %1 with CUDA.
+	set "BUILD_DIR=%BASE_DIR%\%1\craft\build.win.vc14.%PLATFORM_TARGET%_gpu"
 	
-	rem 删除历史编译结果
-	if exist %BASE_DIR%\%1\bin (
-		rmdir /s /q %BASE_DIR%\%1\bin
-	)
+	cd /d "%BASE_DIR%\%1\craft"
 	if exist %BUILD_DIR% (
 		rmdir /s /q %BUILD_DIR%
 	)
-	
 	md %BUILD_DIR%
 	cd /d %BUILD_DIR%
 		
 	cmake "%BASE_DIR%\%1" ^
-		-G "NMake Makefiles" ^
+		-G"NMake Makefiles JOM" ^
 		-DCMAKE_BUILD_TYPE="%BUILD_TYPE%" ^
 		-DCONFIGURATION="%BUILD_TYPE%" ^
 		-DPLATFORM="%PLATFORM_TARGET%" ^
 		-DORZ_ROOT_DIR="%INSTALL_DIR%" ^
 		-DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" ^
+		-DTS_USE_CUDA=ON ^
+		-DTS_USE_CUBLAS=ON ^
+		-DTS_USE_OPENMP=ON ^
+		-DTS_USE_SIMD=ON ^
+		-DTS_ON_HASWELL=ON ^
 		-DTS_DYNAMIC_INSTRUCTION=ON ^
 		-DTS_BUILD_TEST=OFF ^
 		-DTS_BUILD_TOOLS=OFF

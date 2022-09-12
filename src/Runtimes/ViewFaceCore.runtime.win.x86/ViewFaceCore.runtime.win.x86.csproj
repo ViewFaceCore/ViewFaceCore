@@ -12,9 +12,9 @@
 		<None Include="..\..\Bridges\Windows\ViewFaceBridge\bin\$(Configuration)\x86\ViewFaceBridge.dll" Link="viewfacecore\win\x86\ViewFaceBridge.dll" CopyToOutputDirectory="PreserveNewest" />
 
 		<None Include="..\..\SeetaFace\index\build\bin\x86\tennis.dll" Link="viewfacecore\win\x86\tennis.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\bin\x86\tennis_haswell.dll" Link="viewfacecore\win\x86\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\bin\x86\tennis_pentium.dll" Link="viewfacecore\win\x86\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll" Link="viewfacecore\win\x86\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\bin\x86\tennis_haswell.dll')" Include="..\..\SeetaFace\index\build\bin\x86\tennis_haswell.dll" Link="viewfacecore\win\x86\tennis_haswell.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\bin\x86\tennis_pentium.dll')" Include="..\..\SeetaFace\index\build\bin\x86\tennis_pentium.dll" Link="viewfacecore\win\x86\tennis_pentium.dll" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll')" Include="..\..\SeetaFace\index\build\bin\x86\tennis_sandy_bridge.dll" Link="viewfacecore\win\x86\tennis_sandy_bridge.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\bin\x86\SeetaAgePredictor600.dll" Link="viewfacecore\win\x86\SeetaAgePredictor600.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\bin\x86\SeetaAuthorize.dll" Link="viewfacecore\win\x86\SeetaAuthorize.dll" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\bin\x86\SeetaEyeStateDetector200.dll" Link="viewfacecore\win\x86\SeetaEyeStateDetector200.dll" CopyToOutputDirectory="PreserveNewest" />

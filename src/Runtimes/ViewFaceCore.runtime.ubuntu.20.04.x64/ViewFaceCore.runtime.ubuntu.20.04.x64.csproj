@@ -9,9 +9,9 @@
 		<None Include="..\..\Bridges\Linux\ViewFaceBridge\bin\$(Configuration)\x64\libViewFaceBridge.so" Link="viewfacecore\linux\x64\libViewFaceBridge.so" CopyToOutputDirectory="PreserveNewest" />
 
 		<None Include="..\..\SeetaFace\index\build\lib64\libtennis.so" Link="viewfacecore\linux\x64\libtennis.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_haswell.so" Link="viewfacecore\linux\x64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_pentium.so" Link="viewfacecore\linux\x64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
-		<None Include="..\..\SeetaFace\index\build\lib64\libtennis_sandy_bridge.so" Link="viewfacecore\linux\x64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\lib64\libtennis_haswell.so')" Include="..\..\SeetaFace\index\build\lib64\libtennis_haswell.so" Link="viewfacecore\linux\x64\libtennis_haswell.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\lib64\libtennis_pentium.so')" Include="..\..\SeetaFace\index\build\lib64\libtennis_pentium.so" Link="viewfacecore\linux\x64\libtennis_pentium.so" CopyToOutputDirectory="PreserveNewest" />
+		<None Condition="Exists('..\..\SeetaFace\index\build\lib64\libtennis_sandy_bridge.so')" Include="..\..\SeetaFace\index\build\lib64\libtennis_sandy_bridge.so" Link="viewfacecore\linux\x64\libtennis_sandy_bridge.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaAgePredictor600.so" Link="viewfacecore\linux\x64\libSeetaAgePredictor600.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaAuthorize.so" Link="viewfacecore\linux\x64\libSeetaAuthorize.so" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="..\..\SeetaFace\index\build\lib64\libSeetaEyeStateDetector200.so" Link="viewfacecore\linux\x64\libSeetaEyeStateDetector200.so" CopyToOutputDirectory="PreserveNewest" />
