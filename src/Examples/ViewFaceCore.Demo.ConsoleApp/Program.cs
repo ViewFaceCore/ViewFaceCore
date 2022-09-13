@@ -38,6 +38,9 @@ namespace ViewFaceCore.Example.ConsoleApp
             //提取并对比特征值
             FaceRecognizerDemo();
 
+            //人脸追踪
+            FaceTrackDemo();
+
             Console.ReadKey();
         }
 
@@ -194,18 +197,19 @@ namespace ViewFaceCore.Example.ConsoleApp
             using var faceImage = SKBitmap.Decode(imagePath0).ToFaceImage();
             using FaceLandmarker faceMark = new FaceLandmarker();
             using FaceTracker faceTrack = new FaceTracker(new FaceTrackerConfig(faceImage.Width, faceImage.Height));
-            var result = faceTrack.Track(faceImage);
-            if (result == null || !result.Any())
+            var infos = faceTrack.Track(faceImage);
+            if (infos == null || !infos.Any())
             {
                 Console.WriteLine("未追踪到任何人脸！");
                 return;
             }
-            foreach (var item in result)
+            Console.WriteLine($"追踪到的人脸数量：{infos.Length} 个人脸信息：\n");
+            Console.WriteLine($"No.\t人脸置信度\t位置信息");
+            for (int i = 0; i < infos.Length; i++)
             {
-                FaceInfo faceInfo = item.ToFaceInfo();
-                //标记人脸
-                var points = faceMark.Mark(faceImage, faceInfo);
+                Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
             }
+            Console.WriteLine();
         }
     }
 }
