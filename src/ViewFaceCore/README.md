@@ -1,32 +1,65 @@
-## ViewFaceCore
+## 1. 关于
+- 一个基于 [SeetaFace6](https://github.com/SeetaFace6Open/index) 的 .NET 人脸识别解决方案
+- 本项目受到了 [SeetaFaceEngine.Net](https://github.com/iarray/SeetaFaceEngine.Net) 的启发
+- 开源、免费、跨平台 (win/linux)
 
-*一个基于 SeetaFace6 实现的 .NET 平台的人脸识别库。*
+## 2. 快速开始
+### 2.1 受支持的 .NET 框架 和 操作系统  
 
-- ### `ViewFaceCore` 必须依赖某一个本机库  
-  > - 针对不同的操作系统平台可以按照下表安装对应的包  
+   | 目标框架 |最低版本 | 操作系统 |
+   | :-: |:-: | :-: |
+   | .NET Framework |4.0 | win ( x64/x86 ) |
+   | .NET Standard |2.0 | win ( x64/x86 ) |
+   | .NET / .NET Core |3.1、5.0、6.0、7.0 | win ( x64/x86 )、linux ( arm/arm64/x64 ) |
 
-  | OS      | CPU   | Package Name                           | Version |
-  |:--------|:------|:---------------------------------------|:--------:|
-  | Windows | x64   | ViewFaceCore.runtime.win.x64           |  6.0.6  |
-  | Windows | x86   | ViewFaceCore.runtime.win.x86           |  6.0.6  |
-  | Ubuntu  | x64   | ViewFaceCore.runtime.ubuntu.20.04.x64  |  6.0.6  |
-  | Linux   | arm   | ViewFaceCore.runtime.linux.arm         |  6.0.6  |
-  | Linux   | arm64 | ViewFaceCore.runtime.linux.arm64       |  6.0.6  |
+### 2.2 简单的人脸信息检测  
+以 Windows x64平台 为例，一个简单的人脸检测Demo。
+1. 使用 [nuget](https://www.nuget.org) 安装依赖  
 
-  > - 在 Windows 上由于没有 VC++ 运行时导致的问题可以尝试安装 `ViewFaceCore.runtime.win.vc` 包  
+| 包名称 | 最小版本 | 生成文件夹 | 说明 |
+| :- | :-: | - | - |
+| [ViewFaceCore](https://www.nuget.org/packages/ViewFaceCore/) | [![](https://img.shields.io/nuget/v/ViewFaceCore.svg)](https://www.nuget.org/packages/ViewFaceCore) | —— | ViewFaceCore .NET 核心库 |
+| [ViewFaceCore.all_models](https://www.nuget.org/packages/ViewFaceCore.all_models) | [![](https://img.shields.io/nuget/v/ViewFaceCore.all_models.svg)](https://www.nuget.org/packages/ViewFaceCore.all_models) | `viewfacecore\models` | 人脸检测的模型支持(图省事可以直接安装这个) |
+| [ViewFaceCore.runtime.win.x64](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | [![](https://img.shields.io/nuget/v/ViewFaceCore.runtime.win.x64.svg)](https://www.nuget.org/packages/ViewFaceCore.runtime.win.x64) | `viewfacecore\win\x64` | Windows-x64 的本机运行时，其它平台自行选择安装，可安装多个 |
+| [ViewFaceCore.Extension.SkiaSharp](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) | <span style="display:inline-block;width:150px"> [![](https://img.shields.io/nuget/v/ViewFaceCore.Extension.SkiaSharp.svg)](https://www.nuget.org/packages/ViewFaceCore.Extension.SkiaSharp) </span> |  —— | SkiaSharp图像处理扩展，ImageSharp、SkiaSharp、System.Drawing三选一 |
 
-- ### `ViewFaceCore` 必须通过扩展包使用
+2. 获取人脸信息  
+```csharp
+using SkiaSharp;
+using System;
+using ViewFaceCore.Core;
+using ViewFaceCore.Model;
 
-  | Image Library  | Package Name                         | Version |
-  |:--------------:|:-------------------------------------|:-------:|
-  | System.Drawing | ViewFaceCore.Extension.SystemDrawing |  0.3.6  |
-  | SkiaSharp      | ViewFaceCore.Extension.SkiaSharp     |  0.3.6  |
+namespace ViewFaceCore.Demo.ConsoleApp
+{
+    internal class Program
+    {
+        private readonly static string imagePath = @"images/Jay_3.jpg";
 
-  > 如果你有其它的图形库需求, 请提交 Issue 或 PR
+        static void Main(string[] args)
+        {
+            using var bitmap = SKBitmap.Decode(imagePath);
+            using FaceDetector faceDetector = new FaceDetector();
+            FaceInfo[] infos = faceDetector.Detect(bitmap);
+            Console.WriteLine($"识别到的人脸数量：{infos.Length} 个人脸信息：\n");
+            Console.WriteLine($"No.\t人脸置信度\t位置信息");
+            for (int i = 0; i < infos.Length; i++)
+            {
+                Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
+            }
+            Console.ReadKey();
+        }
+    }
+}
+```
 
-- ### `ViewFaceCore` 必须依赖某个模型包
-  - 独立模型包 `ViewFaceCore.model.* ` 
-    > 可以按照 `ViewFace` 的方法说明来添加需要模型包
+更多案例可以下载源码查看Demo。  
 
-  - 全部模型包 `ViewFaceCore.all_models`
-    > 也可以直接使用此包以添加所有模型包
+## 3. 使用许可   
+<div align="center">
+
+[Copyright (c) 2021, View](https://github.com/ViewFaceCore/ViewFaceCore/blob/main/LICENSE) | [*Copyright (c) 2019, SeetaTech*](https://github.com/SeetaFace6Open/index/blob/master/LICENSE)
+
+</div>
+
+> [\[源\]](https://github.com/SeetaFace6Open/index#%E8%81%94%E7%B3%BB%E6%88%91%E4%BB%AC) > *`SeetaFace` 开源版可以免费用于商业和个人用途。如果需要更多的商业支持，请联系商务邮件 bd@seetatech.com*
