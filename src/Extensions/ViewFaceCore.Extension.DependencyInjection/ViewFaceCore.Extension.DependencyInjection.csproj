@@ -36,7 +36,7 @@
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageIcon>WithSalt-Logo.png</PackageIcon>
 		<PackageProjectUrl>https://github.com/ViewFaceCore/ViewFaceCore</PackageProjectUrl>
-		<Description>ViewFaceCore 的 ImageSharp 实现。</Description>
+		<Description>ViewFaceCore 的依赖载入扩展。</Description>
 		<PackageReleaseNotes></PackageReleaseNotes>
 	</PropertyGroup>
 

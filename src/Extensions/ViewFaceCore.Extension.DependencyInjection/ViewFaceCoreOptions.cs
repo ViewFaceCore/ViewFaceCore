@@ -61,7 +61,7 @@ namespace ViewFaceCore.Extension.DependencyInjection
         /// </summary>
         public bool IsEnableFaceTrack { get; set; } = false;
 
-        public FaceTrackerConfig FaceTrackerConfig { get; set; } = new FaceTrackerConfig(3000, 3000);
+        public FaceTrackerConfig FaceTrackerConfig { get; set; }
 
         /// <summary>
         /// 是否启用口罩识别

@@ -15,10 +15,8 @@ namespace ViewFaceCore.Extension.DependencyInjection
         {
             try
             {
-                if(option == null)
-                {
-                    option = (o) =>{ };
-                }
+                //当option参数为空是，初始化默认参数
+                option ??= (o) => { };
                 services.Configure(ViewFaceCoreOptions.OptionName, option);
                 var options = GetOptions(services);
                 if (options == null)
@@ -57,6 +55,10 @@ namespace ViewFaceCore.Extension.DependencyInjection
                 //人脸追踪
                 if (options.IsEnableAll || options.IsEnableFaceTrack)
                 {
+                    if (options.FaceTrackerConfig == null)
+                    {
+                        throw new ArgumentNullException(nameof(options.FaceTrackerConfig), "FaceTrackerConfig can not null, when enable face tracker.");
+                    }
                     services.TryAddSingleton(new FaceTracker(options.FaceTrackerConfig));
                 }
                 //口罩识别
