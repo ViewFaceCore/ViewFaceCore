@@ -15,17 +15,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SkiaSharp" Version="2.88.0" />
-		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
-		<PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
+		<PackageReference Include="SkiaSharp" Version="2.88.2" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.2" />
+		<PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.2" />
 	</ItemGroup>
 
 	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
-		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj"
-						  OutputItemType="Analyzer"
-						  ReferenceOutputAssembly="false"  />
+		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<!--Package Info-->

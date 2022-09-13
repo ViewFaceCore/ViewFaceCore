@@ -9,7 +9,7 @@ using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 using ViewFaceCore.Extensions;
 
-namespace ConsoleApp1
+namespace ConsoleAppTest
 {
     internal class Program
     {
@@ -155,12 +155,12 @@ namespace ConsoleApp1
                     Console.WriteLine("GG...");
                     return;
                 }
-                foreach(var item in result)
+                foreach (var item in result)
                 {
                     FaceInfo faceInfo = item.ToFaceInfo();
                     var points = faceMark.Mark(bitmap, faceInfo);
                 }
-                
+
                 logger.Info($"第{i + 1}次{nameof(FaceTracker.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
@@ -171,7 +171,7 @@ namespace ConsoleApp1
         private static void ExtractTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceDetector faceDetector = new FaceDetector( new FaceDetectConfig()
+            using FaceDetector faceDetector = new FaceDetector(new FaceDetectConfig()
             {
                 DeviceType = DeviceType.GPU
             });
