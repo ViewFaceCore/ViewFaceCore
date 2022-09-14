@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -18,12 +19,12 @@ public sealed class GenderPredictor : Predictor<GenderPredictConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public GenderPredictor(GenderPredictConfig config = null) : base(config ?? new GenderPredictConfig())
     {
         if ((_handle = ViewFaceNative.GetGenderPredictorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new Exception("Get gender predictor handler failed.");
+            throw new HandleInitException("Get gender predictor handle failed.");
         }
     }
 
@@ -40,6 +41,9 @@ public sealed class GenderPredictor : Predictor<GenderPredictConfig>
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(GenderPredictor));
+
             int result = ViewFaceNative.PredictGender(_handle, ref image, points);
             if (Enum.TryParse(result.ToString(), out Gender gender))
             {
@@ -54,6 +58,7 @@ public sealed class GenderPredictor : Predictor<GenderPredictConfig>
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeGenderPredictor(_handle);
         }
     }

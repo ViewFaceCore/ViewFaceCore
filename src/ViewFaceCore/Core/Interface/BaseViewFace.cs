@@ -33,7 +33,18 @@ public abstract class BaseViewFace<T> : IViewFace, IFormattable where T : BaseCo
     /// </summary>
     public T Config { get; }
 
+    /// <summary>
+    /// 释放标识
+    /// </summary>
+    protected bool IsDisposed { get; set; } = false;
+
+    /// <summary>
+    /// Dispose
+    /// </summary>
+    public abstract void Dispose();
+
     #region IFormattable
+
     /// <summary>
     /// 返回可视化字符串
     /// </summary>

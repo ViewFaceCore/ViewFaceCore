@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -19,12 +20,12 @@ public sealed class EyeStateDetector : Predictor<EyeStateDetectConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public EyeStateDetector(EyeStateDetectConfig config = null) : base(config ?? new EyeStateDetectConfig())
     {
         if ((_handle = ViewFaceNative.GetEyeStateDetectorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new Exception("Get eye state detector handler failed.");
+            throw new HandleInitException("Get eye state detector handle failed.");
         }
     }
 
@@ -42,6 +43,9 @@ public sealed class EyeStateDetector : Predictor<EyeStateDetectConfig>
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(EyeStateDetector));
+
             int left_eye = 0, right_eye = 0;
             ViewFaceNative.EyeStateDetector(_handle, ref image, points, ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
@@ -53,6 +57,7 @@ public sealed class EyeStateDetector : Predictor<EyeStateDetectConfig>
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeEyeStateDetector(_handle);
         }
     }

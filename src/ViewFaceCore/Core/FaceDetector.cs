@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -18,20 +19,20 @@ public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>, IDisposable
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public FaceDetector(FaceDetectConfig config = null) : base(config ?? new FaceDetectConfig())
     {
         _handle = ViewFaceNative.GetFaceDetectorHandler(this.Config.FaceSize, this.Config.Threshold, this.Config.MaxWidth, this.Config.MaxHeight, (int)this.Config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new Exception("Get face detector handler failed.");
+            throw new HandleInitException("Get face detector handle failed.");
         }
     }
 
     /// <summary>
     /// 识别 <paramref name="image"/> 中的人脸，并返回人脸的信息。
     /// <para>
-    /// 可以通过 <see cref="Config"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
+    /// 可以通过 <see cref="FaceDetectConfig.FaceDetectConfig"/> 属性对人脸检测器进行配置，以应对不同场景的图片。
     /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
@@ -40,37 +41,37 @@ public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>, IDisposable
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(FaceAntiSpoofing));
+
             int size = 0;
             var ptr = ViewFaceNative.FaceDetector(_handle, ref image, ref size);
-            if (ptr != IntPtr.Zero)
+            if (ptr == IntPtr.Zero) return new FaceInfo[0];
+            try
             {
-                try
+                FaceInfo[] result = new FaceInfo[size];
+                for (int i = 0; i < size; i++)
                 {
-                    FaceInfo[] result = new FaceInfo[size];
-                    for (int i = 0; i < size; i++)
-                    {
-                        int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
-                        result[i] = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
-                    }
-                    return result.OrderBy(p => p.Score).ToArray();
+                    int ofs = i * Marshal.SizeOf(typeof(FaceInfo));
+                    result[i] = (FaceInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceInfo));
                 }
-                finally
-                {
-                    ViewFaceNative.Free(ptr);
-                }
+                return result.OrderBy(p => p.Score).ToArray();
+            }
+            finally
+            {
+                ViewFaceNative.Free(ptr);
             }
         }
-        return new FaceInfo[0];
     }
-
 
     /// <summary>
     /// <see cref="IDisposable"/>
     /// </summary>
-    public void Dispose()
+    public override void Dispose()
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeFaceDetector(_handle);
         }
     }

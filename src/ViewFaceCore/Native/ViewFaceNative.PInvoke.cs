@@ -57,7 +57,7 @@ namespace ViewFaceCore.Native
                 throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
 
             if (!path.Equals(GetModelPath()))
-                throw new ViewFaceInitException($"Set model path to '{path}' failed, failed to verify this path.");
+                throw new SeetaFaceModelException($"Set model path to '{path}' failed, failed to verify this path.");
         }
 
         private static string _modelPath = null;
@@ -65,7 +65,8 @@ namespace ViewFaceCore.Native
         /// <summary>
         /// 获取人脸模型的目录
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="outPath">获取到的路径</param>
+        /// <param name="size">字符串长度</param>
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
         private extern static void GetModelPath(StringBuilder outPath, ref int size);
         public static string GetModelPath()

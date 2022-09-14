@@ -23,8 +23,8 @@ namespace ViewFaceCore.Core
         /// 人脸质量评估
         /// </summary>
         /// <param name="image">人脸图像信息</param>
-        /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
-        /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
+        /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
+        /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceLandmarker.Mark(FaceImage, FaceInfo)"/> 获取</para></param>
         /// <param name="type">质量评估类型</param>
         /// <returns></returns>
         public QualityResult Detect(FaceImage image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
@@ -69,6 +69,6 @@ namespace ViewFaceCore.Core
         }
 
         /// <inheritdoc/>
-        public void Dispose() { }
+        public override void Dispose() { }
     }
 }

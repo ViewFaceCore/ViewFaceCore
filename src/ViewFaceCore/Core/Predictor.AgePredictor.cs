@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -17,12 +18,12 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public AgePredictor(AgePredictConfig config = null) : base(config ?? new AgePredictConfig())
     {
         if ((_handle = ViewFaceNative.GetAgePredictorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new Exception("Get age predictor handler failed.");
+            throw new HandleInitException("Get age predictor handle failed.");
         }
     }
 
@@ -39,6 +40,9 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(AgePredictor));
+
             return ViewFaceNative.PredictAge(_handle, ref image, points);
         }
     }
@@ -48,6 +52,7 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeAgePredictor(_handle);
         }
     }

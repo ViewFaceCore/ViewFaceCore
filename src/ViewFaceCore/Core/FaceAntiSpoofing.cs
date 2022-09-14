@@ -1,5 +1,6 @@
 ﻿using System;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -8,20 +9,20 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 活体检测器
 /// </summary>
-public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>, IDisposable
+public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public FaceAntiSpoofing(FaceAntiSpoofingConfig config = null) : base(config ?? new FaceAntiSpoofingConfig())
     {
         _handle = ViewFaceNative.GetFaceAntiSpoofingHandler(Config.VideoFrameCount, Config.BoxThresh, Config.Threshold.Clarity, Config.Threshold.Reality, Config.Global
             , (int)this.Config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new Exception("Get face anti spoofing handler failed.");
+            throw new HandleInitException("Get face anti spoofing handle failed.");
         }
     }
 
@@ -40,6 +41,9 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>, IDi
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(FaceAntiSpoofing));
+
             float clarity = 0;
             float reality = 0;
             AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(_handle, ref image, info.Location, points, ref clarity, ref reality);
@@ -55,25 +59,30 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>, IDi
     /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
-    /// <param name="info">面部信息<para>通过 <see cref="FaceDetector(FaceImage)"/> 获取</para></param>
-    /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
+    /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
+    /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceLandmarker.Mark(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
     public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
     {
         lock (_locker)
         {
-            float clarity = 0;
-            float reality = 0;
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(FaceAntiSpoofing));
+
+            float clarity = 0, reality = 0;
             AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(_handle, ref image, info.Location, points, ref clarity, ref reality);
             return new AntiSpoofingResult(status, clarity, reality);
         }
     }
 
-    /// <inheritdoc/>
-    public void Dispose()
+    /// <summary>
+    /// 释放非托管资源
+    /// </summary>
+    public override void Dispose()
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeFaceAntiSpoofing(_handle);
         }
     }

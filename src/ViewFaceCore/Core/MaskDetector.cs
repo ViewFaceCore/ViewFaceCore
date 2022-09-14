@@ -1,5 +1,6 @@
 ﻿using System;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -17,12 +18,12 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
     /// 口罩人脸识别
     /// </summary>
     /// <param name="config"></param>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public MaskDetector(MaskDetectConfig config = null) : base(config ?? new MaskDetectConfig())
     {
         if ((_handle = ViewFaceNative.GetMaskDetectorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new Exception("Get mask detector handler failed.");
+            throw new HandleInitException("Get mask detector handle failed.");
         }
     }
 
@@ -36,6 +37,9 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(MaskDetector));
+
             float score = 0;
             bool status = ViewFaceNative.PlotMask(_handle, ref image, info.Location, ref score);
             return new PlotMaskResult(score, status, status && score > this.Config.Threshold);
@@ -43,10 +47,11 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
     }
 
     /// <inheritdoc/>
-    public void Dispose()
+    public override void Dispose()
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeMaskDetector(_handle);
         }
     }

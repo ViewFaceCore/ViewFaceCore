@@ -5,7 +5,10 @@ using System.Text;
 
 namespace ViewFaceCore.Core
 {
-    public interface IViewFace
+    /// <summary>
+    /// ViewFace Interface
+    /// </summary>
+    public interface IViewFace : IDisposable
     {
         /// <summary>
         /// 获取模型路径

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -27,12 +28,12 @@ namespace ViewFaceCore.Core
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="HandleInitException"></exception>
         public FaceRecognizer(FaceRecognizeConfig config = null) : base(config ?? new FaceRecognizeConfig())
         {
             if ((_handle = ViewFaceNative.GetFaceRecognizerHandler((int)Config.FaceType, (int)Config.DeviceType)) == IntPtr.Zero)
             {
-                throw new Exception("Get face recognizer handler failed.");
+                throw new HandleInitException("Get face recognizer handle failed.");
             }
         }
 
@@ -46,22 +47,22 @@ namespace ViewFaceCore.Core
         {
             lock (_locker)
             {
+                if (IsDisposed)
+                    throw new ObjectDisposedException(nameof(FaceRecognizer));
+
                 int size = 0;
                 var ptr = ViewFaceNative.FaceRecognizerExtract(_handle, ref image, points, ref size);
-                if (ptr != IntPtr.Zero)
+                if (ptr == IntPtr.Zero) return new float[0];
+                try
                 {
-                    try
-                    {
-                        float[] result = new float[size];
-                        Marshal.Copy(ptr, result, 0, size);
-                        return result;
-                    }
-                    finally
-                    {
-                        ViewFaceNative.Free(ptr);
-                    }
+                    float[] result = new float[size];
+                    Marshal.Copy(ptr, result, 0, size);
+                    return result;
                 }
-                return new float[0];
+                finally
+                {
+                    ViewFaceNative.Free(ptr);
+                }
             }
         }
 
@@ -114,10 +115,11 @@ namespace ViewFaceCore.Core
         #endregion
 
         /// <inheritdoc/>
-        public void Dispose()
+        public override void Dispose()
         {
             lock (_locker)
             {
+                IsDisposed = true;
                 ViewFaceNative.DisposeFaceRecognizer(_handle);
             }
         }

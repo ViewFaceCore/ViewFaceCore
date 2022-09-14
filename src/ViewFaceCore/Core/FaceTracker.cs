@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -23,13 +24,13 @@ public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>, IDisposable
     /// </summary>
     /// <param name="config"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="HandleInitException"></exception>
     public FaceTracker(FaceTrackerConfig config) : base(config ?? throw new ArgumentNullException(nameof(config), $"Param '{nameof(config)}' can not null."))
     {
         _handle = ViewFaceNative.GetFaceTrackerHandler(config.Width, config.Height, config.Stable, config.Interval, config.MinFaceSize, config.Threshold, (int)config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new Exception("Get face track handler failed.");
+            throw new HandleInitException("Get face track handle failed.");
         }
     }
 
@@ -46,28 +47,28 @@ public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>, IDisposable
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(FaceTracker));
+
             int size = 0;
             var ptr = ViewFaceNative.FaceTrack(_handle, ref image, ref size);
-            if (ptr != IntPtr.Zero)
+            if (ptr == IntPtr.Zero) return new FaceTrackInfo[0];
+            try
             {
-                try
+                FaceTrackInfo[] result = new FaceTrackInfo[size];
+                for (int i = 0; i < size; i++)
                 {
-                    FaceTrackInfo[] result = new FaceTrackInfo[size];
-                    for (int i = 0; i < size; i++)
-                    {
-                        int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
-                        var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
-                        result[i] = info;
-                    }
-                    return result;
+                    int ofs = i * Marshal.SizeOf(typeof(FaceTrackInfo));
+                    var info = (FaceTrackInfo)Marshal.PtrToStructure(ptr + ofs, typeof(FaceTrackInfo));
+                    result[i] = info;
                 }
-                finally
-                {
-                    ViewFaceNative.Free(ptr);
-                }
+                return result;
+            }
+            finally
+            {
+                ViewFaceNative.Free(ptr);
             }
         }
-        return new FaceTrackInfo[0];
     }
 
     /// <summary>
@@ -77,15 +78,19 @@ public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>, IDisposable
     {
         lock (_locker)
         {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(FaceTracker));
+
             ViewFaceNative.FaceTrackReset(_handle);
         }
     }
 
     /// <inheritdoc/>
-    public void Dispose()
+    public override void Dispose()
     {
         lock (_locker)
         {
+            IsDisposed = true;
             ViewFaceNative.DisposeFaceTracker(_handle);
         }
     }
