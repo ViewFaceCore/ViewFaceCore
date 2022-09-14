@@ -263,7 +263,7 @@ namespace ViewFaceCore.Core
                 {
                     NamespaceNames = namespaceDeclarationSyntax.Usings.Select(x => ((UsingDirectiveSyntax)x).ToString()).ToList();
                     NamespaceNames.Add("using System;");
-                    NamespaceNames.Add("using ViewFaceCore.Model;");
+                    NamespaceNames.Add("using ViewFaceCore.Models;");
                     NamespaceNames.Add("using System.Threading.Tasks;");
                     NamespaceNames = NamespaceNames.Distinct().ToList();
                 }
