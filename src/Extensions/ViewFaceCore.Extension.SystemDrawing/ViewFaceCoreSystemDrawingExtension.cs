@@ -5,7 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using ViewFaceCore.Attributes;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Core
 {

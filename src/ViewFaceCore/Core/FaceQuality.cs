@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ViewFaceCore.Configs;
-using ViewFaceCore.Model;
+using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
@@ -11,18 +12,12 @@ namespace ViewFaceCore.Core
     /// <summary>
     /// 质量评估
     /// </summary>
-    public sealed class FaceQuality : BaseViewFace, IDisposable
+    public sealed class FaceQuality : BaseViewFace<QualityConfig>, IDisposable
     {
         private readonly QualityConfig _qualityConfig = null;
 
-        /// <summary>
-        /// 质量评估
-        /// </summary>
-        /// <param name="config"></param>
-        public FaceQuality(QualityConfig config = null)
-        {
-            _qualityConfig = config ?? new QualityConfig();
-        }
+        /// <inheritdoc/>
+        public FaceQuality(QualityConfig config = null) : base(config ?? new QualityConfig()) { }
 
         /// <summary>
         /// 人脸质量评估
@@ -70,12 +65,10 @@ namespace ViewFaceCore.Core
                     break;
             }
 
-            return new QualityResult() { Level = (QualityLevel)level, Score = score };
+            return new QualityResult((QualityLevel)level, score);
         }
 
-        public void Dispose()
-        {
-
-        }
+        /// <inheritdoc/>
+        public void Dispose() { }
     }
 }

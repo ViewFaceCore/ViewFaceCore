@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ViewFaceCore.Model;
+﻿using ViewFaceCore.Configs.Enums;
 
-namespace ViewFaceCore.Configs
+namespace ViewFaceCore.Configs;
+
+/// <summary>
+/// 人脸关键的检测配置
+/// </summary>
+public sealed class FaceLandmarkConfig : BaseConfig
 {
-    public class FaceLandmarkConfig : BaseConfig
-    {
-        /// <summary>
-        /// 关键点类型
-        /// </summary>
-        public MarkType MarkType { get; set; } = MarkType.Light;
-
-        public FaceLandmarkConfig()
-        {
-
-        }
-
-        public FaceLandmarkConfig(MarkType markType)
-        {
-            MarkType = markType;
-        }
-    }
+    /// <summary>
+    /// 关键点类型 
+    /// <para>
+    /// 当关键点类型为 <see cref="MarkType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
+    /// 当关键点类型为 <see cref="MarkType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
+    /// 当关键点类型为 <see cref="MarkType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
+    /// </para>
+    /// </summary>
+    /// <remarks>
+    /// 默认值: <see cref="MarkType.Light"/>
+    /// </remarks>
+    public MarkType MarkType { get; set; } = MarkType.Light;
 }

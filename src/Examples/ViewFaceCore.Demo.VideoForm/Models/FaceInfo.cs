@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm.Models
 {

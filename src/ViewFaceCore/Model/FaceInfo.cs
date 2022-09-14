@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace ViewFaceCore.Model
+namespace ViewFaceCore.Models
 {
     /// <summary>
     /// 面部信息
@@ -11,26 +11,26 @@ namespace ViewFaceCore.Model
     [StructLayout(LayoutKind.Sequential)]
     public struct FaceInfo : IFormattable
     {
+        internal FaceInfo(FaceRect pos, float score)
+        {
+            this.pos = pos;
+            this.score = score;
+        }
+
+#pragma warning disable IDE0044 // 添加只读修饰符
         private FaceRect pos;
         private float score;
+#pragma warning restore IDE0044 // 添加只读修饰符
 
         /// <summary>
         /// 人脸置信度
         /// </summary>
-        public float Score
-        {
-            get { return score; }
-            internal set { score = value; }
-        }
+        public float Score => score;
 
         /// <summary>
         /// 人脸位置
         /// </summary>
-        public FaceRect Location
-        {
-            get { return pos; }
-            internal set { pos = value; }
-        }
+        public FaceRect Location => pos;
 
         #region IFormattable
         /// <summary>

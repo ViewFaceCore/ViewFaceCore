@@ -4,80 +4,71 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Configs;
-using ViewFaceCore.Model;
+using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
-namespace ViewFaceCore.Core
+namespace ViewFaceCore.Core;
+
+/// <summary>
+/// 识别指定的人脸信息的关键点坐标。
+/// </summary>
+public sealed class FaceLandmarker : BaseViewFace<FaceLandmarkConfig>, IDisposable
 {
-    /// <summary>
-    /// 识别指定的人脸信息的关键点坐标。
-    /// </summary>
-    public sealed class FaceLandmarker : BaseViewFace, IDisposable
+    private readonly IntPtr _handle = IntPtr.Zero;
+    private readonly static object _locker = new object();
+
+    /// <inheritdoc/>
+    /// <exception cref="Exception"></exception>
+    public FaceLandmarker(FaceLandmarkConfig config = null) : base(config ?? new FaceLandmarkConfig())
     {
-        private readonly IntPtr _handle = IntPtr.Zero;
-        private readonly static object _locker = new object();
-        public FaceLandmarkConfig LandmarkConfig { get; private set; }
-
-        /// <summary>
-        /// 识别指定的人脸信息的关键点坐标。
-        /// </summary>
-        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
-        /// /// <para>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts68">face_landmarker_pts68.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_mask_pts5">face_landmarker_mask_pts5.csta</a><br/>
-        /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_landmarker_pts5">face_landmarker_pts5.csta</a><br/>
-        /// </para>
-        /// <exception cref="Exception"></exception>
-        public FaceLandmarker(FaceLandmarkConfig config = null)
+        _handle = ViewFaceNative.GetFaceLandmarkerHandler((int)this.Config.MarkType, (int)this.Config.DeviceType);
+        if (_handle == IntPtr.Zero)
         {
-            this.LandmarkConfig = config ?? new FaceLandmarkConfig();
-            _handle = ViewFaceNative.GetFaceLandmarkerHandler((int)this.LandmarkConfig.MarkType, (int)this.LandmarkConfig.DeviceType);
-            if (_handle == IntPtr.Zero)
-            {
-                throw new Exception("Get face landmarker handler failed.");
-            }
+            throw new Exception("Get face landmarker handler failed.");
         }
+    }
 
-        /// <summary>
-        /// 识别 <paramref name="image"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
-        /// </summary>
-        /// <param name="image">人脸图像信息</param>
-        /// <param name="info">指定的人脸信息</param>
-        /// <exception cref="MarkException"/>
-        /// <returns>若失败，则返回结果 Length == 0</returns>
-        public FaceMarkPoint[] Mark(FaceImage image, FaceInfo info)
+    /// <summary>
+    /// 识别 <paramref name="image"/> 中指定的人脸信息 <paramref name="info"/> 的关键点坐标。
+    /// </summary>
+    /// <param name="image">人脸图像信息</param>
+    /// <param name="info">指定的人脸信息</param>
+    /// <exception cref="MarkException"/>
+    /// <returns>若失败，则返回结果 Length == 0</returns>
+    public FaceMarkPoint[] Mark(FaceImage image, FaceInfo info)
+    {
+        lock (_locker)
         {
-            lock (_locker)
+            long size = 0;
+            var ptr = ViewFaceNative.FaceMark(_handle, ref image, info.Location, ref size);
+            if (ptr != IntPtr.Zero)
             {
-                long size = 0;
-                var ptr = ViewFaceNative.FaceMark(_handle, ref image, info.Location, ref size);
-                if (ptr != IntPtr.Zero)
+                try
                 {
-                    try
+                    FaceMarkPoint[] result = new FaceMarkPoint[size];
+                    for (int i = 0; i < size; i++)
                     {
-                        FaceMarkPoint[] result = new FaceMarkPoint[size];
-                        for (int i = 0; i < size; i++)
-                        {
-                            var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
-                            result[i] = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
-                        }
-                        return result;
+                        var ofs = i * Marshal.SizeOf(typeof(FaceMarkPoint));
+                        result[i] = (FaceMarkPoint)Marshal.PtrToStructure(ptr + ofs, typeof(FaceMarkPoint));
                     }
-                    finally
-                    {
-                        ViewFaceNative.Free(ptr);
-                    }
+                    return result;
+                }
+                finally
+                {
+                    ViewFaceNative.Free(ptr);
                 }
             }
-            return new FaceMarkPoint[0];
         }
+        return new FaceMarkPoint[0];
+    }
 
-        public void Dispose()
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        lock (_locker)
         {
-            lock (_locker)
-            {
-                ViewFaceNative.DisposeFaceLandmarker(_handle);
-            }
+            ViewFaceNative.DisposeFaceLandmarker(_handle);
         }
     }
 }

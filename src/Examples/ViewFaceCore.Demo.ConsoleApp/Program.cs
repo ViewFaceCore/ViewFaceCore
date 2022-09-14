@@ -6,7 +6,7 @@ using System.Numerics;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Extensions;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Example.ConsoleApp
 {

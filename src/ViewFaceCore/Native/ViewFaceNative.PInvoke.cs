@@ -2,8 +2,9 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
+using ViewFaceCore.Configs.Enums;
 using ViewFaceCore.Exceptions;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Native
 {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using ViewFaceCore;
 using ViewFaceCore.Core;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCoreTest
 {

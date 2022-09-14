@@ -1,35 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ViewFaceCore.Models;
 
-namespace ViewFaceCore.Model
+/// <summary>
+/// 戴口罩识别返回模型
+/// </summary>
+public sealed class PlotMaskResult
 {
-    /// <summary>
-    /// 戴口罩识别返回模型
-    /// </summary>
-    public class PlotMaskResult
+    internal PlotMaskResult(float score, bool status, bool masked)
     {
-        public PlotMaskResult(float score, bool status, bool masked)
-        {
-            this.Score = score;
-            this.Status = status;
-            this.Masked = masked;
-        }
-
-        /// <summary>
-        /// 评估分数
-        /// </summary>
-        public float Score { get; set; }
-
-        /// <summary>
-        /// 是否检测成功
-        /// </summary>
-        public bool Status { get; set; }
-
-        /// <summary>
-        /// 是否戴口罩
-        /// </summary>
-        public bool Masked { get; set; }
+        Score = score;
+        Status = status;
+        Masked = masked;
     }
+
+    /// <summary>
+    /// 评估分数
+    /// </summary>
+    public float Score { get; }
+
+    /// <summary>
+    /// 是否检测成功
+    /// </summary>
+    public bool Status { get; }
+
+    /// <summary>
+    /// 是否戴口罩
+    /// </summary>
+    public bool Masked { get; }
 }

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ViewFaceCore.Attributes;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Core
 {

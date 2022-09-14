@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ViewFaceCore.Configs;
 
-namespace ViewFaceCore.Configs
+/// <summary>
+/// 眼睛状态检测配置
+/// </summary>
+public sealed class EyeStateDetectConfig : BaseConfig
 {
-    public class EyeStateDetectConfig : BaseConfig
-    {
-    }
+
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ViewFaceCore.Model
+namespace ViewFaceCore.Configs.Enums
 {
     /// <summary>
     /// 质量评估等级

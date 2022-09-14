@@ -4,7 +4,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using ViewFaceCore.Configs;
-using ViewFaceCore.Model;
+using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
@@ -12,27 +13,24 @@ namespace ViewFaceCore.Core
     /// <summary>
     /// 提取和对比人脸特征值。
     /// </summary>
-    public sealed class FaceRecognizer : BaseViewFace, IDisposable
+    public sealed class FaceRecognizer : BaseViewFace<FaceRecognizeConfig>, IDisposable
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
-        public FaceRecognizeConfig CompareConfig { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="type">模型类型。0：face_landmarker_pts68；1：face_landmarker_mask_pts5；2：face_landmarker_pts5。</param>
+        /// <param name="config">配置</param>
         /// <para>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Normal"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer">face_recognizer.csta</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
         /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
         /// </para>
         /// <exception cref="Exception"></exception>
-        public FaceRecognizer(FaceRecognizeConfig config = null)
+        public FaceRecognizer(FaceRecognizeConfig config = null) : base(config ?? new FaceRecognizeConfig())
         {
-            this.CompareConfig = config ?? new FaceRecognizeConfig();
-            _handle = ViewFaceNative.GetFaceRecognizerHandler((int)CompareConfig.FaceType, (int)CompareConfig.DeviceType);
-            if (_handle == IntPtr.Zero)
+            if ((_handle = ViewFaceNative.GetFaceRecognizerHandler((int)Config.FaceType, (int)Config.DeviceType)) == IntPtr.Zero)
             {
                 throw new Exception("Get face recognizer handler failed.");
             }
@@ -100,7 +98,7 @@ namespace ViewFaceCore.Core
         /// </summary>
         /// <param name="similarity">相似度</param>
         /// <returns></returns>
-        public bool IsSelf(float similarity) => similarity > this.CompareConfig.GetThreshold();
+        public bool IsSelf(float similarity) => similarity > this.Config.Threshold;
 
         /// <summary>
         /// 判断两个特征值是否为同一个人。
@@ -115,6 +113,7 @@ namespace ViewFaceCore.Core
 
         #endregion
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             lock (_locker)

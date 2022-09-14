@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {

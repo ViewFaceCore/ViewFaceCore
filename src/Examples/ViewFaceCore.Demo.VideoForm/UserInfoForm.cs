@@ -13,7 +13,7 @@ using ViewFaceCore.Demo.VideoForm.Extensions;
 using ViewFaceCore.Demo.VideoForm.Models;
 using ViewFaceCore.Demo.VideoForm.Utils;
 using ViewFaceCore.Extensions;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -144,7 +144,7 @@ namespace ViewFaceCore.Demo.VideoForm
 
         private void FaceDetector(Bitmap bitmap)
         {
-            _ = Task.Run(() =>
+            _ = Task.Run((Action)(() =>
             {
                 ViewFaceFactory faceFactory = new ViewFaceFactory(bitmap.Width, bitmap.Height);
                 try
@@ -152,44 +152,44 @@ namespace ViewFaceCore.Demo.VideoForm
                     SetUIStatus(false);
                     FormHelper.SetLabelStatus(labelStatus, "人脸检测中...", true);
 
-                    using (FaceImage faceImage = bitmap.ToFaceImage())
+                    using (ViewFaceCore.Models.FaceImage faceImage = bitmap.ToFaceImage())
                     {
-                        Model.FaceInfo[] faceInfos = faceFactory.Get<FaceDetector>().Detect(faceImage);
+                        ViewFaceCore.Models.FaceInfo[] faceInfos = faceFactory.Get<FaceDetector>().Detect((FaceImage)faceImage);
                         if (faceInfos == null || !faceInfos.Any())
                         {
                             throw new Exception("未获取到人脸信息！");
                         }
-                        FaceMarkPoint[] markPoints = faceFactory.Get<FaceLandmarker>().Mark(bitmap, faceInfos[0]);
+                        ViewFaceCore.Models.FaceMarkPoint[] markPoints = Core.Extensions.Mark(faceFactory.Get<FaceLandmarker>(), bitmap, (FaceInfo)faceInfos[0]);
                         if (markPoints == null)
                         {
                             throw new Exception("检测人脸信息失败：标记人脸失败！");
                         }
                         MaskDetector maskDetector = faceFactory.Get<MaskDetector>();
-                        PlotMaskResult maskResult = maskDetector.PlotMask(bitmap, faceInfos[0]);
+                        ViewFaceCore.Models.PlotMaskResult maskResult = Core.Extensions.PlotMask(maskDetector, bitmap, (FaceInfo)faceInfos[0]);
                         if (maskResult.Masked)
                         {
                             throw new Exception("人脸不能有任何遮挡或者戴有口罩！");
                         }
                         AgePredictor agePredictor = faceFactory.Get<AgePredictor>();
-                        _globalUserInfo.Age = agePredictor.PredictAge(faceImage, markPoints);
+                        _globalUserInfo.Age = agePredictor.PredictAge((FaceImage)faceImage, markPoints);
 
                         GenderPredictor genderPredictor = faceFactory.Get<GenderPredictor>();
-                        Gender gender = genderPredictor.PredictGender(faceImage, markPoints);
+                        ViewFaceCore.Models.Gender gender = genderPredictor.PredictGender((FaceImage)faceImage, markPoints);
                         switch (gender)
                         {
-                            case Gender.Male:
+                            case ViewFaceCore.Models.Gender.Male:
                                 _globalUserInfo.Gender = GenderEnum.Male;
                                 break;
-                            case Gender.Female:
+                            case ViewFaceCore.Models.Gender.Female:
                                 _globalUserInfo.Gender = GenderEnum.Female;
                                 break;
-                            case Gender.Unknown:
+                            case ViewFaceCore.Models.Gender.Unknown:
                                 _globalUserInfo.Gender = GenderEnum.Unknown;
                                 break;
                         }
 
                         FaceRecognizer faceRecognizer = faceFactory.Get<FaceRecognizer>();
-                        float[] extractData = faceRecognizer.Extract(faceImage, markPoints);
+                        float[] extractData = faceRecognizer.Extract((FaceImage)faceImage, markPoints);
                         if (extractData == null)
                         {
                             throw new Exception("识别人脸信息失败！");
@@ -203,7 +203,7 @@ namespace ViewFaceCore.Demo.VideoForm
                         SetGenderComboBoxValue(comboBoxGender, (int)_globalUserInfo.Gender);
 
                         //画方框
-                        DrawingFaceInfo(bitmap, new List<Models.FaceInfo>(){
+                        DrawingFaceInfo(bitmap, new List<FaceInfo>(){
                             new Models.FaceInfo()
                             {
                                 Location = faceInfos[0].Location,
@@ -226,7 +226,7 @@ namespace ViewFaceCore.Demo.VideoForm
                     faceFactory?.Dispose();
                     bitmap?.Dispose();
                 }
-            });
+            }));
         }
 
         private void SetUIStatus(bool status)

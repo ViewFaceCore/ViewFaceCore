@@ -1,7 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using ViewFaceCore.Attributes;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Core
 {

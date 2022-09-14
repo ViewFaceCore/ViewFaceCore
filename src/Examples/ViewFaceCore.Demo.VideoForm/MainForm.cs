@@ -12,7 +12,7 @@ using ViewFaceCore.Core;
 using ViewFaceCore.Demo.VideoForm.Extensions;
 using ViewFaceCore.Demo.VideoForm.Models;
 using ViewFaceCore.Demo.VideoForm.Utils;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -390,7 +390,7 @@ namespace ViewFaceCore.Demo.VideoForm
                                 };
                                 if (CheckBoxFaceMask.Checked || CheckBoxFaceProperty.Checked)
                                 {
-                                    Model.FaceInfo info = infos[i].ToFaceInfo();
+                                    Models.FaceInfo info = infos[i].ToFaceInfo();
                                     if (CheckBoxFaceMask.Checked)
                                     {
                                         var maskStatus = await faceFactory.Get<MaskDetector>().PlotMaskAsync(faceImage, info);

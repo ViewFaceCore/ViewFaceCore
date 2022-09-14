@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ViewFaceCore.Configs;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core
@@ -13,17 +13,16 @@ namespace ViewFaceCore.Core
     /// 眼睛的左右是相对图片内容而言的左右。<br />
     /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.eye_state">eye_state.csta</a>
     /// </summary>
-    public sealed class EyeStateDetector : BaseViewFace, IPredictor
+    public sealed class EyeStateDetector : BaseViewFace<EyeStateDetectConfig>, IPredictor
     {
         private readonly IntPtr _handle = IntPtr.Zero;
         private readonly static object _locker = new object();
-        public EyeStateDetectConfig EyeStateDetectConfig { get; private set; }
 
-        public EyeStateDetector(EyeStateDetectConfig config = null)
+        /// <inheritdoc/>
+        /// <exception cref="Exception"></exception>
+        public EyeStateDetector(EyeStateDetectConfig config = null) : base(config ?? new EyeStateDetectConfig())
         {
-            this.EyeStateDetectConfig = config ?? new EyeStateDetectConfig();
-            _handle = ViewFaceNative.GetEyeStateDetectorHandler((int)this.EyeStateDetectConfig.DeviceType);
-            if (_handle == IntPtr.Zero)
+            if ((_handle = ViewFaceNative.GetEyeStateDetectorHandler((int)this.Config.DeviceType)) == IntPtr.Zero)
             {
                 throw new Exception("Get eye state detector handler failed.");
             }
@@ -49,6 +48,7 @@ namespace ViewFaceCore.Core
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose()
         {
             lock (_locker)

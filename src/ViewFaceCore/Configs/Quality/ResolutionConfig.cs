@@ -1,6 +1,6 @@
-﻿using ViewFaceCore.Model;
+﻿using ViewFaceCore.Configs.Enums;
 
-namespace ViewFaceCore.Configs.QualityConfigs
+namespace ViewFaceCore.Configs.Quality
 {
     /// <summary>
     /// 分辨率评估。
@@ -13,7 +13,7 @@ namespace ViewFaceCore.Configs.QualityConfigs
     /// </para> <br />
     /// <para><see langword="{low, high}"/> 的默认值为 <see langword="{80, 120}"/></para>
     /// </summary>
-    public class ResolutionConfig
+    public sealed class ResolutionConfig
     {
         /// <summary>
         /// 默认值为 80

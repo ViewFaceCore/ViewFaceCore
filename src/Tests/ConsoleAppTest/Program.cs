@@ -6,8 +6,9 @@ using System.Linq;
 using ViewFaceCore;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 using ViewFaceCore.Extensions;
+using ViewFaceCore.Configs.Enums;
 
 namespace ConsoleAppTest
 {
@@ -157,8 +158,7 @@ namespace ConsoleAppTest
                 }
                 foreach (var item in result)
                 {
-                    FaceInfo faceInfo = item.ToFaceInfo();
-                    var points = faceMark.Mark(bitmap, faceInfo);
+                    var points = faceMark.Mark(bitmap, item);
                 }
 
                 logger.Info($"第{i + 1}次{nameof(FaceTracker.Track)}追踪，结果：{result.Count()}，耗时：{sw.ElapsedMilliseconds}ms");

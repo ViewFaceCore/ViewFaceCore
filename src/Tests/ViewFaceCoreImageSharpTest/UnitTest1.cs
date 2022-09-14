@@ -5,8 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using ViewFaceCore;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Configs.Enums;
 using ViewFaceCore.Core;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCoreImageSharpTest
 {
