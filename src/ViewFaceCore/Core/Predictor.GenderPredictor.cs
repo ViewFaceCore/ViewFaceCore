@@ -12,7 +12,7 @@ namespace ViewFaceCore.Core;
 /// 性别预测。
 /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.gender_predictor">gender_predictor.csta</a>
 /// </summary>
-public sealed class GenderPredictor : BaseViewFace<GenderPredictConfig>, IPredictor
+public sealed class GenderPredictor : Predictor<GenderPredictConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();
@@ -34,7 +34,7 @@ public sealed class GenderPredictor : BaseViewFace<GenderPredictConfig>, IPredic
     /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
-    /// <param name="points">关键点坐标<para>通过 <see cref="FaceMark(FaceImage, FaceInfo)"/> 获取</para></param>
+    /// <param name="points">关键点坐标<para>通过 <see cref="MaskDetector.PlotMask(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
     public Gender PredictGender(FaceImage image, FaceMarkPoint[] points)
     {
@@ -50,7 +50,7 @@ public sealed class GenderPredictor : BaseViewFace<GenderPredictConfig>, IPredic
     }
 
     /// <inheritdoc/>
-    public void Dispose()
+    public override void Dispose()
     {
         lock (_locker)
         {

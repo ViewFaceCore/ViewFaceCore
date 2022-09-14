@@ -1,6 +1,6 @@
 ﻿using ViewFaceCore.Configs.Enums;
 
-namespace ViewFaceCore.Configs.Quality;
+namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 清晰度评估器配置。

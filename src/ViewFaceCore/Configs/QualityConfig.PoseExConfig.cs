@@ -1,4 +1,4 @@
-﻿namespace ViewFaceCore.Configs.Quality;
+﻿namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 姿态评估 (深度) 配置。

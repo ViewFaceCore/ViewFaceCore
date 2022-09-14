@@ -1,4 +1,4 @@
-﻿namespace ViewFaceCore.Configs.Quality;
+﻿namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 清晰度 (深度)评估。

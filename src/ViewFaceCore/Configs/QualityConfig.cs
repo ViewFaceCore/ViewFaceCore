@@ -1,6 +1,4 @@
-﻿using ViewFaceCore.Configs.Quality;
-
-namespace ViewFaceCore.Configs;
+﻿namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 质量评估配置。
