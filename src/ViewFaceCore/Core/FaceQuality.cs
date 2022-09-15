@@ -14,8 +14,6 @@ namespace ViewFaceCore.Core
     /// </summary>
     public sealed class FaceQuality : BaseViewFace<QualityConfig>, IDisposable
     {
-        private readonly QualityConfig _qualityConfig = null;
-
         /// <inheritdoc/>
         public FaceQuality(QualityConfig config = null) : base(config ?? new QualityConfig()) { }
 
@@ -36,29 +34,29 @@ namespace ViewFaceCore.Core
             {
                 case QualityType.Brightness:
                     ViewFaceNative.QualityOfBrightness(ref image, info.Location, points, points.Length, ref level, ref score,
-                        _qualityConfig.Brightness.V0, _qualityConfig.Brightness.V1, _qualityConfig.Brightness.V2, _qualityConfig.Brightness.V3);
+                        this.Config.Brightness.V0, this.Config.Brightness.V1, this.Config.Brightness.V2, this.Config.Brightness.V3);
                     break;
                 case QualityType.Clarity:
-                    ViewFaceNative.QualityOfClarity(ref image, info.Location, points, points.Length, ref level, ref score, _qualityConfig.Clarity.Low, _qualityConfig.Clarity.High);
+                    ViewFaceNative.QualityOfClarity(ref image, info.Location, points, points.Length, ref level, ref score, this.Config.Clarity.Low, this.Config.Clarity.High);
                     break;
                 case QualityType.Integrity:
                     ViewFaceNative.QualityOfIntegrity(ref image, info.Location, points, points.Length, ref level, ref score,
-                        _qualityConfig.Integrity.Low, _qualityConfig.Integrity.High);
+                        this.Config.Integrity.Low, this.Config.Integrity.High);
                     break;
                 case QualityType.Pose:
                     ViewFaceNative.QualityOfPose(ref image, info.Location, points, points.Length, ref level, ref score);
                     break;
                 case QualityType.PoseEx:
                     ViewFaceNative.QualityOfPoseEx(ref image, info.Location, points, points.Length, ref level, ref score,
-                       _qualityConfig.PoseEx.YawLow, _qualityConfig.PoseEx.YawHigh,
-                       _qualityConfig.PoseEx.PitchLow, _qualityConfig.PoseEx.PitchHigh,
-                       _qualityConfig.PoseEx.RollLow, _qualityConfig.PoseEx.RollHigh);
+                       this.Config.PoseEx.YawLow, this.Config.PoseEx.YawHigh,
+                       this.Config.PoseEx.PitchLow, this.Config.PoseEx.PitchHigh,
+                       this.Config.PoseEx.RollLow, this.Config.PoseEx.RollHigh);
                     break;
                 case QualityType.Resolution:
-                    ViewFaceNative.QualityOfResolution(ref image, info.Location, points, points.Length, ref level, ref score, _qualityConfig.Resolution.Low, _qualityConfig.Resolution.High);
+                    ViewFaceNative.QualityOfResolution(ref image, info.Location, points, points.Length, ref level, ref score, this.Config.Resolution.Low, this.Config.Resolution.High);
                     break;
                 case QualityType.ClarityEx:
-                    ViewFaceNative.QualityOfClarityEx(ref image, info.Location, points, points.Length, ref level, ref score, _qualityConfig.ClarityEx.BlurThresh);
+                    ViewFaceNative.QualityOfClarityEx(ref image, info.Location, points, points.Length, ref level, ref score, this.Config.ClarityEx.BlurThresh);
                     break;
                 case QualityType.Structure:
                     ViewFaceNative.QualityOfNoMask(ref image, info.Location, points, points.Length, ref level, ref score);

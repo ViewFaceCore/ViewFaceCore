@@ -1,5 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,6 +8,7 @@ using ViewFaceCore.Core;
 using ViewFaceCore.Models;
 using ViewFaceCore.Extensions;
 using ViewFaceCore.Configs.Enums;
+using System.Drawing;
 
 namespace ConsoleAppTest
 {
@@ -44,13 +44,13 @@ namespace ConsoleAppTest
                 //FaceTrackTest();
 
                 ////人脸特征值测试，开始：2022/07/30 00:12:51，结束：2022/07/30 09:04:30，结果：通过
-                ExtractTest();
+                //ExtractTest();
 
                 ////年龄预测测试
-                //FaceAgePredictorTest();
+                FaceAgePredictorTest();
 
                 ////性别预测测试
-                //FaceGenderPredictorTest();
+                FaceGenderPredictorTest();
 
                 ////眼睛状态检测测试
                 //FaceEyeStateDetectorTest();
@@ -135,8 +135,8 @@ namespace ConsoleAppTest
 
             Worker((sw, i) =>
             {
-                var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
-                logger.Info($"第{i + 1}次{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
+                var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
+                logger.Info($"第{i + 1}次{nameof(FaceAntiSpoofing.Predict)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 
@@ -173,15 +173,15 @@ namespace ConsoleAppTest
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector(new FaceDetectConfig()
             {
-                DeviceType = DeviceType.GPU
+                DeviceType = DeviceType.AUTO
             });
             using FaceLandmarker faceMark = new FaceLandmarker(new FaceLandmarkConfig()
             {
-                DeviceType = DeviceType.GPU
+                DeviceType = DeviceType.AUTO
             });
             using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
             {
-                DeviceType = DeviceType.GPU
+                DeviceType = DeviceType.AUTO
             });
             Worker((sw, i) =>
             {
@@ -201,8 +201,11 @@ namespace ConsoleAppTest
             using AgePredictor agePredictor = new AgePredictor();
             Worker((sw, i) =>
             {
-                var result = agePredictor.PredictAge(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+                var result = agePredictor.PredictAge(bitmap);
                 logger.Info($"第{i + 1}次{nameof(AgePredictor.PredictAge)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+                sw.Restart();
+                result = agePredictor.PredictAgeWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+                logger.Info($"第{i + 1}次{nameof(AgePredictor.PredictAgeWithCrop)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 
@@ -217,8 +220,13 @@ namespace ConsoleAppTest
             using GenderPredictor genderPredictor = new GenderPredictor();
             Worker((sw, i) =>
             {
-                var result = genderPredictor.PredictGender(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+                var faceInfo = faceDetector.Detect(bitmap)[0];
+                using Bitmap bitmap1 = CutPicture(bitmap, faceInfo.Location.X, faceInfo.Location.Y, faceInfo.Location.Width, faceInfo.Location.Height);
+                var result = genderPredictor.PredictGender(bitmap1);
                 logger.Info($"第{i + 1}次{nameof(GenderPredictor.PredictGender)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+                sw.Restart();
+                result = genderPredictor.PredictGenderWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+                logger.Info($"第{i + 1}次{nameof(GenderPredictor.PredictGenderWithCrop)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             });
         }
 
@@ -286,8 +294,8 @@ namespace ConsoleAppTest
 
             Worker((sw, i) =>
             {
-                var result = maskDetector.PlotMask(bitmap_mask, info);
-                logger.Info($"第{i + 1}次{nameof(MaskDetector.PlotMask)}戴口罩检测，结果：{result.Status}，置信度：{result.Score}，耗时：{sw.ElapsedMilliseconds}ms");
+                var result = maskDetector.Detect(bitmap_mask, info);
+                logger.Info($"第{i + 1}次{nameof(MaskDetector.Detect)}戴口罩检测，结果：{result.Status}，置信度：{result.Score}，耗时：{sw.ElapsedMilliseconds}ms");
             });
 
         }
@@ -330,9 +338,36 @@ namespace ConsoleAppTest
             sw2.Stop();
         }
 
-        public static Image ConvertImage(string path)
+        public static Bitmap ConvertImage(string path)
         {
-            return Image.Load(imagePath);
+            return (Bitmap)Bitmap.FromFile(imagePath);
+        }
+
+        /// 图片裁剪，生成新图，保存在同一目录下,名字加_new，格式1.png  新图1_new.png
+        /// </summary>
+        /// <param name="picPath">要修改图片完整路径</param>
+        /// <param name="x">修改起点x坐标</param>
+        /// <param name="y">修改起点y坐标</param>
+        /// <param name="width">新图宽度</param>
+        /// <param name="height">新图高度</param>
+        public static Bitmap CutPicture(Bitmap img, int x, int y, int width, int height)
+        {
+            //定义截取矩形
+            System.Drawing.Rectangle cropArea = new System.Drawing.Rectangle(x, y, width, height);
+            //要截取的区域大小
+            //判断超出的位置否
+            if ((img.Width < x + width) || img.Height < y + height)
+            {
+                img.Dispose();
+                return null;
+            }
+            //定义Bitmap对象
+            System.Drawing.Bitmap bmpImage = new System.Drawing.Bitmap(img);
+            //进行裁剪
+            System.Drawing.Bitmap bmpCrop = bmpImage.Clone(cropArea, bmpImage.PixelFormat);
+            //释放对象
+            img.Dispose();
+            return bmpCrop;
         }
 
         #endregion

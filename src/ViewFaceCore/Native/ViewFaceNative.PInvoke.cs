@@ -118,8 +118,8 @@ namespace ViewFaceCore.Native
         /// <param name="img">图像信息</param>
         /// <param name="size">检测到的人脸数量</param>
         /// <returns></returns>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceDetector", CallingConvention = CallingConvention.Cdecl)]
-        public extern static IntPtr FaceDetector(IntPtr handler, ref FaceImage img, ref int size);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceDetectV2", CallingConvention = CallingConvention.Cdecl)]
+        public extern static IntPtr FaceDetectV2(IntPtr handler, ref FaceImage img, ref int size);
 
         /// <summary>
         /// 释放人脸检测句柄
@@ -151,8 +151,8 @@ namespace ViewFaceCore.Native
         /// <param name="faceRect"></param>
         /// <param name="score">一般性的，score超过0.5，则认为是检测带上了口罩。</param>
         /// <returns></returns>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PlotMask", CallingConvention = CallingConvention.Cdecl)]
-        public extern static bool PlotMask(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref float score);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "MaskDetect", CallingConvention = CallingConvention.Cdecl)]
+        public extern static bool MaskDetect(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref float score);
 
         /// <summary>
         /// 释放口罩识别句柄
@@ -240,8 +240,8 @@ namespace ViewFaceCore.Native
         /// <param name="points">人脸关键点 数组</param>
         /// <param name="global">是否启用全局检测</param>
         /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "AntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofing(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceAntiSpoofingPredict", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int FaceAntiSpoofingPredict(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
 
         /// <summary>
         /// 活体检测器
@@ -257,8 +257,8 @@ namespace ViewFaceCore.Native
         /// 在视频识别输入帧数不满足需求的时候，返回状态就是 <see cref="AntiSpoofingStatus.Detecting"/>
         /// </para>
         /// </returns>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "AntiSpoofingVideo", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int AntiSpoofingVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] pointsref, ref float clarity, ref float reality);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceAntiSpoofingPredictVideo", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int FaceAntiSpoofingPredictVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] pointsref, ref float clarity, ref float reality);
 
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceAntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
         public extern static void DisposeFaceAntiSpoofing(IntPtr handler);
@@ -488,15 +488,23 @@ namespace ViewFaceCore.Native
         public extern static IntPtr GetAgePredictorHandler(int deviceType = 0);
 
         /// <summary>
-        /// 人脸年龄预测。
+        /// 人脸年龄预测
+        /// </summary>
+        /// <param name="handler">句柄</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictAge", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int PredictAge(IntPtr handler, ref FaceImage img);
+
+        /// <summary>
+        /// 人脸年龄预测（自动裁剪）
         /// </summary>
         /// <param name="handler">句柄</param>
         /// <param name="img">图像宽高通道信息</param>
         /// <param name="points">人脸关键点 数组</param>
-        /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictAge", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int PredictAge(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictAgeWithCrop", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int PredictAgeWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
 
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeAgePredictor", CallingConvention = CallingConvention.Cdecl)]
         public extern static void DisposeAgePredictor(IntPtr handler);
@@ -513,11 +521,19 @@ namespace ViewFaceCore.Native
         /// </summary>
         /// <param name="handler">句柄</param>
         /// <param name="img">图像宽高通道信息</param>
-        /// <param name="points">人脸关键点 数组</param>
-        /// <param name="pointsLength">人脸关键点 数组长度</param>
         /// <returns>-1 则为失败，否则为预测年龄</returns>
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictGender", CallingConvention = CallingConvention.Cdecl)]
-        public extern static int PredictGender(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+        public extern static int PredictGender(IntPtr handler, ref FaceImage img);
+
+        /// <summary>
+        /// 人脸性别预测（自动裁剪）
+        /// </summary>
+        /// <param name="handler">句柄</param>
+        /// <param name="img">图像宽高通道信息</param>
+        /// <param name="points">人脸关键点 数组</param>
+        /// <returns>-1 则为失败，否则为预测年龄</returns>
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictGenderWithCrop", CallingConvention = CallingConvention.Cdecl)]
+        public extern static int PredictGenderWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
 
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeGenderPredictor", CallingConvention = CallingConvention.Cdecl)]
         public extern static void DisposeGenderPredictor(IntPtr handler);
@@ -537,8 +553,8 @@ namespace ViewFaceCore.Native
         /// <param name="points">人脸关键点</param>
         /// <param name="left_eye"></param>
         /// <param name="right_eye"></param>
-        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "EyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
-        public extern static void EyeStateDetector(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
+        [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "EyeStateDetect", CallingConvention = CallingConvention.Cdecl)]
+        public extern static void EyeStateDetect(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
 
         [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeEyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
         public extern static void DisposeEyeStateDetector(IntPtr handler);

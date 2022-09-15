@@ -28,7 +28,26 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     }
 
     /// <summary>
-    /// 年龄预测。
+    /// 年龄预测
+    /// <para>
+    /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">age_predictor.csta</a>
+    /// </para>
+    /// </summary>
+    /// <param name="image">人脸图像信息</param>
+    /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
+    public int PredictAge(FaceImage image)
+    {
+        lock (_locker)
+        {
+            if (IsDisposed)
+                throw new ObjectDisposedException(nameof(AgePredictor));
+
+            return ViewFaceNative.PredictAge(_handle, ref image);
+        }
+    }
+
+    /// <summary>
+    /// 年龄预测（自动裁剪）
     /// <para>
     /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">age_predictor.csta</a>
     /// </para>
@@ -36,14 +55,14 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     /// <param name="image">人脸图像信息</param>
     /// <param name="points">关键点坐标<para>通过 <see cref="MaskDetector.PlotMask(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
-    public int PredictAge(FaceImage image, FaceMarkPoint[] points)
+    public int PredictAgeWithCrop(FaceImage image, FaceMarkPoint[] points)
     {
         lock (_locker)
         {
             if (IsDisposed)
                 throw new ObjectDisposedException(nameof(AgePredictor));
 
-            return ViewFaceNative.PredictAge(_handle, ref image, points);
+            return ViewFaceNative.PredictAgeWithCrop(_handle, ref image, points);
         }
     }
 

@@ -47,7 +47,7 @@ public sealed class EyeStateDetector : Predictor<EyeStateDetectConfig>
                 throw new ObjectDisposedException(nameof(EyeStateDetector));
 
             int left_eye = 0, right_eye = 0;
-            ViewFaceNative.EyeStateDetector(_handle, ref image, points, ref left_eye, ref right_eye);
+            ViewFaceNative.EyeStateDetect(_handle, ref image, points, ref left_eye, ref right_eye);
             return new EyeStateResult((EyeState)left_eye, (EyeState)right_eye);
         }
     }

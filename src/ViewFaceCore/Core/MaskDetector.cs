@@ -33,7 +33,7 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
     /// <param name="image"></param>
     /// <param name="info"></param>
     /// <returns></returns>
-    public PlotMaskResult PlotMask(FaceImage image, FaceInfo info)
+    public PlotMaskResult Detect(FaceImage image, FaceInfo info)
     {
         lock (_locker)
         {
@@ -41,7 +41,7 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
                 throw new ObjectDisposedException(nameof(MaskDetector));
 
             float score = 0;
-            bool status = ViewFaceNative.PlotMask(_handle, ref image, info.Location, ref score);
+            bool status = ViewFaceNative.MaskDetect(_handle, ref image, info.Location, ref score);
             return new PlotMaskResult(score, status, status && score > this.Config.Threshold);
         }
     }

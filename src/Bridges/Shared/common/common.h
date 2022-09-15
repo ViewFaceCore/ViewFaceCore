@@ -20,3 +20,4 @@ inline void _dispose(T &ptr)
 		}
 	}
 }
+

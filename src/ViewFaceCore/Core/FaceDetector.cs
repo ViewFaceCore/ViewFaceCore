@@ -45,7 +45,7 @@ public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>, IDisposable
                 throw new ObjectDisposedException(nameof(FaceAntiSpoofing));
 
             int size = 0;
-            var ptr = ViewFaceNative.FaceDetector(_handle, ref image, ref size);
+            var ptr = ViewFaceNative.FaceDetectV2(_handle, ref image, ref size);
             if (ptr == IntPtr.Zero) return new FaceInfo[0];
             try
             {

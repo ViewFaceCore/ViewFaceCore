@@ -14,7 +14,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.ImageSharp\ViewFaceCore.Extension.ImageSharp.csproj" />
+		<ProjectReference Include="..\..\Extensions\ViewFaceCore.Extension.SystemDrawing\ViewFaceCore.Extension.SystemDrawing.csproj" />
 		<ProjectReference Include="..\..\Runtimes\ViewFaceCore.runtime.win.x64\ViewFaceCore.runtime.win.x64.csproj" />
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>

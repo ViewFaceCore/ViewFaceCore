@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
-using ViewFaceCore.Models;
+using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -82,7 +82,7 @@ namespace ViewFaceCore.Demo.VideoForm
                         if (_faceTracker == null)
                             _faceTracker = new FaceTracker(new FaceTrackerConfig(this.Width, this.Height)
                             {
-                                FaceSize = 20,
+                                MinFaceSize = 20,
                                 Stable = true,
                             });
                         return _faceTracker as T;

@@ -140,10 +140,10 @@ namespace ViewFaceCoreImageSharpTest
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+            var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceAntiSpoofing.Predict)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
         }
 
         /// <summary>
@@ -195,9 +195,9 @@ namespace ViewFaceCoreImageSharpTest
             using AgePredictor agePredictor = new AgePredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = agePredictor.PredictAge(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = agePredictor.PredictAgeWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
             sw.Stop();
-            Debug.WriteLine($"{nameof(AgePredictor.PredictAge)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(AgePredictor.PredictAgeWithCrop)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result > 10);
         }
 
@@ -213,10 +213,10 @@ namespace ViewFaceCoreImageSharpTest
             using GenderPredictor genderPredictor = new GenderPredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = genderPredictor.PredictGender(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = genderPredictor.PredictGenderWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(GenderPredictor.PredictGender)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(GenderPredictor.PredictGenderWithCrop)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result == Gender.Male);
         }
 
@@ -282,7 +282,7 @@ namespace ViewFaceCoreImageSharpTest
             using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info = faceDetector.Detect(bitmap_mask).First();
-            var result = maskDetector.PlotMask(bitmap_mask, info);
+            var result = maskDetector.Detect(bitmap_mask, info);
 
             var p0 = GetExtract(faceRecognizer, faceDetector, faceMark, bitmap_mask);
 

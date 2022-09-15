@@ -87,10 +87,10 @@ namespace ViewFaceCore.Core
         /// <param name="info">面部信息<para>通过 <see cref="Detect(FaceDetector, {{Image}})"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="Mark(FaceLandmarker, {{Image}}, FaceInfo)"/> 获取</para></param>
         /// <returns>活体检测状态</returns>
-        public static AntiSpoofingResult AntiSpoofing(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
+        public static AntiSpoofingResult Predict(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
         {
             using var faceImage = image.ToFaceImage();
-            return viewFace.AntiSpoofing(faceImage, info, points);
+            return viewFace.Predict(faceImage, info, points);
         }
 
         /// <summary>
@@ -101,10 +101,10 @@ namespace ViewFaceCore.Core
         /// <param name="info">面部信息<para>通过 <see cref="Detect(FaceDetector, {{Image}})"/> 获取</para></param>
         /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="Mark(FaceLandmarker, {{Image}}, FaceInfo)"/> 获取</para></param>
         /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-        public static AntiSpoofingResult AntiSpoofingVideo(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
+        public static AntiSpoofingResult PredictVideo(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
         {
             using var faceImage = image.ToFaceImage();
-            return viewFace.AntiSpoofingVideo(faceImage, info, points);
+            return viewFace.PredictVideo(faceImage, info, points);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace ViewFaceCore.Core
         }
 
         /// <summary>
-        /// 年龄预测。
+        /// 年龄预测（自动裁剪）
         /// <para>
         /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">age_predictor.csta</a>
         /// </para>
@@ -132,14 +132,29 @@ namespace ViewFaceCore.Core
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="Mark(FaceLandmarker, {{Image}}, FaceInfo)"/> 获取</para></param>
         /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
-        public static int PredictAge(this AgePredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
+        public static int PredictAgeWithCrop(this AgePredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
         {
             using var faceImage = image.ToFaceImage();
-            return viewFace.PredictAge(faceImage, points);
+            return viewFace.PredictAgeWithCrop(faceImage, points);
         }
 
         /// <summary>
-        /// 性别预测。
+        /// 年龄预测
+        /// <para>
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.age_predictor">age_predictor.csta</a>
+        /// </para>
+        /// </summary>
+        /// <param name="viewFace"></param>
+        /// <param name="image">人脸图像信息</param>
+        /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
+        public static int PredictAge(this AgePredictor viewFace, {{Image}} image)
+        {
+            using var faceImage = image.ToFaceImage();
+            return viewFace.PredictAge(faceImage);
+        }
+
+        /// <summary>
+        /// 性别预测（自动裁剪）
         /// <para>
         /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.gender_predictor">gender_predictor.csta</a>
         /// </para>
@@ -148,10 +163,25 @@ namespace ViewFaceCore.Core
         /// <param name="image">人脸图像信息</param>
         /// <param name="points">关键点坐标<para>通过 <see cref="Mark(FaceLandmarker, {{Image}}, FaceInfo)"/> 获取</para></param>
         /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
-        public static Gender PredictGender(this GenderPredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
+        public static Gender PredictGenderWithCrop(this GenderPredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
         {
             using var faceImage = image.ToFaceImage();
-            return viewFace.PredictGender(faceImage, points);
+            return viewFace.PredictGenderWithCrop(faceImage, points);
+        }
+
+        /// <summary>
+        /// 性别预测
+        /// <para>
+        /// 需要模型 <a href="https://www.nuget.org/packages/ViewFaceCore.model.gender_predictor">gender_predictor.csta</a>
+        /// </para>
+        /// </summary>
+        /// <param name="viewFace"></param>
+        /// <param name="image">人脸图像信息</param>
+        /// <returns>性别。<see cref="Gender.Unknown"/> 代表识别失败</returns>
+        public static Gender PredictGender(this GenderPredictor viewFace, {{Image}} image)
+        {
+            using var faceImage = image.ToFaceImage();
+            return viewFace.PredictGender(faceImage);
         }
 
         /// <summary>
@@ -191,10 +221,10 @@ namespace ViewFaceCore.Core
         /// <param name="image"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        public static PlotMaskResult PlotMask(this MaskDetector viewFace, {{Image}} image, FaceInfo info)
+        public static PlotMaskResult Detect(this MaskDetector viewFace, {{Image}} image, FaceInfo info)
         {
             using var faceImage = image.ToFaceImage();
-            return viewFace.PlotMask(faceImage, info);
+            return viewFace.Detect(faceImage, info);
         }
     }
 
@@ -214,20 +244,26 @@ namespace ViewFaceCore.Core
         public static Task<float[]> ExtractAsync(this FaceRecognizer viewFace, {{Image}} image, FaceMarkPoint[] points)
             => Task.Run(() => Extensions.Extract(viewFace, image, points));
 
-        public static Task<AntiSpoofingResult> AntiSpoofingAsync(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
-            => Task.Run(() => Extensions.AntiSpoofing(viewFace, image, info, points));
+        public static Task<AntiSpoofingResult> PredictAsync(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
+            => Task.Run(() => Extensions.Predict(viewFace, image, info, points));
 
-        public static Task<AntiSpoofingResult> AntiSpoofingVideoAsync(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
-            => Task.Run(() => Extensions.AntiSpoofingVideo(viewFace, image, info, points));
+        public static Task<AntiSpoofingResult> PredictVideoAsync(this FaceAntiSpoofing viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points)
+            => Task.Run(() => Extensions.PredictVideo(viewFace, image, info, points));
 
         public static Task<QualityResult> DetectAsync(this FaceQuality viewFace, {{Image}} image, FaceInfo info, FaceMarkPoint[] points, QualityType type)
             => Task.Run(() => Extensions.Detect(viewFace, image, info, points, type));
 
-        public static Task<int> PredictAgeAsync(this AgePredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
-            => Task.Run(() => Extensions.PredictAge(viewFace, image, points));
+        public static Task<int> PredictAgeWithCropAsync(this AgePredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
+            => Task.Run(() => Extensions.PredictAgeWithCrop(viewFace, image, points));
 
-        public static Task<Gender> PredictGenderAsync(this GenderPredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
-            => Task.Run(() => Extensions.PredictGender(viewFace, image, points));
+        public static Task<int> PredictAgeAsync(this AgePredictor viewFace, {{Image}} image)
+            => Task.Run(() => Extensions.PredictAge(viewFace, image));
+
+        public static Task<Gender> PredictGenderWithCropAsync(this GenderPredictor viewFace, {{Image}} image, FaceMarkPoint[] points)
+            => Task.Run(() => Extensions.PredictGenderWithCrop(viewFace, image, points));
+
+        public static Task<Gender> PredictGenderAsync(this GenderPredictor viewFace, {{Image}} image)
+            => Task.Run(() => Extensions.PredictGender(viewFace, image));
 
         public static Task<EyeStateResult> DetectAsync(this EyeStateDetector viewFace, {{Image}} image, FaceMarkPoint[] points)
             => Task.Run(() => Extensions.Detect(viewFace, image, points));
@@ -235,12 +271,11 @@ namespace ViewFaceCore.Core
         public static Task<FaceTrackInfo[]> TrackAsync(this FaceTracker viewFace, {{Image}} image)
             => Task.Run(() => Extensions.Track(viewFace, image));
 
-        public static Task<PlotMaskResult> PlotMaskAsync(this MaskDetector viewFace, {{Image}} image, FaceInfo info)
-            => Task.Run(() => Extensions.PlotMask(viewFace, image, info));
+        public static Task<PlotMaskResult> DetectAsync(this MaskDetector viewFace, {{Image}} image, FaceInfo info)
+            => Task.Run(() => Extensions.Detect(viewFace, image, info));
 
     }
 }
-
 
 """;
 

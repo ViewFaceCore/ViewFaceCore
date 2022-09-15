@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using ViewFaceCore.Demo.VideoForm.Attributes;
-using ViewFaceCore.Models;
+using ViewFaceCore.Model;
 
 namespace ViewFaceCore.Demo.VideoForm.Models
 {

@@ -37,7 +37,7 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
     /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
     /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="MaskDetector.PlotMask(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>活体检测状态</returns>
-    public AntiSpoofingResult AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
+    public AntiSpoofingResult Predict(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
     {
         lock (_locker)
         {
@@ -46,7 +46,7 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
 
             float clarity = 0;
             float reality = 0;
-            AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofing(_handle, ref image, info.Location, points, ref clarity, ref reality);
+            AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.FaceAntiSpoofingPredict(_handle, ref image, info.Location, points, ref clarity, ref reality);
             return new AntiSpoofingResult(status, clarity, reality);
         }
     }
@@ -62,7 +62,7 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
     /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
     /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="FaceLandmarker.Mark(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>如果为 <see cref="AntiSpoofingStatus.Detecting"/>，则说明需要继续调用此方法，传入更多的图片</returns>
-    public AntiSpoofingResult AntiSpoofingVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
+    public AntiSpoofingResult PredictVideo(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
     {
         lock (_locker)
         {
@@ -70,7 +70,7 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
                 throw new ObjectDisposedException(nameof(FaceAntiSpoofing));
 
             float clarity = 0, reality = 0;
-            AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.AntiSpoofingVideo(_handle, ref image, info.Location, points, ref clarity, ref reality);
+            AntiSpoofingStatus status = (AntiSpoofingStatus)ViewFaceNative.FaceAntiSpoofingPredictVideo(_handle, ref image, info.Location, points, ref clarity, ref reality);
             return new AntiSpoofingResult(status, clarity, reality);
         }
     }
