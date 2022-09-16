@@ -1,0 +1,13 @@
+﻿{
+	"solution": {
+		"path": "ViewFaceCore.sln",
+		"projects": [
+			"Runtimes\\ViewFaceCore.runtime.linux.arm\\ViewFaceCore.runtime.linux.arm.csproj",
+			"Runtimes\\ViewFaceCore.runtime.linux.arm64\\ViewFaceCore.runtime.linux.arm64.csproj",
+			"Runtimes\\ViewFaceCore.runtime.ubuntu.20.04.x64\\ViewFaceCore.runtime.ubuntu.20.04.x64.csproj",
+			"Runtimes\\ViewFaceCore.runtime.win.vc\\ViewFaceCore.runtime.win.vc.csproj",
+			"Runtimes\\ViewFaceCore.runtime.win.x64\\ViewFaceCore.runtime.win.x64.csproj",
+			"Runtimes\\ViewFaceCore.runtime.win.x86\\ViewFaceCore.runtime.win.x86.csproj"
+		]
+	}
+}

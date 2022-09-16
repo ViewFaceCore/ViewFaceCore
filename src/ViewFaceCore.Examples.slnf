@@ -1,0 +1,10 @@
+﻿{
+	"solution": {
+		"path": "ViewFaceCore.sln",
+		"projects": [
+			"Examples\\ViewFaceCore.Example.VideoForm\\ViewFaceCore.Example.VideoForm.csproj",
+			"Examples\\ViewFaceCore.Example.ConsoleApp\\ViewFaceCore.Example.ConsoleApp.csproj",
+			"Examples\\ViewFaceCore.Example.WebApp\\ViewFaceCore.Example.WebApp.csproj"
+		]
+	}
+}

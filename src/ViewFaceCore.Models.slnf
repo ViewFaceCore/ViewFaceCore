@@ -1,0 +1,23 @@
+{
+  "solution": {
+    "path": "ViewFaceCore.sln",
+    "projects": [
+      "Models\\ViewFaceCore.all_models\\ViewFaceCore.all_models.csproj",
+      "Models\\ViewFaceCore.model.age_predictor\\ViewFaceCore.model.age_predictor.csproj",
+      "Models\\ViewFaceCore.model.eye_state\\ViewFaceCore.model.eye_state.csproj",
+      "Models\\ViewFaceCore.model.face_detector\\ViewFaceCore.model.face_detector.csproj",
+      "Models\\ViewFaceCore.model.face_landmarker_mask_pts5\\ViewFaceCore.model.face_landmarker_mask_pts5.csproj",
+      "Models\\ViewFaceCore.model.face_landmarker_pts5\\ViewFaceCore.model.face_landmarker_pts5.csproj",
+      "Models\\ViewFaceCore.model.face_landmarker_pts68\\ViewFaceCore.model.face_landmarker_pts68.csproj",
+      "Models\\ViewFaceCore.model.face_recognizer\\ViewFaceCore.model.face_recognizer.csproj",
+      "Models\\ViewFaceCore.model.face_recognizer_light\\ViewFaceCore.model.face_recognizer_light.csproj",
+      "Models\\ViewFaceCore.model.face_recognizer_mask\\ViewFaceCore.model.face_recognizer_mask.csproj",
+      "Models\\ViewFaceCore.model.fas_first\\ViewFaceCore.model.fas_first.csproj",
+      "Models\\ViewFaceCore.model.fas_second\\ViewFaceCore.model.fas_second.csproj",
+      "Models\\ViewFaceCore.model.gender_predictor\\ViewFaceCore.model.gender_predictor.csproj",
+      "Models\\ViewFaceCore.model.mask_detector\\ViewFaceCore.model.mask_detector.csproj",
+      "Models\\ViewFaceCore.model.pose_estimation\\ViewFaceCore.model.pose_estimation.csproj",
+      "Models\\ViewFaceCore.model.quality_lbn\\ViewFaceCore.model.quality_lbn.csproj"
+    ]
+  }
+}

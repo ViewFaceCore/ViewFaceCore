@@ -1,0 +1,12 @@
+﻿{
+	"solution": {
+		"path": "ViewFaceCore.sln",
+		"projects": [
+			"Extensions\\ViewFaceCore.Extension.Shared\\ViewFaceCore.Extension.Shared.shproj",
+			"Extensions\\ViewFaceCore.Extension.SkiaSharp\\ViewFaceCore.Extension.SkiaSharp.csproj",
+			"Extensions\\ViewFaceCore.Extension.SystemDrawing\\ViewFaceCore.Extension.SystemDrawing.csproj",
+			"Extensions\\ViewFaceCore.Extension.ImageSharp\\ViewFaceCore.Extension.ImageSharp.csproj",
+			"Extensions\\ViewFaceCore.Extension.DependencyInjection\\ViewFaceCore.Extension.DependencyInjection.csproj"
+		]
+	}
+}
