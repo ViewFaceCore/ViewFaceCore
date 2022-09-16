@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Threading;
-
-namespace ViewFaceCore.Models;
+﻿namespace ViewFaceCore.Models;
 
 /// <summary>
 /// 人脸图像信息数据

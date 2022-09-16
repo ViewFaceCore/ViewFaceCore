@@ -1,5 +1,4 @@
-﻿using System;
-using ViewFaceCore.Configs;
+﻿using ViewFaceCore.Configs;
 using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;

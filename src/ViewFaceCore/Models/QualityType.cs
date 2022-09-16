@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ViewFaceCore.Models;
+﻿namespace ViewFaceCore.Models;
 
 /// <summary>
 /// 质量评估类型

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ViewFaceCore.Configs;
+﻿namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 人脸检测器配置

@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ViewFaceCore.Core;
 
-namespace ViewFaceCore.Core
+/// <summary>
+/// ViewFace Interface
+/// </summary>
+public interface IViewFace : IDisposable
 {
     /// <summary>
-    /// ViewFace Interface
+    /// 获取模型路径
     /// </summary>
-    public interface IViewFace : IDisposable
-    {
-        /// <summary>
-        /// 获取模型路径
-        /// </summary>
-        public string ModelPath { get; }
+    public string ModelPath { get; }
 
-        /// <summary>
-        /// 获取库路径
-        /// </summary>
-        public string LibraryPath { get; }
-    }
+    /// <summary>
+    /// 获取库路径
+    /// </summary>
+    public string LibraryPath { get; }
 }

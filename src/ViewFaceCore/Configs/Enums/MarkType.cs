@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ViewFaceCore.Configs.Enums;
+﻿namespace ViewFaceCore.Configs.Enums;
 
 /// <summary>
 /// 关键点类型

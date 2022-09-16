@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ViewFaceCore.Configs.Enums;
+﻿using ViewFaceCore.Configs.Enums;
 
 namespace ViewFaceCore.Configs;
 

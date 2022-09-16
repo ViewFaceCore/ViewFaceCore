@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace ViewFaceCore.Configs;
+﻿namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 活体检测配置

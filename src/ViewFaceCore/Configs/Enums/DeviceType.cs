@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ViewFaceCore.Configs.Enums;
+﻿namespace ViewFaceCore.Configs.Enums;
 
 /// <summary>
 /// 识别使用的设备类型

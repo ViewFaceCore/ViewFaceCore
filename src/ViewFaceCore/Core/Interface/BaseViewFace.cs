@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Threading;
-using ViewFaceCore.Configs;
+﻿using ViewFaceCore.Configs;
 using ViewFaceCore.Native;
 
 namespace ViewFaceCore.Core;

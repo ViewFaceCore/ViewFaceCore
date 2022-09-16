@@ -6,7 +6,7 @@
 ## 2. 快速开始
 ### 2.1 受支持的 .NET 框架 和 操作系统  
 
-   | 目标框架 |最低版本 | 操作系统 |
+   | 目标框架 | 最低版本 | 操作系统 |
    | :-: |:-: | :-: |
    | .NET Framework |4.0 | win ( x64/x86 ) |
    | .NET Standard |2.0 | win ( x64/x86 ) |
@@ -30,7 +30,7 @@ using System;
 using ViewFaceCore.Core;
 using ViewFaceCore.Model;
 
-namespace ViewFaceCore.Demo.ConsoleApp
+namespace ViewFaceCore.Example.ConsoleApp
 {
     internal class Program
     {
@@ -53,7 +53,7 @@ namespace ViewFaceCore.Demo.ConsoleApp
 }
 ```
 
-更多案例可以下载源码查看Demo。  
+更多案例参见 `src/Examples`
 
 ## 3. 使用许可   
 <div align="center">

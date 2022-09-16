@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace ViewFaceCore.Models;
+﻿namespace ViewFaceCore.Models;
 
 /// <summary>
 /// 活体检测结果
