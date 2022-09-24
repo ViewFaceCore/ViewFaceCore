@@ -1,15 +1,14 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Configs.Enums;
 using ViewFaceCore.Core;
 using ViewFaceCore.Models;
-using ViewFaceCore.Configs.Enums;
-using System.Drawing;
-using SkiaSharp;
 
-namespace ConsoleAppTest
+namespace ConsoleAppGpuTest
 {
     internal class Program
     {
@@ -62,8 +61,14 @@ namespace ConsoleAppTest
         private static void FaceDetectorAndFaceMarkTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
 
             Worker((sw, i) =>
             {
@@ -78,9 +83,18 @@ namespace ConsoleAppTest
         private static void FaceQualityTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceQuality faceQuality = new FaceQuality();
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
+            using FaceQuality faceQuality = new FaceQuality(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
 
             var info = faceDetector.Detect(bitmap).First();
             var markPoints = GetFaceMarkPoint(faceDetector, faceMark, bitmap);
@@ -120,8 +134,14 @@ namespace ConsoleAppTest
         private static void AntiSpoofingTest()
         {
             using var bitmap = ConvertImage(maskImagePath);
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
             logger.Info("开始加载活体识别....");
 
             var info = faceDetector.Detect(bitmap).First();
@@ -145,8 +165,14 @@ namespace ConsoleAppTest
         private static void FaceTrackTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            using FaceTracker faceTrack = new FaceTracker(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height));
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceTracker faceTrack = new FaceTracker(new ViewFaceCore.Configs.FaceTrackerConfig(bitmap.Width, bitmap.Height)
+            {
+                DeviceType = DeviceType.GPU
+            });
             Worker((sw, i) =>
             {
                 var result = faceTrack.Track(bitmap).ToList();
@@ -172,15 +198,15 @@ namespace ConsoleAppTest
             using var bitmap = ConvertImage(imagePath);
             using FaceDetector faceDetector = new FaceDetector(new FaceDetectConfig()
             {
-                DeviceType = DeviceType.AUTO
+                DeviceType = DeviceType.GPU
             });
             using FaceLandmarker faceMark = new FaceLandmarker(new FaceLandmarkConfig()
             {
-                DeviceType = DeviceType.AUTO
+                DeviceType = DeviceType.GPU
             });
             using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
             {
-                DeviceType = DeviceType.AUTO
+                DeviceType = DeviceType.GPU
             });
             Worker((sw, i) =>
             {
@@ -195,9 +221,18 @@ namespace ConsoleAppTest
         private static void FaceAgePredictorTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            using AgePredictor agePredictor = new AgePredictor();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using AgePredictor agePredictor = new AgePredictor(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
             Worker((sw, i) =>
             {
                 var result = agePredictor.PredictAge(bitmap);
@@ -214,9 +249,18 @@ namespace ConsoleAppTest
         private static void FaceGenderPredictorTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            using GenderPredictor genderPredictor = new GenderPredictor();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using GenderPredictor genderPredictor = new GenderPredictor(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
             Worker((sw, i) =>
             {
                 //var faceInfo = faceDetector.Detect(bitmap)[0];
@@ -235,9 +279,18 @@ namespace ConsoleAppTest
         private static void FaceEyeStateDetectorTest()
         {
             using var bitmap = ConvertImage(imagePath);
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            using EyeStateDetector eyeStateDetector = new EyeStateDetector();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using EyeStateDetector eyeStateDetector = new EyeStateDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
             Worker((sw, i) =>
             {
                 var result = eyeStateDetector.Detect(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
@@ -253,9 +306,18 @@ namespace ConsoleAppTest
             using var bitmap0 = ConvertImage(imagePath);
             using var bitmap1 = ConvertImage(imagePath1);
 
-            using FaceDetector faceDetector = new FaceDetector();
-            using FaceLandmarker faceMark = new FaceLandmarker();
-            using FaceRecognizer recognizer = new FaceRecognizer();
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceLandmarker faceMark = new FaceLandmarker(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceRecognizer recognizer = new FaceRecognizer(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
 
             Worker((sw, i) =>
             {
@@ -281,8 +343,14 @@ namespace ConsoleAppTest
             using var bitmap_nomask = ConvertImage(imagePath);
             using var bitmap_mask = ConvertImage(maskImagePath);
 
-            using MaskDetector maskDetector = new MaskDetector();
-            using FaceDetector faceDetector = new FaceDetector();
+            using MaskDetector maskDetector = new MaskDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
+            using FaceDetector faceDetector = new FaceDetector(new()
+            {
+                DeviceType = DeviceType.GPU
+            });
             //FaceType需要用口罩模型
             using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
             {

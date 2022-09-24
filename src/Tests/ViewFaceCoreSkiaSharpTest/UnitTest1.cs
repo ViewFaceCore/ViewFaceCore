@@ -195,7 +195,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using AgePredictor agePredictor = new AgePredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = agePredictor.PredictAge(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = agePredictor.PredictAgeWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
             sw.Stop();
             Debug.WriteLine($"{nameof(AgePredictor.PredictAge)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result > 10);
@@ -213,7 +213,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using GenderPredictor genderPredictor = new GenderPredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = genderPredictor.PredictGender(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = genderPredictor.PredictGenderWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
 
             sw.Stop();
             Debug.WriteLine($"{nameof(GenderPredictor.PredictGender)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
@@ -291,14 +291,14 @@ namespace ViewFaceCoreSkiaSharpTest
 
         #region Helpers
 
-        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
+        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
         {
             var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
             return faceMark.Mark(bitmap, info);
         }
 
-        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
+        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, SKBitmap bitmap)
         {
             return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }
