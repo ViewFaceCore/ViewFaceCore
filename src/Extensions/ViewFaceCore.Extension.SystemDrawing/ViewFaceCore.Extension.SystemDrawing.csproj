@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Authors>View</Authors>
-		<Version>0.4.0-alpha1</Version>
+		<Version>0.4.0-alpha2</Version>
 		<OutputType>Library</OutputType>
 		<LangVersion>latest</LangVersion>
 		<Platforms>AnyCPU;x64;x86</Platforms>
@@ -22,9 +22,7 @@
 	<!--Project Reference-->
 	<ItemGroup>
 		<ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
-		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj"
-						  OutputItemType="Analyzer"
-						  ReferenceOutputAssembly="false"  />
+		<ProjectReference Include="..\ViewFaceCore.Extension.SourceGenerators\ViewFaceCore.Extension.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 	<!--Package Info-->

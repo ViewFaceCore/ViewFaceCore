@@ -108,14 +108,14 @@
     <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
     </Reference>
-    <Reference Include="FreeSql, Version=3.2.669.0, Culture=neutral, PublicKeyToken=a33928e5d4a4b39c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FreeSql.3.2.669\lib\net451\FreeSql.dll</HintPath>
+    <Reference Include="FreeSql, Version=3.2.680.0, Culture=neutral, PublicKeyToken=a33928e5d4a4b39c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FreeSql.3.2.680\lib\net451\FreeSql.dll</HintPath>
     </Reference>
-    <Reference Include="FreeSql.DbContext, Version=3.2.669.0, Culture=neutral, PublicKeyToken=d6971b25f8f033dc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FreeSql.DbContext.3.2.669\lib\net45\FreeSql.DbContext.dll</HintPath>
+    <Reference Include="FreeSql.DbContext, Version=3.2.680.0, Culture=neutral, PublicKeyToken=d6971b25f8f033dc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FreeSql.DbContext.3.2.680\lib\net45\FreeSql.DbContext.dll</HintPath>
     </Reference>
-    <Reference Include="FreeSql.Provider.Sqlite, Version=3.2.669.0, Culture=neutral, PublicKeyToken=5800863e689c9dd8, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FreeSql.Provider.Sqlite.3.2.669\lib\net45\FreeSql.Provider.Sqlite.dll</HintPath>
+    <Reference Include="FreeSql.Provider.Sqlite, Version=3.2.680.0, Culture=neutral, PublicKeyToken=5800863e689c9dd8, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FreeSql.Provider.Sqlite.3.2.680\lib\net45\FreeSql.Provider.Sqlite.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -153,16 +153,16 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Configuration.ConfigurationManager.6.0.0\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
+    <Reference Include="System.Configuration.ConfigurationManager, Version=6.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Configuration.ConfigurationManager.6.0.1\lib\net461\System.Configuration.ConfigurationManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Data.SQLite, Version=1.0.116.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\lib\net46\System.Data.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Drawing.Common.5.0.3\lib\net461\System.Drawing.Common.dll</HintPath>
+    <Reference Include="System.Drawing.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Drawing.Common.6.0.0\lib\net461\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
@@ -215,8 +215,8 @@
     <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=6.0.0.5, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Text.Json.6.0.5\lib\net461\System.Text.Json.dll</HintPath>
+    <Reference Include="System.Text.Json, Version=6.0.0.6, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Text.Json.6.0.6\lib\net461\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -235,10 +235,10 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="ViewFaceCore, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ViewFaceCore.0.4.0-alpha1\lib\netstandard2.0\ViewFaceCore.dll</HintPath>
+      <HintPath>..\..\packages\ViewFaceCore.0.4.0-alpha2\lib\netstandard2.0\ViewFaceCore.dll</HintPath>
     </Reference>
     <Reference Include="ViewFaceCore.Extension.SystemDrawing, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ViewFaceCore.Extension.SystemDrawing.0.4.0-alpha1\lib\netstandard2.0\ViewFaceCore.Extension.SystemDrawing.dll</HintPath>
+      <HintPath>..\..\packages\ViewFaceCore.Extension.SystemDrawing.0.4.0-alpha2\lib\netstandard2.0\ViewFaceCore.Extension.SystemDrawing.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -266,7 +266,7 @@
     <Compile Include="UserManageForm.Designer.cs">
       <DependentUpon>UserManageForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\FaceInfo.cs" />
+    <Compile Include="Models\VideoFaceInfo.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,11 +355,11 @@
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.mask_detector.6.0.7\build\ViewFaceCore.model.mask_detector.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.mask_detector.6.0.7\build\ViewFaceCore.model.mask_detector.targets'))" />
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.pose_estimation.6.0.7\build\ViewFaceCore.model.pose_estimation.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.pose_estimation.6.0.7\build\ViewFaceCore.model.pose_estimation.targets'))" />
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets'))" />
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets'))" />
     <Error Condition="!Exists('..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
-    <Error Condition="!Exists('..\..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets'))" />
   </Target>
   <Import Project="..\..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets')" />
@@ -375,9 +375,9 @@
   <Import Project="..\..\packages\ViewFaceCore.model.mask_detector.6.0.7\build\ViewFaceCore.model.mask_detector.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.mask_detector.6.0.7\build\ViewFaceCore.model.mask_detector.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.model.pose_estimation.6.0.7\build\ViewFaceCore.model.pose_estimation.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.pose_estimation.6.0.7\build\ViewFaceCore.model.pose_estimation.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" />
-  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.7\build\ViewFaceCore.runtime.win.x64.targets')" />
-  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.7\build\ViewFaceCore.runtime.win.x86.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" />
   <Import Project="..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
-  <Import Project="..\..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets" Condition="Exists('..\..\packages\System.Text.Json.6.0.5\build\System.Text.Json.targets')" />
+  <Import Project="..\..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets" Condition="Exists('..\..\packages\System.Text.Json.6.0.6\build\System.Text.Json.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets')" />
 </Project>

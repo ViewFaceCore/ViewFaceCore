@@ -1,7 +1,7 @@
 @echo off
 
 set configuration=Release
-set version=6.0.7
+set version=6.0.8-alpha2
 set output=..\packages
 
 echo ====================== pack ViewFaceCore.runtime.win.x64 ======================
@@ -28,3 +28,7 @@ echo ====================== pack ViewFaceCore.runtime.linux.arm64 ==============
 cd ViewFaceCore.runtime.linux.arm64
 call pack.bat %configuration% %version% %output%
 cd ..
+
+echo 发布完成，请按任意键退出...
+pause > nul
+exit 0

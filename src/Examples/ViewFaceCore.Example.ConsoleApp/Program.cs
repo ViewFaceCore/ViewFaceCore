@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Configs.Enums;
 using ViewFaceCore.Core;
 using ViewFaceCore.Extensions;
 using ViewFaceCore.Models;
@@ -73,11 +74,11 @@ namespace ViewFaceCore.Example.ConsoleApp
             using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info0 = faceDetector.Detect(bitmap0).First();
-            var result0 = maskDetector.PlotMask(bitmap0, info0);
+            var result0 = maskDetector.Detect(bitmap0, info0);
             Console.WriteLine($"是否戴口罩：{(result0.Status ? "是" : "否")}，置信度：{result0.Score}");
 
             var info1 = faceDetector.Detect(bitmap_mask).First();
-            var result1 = maskDetector.PlotMask(bitmap_mask, info1);
+            var result1 = maskDetector.Detect(bitmap_mask, info1);
             Console.WriteLine($"是否戴口罩：{(result1.Status ? "是" : "否")}，置信度：{result1.Score}");
 
             var result = faceRecognizer.Extract(bitmap_mask, faceMark.Mark(bitmap_mask, info1));
@@ -159,7 +160,7 @@ namespace ViewFaceCore.Example.ConsoleApp
             Stopwatch sw = Stopwatch.StartNew();
             sw.Start();
 
-            var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+            var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
             Console.WriteLine($"活体检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
 
             sw.Stop();

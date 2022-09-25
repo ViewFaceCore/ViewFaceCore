@@ -28,7 +28,8 @@ public sealed class FaceTrackerConfig : BaseConfig
     /// </summary>
     public int MinFaceSize
     {
-        get => minFaceSize; set
+        get => minFaceSize; 
+        set
         {
             if (value < 5 || value > Math.Min(Width, Height))
             {
@@ -44,7 +45,8 @@ public sealed class FaceTrackerConfig : BaseConfig
     /// </summary>
     public float Threshold
     {
-        get => threshold; set
+        get => threshold; 
+        set
         {
             if (value < 0 || value > 1f)
             {

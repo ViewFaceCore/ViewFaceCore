@@ -12,7 +12,7 @@ using ViewFaceCore.Core;
 using ViewFaceCore.Demo.VideoForm.Extensions;
 using ViewFaceCore.Demo.VideoForm.Models;
 using ViewFaceCore.Demo.VideoForm.Utils;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -376,24 +376,23 @@ namespace ViewFaceCore.Demo.VideoForm
                             FormHelper.SetPictureBoxImage(FacePictureBox, bitmap);
                             continue;
                         }
-                        List<Models.FaceInfo> faceInfos = new List<Models.FaceInfo>();
+                        List<Models.VideoFaceInfo> faceInfos = new List<Models.VideoFaceInfo>();
                         using (FaceImage faceImage = bitmap.ToFaceImage())
                         {
                             var infos = await faceFactory.Get<FaceTracker>().TrackAsync(faceImage);
                             for (int i = 0; i < infos.Length; i++)
                             {
 
-                                Models.FaceInfo faceInfo = new Models.FaceInfo
+                                Models.VideoFaceInfo faceInfo = new Models.VideoFaceInfo
                                 {
                                     Pid = infos[i].Pid,
                                     Location = infos[i].Location
                                 };
                                 if (CheckBoxFaceMask.Checked || CheckBoxFaceProperty.Checked)
                                 {
-                                    Model.FaceInfo info = infos[i].ToFaceInfo();
                                     if (CheckBoxFaceMask.Checked)
                                     {
-                                        var maskStatus = await faceFactory.Get<MaskDetector>().PlotMaskAsync(faceImage, info);
+                                        var maskStatus = await faceFactory.Get<MaskDetector>().PlotMaskAsync(faceImage, infos[i]);
                                         faceInfo.HasMask = maskStatus.Masked;
                                     }
                                     if (CheckBoxFaceProperty.Checked)
@@ -407,7 +406,7 @@ namespace ViewFaceCore.Demo.VideoForm
                                         {
                                             faceRecognizer = faceFactory.Get<FaceRecognizer>();
                                         }
-                                        var points = await faceFactory.Get<FaceLandmarker>().MarkAsync(faceImage, info);
+                                        var points = await faceFactory.Get<FaceLandmarker>().MarkAsync(faceImage, infos[i]);
                                         float[] extractData = await faceRecognizer.ExtractAsync(faceImage, points);
 
                                         UserInfo userInfo = CacheManager.Instance.Get(faceRecognizer, extractData);
@@ -430,8 +429,8 @@ namespace ViewFaceCore.Demo.VideoForm
                                         }
                                         else
                                         {
-                                            faceInfo.Age = await faceFactory.Get<AgePredictor>().PredictAgeAsync(faceImage, points);
-                                            faceInfo.Gender = await faceFactory.Get<GenderPredictor>().PredictGenderAsync(faceImage, points);
+                                            faceInfo.Age = await faceFactory.Get<AgePredictor>().PredictAgeWithCropAsync(faceImage, points);
+                                            faceInfo.Gender = await faceFactory.Get<GenderPredictor>().PredictGenderWithCropAsync(faceImage, points);
                                         }
                                     }
                                 }

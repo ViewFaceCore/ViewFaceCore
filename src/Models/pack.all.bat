@@ -83,3 +83,7 @@ echo ====================== pack ViewFaceCore.all_models ======================
 cd ViewFaceCore.all_models
 call pack.bat %configuration% %version% %output%
 cd ..
+
+echo 发布完成，请按任意键退出...
+pause > nul
+exit 0

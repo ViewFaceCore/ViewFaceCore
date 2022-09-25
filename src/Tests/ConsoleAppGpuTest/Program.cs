@@ -352,10 +352,7 @@ namespace ConsoleAppGpuTest
                 DeviceType = DeviceType.GPU
             });
             //FaceType需要用口罩模型
-            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
-            {
-                FaceType = FaceType.Mask
-            });
+            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig(FaceType.Mask));
 
             var info = faceDetector.Detect(bitmap_mask).First();
 

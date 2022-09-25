@@ -9,7 +9,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 提取和对比人脸特征值。
 /// </summary>
-public sealed class FaceRecognizer : BaseViewFace<FaceRecognizeConfig>, IDisposable
+public sealed class FaceRecognizer : BaseViewFace<FaceRecognizeConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();

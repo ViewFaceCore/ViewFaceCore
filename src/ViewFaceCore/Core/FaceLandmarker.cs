@@ -8,7 +8,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 识别指定的人脸信息的关键点坐标。
 /// </summary>
-public sealed class FaceLandmarker : BaseViewFace<FaceLandmarkConfig>, IDisposable
+public sealed class FaceLandmarker : BaseViewFace<FaceLandmarkConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();

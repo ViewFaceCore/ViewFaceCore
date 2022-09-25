@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewFaceCore.Configs;
+using ViewFaceCore.Configs.Enums;
 using ViewFaceCore.Core;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -33,7 +34,7 @@ namespace ViewFaceCore.Demo.VideoForm
         //人脸追踪
         FaceTracker _faceTracker = null;
 
-        public T Get<T>() where T : BaseViewFace
+        public T Get<T>() where T : class
         {
             switch (typeof(T).Name)
             {
@@ -59,7 +60,10 @@ namespace ViewFaceCore.Demo.VideoForm
                     {
                         if (_faceRecognizer == null)
                         {
-                            var config = new FaceRecognizeConfig(FaceType.Normal);
+                            var config = new FaceRecognizeConfig()
+                            {
+                                FaceType = FaceType.Normal
+                            };
                             config.SetThreshold(FaceType.Normal, 0.7f);
                             _faceRecognizer = new FaceRecognizer();
                         }
@@ -100,8 +104,10 @@ namespace ViewFaceCore.Demo.VideoForm
         {
             if (_maskFaceRecognizer == null)
             {
-                var config = new FaceRecognizeConfig(FaceType.Mask);
-                config.SetThreshold(FaceType.Mask, 0.6f);
+                var config = new FaceRecognizeConfig()
+                {
+                    FaceType = FaceType.Mask
+                };
                 _maskFaceRecognizer = new FaceRecognizer();
             }
             return _maskFaceRecognizer;

@@ -8,7 +8,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 口罩人脸识别
 /// </summary>
-public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>, IDisposable
+public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();

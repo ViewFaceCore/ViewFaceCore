@@ -275,10 +275,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using MaskDetector maskDetector = new MaskDetector();
             using FaceDetector faceDetector = new FaceDetector();
             //FaceType需要用口罩模型
-            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
-            {
-                FaceType = FaceType.Mask
-            });
+            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig(FaceType.Mask));
             using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info = faceDetector.Detect(bitmap_mask).First();

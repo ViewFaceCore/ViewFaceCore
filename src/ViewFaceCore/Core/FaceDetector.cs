@@ -8,7 +8,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 识别人脸的信息。
 /// </summary>
-public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>, IDisposable
+public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();

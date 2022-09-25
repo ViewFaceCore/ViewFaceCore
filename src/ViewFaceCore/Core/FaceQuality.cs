@@ -8,7 +8,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 质量评估
 /// </summary>
-public sealed class FaceQuality : BaseViewFace<QualityConfig>, IDisposable
+public sealed class FaceQuality : BaseViewFace<QualityConfig>
 {
     /// <inheritdoc/>
     public FaceQuality(QualityConfig config = null) : base(config ?? new QualityConfig()) { }

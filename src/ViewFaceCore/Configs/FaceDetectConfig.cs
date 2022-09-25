@@ -23,7 +23,8 @@ public sealed class FaceDetectConfig : BaseConfig
     /// </summary>
     public double Threshold
     {
-        get => threshold; set
+        get => threshold; 
+        set
         {
             if (value < 0 || value > 1f)
             {

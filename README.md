@@ -317,7 +317,7 @@ FaceAntiSpoofingConfigThreshold：
 **AntiSpoofing**  
 单帧活体检测。  
 ```csharp
-public AntiSpoofingResult AntiSpoofing(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
+public AntiSpoofingResult Predict(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
 ```
 入参：  
 
@@ -352,7 +352,7 @@ static void AntiSpoofingDemo()
     Stopwatch sw = Stopwatch.StartNew();
     sw.Start();
 
-    var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+    var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
     Console.WriteLine($"活体检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
 
     sw.Stop();

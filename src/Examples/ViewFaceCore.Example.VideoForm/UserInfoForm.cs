@@ -13,7 +13,7 @@ using ViewFaceCore.Demo.VideoForm.Extensions;
 using ViewFaceCore.Demo.VideoForm.Models;
 using ViewFaceCore.Demo.VideoForm.Utils;
 using ViewFaceCore.Extensions;
-using ViewFaceCore.Model;
+using ViewFaceCore.Models;
 
 namespace ViewFaceCore.Demo.VideoForm
 {
@@ -76,7 +76,7 @@ namespace ViewFaceCore.Demo.VideoForm
             }
         }
 
-        private void DrawingFaceInfo(Bitmap bitmap, List<Models.FaceInfo> faceInfos)
+        private void DrawingFaceInfo(Bitmap bitmap, List<Models.VideoFaceInfo> faceInfos)
         {
             if (!faceInfos.Any())
             {
@@ -152,38 +152,38 @@ namespace ViewFaceCore.Demo.VideoForm
                     SetUIStatus(false);
                     FormHelper.SetLabelStatus(labelStatus, "人脸检测中...", true);
 
-                    using (ViewFaceCore.Model.FaceImage faceImage = bitmap.ToFaceImage())
+                    using (FaceImage faceImage = bitmap.ToFaceImage())
                     {
-                        ViewFaceCore.Model.FaceInfo[] faceInfos = faceFactory.Get<FaceDetector>().Detect((FaceImage)faceImage);
+                        FaceInfo[] faceInfos = faceFactory.Get<FaceDetector>().Detect((FaceImage)faceImage);
                         if (faceInfos == null || !faceInfos.Any())
                         {
                             throw new Exception("未获取到人脸信息！");
                         }
-                        ViewFaceCore.Model.FaceMarkPoint[] markPoints = Core.Extensions.Mark(faceFactory.Get<FaceLandmarker>(), bitmap, faceInfos[0]);
+                        FaceMarkPoint[] markPoints = Core.Extensions.Mark(faceFactory.Get<FaceLandmarker>(), bitmap, faceInfos[0]);
                         if (markPoints == null)
                         {
                             throw new Exception("检测人脸信息失败：标记人脸失败！");
                         }
                         MaskDetector maskDetector = faceFactory.Get<MaskDetector>();
-                        ViewFaceCore.Model.PlotMaskResult maskResult = Core.Extensions.PlotMask(maskDetector, bitmap, faceInfos[0]);
+                        PlotMaskResult maskResult = Core.Extensions.Detect(maskDetector, bitmap, faceInfos[0]);
                         if (maskResult.Masked)
                         {
                             throw new Exception("人脸不能有任何遮挡或者戴有口罩！");
                         }
                         AgePredictor agePredictor = faceFactory.Get<AgePredictor>();
-                        _globalUserInfo.Age = agePredictor.PredictAge((FaceImage)faceImage, markPoints);
+                        _globalUserInfo.Age = agePredictor.PredictAgeWithCrop((FaceImage)faceImage, markPoints);
 
                         GenderPredictor genderPredictor = faceFactory.Get<GenderPredictor>();
-                        ViewFaceCore.Model.Gender gender = genderPredictor.PredictGender((FaceImage)faceImage, markPoints);
+                        Gender gender = genderPredictor.PredictGenderWithCrop((FaceImage)faceImage, markPoints);
                         switch (gender)
                         {
-                            case ViewFaceCore.Model.Gender.Male:
+                            case Gender.Male:
                                 _globalUserInfo.Gender = GenderEnum.Male;
                                 break;
-                            case ViewFaceCore.Model.Gender.Female:
+                            case Gender.Female:
                                 _globalUserInfo.Gender = GenderEnum.Female;
                                 break;
-                            case ViewFaceCore.Model.Gender.Unknown:
+                            case Gender.Unknown:
                                 _globalUserInfo.Gender = GenderEnum.Unknown;
                                 break;
                         }
@@ -203,8 +203,8 @@ namespace ViewFaceCore.Demo.VideoForm
                         SetGenderComboBoxValue(comboBoxGender, (int)_globalUserInfo.Gender);
 
                         //画方框
-                        DrawingFaceInfo(bitmap, new List<Models.FaceInfo>(){
-                            new Models.FaceInfo()
+                        DrawingFaceInfo(bitmap, new List<Models.VideoFaceInfo>(){
+                            new Models.VideoFaceInfo()
                             {
                                 Location = faceInfos[0].Location,
                             }

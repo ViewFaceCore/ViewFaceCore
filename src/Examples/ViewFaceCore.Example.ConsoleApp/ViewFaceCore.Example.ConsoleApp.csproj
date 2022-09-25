@@ -9,15 +9,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ViewFaceCore" Version="0.4.0-alpha1" />
+    <PackageReference Include="ViewFaceCore" Version="0.4.0-alpha2" />
     <PackageReference Include="ViewFaceCore.all_models" Version="6.0.7" />
-    <PackageReference Include="ViewFaceCore.Extension.SkiaSharp" Version="0.4.0-alpha1" />
-    <PackageReference Include="ViewFaceCore.runtime.linux.arm" Version="6.0.7" />
-    <PackageReference Include="ViewFaceCore.runtime.linux.arm64" Version="6.0.7" />
-    <PackageReference Include="ViewFaceCore.runtime.ubuntu.20.04.x64" Version="6.0.7" />
+    <PackageReference Include="ViewFaceCore.Extension.SkiaSharp" Version="0.4.0-alpha2" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm" Version="6.0.8-alpha2" />
+    <PackageReference Include="ViewFaceCore.runtime.linux.arm64" Version="6.0.8-alpha2" />
+    <PackageReference Include="ViewFaceCore.runtime.ubuntu.20.04.x64" Version="6.0.8-alpha2" />
     <PackageReference Include="ViewFaceCore.runtime.win.vc" Version="6.0.0" />
-    <PackageReference Include="ViewFaceCore.runtime.win.x64" Version="6.0.7" />
-    <PackageReference Include="ViewFaceCore.runtime.win.x86" Version="6.0.7" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x64" Version="6.0.8-alpha2" />
+    <PackageReference Include="ViewFaceCore.runtime.win.x86" Version="6.0.8-alpha2" />
   </ItemGroup>
 
   <ItemGroup>

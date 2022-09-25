@@ -9,7 +9,7 @@ namespace ViewFaceCore.Core;
 /// <summary>
 /// 人脸追踪器
 /// </summary>
-public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>, IDisposable
+public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>
 {
     private readonly IntPtr _handle = IntPtr.Zero;
     private readonly static object _locker = new object();

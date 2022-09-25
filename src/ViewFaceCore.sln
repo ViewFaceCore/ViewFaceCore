@@ -32,6 +32,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCoreSkiaSharpTest", "Tests\ViewFaceCoreSkiaSharpTest\ViewFaceCoreSkiaSharpTest.csproj", "{B802D7A1-D523-495B-913D-D847EE7F2231}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{3090995F-608F-4181-A8B3-93A0F5C8B24D}"
+	ProjectSection(SolutionItems) = preProject
+		Models\pack.all.bat = Models\pack.all.bat
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.all_models", "Models\ViewFaceCore.all_models\ViewFaceCore.all_models.csproj", "{E93763B6-8A59-452C-903C-1F883DF64C40}"
 EndProject
@@ -84,6 +87,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppTest", "Tests\ConsoleAppTest\ConsoleAppTest.csproj", "{1AAABD43-984B-42C7-A0CF-7E395CFED7B3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Runtimes", "Runtimes", "{86D6D957-3218-4299-AB6F-3FB164BD1C6B}"
+	ProjectSection(SolutionItems) = preProject
+		Runtimes\pack.all.bat = Runtimes\pack.all.bat
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCore.runtime.linux.arm", "Runtimes\ViewFaceCore.runtime.linux.arm\ViewFaceCore.runtime.linux.arm.csproj", "{95716A14-D4FE-458B-A0A1-F6E3753CF43C}"
 EndProject
