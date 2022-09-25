@@ -91,7 +91,7 @@ namespace ViewFaceCoreTest
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+            var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
 
             sw.Stop();
             Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
@@ -146,7 +146,7 @@ namespace ViewFaceCoreTest
             using AgePredictor agePredictor = new AgePredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = agePredictor.PredictAge(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = agePredictor.PredictAgeWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
             sw.Stop();
             Debug.WriteLine($"{nameof(AgePredictor.PredictAge)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");
             Assert.IsTrue(result > 10);
@@ -164,7 +164,7 @@ namespace ViewFaceCoreTest
             using GenderPredictor genderPredictor = new GenderPredictor();
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = genderPredictor.PredictGender(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
+            var result = genderPredictor.PredictGenderWithCrop(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
 
             sw.Stop();
             Debug.WriteLine($"{nameof(GenderPredictor.PredictGender)}检测，结果：{result}，耗时：{sw.ElapsedMilliseconds}ms");

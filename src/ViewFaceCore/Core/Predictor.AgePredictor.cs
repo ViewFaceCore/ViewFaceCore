@@ -49,7 +49,7 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
-    /// <param name="points">关键点坐标<para>通过 <see cref="MaskDetector.PlotMask(FaceImage, FaceInfo)"/> 获取</para></param>
+    /// <param name="points">关键点坐标<para>通过 <see cref="MaskDetector.Detect(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>-1: 预测失败失败，其它: 预测的年龄。</returns>
     public int PredictAgeWithCrop(FaceImage image, FaceMarkPoint[] points)
     {

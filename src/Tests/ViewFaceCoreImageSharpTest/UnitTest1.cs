@@ -291,14 +291,14 @@ namespace ViewFaceCoreImageSharpTest
 
         #region Helpers
 
-        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
+        public FaceMarkPoint[] GetFaceMarkPoint(FaceDetector faceDetector, FaceLandmarker faceMark, Image bitmap)
         {
             var infos = faceDetector.Detect(bitmap);
             var info = infos.First();
             return faceMark.Mark(bitmap, info);
         }
 
-        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, object bitmap)
+        public float[] GetExtract(FaceRecognizer faceRecognizer, FaceDetector faceDetector, FaceLandmarker faceMark, Image bitmap)
         {
             return faceRecognizer.Extract(bitmap, GetFaceMarkPoint(faceDetector, faceMark, bitmap));
         }

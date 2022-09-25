@@ -25,7 +25,6 @@ public sealed class FaceRecognizeConfig : BaseConfig
     /// <summary>
     /// 获取默认人脸识别模型的相似度阈值。
     /// </summary>
-    /// <param name="type"></param>
     /// <returns></returns>
     public float Threshold => thresholds[FaceType];
 

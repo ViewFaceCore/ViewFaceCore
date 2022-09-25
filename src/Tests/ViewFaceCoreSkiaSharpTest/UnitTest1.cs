@@ -140,10 +140,10 @@ namespace ViewFaceCoreSkiaSharpTest
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            var result = faceAntiSpoofing.AntiSpoofing(bitmap, info, markPoints);
+            var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceAntiSpoofing.Predict)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace ViewFaceCoreSkiaSharpTest
             using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info = faceDetector.Detect(bitmap_mask).First();
-            var result = maskDetector.PlotMask(bitmap_mask, info);
+            var result = maskDetector.Detect(bitmap_mask, info);
 
             var p0 = GetExtract(faceRecognizer, faceDetector, faceMark, bitmap_mask);
 

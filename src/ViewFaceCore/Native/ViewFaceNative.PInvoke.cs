@@ -131,10 +131,7 @@ internal static partial class ViewFaceNative
     /// <summary>
     /// 获取口罩识别句柄
     /// </summary>
-    /// <param name="faceSize"></param>
-    /// <param name="threshold"></param>
-    /// <param name="maxWidth"></param>
-    /// <param name="maxHeight"></param>
+    /// <param name="deviceType">设备类型</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetMaskDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
     public extern static IntPtr GetMaskDetectorHandler(int deviceType = 0);
@@ -168,6 +165,7 @@ internal static partial class ViewFaceNative
     /// 获取人脸关键点
     /// <para>需要 <see cref="Free(IntPtr)"/></para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像信息</param>
     /// <param name="faceRect">人脸位置信息</param>
     /// <param name="size">关键点数量</param>
@@ -189,10 +187,10 @@ internal static partial class ViewFaceNative
     /// 提取人脸特征值
     /// <para>需要 <see cref="Free(IntPtr)"/></para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像信息</param>
     /// <param name="size">检测到的人脸数量</param>
     /// <param name="points">人脸关键点 数组</param>
-    /// <param name="type">模型类型。0：face_recognizer；1：face_recognizer_mask；2：face_recognizer_light。</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceRecognizerExtract", CallingConvention = CallingConvention.Cdecl)]
     public extern static IntPtr FaceRecognizerExtract(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int size);
@@ -203,9 +201,9 @@ internal static partial class ViewFaceNative
     /// <summary>
     /// 计算相似度
     /// </summary>
-    /// <param name="leftFeatures"></param>
-    /// <param name="rightFeatures"></param>
-    /// <param name="type"></param>
+    /// <param name="lhs"></param>
+    /// <param name="rhs"></param>
+    /// <param name="size"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Compare", CallingConvention = CallingConvention.Cdecl)]
     public extern static float Compare(float[] lhs, float[] rhs, int size);
@@ -217,7 +215,12 @@ internal static partial class ViewFaceNative
     /// <summary>
     /// 获取活体检测器句柄
     /// </summary>
-    /// <param name="global">是否启用全局检测</param>
+    /// <param name="videoFrameCount">视频帧数</param>
+    /// <param name="boxThresh"></param>
+    /// <param name="clarity"></param>
+    /// <param name="reality"></param>
+    /// <param name="global"></param>
+    /// <param name="deviceType"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceAntiSpoofingHandler", CallingConvention = CallingConvention.Cdecl)]
     public extern static IntPtr GetFaceAntiSpoofingHandler(int videoFrameCount = 10
@@ -231,10 +234,12 @@ internal static partial class ViewFaceNative
     /// 活体检测器
     /// <para>单帧检测</para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像宽高通道信息</param>
     /// <param name="faceRect">人脸位置信息</param>
     /// <param name="points">人脸关键点 数组</param>
-    /// <param name="global">是否启用全局检测</param>
+    /// <param name="clarity">清晰度</param>
+    /// <param name="reality">真实度</param>
     /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceAntiSpoofingPredict", CallingConvention = CallingConvention.Cdecl)]
     public extern static int FaceAntiSpoofingPredict(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
@@ -243,10 +248,12 @@ internal static partial class ViewFaceNative
     /// 活体检测器
     /// <para>视频帧</para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像宽高通道信息</param>
     /// <param name="faceRect">人脸位置信息</param>
-    /// <param name="points"></param>
-    /// <param name="global">是否启用全局检测</param>
+    /// <param name="pointsref"></param>
+    /// <param name="clarity">清晰度</param>
+    /// <param name="reality">明亮度</param>
     /// <returns>
     /// <para>
     /// 单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/>、<see cref="AntiSpoofingStatus.Fuzzy"/> 或 <see cref="AntiSpoofingStatus.Detecting"/><br />
@@ -268,11 +275,11 @@ internal static partial class ViewFaceNative
     /// </summary>
     /// <param name="width">图像宽度</param>
     /// <param name="height">图像高度</param>
-    /// <param name="type">模型类型。0：face_detector；1：mask_detector；</param>
     /// <param name="stable"></param>
     /// <param name="interval"></param>
     /// <param name="faceSize"></param>
     /// <param name="threshold"></param>
+    /// <param name="deviceType">计算设备类型</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceTrackerHandler", CallingConvention = CallingConvention.Cdecl)]
     public extern static IntPtr GetFaceTrackerHandler(int width, int height, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int deviceType = 0);

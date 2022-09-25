@@ -27,14 +27,10 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
 
     /// <summary>
     /// 活体检测器。(单帧图片)
-    /// <para>
-    /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_first">fas_first.csta</a><br/>
-    /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_second">fas_second.csta</a>
-    /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
     /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
-    /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="MaskDetector.PlotMask(FaceImage, FaceInfo)"/> 获取</para></param>
+    /// <param name="points"><paramref name="info"/> 对应的关键点坐标<para>通过 <see cref="MaskDetector.Detect(FaceImage, FaceInfo)"/> 获取</para></param>
     /// <returns>活体检测状态</returns>
     public AntiSpoofingResult Predict(FaceImage image, FaceInfo info, FaceMarkPoint[] points)
     {
@@ -52,10 +48,6 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
 
     /// <summary>
     /// 活体检测器。(视频帧图片)
-    /// <para>
-    /// 当 <paramref name="global"/> <see langword="= false"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_first">fas_first.csta</a><br/>
-    /// 当 <paramref name="global"/> <see langword="= true"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.fas_second">fas_second.csta</a>
-    /// </para>
     /// </summary>
     /// <param name="image">人脸图像信息</param>
     /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
