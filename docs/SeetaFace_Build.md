@@ -40,21 +40,18 @@ sudo ./build.linux.x64.sh
 需要选择MSVC v142 VS2019工作负载，如图所示：
 ![](https://raw.githubusercontent.com/ViewFaceCore/ViewFaceCore/dev/docs/images/vs.png)
 
-2. 安装[jom](https://download.qt.io/official_releases/jom/ "jom")  
-下载[jom](https://download.qt.io/official_releases/jom/ "jom")，解压后将jom.exe所在目录设置为系统环境变量。  
-
-3. 下载ViewFaceCore源码  
+2. 下载ViewFaceCore源码  
 ```shell
 git clone https://github.com/ViewFaceCore/ViewFaceCore.git
 ```
 
-4. 下载SeetaFace6源码  
+3. 下载SeetaFace6源码  
 在ViewFaceCore下面的src文件中创建文件夹SeetaFace，并进入，然后clone SeetaFace6源码到SeetaFace中
 ```shell
 git clone --recursive https://github.com/ViewFaceCore/index.git
 ```
 
-5. 双击对应架构脚本开始编译  
+4. 双击对应架构脚本开始编译  
 在项目ViewFaceCore根目录下面的`scripts/SeetaFace6`文件中找到`build.win.vc.x64.bat`或`build.win.vc.x86.bat`。双击打开或CMD中打开，开始编译。
 
 ### 修复内容
