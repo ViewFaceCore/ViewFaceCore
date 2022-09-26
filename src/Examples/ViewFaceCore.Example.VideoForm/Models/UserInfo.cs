@@ -75,29 +75,28 @@ namespace ViewFaceCore.Demo.VideoForm.Models
 
         private float[] _extractData = null;
 
-        [IsIgnore]
-        [Column(IsIgnore = true)]
-        public float[] ExtractData
+        /// <summary>
+        /// 获取人脸识别数据（懒加载）
+        /// </summary>
+        /// <returns></returns>
+        public float[] GetExtractData()
         {
-            get
+            if (_extractData != null)
             {
-                if(_extractData != null)
-                {
-                    return _extractData;
-                }
-                if (string.IsNullOrWhiteSpace(Extract))
-                {
-                    return new float[0];
-                }
-                string[] dataStr = this.Extract.Split(';');
-                float[] data = new float[dataStr.Length];
-                for(int i = 0; i < dataStr.Length; i++)
-                {
-                    data[i] = float.Parse(dataStr[i]);
-                }
-                _extractData = data;
                 return _extractData;
             }
+            if (string.IsNullOrWhiteSpace(Extract))
+            {
+                return new float[0];
+            }
+            string[] dataStr = this.Extract.Split(';');
+            float[] data = new float[dataStr.Length];
+            for (int i = 0; i < dataStr.Length; i++)
+            {
+                data[i] = float.Parse(dataStr[i]);
+            }
+            _extractData = data;
+            return _extractData;
         }
     }
 }

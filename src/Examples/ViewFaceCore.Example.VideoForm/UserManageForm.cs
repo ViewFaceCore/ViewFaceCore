@@ -188,9 +188,6 @@ namespace ViewFaceCore.Demo.VideoForm
                         MessageBox.Show($"未知的操作类型：{row.Cells[e.ColumnIndex].Value}", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         break;
                 }
-
-                
-                
             }
         }
 

@@ -43,7 +43,7 @@ namespace ViewFaceCore.Demo.VideoForm.Extensions
                         DateTime? dateTime = (DateTime?)value;
                         if(dateTime != null && dateTime != DateTime.MinValue)
                         {
-                            entityValues[i] = dateTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                            entityValues[i] = dateTime.Value.ToString("yyyy/MM/dd HH:mm:ss");
                         }
                         else
                         {

@@ -44,13 +44,13 @@ namespace ViewFaceCore.Demo.VideoForm
             }
             foreach (var item in users)
             {
-                float[] floats = item.ExtractData;
-                if (item.ExtractData.Length > data.Length)
+                float[] userExtractData = item.GetExtractData();
+                if (userExtractData.Length > data.Length)
                 {
-                    floats = new float[data.Length];
-                    Array.Copy(data, floats, data.Length);
+                    userExtractData = new float[data.Length];
+                    Array.Copy(data, userExtractData, data.Length);
                 }
-                if (faceRecognizer.IsSelf(data, floats))
+                if (faceRecognizer.IsSelf(data, userExtractData))
                 {
                     return item;
                 }
@@ -62,7 +62,15 @@ namespace ViewFaceCore.Demo.VideoForm
         {
             using (DefaultDbContext db = new DefaultDbContext())
             {
-                var allUsers = db.UserInfo.Where(p => !p.IsDelete).ToList();
+                var allUsers = db.UserInfo.Where(p => !p.IsDelete).ToList(p => new UserInfo()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Age = p.Age,
+                    Gender = p.Gender,
+                    Phone = p.Phone,
+                    Extract = p.Extract,
+                });
                 if (allUsers != null)
                 {
                     cache.Set(key, allUsers, new DateTimeOffset(DateTime.Now.AddDays(3650)));
