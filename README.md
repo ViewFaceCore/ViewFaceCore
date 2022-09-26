@@ -96,7 +96,7 @@ namespace ViewFaceCore.Demo.ConsoleApp
 ```
 
 ### 3.2 开发环境
-   - Visual Studio 2022，需要安装.NET4/4.5支持（[如何在Visual Studio 2022中安装.NET4/4.5？](https://www.quarkbook.com/?p=1311 "如何在Visual Studio 2022中安装.NET4/4.5？")）
+   - Visual Studio 2022
    - Windows 10/11
    - Ubuntu 20.04 (WSL)、Debian 10/11等
    
