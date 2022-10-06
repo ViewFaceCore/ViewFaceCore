@@ -156,7 +156,7 @@ namespace ViewFaceCore.Core
         /// <param name="image">人脸图像信息</param>
         /// <param name="info">面部信息<para>通过 <see cref="FaceDetector.Detect(FaceImage)"/> 获取</para></param>
         /// <returns></returns>
-        public static Task<PlotMaskResult> PlotMaskAsync(this MaskDetector viewFace, FaceImage image, FaceInfo info)
+        public static Task<PlotMaskResult> DetectAsync(this MaskDetector viewFace, FaceImage image, FaceInfo info)
             => Task.Run(() => viewFace.Detect(image, info));
     }
 }

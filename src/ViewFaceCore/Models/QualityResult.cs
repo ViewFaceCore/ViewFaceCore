@@ -8,25 +8,28 @@ namespace ViewFaceCore.Models;
 /// </summary>
 public sealed class QualityResult : IFormattable
 {
-    private float score = 0;
-    private QualityLevel level = QualityLevel.Low;
-
-    internal QualityResult(QualityLevel level, float score)
+    internal QualityResult(QualityLevel level, float score, QualityType qualityType)
     {
-        this.level = level;
-        this.score = score;
+        this.Level = level;
+        this.Score = score;
+        this.QualityType = qualityType;
     }
 
     /// <summary>
     /// 质量评估等级
     /// </summary>
-    public QualityLevel Level => level;
+    public QualityLevel Level { get; private set; }
 
     /// <summary>
     /// 质量评估分数
     /// <para>越大越好，没有范围限制</para>
     /// </summary>
-    public float Score => score;
+    public float Score { get; private set; }
+
+    /// <summary>
+    /// 质量检测类型
+    /// </summary>
+    public QualityType QualityType { get; private set; }
 
     #region IFormattable
     /// <summary>

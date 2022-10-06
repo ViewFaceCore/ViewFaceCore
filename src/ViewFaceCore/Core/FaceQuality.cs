@@ -59,7 +59,7 @@ public sealed class FaceQuality : BaseViewFace<QualityConfig>
                 break;
         }
 
-        return new QualityResult((QualityLevel)level, score);
+        return new QualityResult((QualityLevel)level, score, type);
     }
 
     /// <inheritdoc/>
