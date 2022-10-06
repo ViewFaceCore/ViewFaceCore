@@ -1,13 +1,287 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">欢迎使用ViewFaceCore！</h1>
-    <div style="height:300px">
-        <button type="button" class="btn btn-primary">上传</button>
+    <div class="row" style="margin-bottom:15px">
+        <h1 class="display-4">欢迎使用ViewFaceCore！</h1>
     </div>
-
-
-    <p>Learn about <a href="https://github.com/ViewFaceCore/ViewFaceCore">building face recognition app with ViewFaceCore</a>.</p>
+    <div class="row" id="camera">
+        <div class="container text-center">
+            <div id="contentHolder">
+                <video id="video" width="350" height="350" autoplay></video>
+                <canvas style="display:none;" id="canvas" width="600" height="600"></canvas>
+            </div>
+            <div id="btn_snap">拍照并识别</div>
+        </div>
+    </div>
+    <div class="row" style="width:50%">
+        <div class="container" id="faceInfoResult">
+            <img class="faceInfoImage" id="faceInfoImage" title="人脸识别结果照片"></img>
+            <div class="faceInfo" id="faceInfo">
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Styles{
+    <style>
+        #camera {
+            float: left;
+            margin: 20px;
+            width: 400px;
+        }
+
+        #contentHolder {
+            width: 350px;
+            height: 350px;
+            margin: auto;
+        }
+
+        #btn_snap {
+            margin-top: 20px !important;
+            margin-bottom: 20px !important;
+        }
+
+        #btn_snap {
+            margin: 0 auto;
+            border: 1px solid #f0f0f0;
+            background: #5CACEE;
+            color: #FFF;
+            width: 100px;
+            height: 36px;
+            line-height: 36px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            cursor: pointer;
+            /*禁止选择*/
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Chrome/Safari/Opera */
+            -khtml-user-select: none; /* Konqueror */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently not supported by any browser */
+        }
+
+        #faceInfoResult {
+            display: none;
+        }
+
+        .faceInfoImage {
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        .faceInfo {
+            width: 300px;
+            min-height: 30px;
+        }
+
+        .faceInfoLine {
+            height: 10px;
+            text-align: left
+        }
+    </style>
+}
+
+    @section Scripts{
+    <script>
+        var canvas = document.getElementById("canvas"),
+            pzBtn = document.getElementById("btn_snap"),
+            context = canvas.getContext("2d"),
+            video = document.getElementById("video");
+        if ($.cookie("VIEWFACECORE_EXAMPLE_WEBAPP.CONFIG.USECAMERACONFIRM") != "1") {
+            layer.open({
+                title: "提示"
+                , content: '页面会使用相机进行拍照，必须使用HTTPS且需要授权。如无相关权限，可能无法使用相机。'
+                , area: '400px'
+                , icon: 6
+                , btn: ['确定', '不再弹出']
+                , yes: function (index, layero) {
+                    layer.close(index);
+                }
+                , btn2: function (index, layero) {
+                    $.cookie("VIEWFACECORE_EXAMPLE_WEBAPP.CONFIG.USECAMERACONFIRM", "1", { expires: 7 });
+                }
+            });
+        }
+        // 旧版本浏览器可能根本不支持mediaDevices，我们首先设置一个空对象
+        if (navigator.mediaDevices === undefined) {
+            navigator.mediaDevices = {};
+        }
+        // 一些浏览器实现了部分mediaDevices，我们不能只分配一个对象
+        // 使用getUserMedia，因为它会覆盖现有的属性。
+        // 这里，如果缺少getUserMedia属性，就添加它。
+        if (navigator.mediaDevices.getUserMedia === undefined) {
+            navigator.mediaDevices.getUserMedia = function (constraints) {
+                // 首先获取现存的getUserMedia(如果存在)
+                var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                // 有些浏览器不支持，会返回错误信息
+                // 保持接口一致
+                if (!getUserMedia) {
+                    return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+                }
+                //否则，使用Promise将调用包装到旧的navigator.getUserMedia
+                return new Promise(function (resolve, reject) {
+                    getUserMedia.call(navigator, constraints, resolve, reject);
+                });
+            }
+        }
+        var constraints = { audio: false, video: { width: 720, height: 720 } }
+        navigator.mediaDevices.getUserMedia(constraints)
+            .then(function (stream) {
+                var video = document.querySelector('video');
+                // 旧的浏览器可能没有srcObject
+                if ("srcObject" in video) {
+                    video.srcObject = stream;
+                } else {
+                    //避免在新的浏览器中使用它，因为它正在被弃用。
+                    video.src = window.URL.createObjectURL(stream);
+                }
+                video.onloadedmetadata = function (e) {
+                    video.play();
+                };
+            })
+            .catch(function (err) {
+                switch (err.name) {
+                    case "NotAllowedError": {
+                        layer.alert('无相机权限：' + err.message, { icon: 2 });
+                        break;
+                    }
+                    case "NotFoundError": {
+                        layer.alert('没有找到相机：' + err.message, { icon: 2 });
+                        break;
+                    }
+                    default: {
+                        layer.alert(err.name + ": " + err.message, { icon: 2 });
+                        break;
+                    }
+                }
+            });
+
+        pzBtn.addEventListener("click", function () {
+            // 点击，canvas画图
+            context.drawImage(video, 0, 0, 600, 600);
+            // 获取图片base64链接
+            var image = canvas.toDataURL('image/png');
+            if (!image) {
+                layer.msg('拍照失败，请重试', { icon: 2 });
+                return;
+            }
+            layer.msg('识别中...', {
+                icon: 16,
+                shade: 0.01,
+                time: 2000000
+            });
+            $.post("@Url.Action("Detect","Home")",
+                {
+                    Image: image,
+                },
+                function (data, status) {
+                    layer.closeAll();
+                    if (data != "" && data != undefined && data != null) {
+                        var dataObj;
+                        if (typeof (data) == "string") {
+                            var start = data.indexOf("{");
+                            var end = data.lastIndexOf("}") + 1;
+                            var clearJson = data.substring(start, end);
+                            dataObj = eval('(' + clearJson + ')');
+                        }
+                        else {
+                            dataObj = data;
+                        }
+                        if (dataObj.code == 0) {
+                            setFaceInfo(dataObj.data);
+                        }
+                        else {
+                            setFaceInfo(null);
+                            layer.msg('错误（' + dataObj.code + '），' + dataObj.message, { icon: 5 });
+                        }
+                    } else {
+                        layer.msg("提交失败，请重试！错误：未收到服务器返回的数据！");
+                    }
+                });
+        });
+
+        function setFaceInfo(data) {
+            if (!data) {
+                $("#faceInfoImage").attr("src", "");
+                $("#faceInfo").empty();
+                $("#faceInfoResult").hide();
+                return;
+            }
+            $("#faceInfoResult").show();
+            $("#faceInfoImage").attr("src", data.image);
+            for (var i = 0; i < data.infos.length; i++) {
+                var age = data.infos[i].age;
+                var gender = "";
+                switch (data.infos[i].gender) {
+                    case 0:
+                        gender = "男";
+                        break;
+                    case 1:
+                        gender = "女";
+                        break;
+                    default:
+                        gender = "未知";
+                        break;
+                }
+                var leftEyeState = "";
+                switch (data.infos[i].eyeState.leftEyeState) {
+                    case 0:
+                        leftEyeState = "闭";
+                        break;
+                    case 1:
+                        leftEyeState = "开";
+                        break;
+                    default:
+                        leftEyeState = "未知";
+                        break;
+                }
+                var rightEyeState = "";
+                switch (data.infos[i].eyeState.rightEyeState) {
+                    case 0:
+                        rightEyeState = "闭";
+                        break;
+                    case 1:
+                        rightEyeState = "开";
+                        break;
+                    default:
+                        rightEyeState = "未知";
+                        break;
+                }
+                var maskResult = data.infos[i].maskResult.masked ? "是" : "否";
+                var quality = "";
+                switch (data.infos[i].quality.level) {
+                    case 0:
+                        quality = "差";
+                        break;
+                    case 1:
+                        quality = "一般";
+                        break;
+                    case 2:
+                        quality = "高";
+                        break;
+                    default:
+                        quality = "未知";
+                        break;
+                }
+                var elapsed = data.elapsed;
+                var text = "<p class=\"faceInfoLine\">年龄预测：" + age + "</p>"
+                    + "<p class=\"faceInfoLine\">性别预测：" + gender + "</p>"
+                    + "<p class=\"faceInfoLine\">眼睛状态：左眼->" + leftEyeState + "，右眼->" + rightEyeState + "</p>"
+                    + "<p class=\"faceInfoLine\">口罩状态：" + maskResult + "</p>"
+                    + "<p class=\"faceInfoLine\">照片质量：" + quality + "</p>"
+                    + "<p class=\"faceInfoLine\">识别耗时：" + elapsed + "ms</p>"
+                    + "<p class=\"faceInfoLine\" style=\"margin-bottom: 15px\"></p>";
+
+                $("#faceInfo").empty();
+                $("#faceInfo").append(text);
+            }
+        }
+    </script>
+}
+

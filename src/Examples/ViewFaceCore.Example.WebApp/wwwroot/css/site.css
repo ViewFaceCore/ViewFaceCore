@@ -16,3 +16,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.footer-container {
+    line-height: 80px;
+    height: 80px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%
+}

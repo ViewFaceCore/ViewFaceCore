@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ViewFaceCore.Configs;
 using ViewFaceCore.Extension.DependencyInjection;
 
 namespace ViewFaceCore.Example.WebApp
@@ -12,10 +13,16 @@ namespace ViewFaceCore.Example.WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             //添加人脸识别能力
-            builder.Services.AddViewFaceCore();
+            builder.Services.AddViewFaceCore(p =>
+            {
+                p.FaceTrackerConfig = new FaceTrackerConfig(1280, 720);
+                //启用所有能力（不建议，会占用大量内存，按需启用即可）
+                p.IsEnableAll = true;
+            });
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation();
 
             var app = builder.Build();
 
