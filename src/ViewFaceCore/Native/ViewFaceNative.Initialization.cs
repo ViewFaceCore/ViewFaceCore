@@ -70,7 +70,7 @@ internal static partial class ViewFaceNative
     /// <summary>
     /// ViewFaceBridge 的所有依赖库。(按照依赖顺序排列)
     /// </summary>
-    private static List<string> Libraries = new List<string>()
+    private static List<string> libraries = new List<string>()
     {
         "tennis",
         "tennis_haswell",
@@ -103,13 +103,13 @@ internal static partial class ViewFaceNative
     {
         //根据指令集，设置Tennis依赖库
         ResetTennisDependency();
-#if NETSTANDARD
+#if NETSTANDARD2_0_OR_GREATER
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         { SetDllDirectory(LibraryPath); }
         else
         { throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}"); }
 #elif NETCOREAPP3_1_OR_GREATER
-        foreach (var library in Libraries)
+        foreach (var library in libraries)
         {
             //不支持Avx2
             if (!Avx2.IsSupported && (library.Contains("tennis_haswell") || library.Contains("tennis_sandy_bridge"))) continue;
@@ -218,9 +218,9 @@ internal static partial class ViewFaceNative
                     List<string> removeLibs = new List<string>() { "tennis_haswell", "tennis_pentium" };
                     removeLibs.ForEach(p =>
                     {
-                        if (Libraries.Contains(p))
+                        if (libraries.Contains(p))
                         {
-                            Libraries.Remove(p);
+                            libraries.Remove(p);
                         }
                     });
                     string supportTennisLibPath = GetLibraryFullName("tennis_sandy_bridge");
@@ -244,9 +244,9 @@ internal static partial class ViewFaceNative
                     List<string> removeLibs = new List<string>() { "tennis_haswell", "tennis_sandy_bridge" };
                     removeLibs.ForEach(p =>
                     {
-                        if (Libraries.Contains(p))
+                        if (libraries.Contains(p))
                         {
-                            Libraries.Remove(p);
+                            libraries.Remove(p);
                         }
                     });
                     string supportTennisLibPath = GetLibraryFullName("tennis_pentium");
