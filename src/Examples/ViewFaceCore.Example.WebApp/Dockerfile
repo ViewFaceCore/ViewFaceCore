@@ -5,7 +5,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 WORKDIR /src
 COPY ["Examples/ViewFaceCore.Example.WebApp/ViewFaceCore.Example.WebApp.csproj", "Examples/ViewFaceCore.Example.WebApp/"]
 RUN dotnet restore "Examples/ViewFaceCore.Example.WebApp/ViewFaceCore.Example.WebApp.csproj"
