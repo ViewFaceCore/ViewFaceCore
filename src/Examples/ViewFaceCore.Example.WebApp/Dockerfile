@@ -5,13 +5,12 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Examples/ViewFaceCore.Demo.WebApp/ViewFaceCore.Example.WebApp.csproj", "Examples/ViewFaceCore.Demo.WebApp/"]
-COPY ["Extensions/ViewFaceCore.Extension.DependencyInjection/ViewFaceCore.Extension.DependencyInjection.csproj", "Extensions/ViewFaceCore.Extension.DependencyInjection/"]
-RUN dotnet restore "Examples/ViewFaceCore.Demo.WebApp/ViewFaceCore.Example.WebApp.csproj"
+COPY ["Examples/ViewFaceCore.Example.WebApp/ViewFaceCore.Example.WebApp.csproj", "Examples/ViewFaceCore.Example.WebApp/"]
+RUN dotnet restore "Examples/ViewFaceCore.Example.WebApp/ViewFaceCore.Example.WebApp.csproj"
 COPY . .
-WORKDIR "/src/Examples/ViewFaceCore.Demo.WebApp"
+WORKDIR "/src/Examples/ViewFaceCore.Example.WebApp"
 RUN dotnet build "ViewFaceCore.Example.WebApp.csproj" -c Release -o /app/build
 
 FROM build AS publish
