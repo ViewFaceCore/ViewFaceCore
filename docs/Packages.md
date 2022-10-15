@@ -1,15 +1,3 @@
-<style>
-table th:first-of-type {
-    min-width: 350px
-}
-table th:nth-of-type(2) {
-    min-width: 64px
-}
-table th:nth-of-type(3) {
-    width: 100%;
-}
-</style>
-
 # ViewFaceCore 的 Nuget 包清单
 
 ## 核心包
