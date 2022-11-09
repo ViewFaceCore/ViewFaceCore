@@ -8,7 +8,7 @@ using ViewFaceCore;
 using ViewFaceCore.Core;
 using ViewFaceCore.Models;
 
-namespace ViewFaceCoreTest
+namespace ViewFaceCoreSystemDrawingTest
 {
     [TestClass]
     public class UnitTest1
@@ -94,7 +94,7 @@ namespace ViewFaceCoreTest
             var result = faceAntiSpoofing.Predict(bitmap, info, markPoints);
 
             sw.Stop();
-            Debug.WriteLine($"{nameof(FaceAntiSpoofing.AntiSpoofing)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
+            Debug.WriteLine($"{nameof(FaceAntiSpoofing.Predict)}检测，结果：{result.Status}，清晰度:{result.Clarity}，真实度：{result.Reality}，耗时：{sw.ElapsedMilliseconds}ms");
         }
 
         /// <summary>

@@ -6,7 +6,6 @@ using ViewFaceCore.Configs;
 using ViewFaceCore.Core;
 using ViewFaceCore.Models;
 using ViewFaceCore.Configs.Enums;
-using System.Drawing;
 using SkiaSharp;
 
 namespace ConsoleAppTest
