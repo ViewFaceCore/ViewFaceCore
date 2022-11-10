@@ -11,7 +11,7 @@ public abstract class BaseConfig
     /// 识别用的设备类型
     /// </summary>
     /// <remarks>
-    /// 目前只能作用CPU，GPU无法使用
+    /// 默认只支持CPU，GPU需要自行编译或引入已经编译好的GPU版本
     /// </remarks>
     public DeviceType DeviceType { get; set; } = DeviceType.AUTO;
 }

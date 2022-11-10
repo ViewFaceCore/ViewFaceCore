@@ -72,7 +72,7 @@ namespace ViewFaceCore.Example.WebApp.Controllers
                     //关键点标记
                     FaceMarkPoint[] points = await _faceFactory.Get<FaceLandmarker>()?.MarkAsync(image, faceInfo);
                     //口罩检测
-                    faceData.MaskResult = await _faceFactory.Get<MaskDetector>()?.PlotMaskAsync(image, faceInfo);
+                    faceData.MaskResult = await _faceFactory.Get<MaskDetector>()?.DetectAsync(image, faceInfo);
                     //年龄预测
                     faceData.Age = await _faceFactory.Get<AgePredictor>()?.PredictAgeWithCropAsync(image, points);
                     //性别预测

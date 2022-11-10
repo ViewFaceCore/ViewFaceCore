@@ -18,13 +18,15 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
-		<PackageReference Include="ViewFaceCore" Version="0.4.0-alpha2" />
 	</ItemGroup>
 	
 	<!--Package Info-->
 	<ItemGroup>
 		<None Include="..\..\..\LICENSE" Pack="true" PackagePath="" />
 		<None Include="..\..\..\assets\logos\WithSalt-Logo.png" Pack="true" PackagePath="" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\ViewFaceCore\ViewFaceCore.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>

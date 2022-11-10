@@ -392,7 +392,7 @@ namespace ViewFaceCore.Demo.VideoForm
                                 {
                                     if (CheckBoxFaceMask.Checked)
                                     {
-                                        var maskStatus = await faceFactory.Get<MaskDetector>().PlotMaskAsync(faceImage, infos[i]);
+                                        var maskStatus = await faceFactory.Get<MaskDetector>().DetectAsync(faceImage, infos[i]);
                                         faceInfo.HasMask = maskStatus.Masked;
                                     }
                                     if (CheckBoxFaceProperty.Checked)

@@ -105,9 +105,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppGpuTest", "Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewFaceCoreSystemDrawingTest", "Tests\ViewFaceCoreSystemDrawingTest\ViewFaceCoreSystemDrawingTest.csproj", "{5D9EF73B-63B8-40B0-B92C-209FD9F2A190}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2DBBEDFD-7061-4A96-B4D1-043D14EB0CAF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{2DBBEDFD-7061-4A96-B4D1-043D14EB0CAF}"
 	ProjectSection(SolutionItems) = preProject
-		pack.all.bat = pack.all.bat
+		Scripts\pack_all_witout_models.bat = Scripts\pack_all_witout_models.bat
 	EndProjectSection
 EndProject
 Global

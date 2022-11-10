@@ -67,10 +67,7 @@ namespace ViewFaceCore.Example.ConsoleApp
             using MaskDetector maskDetector = new MaskDetector();
             using FaceDetector faceDetector = new FaceDetector();
             //FaceType需要用口罩模型
-            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig()
-            {
-                FaceType = FaceType.Mask
-            });
+            using FaceRecognizer faceRecognizer = new FaceRecognizer(new FaceRecognizeConfig(FaceType.Mask));
             using FaceLandmarker faceMark = new FaceLandmarker();
 
             var info0 = faceDetector.Detect(bitmap0).First();

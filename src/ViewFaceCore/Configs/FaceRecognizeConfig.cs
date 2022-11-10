@@ -34,6 +34,23 @@ public sealed class FaceRecognizeConfig : BaseConfig
     }
 
     /// <summary>
+    /// 人脸对比阈值配置
+    /// <para>
+    /// 默认阈值是一般场景使用的推荐阈值。一般来说1比1的场景下，该阈值会对应偏低，1比N场景会对应偏高。
+    /// </para>
+    /// <para>
+    /// • <see cref="FaceType.Normal"/> 的默认相似度阈值为 <see langword="0.62"/> <br />
+    /// • <see cref="FaceType.Mask"/> 的默认相似度阈值为 <see langword="0.48"/> <br />
+    /// • <see cref="FaceType.Light"/> 的默认相似度阈值为 <see langword="0.55"/> <br />
+    /// </para>
+    /// </summary>
+    public FaceRecognizeConfig(FaceType faceType, float threshold)
+    {
+        this.FaceType = faceType;
+        this.Threshold = threshold;
+    }
+
+    /// <summary>
     /// 人脸类型
     /// </summary>
     public FaceType FaceType { get; private set; } = FaceType.Normal;

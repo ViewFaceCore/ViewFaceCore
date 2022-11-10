@@ -60,11 +60,10 @@ namespace ViewFaceCore.Demo.VideoForm
                     {
                         if (_faceRecognizer == null)
                         {
-                            var config = new FaceRecognizeConfig()
+                            var config = new FaceRecognizeConfig(FaceType.Normal)
                             {
-                                FaceType = FaceType.Normal
+                                Threshold = 0.7f
                             };
-                            config.SetThreshold(FaceType.Normal, 0.7f);
                             _faceRecognizer = new FaceRecognizer();
                         }
                         return _faceRecognizer as T;
@@ -104,10 +103,7 @@ namespace ViewFaceCore.Demo.VideoForm
         {
             if (_maskFaceRecognizer == null)
             {
-                var config = new FaceRecognizeConfig()
-                {
-                    FaceType = FaceType.Mask
-                };
+                var config = new FaceRecognizeConfig(FaceType.Mask);
                 _maskFaceRecognizer = new FaceRecognizer();
             }
             return _maskFaceRecognizer;

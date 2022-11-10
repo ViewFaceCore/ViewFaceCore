@@ -235,10 +235,10 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="ViewFaceCore, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ViewFaceCore.0.4.0-alpha2\lib\netstandard2.0\ViewFaceCore.dll</HintPath>
+      <HintPath>..\..\packages\ViewFaceCore.0.4.0-alpha3\lib\netstandard2.0\ViewFaceCore.dll</HintPath>
     </Reference>
     <Reference Include="ViewFaceCore.Extension.SystemDrawing, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ViewFaceCore.Extension.SystemDrawing.0.4.0-alpha2\lib\netstandard2.0\ViewFaceCore.Extension.SystemDrawing.dll</HintPath>
+      <HintPath>..\..\packages\ViewFaceCore.Extension.SystemDrawing.0.4.0-alpha3\lib\netstandard2.0\ViewFaceCore.Extension.SystemDrawing.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -357,8 +357,8 @@
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets'))" />
     <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets'))" />
     <Error Condition="!Exists('..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets'))" />
-    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x64.targets'))" />
+    <Error Condition="!Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x86.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x86.targets'))" />
   </Target>
   <Import Project="..\..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.eye_state.6.0.7\build\ViewFaceCore.model.eye_state.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.face_detector.6.0.7\build\ViewFaceCore.model.face_detector.targets')" />
@@ -376,6 +376,6 @@
   <Import Project="..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets" Condition="Exists('..\..\packages\ViewFaceCore.model.quality_lbn.6.0.7\build\ViewFaceCore.model.quality_lbn.targets')" />
   <Import Project="..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.vc.6.0.0\build\ViewFaceCore.runtime.win.vc.targets')" />
   <Import Project="..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.116.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
-  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x64.targets')" />
-  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha2\build\ViewFaceCore.runtime.win.x86.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x64.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x64.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x64.targets')" />
+  <Import Project="..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x86.targets" Condition="Exists('..\..\packages\ViewFaceCore.runtime.win.x86.6.0.8-alpha3\build\ViewFaceCore.runtime.win.x86.targets')" />
 </Project>
