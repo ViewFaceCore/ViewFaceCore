@@ -159,22 +159,19 @@ namespace ViewFaceCore.Demo.VideoForm
                         {
                             throw new Exception("未获取到人脸信息！");
                         }
-                        FaceMarkPoint[] markPoints = Core.Extensions.Mark(faceFactory.Get<FaceLandmarker>(), bitmap, faceInfos[0]);
+                        FaceMarkPoint[] markPoints = faceFactory.Get<FaceLandmarker>().Mark( bitmap, faceInfos[0]);
                         if (markPoints == null)
                         {
                             throw new Exception("检测人脸信息失败：标记人脸失败！");
                         }
-                        MaskDetector maskDetector = faceFactory.Get<MaskDetector>();
-                        PlotMaskResult maskResult = Core.Extensions.Detect(maskDetector, bitmap, faceInfos[0]);
+                        PlotMaskResult maskResult = faceFactory.Get<MaskDetector>().Detect(bitmap, faceInfos[0]);
                         if (maskResult.Masked)
                         {
                             throw new Exception("人脸不能有任何遮挡或者戴有口罩！");
                         }
-                        AgePredictor agePredictor = faceFactory.Get<AgePredictor>();
-                        _globalUserInfo.Age = agePredictor.PredictAgeWithCrop((FaceImage)faceImage, markPoints);
+                        _globalUserInfo.Age = faceFactory.Get<AgePredictor>().PredictAgeWithCrop(faceImage, markPoints);
 
-                        GenderPredictor genderPredictor = faceFactory.Get<GenderPredictor>();
-                        Gender gender = genderPredictor.PredictGenderWithCrop((FaceImage)faceImage, markPoints);
+                        Gender gender = faceFactory.Get<GenderPredictor>().PredictGenderWithCrop(faceImage, markPoints);
                         switch (gender)
                         {
                             case Gender.Male:
@@ -187,9 +184,7 @@ namespace ViewFaceCore.Demo.VideoForm
                                 _globalUserInfo.Gender = GenderEnum.Unknown;
                                 break;
                         }
-
-                        FaceRecognizer faceRecognizer = faceFactory.Get<FaceRecognizer>();
-                        float[] extractData = faceRecognizer.Extract((FaceImage)faceImage, markPoints);
+                        float[] extractData = faceFactory.Get<FaceRecognizer>().Extract((FaceImage)faceImage, markPoints);
                         if (extractData == null)
                         {
                             throw new Exception("识别人脸信息失败！");
