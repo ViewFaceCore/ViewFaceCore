@@ -36,7 +36,8 @@ View_Api void GetModelPath(wchar_t* outPath, int* size)
 {
 	wstring path = str::str_to_wstr(modelPath);
 	*size = path.length();
-	if (*size > 1024) {
+	if (*size > 1024)
+	{
 		return;
 	}
 	wcscpy(outPath, path.c_str());
@@ -54,7 +55,8 @@ View_Api void SetModelPath(const char* path)
 View_Api void GetModelPath(char* outPath, int* size)
 {
 	*size = modelPath.length();
-	if (*size > 1024) {
+	if (*size > 1024)
+	{
 		return;
 	}
 	strcpy(outPath, modelPath.c_str());
@@ -69,9 +71,7 @@ View_Api void Free(void* address)
 	{
 		free(address);
 	}
-	catch (int e)
-	{
-	}
+	catch (int e) {}
 }
 
 #pragma endregion
@@ -109,18 +109,21 @@ View_Api SeetaFaceInfo* FaceDetectV2(seeta::v6::FaceDetector* handler, const See
 	{
 		return 0;
 	}
-	auto faces = handler->detect_v2(img);
-	*size = faces.size();
-	SeetaFaceInfo* _infos = (SeetaFaceInfo*)malloc((*size) * sizeof(SeetaFaceInfo));
-	if (_infos == nullptr)
+	*size = 0;
+	std::vector<SeetaFaceInfo> detectFaces = handler->detect_v2(img);
+	if (!detectFaces.empty())
 	{
-		return 0;
+		*size = detectFaces.size();
+		SeetaFaceInfo* resultFaces = (SeetaFaceInfo*)malloc((*size) * sizeof(SeetaFaceInfo));
+		if (resultFaces == nullptr)
+		{
+			return 0;
+		}
+		memcpy(resultFaces, &detectFaces[0], detectFaces.size() * sizeof(SeetaFaceInfo));
+		std::vector<SeetaFaceInfo>().swap(detectFaces);
+		return resultFaces;
 	}
-	for (int i = 0; i < faces.size(); i++)
-	{
-		_infos[i] = faces[i];
-	}
-	return _infos;
+	return 0;
 }
 
 /// <summary>
@@ -212,24 +215,19 @@ View_Api SeetaPointF* FaceMark(seeta::v6::FaceLandmarker* handler, const SeetaIm
 	{
 		return 0;
 	}
-	*size = handler->number();
-	std::vector<SeetaPointF> _points = handler->mark(img, faceRect);
-
-	*size = _points.size();
-	if (!_points.empty())
+	*size = 0;
+	std::vector<SeetaPointF> markPoints = handler->mark(img, faceRect);
+	if (!markPoints.empty())
 	{
-		SeetaPointF* points = (SeetaPointF*)malloc((*size) * sizeof(SeetaPointF));
-		if (points == nullptr)
+		*size = markPoints.size();
+		SeetaPointF* resultPoints = (SeetaPointF*)malloc((*size) * sizeof(SeetaPointF));
+		if (resultPoints == nullptr)
 		{
 			return 0;
 		}
-		SeetaPointF* start = points;
-		for (auto iter = _points.begin(); iter != _points.end(); iter++)
-		{
-			*start = *iter;
-			start++;
-		}
-		return points;
+		memcpy(resultPoints, &markPoints[0], markPoints.size() * sizeof(SeetaPointF));
+		std::vector<SeetaPointF>().swap(markPoints);
+		return resultPoints;
 	}
 	return 0;
 }
@@ -283,10 +281,11 @@ View_Api float* FaceRecognizerExtract(seeta::v6::FaceRecognizer* handler, const 
 
 	float* source = _features.get();
 	float* features = (float*)malloc(*size * sizeof(float));
-	if (features != nullptr)
+	if (features == nullptr)
 	{
-		memcpy(features, source, *size * sizeof(float));
+		return 0;
 	}
+	memcpy(features, source, *size * sizeof(float));
 	return features;
 }
 
