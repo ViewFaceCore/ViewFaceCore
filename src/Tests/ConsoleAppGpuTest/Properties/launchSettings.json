@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ConsoleAppGpuTest": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

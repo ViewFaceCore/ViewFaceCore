@@ -545,24 +545,42 @@ View_Api void Quality_Resolution(const SeetaImageData& img, const SeetaRect face
 	*score = result.score;
 }
 
-// 清晰度 (深度)评估
-View_Api void Quality_ClarityEx(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score, const float blur_thresh = 0.8f)
+View_Api seeta::QualityOfClarityEx* GetQualityOfClarityExHandler(const float blur_thresh = 0.8f, const SeetaDevice deviceType = SEETA_DEVICE_AUTO) 
 {
-	seeta::QualityOfClarityEx quality_ClarityEx(blur_thresh, modelPath);
-	auto result = quality_ClarityEx.check(img, faceRect, points, pointsLength);
+	return new seeta::QualityOfClarityEx(blur_thresh, modelPath, deviceType);
+}
+
+// 清晰度 (深度)评估
+View_Api void Quality_ClarityEx(seeta::QualityOfClarityEx* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
+{
+	auto result = handler->check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
 }
 
-// 遮挡评估
-View_Api void Quality_NoMask(const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
+View_Api void DisposeQualityOfClarityEx(seeta::QualityOfClarityEx* handler)
 {
-	seeta::QualityOfNoMask quality_NoMask(modelPath);
-	auto result = quality_NoMask.check(img, faceRect, points, pointsLength);
+	_dispose(handler);
+}
+
+View_Api seeta::QualityOfNoMask* GetQualityOfNoMaskHandler(const SeetaDevice deviceType = SEETA_DEVICE_AUTO) 
+{
+	return new seeta::QualityOfNoMask(modelPath, deviceType);
+}
+
+// 遮挡评估
+View_Api void Quality_NoMask(seeta::QualityOfNoMask* handler, const SeetaImageData& img, const SeetaRect faceRect, const SeetaPointF* points, const int pointsLength, int* level, float* score)
+{
+	auto result = handler->check(img, faceRect, points, pointsLength);
 
 	*level = result.level;
 	*score = result.score;
+}
+
+View_Api void DisposeQualityOfNoMask(seeta::QualityOfNoMask* handler)
+{
+	_dispose(handler);
 }
 
 #pragma endregion

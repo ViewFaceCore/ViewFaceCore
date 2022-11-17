@@ -448,30 +448,54 @@ internal static partial class ViewFaceNative
     public extern static void QualityOfResolution(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float low = 80, float high = 120);
 
+    #region 清晰度 (深度)评估。
+
+    /// <summary>
+    /// 获取清晰度 (深度)评估句柄
+    /// <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
+    /// </summary>
+    /// <param name="blur_thresh">清晰度阈值，默认值：0.8</param>
+    /// <param name="deviceType"></param>
+    /// <returns></returns>
+    [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetQualityOfClarityExHandler", CallingConvention = CallingConvention.Cdecl)]
+    public extern static IntPtr GetQualityOfClarityExHandler(float blur_thresh = 0.8f, int deviceType = 0);
+
     /// <summary>
     /// 清晰度 (深度)评估。
     /// <para>
     /// 需要模型 <see langword="quality_lbn.csta"/> <br />
     /// 需要模型 <see langword="face_landmarker_pts68.csta"/> 
     /// </para>
-    /// <para><see langword="{blur_thresh}"/> 的默认值为 <see langword="{0.8}"/></para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像宽高通道信息</param>
     /// <param name="faceRect">人脸位置信息</param>
     /// <param name="points">人脸关键点 数组</param>
     /// <param name="pointsLength">人脸关键点 数组长度</param>
     /// <param name="level">存储 等级</param>
     /// <param name="score">存储 分数</param>
-    /// <param name="blur_thresh"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_ClarityEx", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfClarityEx(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
-        float blur_thresh = 0.8f);
+    public extern static void QualityOfClarityEx(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+
+    /// <summary>
+    /// 释放清晰度 (深度)评估句柄
+    /// </summary>
+    /// <param name="handler"></param>
+    [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeQualityOfClarityEx", CallingConvention = CallingConvention.Cdecl)]
+    public extern static void DisposeQualityOfClarityEx(IntPtr handler);
+    #endregion
+
+    #region 遮挡评估
+
+    [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetQualityOfNoMaskHandler", CallingConvention = CallingConvention.Cdecl)]
+    public extern static IntPtr GetQualityOfNoMaskHandler(int deviceType = 0);
 
     /// <summary>
     /// 遮挡评估。
     /// <para>判断人脸部分的分辨率。</para>
     /// </summary>
+    /// <param name="handler">句柄</param>
     /// <param name="img">图像宽高通道信息</param>
     /// <param name="faceRect">人脸位置信息</param>
     /// <param name="points">人脸关键点 数组</param>
@@ -480,7 +504,12 @@ internal static partial class ViewFaceNative
     /// <param name="score">存储 分数</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_NoMask", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfNoMask(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+    public extern static void QualityOfNoMask(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+
+    [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeQualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
+    public extern static void DisposeQualityOfNoMask(IntPtr handler);
+
+    #endregion
 
     #endregion
 

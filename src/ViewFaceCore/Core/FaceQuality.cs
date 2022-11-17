@@ -1,5 +1,6 @@
 ﻿using ViewFaceCore.Configs;
 using ViewFaceCore.Configs.Enums;
+using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
 using ViewFaceCore.Native;
 
@@ -10,8 +11,27 @@ namespace ViewFaceCore.Core;
 /// </summary>
 public sealed class FaceQuality : BaseViewFace<QualityConfig>
 {
+    private readonly IntPtr _clarityHandle = IntPtr.Zero;
+    private readonly static object _clarityLocker = new object();
+
+    private readonly IntPtr _maskHandle = IntPtr.Zero;
+    private readonly static object _maskLocker = new object();
+
     /// <inheritdoc/>
-    public FaceQuality(QualityConfig config = null) : base(config ?? new QualityConfig()) { }
+    public FaceQuality(QualityConfig config = null) : base(config ?? new QualityConfig())
+    {
+        _clarityHandle = ViewFaceNative.GetQualityOfClarityExHandler(this.Config.ClarityEx.BlurThresh, (int)this.Config.DeviceType);
+        if (_clarityHandle == IntPtr.Zero)
+        {
+            throw new HandleInitException("Get quality of clarityEx handle failed.");
+        }
+
+        _maskHandle = ViewFaceNative.GetQualityOfNoMaskHandler((int)this.Config.DeviceType);
+        if (_maskHandle == IntPtr.Zero)
+        {
+            throw new HandleInitException("Get quality of nomask handle failed.");
+        }
+    }
 
     /// <summary>
     /// 人脸质量评估
@@ -52,10 +72,24 @@ public sealed class FaceQuality : BaseViewFace<QualityConfig>
                 ViewFaceNative.QualityOfResolution(ref image, info.Location, points, points.Length, ref level, ref score, this.Config.Resolution.Low, this.Config.Resolution.High);
                 break;
             case QualityType.ClarityEx:
-                ViewFaceNative.QualityOfClarityEx(ref image, info.Location, points, points.Length, ref level, ref score, this.Config.ClarityEx.BlurThresh);
+                {
+                    if (IsDisposed)
+                        throw new ObjectDisposedException(nameof(QualityType.ClarityEx));
+                    lock (_clarityLocker)
+                    {
+                        ViewFaceNative.QualityOfClarityEx(_clarityHandle, ref image, info.Location, points, points.Length, ref level, ref score);
+                    }
+                }
                 break;
             case QualityType.Structure:
-                ViewFaceNative.QualityOfNoMask(ref image, info.Location, points, points.Length, ref level, ref score);
+                {
+                    if (IsDisposed)
+                        throw new ObjectDisposedException(nameof(QualityType.Structure));
+                    lock (_maskLocker)
+                    {
+                        ViewFaceNative.QualityOfNoMask(_maskHandle, ref image, info.Location, points, points.Length, ref level, ref score);
+                    }
+                }
                 break;
         }
 
@@ -63,5 +97,18 @@ public sealed class FaceQuality : BaseViewFace<QualityConfig>
     }
 
     /// <inheritdoc/>
-    public override void Dispose() { }
+    public override void Dispose()
+    {
+        IsDisposed = true;
+
+        lock (_clarityLocker)
+        {
+            ViewFaceNative.DisposeQualityOfClarityEx(_clarityHandle);
+        }
+
+        lock (_maskLocker)
+        {
+            ViewFaceNative.DisposeQualityOfNoMask(_maskHandle);
+        }
+    }
 }
