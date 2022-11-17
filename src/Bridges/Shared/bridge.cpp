@@ -431,15 +431,22 @@ View_Api SeetaTrackingFaceInfo* FaceTrack(seeta::v6::FaceTracker* handler, const
 	{
 		return 0;
 	}
+	*size = 0;
 	auto cfaces = handler->Track(img);
-	std::vector<SeetaTrackingFaceInfo> faces(cfaces.data, cfaces.data + cfaces.size);
-	*size = faces.size();
-	SeetaTrackingFaceInfo* _infos = new SeetaTrackingFaceInfo[*size];
-	for (int i = 0; i < faces.size(); i++)
+	std::vector<SeetaTrackingFaceInfo> faceTrackResult(cfaces.data, cfaces.data + cfaces.size);
+	if (!faceTrackResult.empty())
 	{
-		_infos[i] = faces[i];
+		*size = faceTrackResult.size();
+		SeetaTrackingFaceInfo* resultFaceInfos = (SeetaTrackingFaceInfo*)malloc((*size) * sizeof(SeetaTrackingFaceInfo));
+		if (resultFaceInfos == nullptr)
+		{
+			return 0;
+		}
+		memcpy(resultFaceInfos, &faceTrackResult[0], faceTrackResult.size() * sizeof(SeetaTrackingFaceInfo));
+		std::vector<SeetaTrackingFaceInfo>().swap(faceTrackResult);
+		return resultFaceInfos;
 	}
-	return _infos;
+	return 0;
 }
 
 /// <summary>
