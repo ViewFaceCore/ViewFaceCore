@@ -15,7 +15,7 @@
 - `ViewFaceCore.Extension.SystemDrawing` 图像扩展包的支持与 [System.Drawing.Common](https://www.nuget.org/packages/System.Drawing.Common/) 保持一致, 详细信息参见 [仅在 Windows 上支持 System.Drawing.Common](https://learn.microsoft.com/zh-cn/dotnet/core/compatibility/core-libraries/6.0/system-drawing-common-windows-only)
 
 > 图形扩展包是针对特定图形库的 *ViewFaceCore* 的实现, 通常只需要安装所需的图像扩展包即可;  
-> 若以下没有你使用的图形库扩展包, 可以 自行实现 ([图形扩展包开发指南](\ExtensionPackage_Guide.md)), [Issues](https://github.com/ViewFaceCore/ViewFaceCore/issues), [PR](https://github.com/ViewFaceCore/ViewFaceCore/pulls).  
+> 若以下没有你使用的图形库扩展包, 可以 自行实现 ([图形扩展包开发指南](/docs/ExtensionPackage_Guide.md)), [Issues](https://github.com/ViewFaceCore/ViewFaceCore/issues), [PR](https://github.com/ViewFaceCore/ViewFaceCore/pulls).  
 
 | **Nuget 包**                                                                                                | **版本**                                                                                                                        | **描述**                  |
 |-------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------|---------------------------|
