@@ -92,12 +92,11 @@ build_seeta_TenniS() {
   cmake "$SOURCE_PATH_SEETA"/TenniS \
     -DCMAKE_BUILD_TYPE="Release" \
     -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH_SEETA" \
-    -DTS_USE_OPENMP=ON \
-    -DTS_USE_SIMD=ON \
+    -DTS_USE_FAST_MATH=ON \
+    -DTS_USE_NEON=ON \
     -DTS_BUILD_TEST=OFF \
     -DTS_BUILD_TOOLS=OFF \
-    -DTS_ON_ARM=ON \
-    -DTS_USE_NEON=ON || exit
+    -DTS_ON_ARM=ON || exit
 
   echo -e "\n>>> Making TenniS"
   make "$CORES" || exit
