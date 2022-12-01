@@ -36,11 +36,20 @@ namespace ViewFaceCore.Example.ConsoleApp
             //活体检测Demo
             AntiSpoofingDemo();
 
-            //提取并对比特征值
+            //人脸对比（提取并对比特征值）
             FaceRecognizerDemo();
 
             //人脸追踪
             FaceTrackDemo();
+
+            //年龄预测
+            FaceAgePredictorDemo();
+
+            //性别预测
+            FaceGenderPredictorDemo();
+
+            //眼睛状态检测
+            FaceEyeStateDetectorDemo();
 
             Console.ReadKey();
         }
@@ -201,13 +210,109 @@ namespace ViewFaceCore.Example.ConsoleApp
                 Console.WriteLine("未追踪到任何人脸！");
                 return;
             }
-            Console.WriteLine($"追踪到的人脸数量：{infos.Length} 个人脸信息：\n");
+            Console.WriteLine($"人脸追踪：\n{infos.Length} 个人脸信息：");
             Console.WriteLine($"No.\t人脸置信度\t位置信息");
             for (int i = 0; i < infos.Length; i++)
             {
                 Console.WriteLine($"{i}\t{infos[i].Score:f8}\t{infos[i].Location}");
             }
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// 年龄预测
+        /// </summary>
+        static void FaceAgePredictorDemo()
+        {
+            using var faceImage = SKBitmap.Decode(imagePath0).ToFaceImage();
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            using AgePredictor agePredictor = new AgePredictor();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            sw.Start();
+
+            Console.WriteLine("年龄预测：");
+            var infos = faceDetector.Detect(faceImage);
+            if (infos?.Any() != true)
+            {
+                Console.WriteLine("未检测到任何人脸！");
+                return;
+            }
+            for (int i = 0; i < infos.Length; i++)
+            {
+                sw.Restart();
+
+                var points = faceMark.Mark(faceImage, infos[i]);
+                int age = agePredictor.PredictAgeWithCrop(faceImage, points);
+
+                Console.WriteLine($"第{i + 1}个人脸，预测年龄：{age}，耗时：{sw.ElapsedMilliseconds}ms");
+            }
+            Console.WriteLine();
+            sw.Stop();
+        }
+
+        /// <summary>
+        /// 性别预测
+        /// </summary>
+        static void FaceGenderPredictorDemo()
+        {
+            using var faceImage = SKBitmap.Decode(imagePath0).ToFaceImage();
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            using GenderPredictor predictor = new GenderPredictor();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            sw.Start();
+
+            Console.WriteLine("性别预测：");
+            var infos = faceDetector.Detect(faceImage);
+            if (infos?.Any() != true)
+            {
+                Console.WriteLine("未检测到任何人脸！");
+                return;
+            }
+            for (int i = 0; i < infos.Length; i++)
+            {
+                sw.Restart();
+
+                var points = faceMark.Mark(faceImage, infos[i]);
+                Gender gender = predictor.PredictGenderWithCrop(faceImage, points);
+
+                Console.WriteLine($"第{i + 1}个人脸，预测性别：{gender}，耗时：{sw.ElapsedMilliseconds}ms");
+            }
+            Console.WriteLine();
+            sw.Stop();
+        }
+
+        static void FaceEyeStateDetectorDemo()
+        {
+            using var faceImage = SKBitmap.Decode(imagePath0).ToFaceImage();
+            using FaceDetector faceDetector = new FaceDetector();
+            using FaceLandmarker faceMark = new FaceLandmarker();
+            using EyeStateDetector eyeStateDetector = new EyeStateDetector();
+
+            Stopwatch sw = Stopwatch.StartNew();
+            sw.Start();
+
+            Console.WriteLine("眼睛状态检测：");
+            var infos = faceDetector.Detect(faceImage);
+            if (infos?.Any() != true)
+            {
+                Console.WriteLine("未检测到任何人脸！");
+                return;
+            }
+            for (int i = 0; i < infos.Length; i++)
+            {
+                sw.Restart();
+
+                var points = faceMark.Mark(faceImage, infos[i]);
+                EyeStateResult eyeStateResult = eyeStateDetector.Detect(faceImage, points);
+
+                Console.WriteLine($"第{i + 1}个人脸，左眼状态：{eyeStateResult.LeftEyeState}，右眼状态：{eyeStateResult.RightEyeState}，耗时：{sw.ElapsedMilliseconds}ms");
+            }
+            Console.WriteLine();
+            sw.Stop();
         }
     }
 }
