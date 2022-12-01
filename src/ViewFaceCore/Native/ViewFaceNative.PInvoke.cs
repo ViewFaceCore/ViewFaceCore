@@ -12,12 +12,12 @@ internal static partial class ViewFaceNative
     /// <summary>
     /// 依赖库默认名称
     /// </summary>
-    const string BRIDGE_LIBRARY_NAME = "ViewFaceBridge";
+    internal const string BRIDGE_LIBRARY_NAME = "ViewFaceBridge";
 
     /// <summary>
     /// 模型路径支持最大长度
     /// </summary>
-    const int MAX_PATH_LENGTH = 1024;
+    internal const int MAX_PATH_LENGTH = 1024;
 
     #region Common
 
@@ -26,16 +26,16 @@ internal static partial class ViewFaceNative
     /// </summary>
     /// <param name="path"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "SetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-    private extern static void SetModelPathWindows(string path);
+    internal extern static void SetModelPathWindows(string path);
 
     /// <summary>
     /// 设置人脸模型的目录（Linux）
     /// </summary>
     /// <param name="path"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "SetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
-    private extern static void SetModelPathLinux(byte[] path);
+    internal extern static void SetModelPathLinux(byte[] path);
 
-    public static void SetModelPath(string path)
+    internal static void SetModelPath(string path)
     {
         if (string.IsNullOrWhiteSpace(path))
             throw new ArgumentNullException(nameof(path), "Model path can not null.");
@@ -65,7 +65,7 @@ internal static partial class ViewFaceNative
     /// <param name="size">字符串长度</param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
     private extern static void GetModelPath(StringBuilder outPath, ref int size);
-    public static string GetModelPath()
+    internal static string GetModelPath()
     {
         if (!string.IsNullOrWhiteSpace(_modelPath))
         {
@@ -87,7 +87,7 @@ internal static partial class ViewFaceNative
     /// </summary>
     /// <param name="address"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Free", CallingConvention = CallingConvention.Cdecl)]
-    public static extern void Free(IntPtr address);
+    internal static extern void Free(IntPtr address);
 
     #endregion
 
@@ -105,7 +105,7 @@ internal static partial class ViewFaceNative
     /// <param name="deviceType">设备类型</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetFaceDetectorHandler(double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int deviceType = 0);
+    internal extern static IntPtr GetFaceDetectorHandler(double faceSize = 20, double threshold = 0.9, double maxWidth = 2000, double maxHeight = 2000, int deviceType = 0);
 
     /// <summary>
     /// 人脸检测器
@@ -115,14 +115,14 @@ internal static partial class ViewFaceNative
     /// <param name="size">检测到的人脸数量</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceDetectV2", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr FaceDetectV2(IntPtr handler, ref FaceImage img, ref int size);
+    internal extern static IntPtr FaceDetectV2(IntPtr handler, ref FaceImage img, ref int size);
 
     /// <summary>
     /// 释放人脸检测句柄
     /// </summary>
     /// <param name="handler"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceDetector", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeFaceDetector(IntPtr handler);
+    internal extern static void DisposeFaceDetector(IntPtr handler);
 
     #endregion
 
@@ -134,7 +134,7 @@ internal static partial class ViewFaceNative
     /// <param name="deviceType">设备类型</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetMaskDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetMaskDetectorHandler(int deviceType = 0);
+    internal extern static IntPtr GetMaskDetectorHandler(int deviceType = 0);
 
     /// <summary>
     /// 口罩检测
@@ -145,21 +145,21 @@ internal static partial class ViewFaceNative
     /// <param name="score">一般性的，score超过0.5，则认为是检测带上了口罩。</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "MaskDetect", CallingConvention = CallingConvention.Cdecl)]
-    public extern static bool MaskDetect(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref float score);
+    internal extern static bool MaskDetect(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref float score);
 
     /// <summary>
     /// 释放口罩识别句柄
     /// </summary>
     /// <param name="handler"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeMaskDetector", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeMaskDetector(IntPtr handler);
+    internal extern static void DisposeMaskDetector(IntPtr handler);
 
     #endregion
 
     #region FaceMark
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceLandmarkerHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetFaceLandmarkerHandler(int type = 0, int deviceType = 0);
+    internal extern static IntPtr GetFaceLandmarkerHandler(int type = 0, int deviceType = 0);
 
     /// <summary>
     /// 获取人脸关键点
@@ -171,17 +171,17 @@ internal static partial class ViewFaceNative
     /// <param name="size">关键点数量</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceMark", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr FaceMark(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref long size);
+    internal extern static IntPtr FaceMark(IntPtr handler, ref FaceImage img, FaceRect faceRect, ref long size);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceLandmarker", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeFaceLandmarker(IntPtr handler);
+    internal extern static void DisposeFaceLandmarker(IntPtr handler);
 
     #endregion
 
     #region FaceRecognizer
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceRecognizerHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetFaceRecognizerHandler(int type = 0, int deviceType = 0);
+    internal extern static IntPtr GetFaceRecognizerHandler(int type = 0, int deviceType = 0);
 
     /// <summary>
     /// 提取人脸特征值
@@ -193,10 +193,10 @@ internal static partial class ViewFaceNative
     /// <param name="points">人脸关键点 数组</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceRecognizerExtract", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr FaceRecognizerExtract(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int size);
+    internal extern static IntPtr FaceRecognizerExtract(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int size);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceRecognizer", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeFaceRecognizer(IntPtr handler);
+    internal extern static void DisposeFaceRecognizer(IntPtr handler);
 
     /// <summary>
     /// 计算相似度
@@ -206,7 +206,7 @@ internal static partial class ViewFaceNative
     /// <param name="size"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Compare", CallingConvention = CallingConvention.Cdecl)]
-    public extern static float Compare(float[] lhs, float[] rhs, int size);
+    internal extern static float Compare(float[] lhs, float[] rhs, int size);
 
     #endregion
 
@@ -223,7 +223,7 @@ internal static partial class ViewFaceNative
     /// <param name="deviceType"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceAntiSpoofingHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetFaceAntiSpoofingHandler(int videoFrameCount = 10
+    internal extern static IntPtr GetFaceAntiSpoofingHandler(int videoFrameCount = 10
         , float boxThresh = 0.8f
         , float clarity = 0.3f
         , float reality = 0.8f
@@ -242,7 +242,7 @@ internal static partial class ViewFaceNative
     /// <param name="reality">真实度</param>
     /// <returns>单帧识别返回值会是 <see cref="AntiSpoofingStatus.Real"/>、<see cref="AntiSpoofingStatus.Spoof"/> 或 <see cref="AntiSpoofingStatus.Fuzzy"/></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceAntiSpoofingPredict", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int FaceAntiSpoofingPredict(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
+    internal extern static int FaceAntiSpoofingPredict(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, ref float clarity, ref float reality);
 
     /// <summary>
     /// 活体检测器
@@ -261,10 +261,10 @@ internal static partial class ViewFaceNative
     /// </para>
     /// </returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceAntiSpoofingPredictVideo", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int FaceAntiSpoofingPredictVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] pointsref, ref float clarity, ref float reality);
+    internal extern static int FaceAntiSpoofingPredictVideo(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] pointsref, ref float clarity, ref float reality);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceAntiSpoofing", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeFaceAntiSpoofing(IntPtr handler);
+    internal extern static void DisposeFaceAntiSpoofing(IntPtr handler);
 
     #endregion
 
@@ -282,7 +282,7 @@ internal static partial class ViewFaceNative
     /// <param name="deviceType">计算设备类型</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetFaceTrackerHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetFaceTrackerHandler(int width, int height, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int deviceType = 0);
+    internal extern static IntPtr GetFaceTrackerHandler(int width, int height, bool stable = false, int interval = 10, int faceSize = 20, float threshold = 0.9f, int deviceType = 0);
 
     /// <summary>
     /// 人脸跟踪信息
@@ -292,21 +292,21 @@ internal static partial class ViewFaceNative
     /// <param name="size"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceTrack", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr FaceTrack(IntPtr faceTracker, ref FaceImage img, ref int size);
+    internal extern static IntPtr FaceTrack(IntPtr faceTracker, ref FaceImage img, ref int size);
 
     /// <summary>
     /// 重置追踪视频
     /// </summary>
     /// <param name="faceTracker"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "FaceTrackReset", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void FaceTrackReset(IntPtr faceTracker);
+    internal extern static void FaceTrackReset(IntPtr faceTracker);
 
     /// <summary>
     /// 释放人脸追踪句柄
     /// </summary>
     /// <param name="faceTracker"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeFaceTracker", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeFaceTracker(IntPtr faceTracker);
+    internal extern static void DisposeFaceTracker(IntPtr faceTracker);
 
     #endregion
 
@@ -335,7 +335,7 @@ internal static partial class ViewFaceNative
     /// <param name="v3"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_Brightness", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfBrightness(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+    internal extern static void QualityOfBrightness(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float v0 = 70, float v1 = 100, float v2 = 210, float v3 = 230);
 
     /// <summary>
@@ -359,7 +359,7 @@ internal static partial class ViewFaceNative
     /// <param name="high"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_Clarity", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfClarity(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+    internal extern static void QualityOfClarity(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float low = 0.1f, float high = 0.2f);
 
     /// <summary>
@@ -383,7 +383,7 @@ internal static partial class ViewFaceNative
     /// <param name="high"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_Integrity", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfIntegrity(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+    internal extern static void QualityOfIntegrity(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float low = 10f, float high = 1.5f);
 
     /// <summary>
@@ -398,7 +398,7 @@ internal static partial class ViewFaceNative
     /// <param name="score">存储 分数</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_Pose", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfPose(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+    internal extern static void QualityOfPose(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
     /// <summary>
     /// 姿态评估 (深度)。
@@ -421,7 +421,7 @@ internal static partial class ViewFaceNative
     /// <param name="rollHigh">roll 方向高分数阈值</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_PoseEx", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfPoseEx(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+    internal extern static void QualityOfPoseEx(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float yawLow = 25, float yawHigh = 10, float pitchLow = 20, float pitchHigh = 10, float rollLow = 33.33f, float rollHigh = 16.67f);
 
     /// <summary>
@@ -445,7 +445,7 @@ internal static partial class ViewFaceNative
     /// <param name="high"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_Resolution", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfResolution(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
+    internal extern static void QualityOfResolution(ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score,
         float low = 80, float high = 120);
 
     #region 清晰度 (深度)评估。
@@ -458,7 +458,7 @@ internal static partial class ViewFaceNative
     /// <param name="deviceType"></param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetQualityOfClarityExHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetQualityOfClarityExHandler(float blur_thresh = 0.8f, int deviceType = 0);
+    internal extern static IntPtr GetQualityOfClarityExHandler(float blur_thresh = 0.8f, int deviceType = 0);
 
     /// <summary>
     /// 清晰度 (深度)评估。
@@ -476,20 +476,20 @@ internal static partial class ViewFaceNative
     /// <param name="score">存储 分数</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_ClarityEx", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfClarityEx(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+    internal extern static void QualityOfClarityEx(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
     /// <summary>
     /// 释放清晰度 (深度)评估句柄
     /// </summary>
     /// <param name="handler"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeQualityOfClarityEx", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeQualityOfClarityEx(IntPtr handler);
+    internal extern static void DisposeQualityOfClarityEx(IntPtr handler);
     #endregion
 
     #region 遮挡评估
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetQualityOfNoMaskHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetQualityOfNoMaskHandler(int deviceType = 0);
+    internal extern static IntPtr GetQualityOfNoMaskHandler(int deviceType = 0);
 
     /// <summary>
     /// 遮挡评估。
@@ -504,10 +504,10 @@ internal static partial class ViewFaceNative
     /// <param name="score">存储 分数</param>
     /// <returns></returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "Quality_NoMask", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void QualityOfNoMask(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
+    internal extern static void QualityOfNoMask(IntPtr handler, ref FaceImage img, FaceRect faceRect, FaceMarkPoint[] points, int pointsLength, ref int level, ref float score);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeQualityOfNoMask", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeQualityOfNoMask(IntPtr handler);
+    internal extern static void DisposeQualityOfNoMask(IntPtr handler);
 
     #endregion
 
@@ -517,7 +517,7 @@ internal static partial class ViewFaceNative
     #region 年龄预测
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetAgePredictorHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetAgePredictorHandler(int deviceType = 0);
+    internal extern static IntPtr GetAgePredictorHandler(int deviceType = 0);
 
     /// <summary>
     /// 人脸年龄预测
@@ -526,7 +526,7 @@ internal static partial class ViewFaceNative
     /// <param name="img">图像宽高通道信息</param>
     /// <returns>-1 则为失败，否则为预测年龄</returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictAge", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int PredictAge(IntPtr handler, ref FaceImage img);
+    internal extern static int PredictAge(IntPtr handler, ref FaceImage img);
 
     /// <summary>
     /// 人脸年龄预测（自动裁剪）
@@ -536,17 +536,17 @@ internal static partial class ViewFaceNative
     /// <param name="points">人脸关键点 数组</param>
     /// <returns>-1 则为失败，否则为预测年龄</returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictAgeWithCrop", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int PredictAgeWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+    internal extern static int PredictAgeWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeAgePredictor", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeAgePredictor(IntPtr handler);
+    internal extern static void DisposeAgePredictor(IntPtr handler);
 
     #endregion
 
     #region 性别预测
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetGenderPredictorHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetGenderPredictorHandler(int deviceType = 0);
+    internal extern static IntPtr GetGenderPredictorHandler(int deviceType = 0);
 
     /// <summary>
     /// 人脸性别预测
@@ -555,7 +555,7 @@ internal static partial class ViewFaceNative
     /// <param name="img">图像宽高通道信息</param>
     /// <returns>-1 则为失败，否则为预测年龄</returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictGender", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int PredictGender(IntPtr handler, ref FaceImage img);
+    internal extern static int PredictGender(IntPtr handler, ref FaceImage img);
 
     /// <summary>
     /// 人脸性别预测（自动裁剪）
@@ -565,17 +565,17 @@ internal static partial class ViewFaceNative
     /// <param name="points">人脸关键点 数组</param>
     /// <returns>-1 则为失败，否则为预测年龄</returns>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "PredictGenderWithCrop", CallingConvention = CallingConvention.Cdecl)]
-    public extern static int PredictGenderWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
+    internal extern static int PredictGenderWithCrop(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeGenderPredictor", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeGenderPredictor(IntPtr handler);
+    internal extern static void DisposeGenderPredictor(IntPtr handler);
 
     #endregion
 
     #region 眼睛状态检测
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "GetEyeStateDetectorHandler", CallingConvention = CallingConvention.Cdecl)]
-    public extern static IntPtr GetEyeStateDetectorHandler(int deviceType = 0);
+    internal extern static IntPtr GetEyeStateDetectorHandler(int deviceType = 0);
 
     /// <summary>
     /// 眼睛状态检测。
@@ -586,10 +586,10 @@ internal static partial class ViewFaceNative
     /// <param name="left_eye"></param>
     /// <param name="right_eye"></param>
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "EyeStateDetect", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void EyeStateDetect(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
+    internal extern static void EyeStateDetect(IntPtr handler, ref FaceImage img, FaceMarkPoint[] points, ref int left_eye, ref int right_eye);
 
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "DisposeEyeStateDetector", CallingConvention = CallingConvention.Cdecl)]
-    public extern static void DisposeEyeStateDetector(IntPtr handler);
+    internal extern static void DisposeEyeStateDetector(IntPtr handler);
 
     #endregion
     #endregion
