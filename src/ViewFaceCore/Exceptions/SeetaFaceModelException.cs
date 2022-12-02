@@ -3,13 +3,13 @@
 /// <summary>
 /// 初始化模型异常
 /// </summary>
-public class SeetaFaceModelException : Exception
+public class SetModelException : Exception
 {
     /// <summary>
     /// 初始化模型异常
     /// </summary>
     /// <param name="message">异常信息</param>
-    public SeetaFaceModelException(string message) : base(message)
+    public SetModelException(string message) : base(message)
     {
 
     }
@@ -19,7 +19,7 @@ public class SeetaFaceModelException : Exception
     /// </summary>
     /// <param name="message">异常信息</param>
     /// <param name="innerException">引发的异常</param>
-    public SeetaFaceModelException(string message, Exception innerException) : base(message, innerException)
+    public SetModelException(string message, Exception innerException) : base(message, innerException)
     {
 
     }

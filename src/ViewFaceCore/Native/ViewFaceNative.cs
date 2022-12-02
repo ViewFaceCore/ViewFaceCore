@@ -1,6 +1,7 @@
 ﻿using ViewFaceCore.Configs.Enums;
-using ViewFaceCore.Exceptions;
 using ViewFaceCore.Models;
+using ViewFaceCore.Native.LibraryLoader.Interface;
+using ViewFaceCore.Native.LibraryLoader;
 
 namespace ViewFaceCore.Native;
 
@@ -19,6 +20,14 @@ internal static partial class ViewFaceNative
     /// </summary>
     internal const int MAX_PATH_LENGTH = 1024;
 
+    internal static readonly ILibraryLoader _loader;
+
+    static ViewFaceNative()
+    {
+        _loader = LoaderFactory.Create();
+        _loader.Load();
+    }
+
     #region Common
 
     /// <summary>
@@ -35,29 +44,6 @@ internal static partial class ViewFaceNative
     [DllImport(BRIDGE_LIBRARY_NAME, EntryPoint = "SetModelPath", CharSet = CharSet.Auto, CallingConvention = CallingConvention.Cdecl)]
     internal extern static void SetModelPathLinux(byte[] path);
 
-    internal static void SetModelPath(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-            throw new ArgumentNullException(nameof(path), "Model path can not null.");
-        //to utf-8
-        byte[] pathUtf8Bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(path));
-        if (pathUtf8Bytes.Length > MAX_PATH_LENGTH)
-            throw new NotSupportedException($"The path is too long, not support path more than {MAX_PATH_LENGTH} byte.");
-        path = Encoding.UTF8.GetString(pathUtf8Bytes);
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            SetModelPathWindows(path);
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            SetModelPathLinux(Encoding.UTF8.GetBytes(path));
-        else
-            throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
-
-        if (!path.Equals(GetModelPath()))
-            throw new SeetaFaceModelException($"Set model path to '{path}' failed, failed to verify this path.");
-    }
-
-    private static string _modelPath = null;
-
     /// <summary>
     /// 获取人脸模型的目录
     /// </summary>
@@ -67,10 +53,6 @@ internal static partial class ViewFaceNative
     private extern static void GetModelPath(StringBuilder outPath, ref int size);
     internal static string GetModelPath()
     {
-        if (!string.IsNullOrWhiteSpace(_modelPath))
-        {
-            return _modelPath;
-        }
         StringBuilder result = new StringBuilder(MAX_PATH_LENGTH);
         int size = 0;
         GetModelPath(result, ref size);
@@ -78,9 +60,14 @@ internal static partial class ViewFaceNative
         {
             throw new NotSupportedException($"The path is too long, not support path more than {MAX_PATH_LENGTH} byte.");
         }
-        _modelPath = result?.ToString();
-        return _modelPath;
+        return result?.ToString();
     }
+
+    /// <summary>
+    /// 获取静态库路径
+    /// </summary>
+    /// <returns></returns>
+    public static string GetLibraryPath() => _loader.GetLibraryPath();
 
     /// <summary>
     /// 释放本机代码中由 malloc 分配的内存。
