@@ -33,7 +33,7 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             ViewFaceNative.SetModelPathLinux(Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(pathUtf8Bytes)));
             if (!path.Equals(ViewFaceNative.GetModelPath()))
             {
-                throw new SetModelException($"Set model path to '{path}' failed, failed to verify this path.");
+                throw new LoadModelException($"Set model path to '{path}' failed, failed to verify this path.");
             }
         }
 

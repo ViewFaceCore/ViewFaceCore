@@ -15,12 +15,12 @@ public sealed class GenderPredictor : Predictor<GenderPredictConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public GenderPredictor(GenderPredictConfig config = null) : base(config ?? new GenderPredictConfig())
     {
         if ((_handle = ViewFaceNative.GetGenderPredictorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new HandleInitException("Get gender predictor handle failed.");
+            throw new ModuleInitializeException("Get gender predictor handle failed.");
         }
     }
 

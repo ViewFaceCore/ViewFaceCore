@@ -14,12 +14,12 @@ public sealed class AgePredictor : Predictor<AgePredictConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public AgePredictor(AgePredictConfig config = null) : base(config ?? new AgePredictConfig())
     {
         if ((_handle = ViewFaceNative.GetAgePredictorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new HandleInitException("Get age predictor handle failed.");
+            throw new ModuleInitializeException("Get age predictor handle failed.");
         }
     }
 

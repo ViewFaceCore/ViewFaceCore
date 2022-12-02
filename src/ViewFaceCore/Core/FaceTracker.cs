@@ -19,13 +19,13 @@ public sealed class FaceTracker : BaseViewFace<FaceTrackerConfig>
     /// </summary>
     /// <param name="config"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public FaceTracker(FaceTrackerConfig config) : base(config ?? throw new ArgumentNullException(nameof(config), $"Param '{nameof(config)}' can not null."))
     {
         _handle = ViewFaceNative.GetFaceTrackerHandler(config.Width, config.Height, config.Stable, config.Interval, config.MinFaceSize, config.Threshold, (int)config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get face track handle failed.");
+            throw new ModuleInitializeException("Get face track handle failed.");
         }
     }
 

@@ -23,12 +23,12 @@ public sealed class FaceRecognizer : BaseViewFace<FaceRecognizeConfig>
     /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Mask"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_mask">face_recognizer_mask.csta</a><br/>
     /// 当 <see cref="FaceType"/> <see langword="="/> <see cref="FaceType.Light"/> 时， 需要模型：<a href="https://www.nuget.org/packages/ViewFaceCore.model.face_recognizer_light">face_recognizer_light.csta</a><br/>
     /// </para>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public FaceRecognizer(FaceRecognizeConfig config = null) : base(config ?? new FaceRecognizeConfig())
     {
         if ((_handle = ViewFaceNative.GetFaceRecognizerHandler((int)Config.FaceType, (int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new HandleInitException("Get face recognizer handle failed.");
+            throw new ModuleInitializeException("Get face recognizer handle failed.");
         }
     }
 

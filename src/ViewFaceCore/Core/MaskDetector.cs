@@ -17,12 +17,12 @@ public sealed class MaskDetector : BaseViewFace<MaskDetectConfig>
     /// 口罩人脸识别
     /// </summary>
     /// <param name="config"></param>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public MaskDetector(MaskDetectConfig config = null) : base(config ?? new MaskDetectConfig())
     {
         if ((_handle = ViewFaceNative.GetMaskDetectorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new HandleInitException("Get mask detector handle failed.");
+            throw new ModuleInitializeException("Get mask detector handle failed.");
         }
     }
 

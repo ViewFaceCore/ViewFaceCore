@@ -16,12 +16,12 @@ public sealed class EyeStateDetector : Predictor<EyeStateDetectConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public EyeStateDetector(EyeStateDetectConfig config = null) : base(config ?? new EyeStateDetectConfig())
     {
         if ((_handle = ViewFaceNative.GetEyeStateDetectorHandler((int)Config.DeviceType)) == IntPtr.Zero)
         {
-            throw new HandleInitException("Get eye state detector handle failed.");
+            throw new ModuleInitializeException("Get eye state detector handle failed.");
         }
     }
 

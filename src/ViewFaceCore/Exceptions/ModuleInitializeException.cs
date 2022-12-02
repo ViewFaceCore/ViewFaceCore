@@ -1,25 +1,25 @@
 ﻿namespace ViewFaceCore.Exceptions;
 
 /// <summary>
-/// 初始化模型异常
+/// 句柄获取异常
 /// </summary>
-public class NativeLoadException : Exception
+public class ModuleInitializeException : Exception
 {
     /// <summary>
-    /// 初始化模型异常
+    /// 句柄获取异常
     /// </summary>
     /// <param name="message">异常信息</param>
-    public NativeLoadException(string message) : base(message)
+    public ModuleInitializeException(string message) : base(message)
     {
 
     }
 
     /// <summary>
-    /// 初始化模型异常
+    /// 句柄获取异常
     /// </summary>
     /// <param name="message">异常信息</param>
     /// <param name="innerException">引发的异常</param>
-    public NativeLoadException(string message, Exception innerException) : base(message, innerException)
+    public ModuleInitializeException(string message, Exception innerException) : base(message, innerException)
     {
 
     }

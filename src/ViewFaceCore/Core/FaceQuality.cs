@@ -23,13 +23,13 @@ public sealed class FaceQuality : BaseViewFace<QualityConfig>
         _clarityHandle = ViewFaceNative.GetQualityOfClarityExHandler(this.Config.ClarityEx.BlurThresh, (int)this.Config.DeviceType);
         if (_clarityHandle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get quality of clarityEx handle failed.");
+            throw new ModuleInitializeException("Get quality of clarityEx handle failed.");
         }
 
         _maskHandle = ViewFaceNative.GetQualityOfNoMaskHandler((int)this.Config.DeviceType);
         if (_maskHandle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get quality of nomask handle failed.");
+            throw new ModuleInitializeException("Get quality of nomask handle failed.");
         }
     }
 

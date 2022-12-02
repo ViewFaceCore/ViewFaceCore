@@ -14,13 +14,13 @@ public sealed class FaceLandmarker : BaseViewFace<FaceLandmarkConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public FaceLandmarker(FaceLandmarkConfig config = null) : base(config ?? new FaceLandmarkConfig())
     {
         _handle = ViewFaceNative.GetFaceLandmarkerHandler((int)this.Config.MarkType, (int)this.Config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get face landmarker handle failed.");
+            throw new ModuleInitializeException("Get face landmarker handle failed.");
         }
     }
 

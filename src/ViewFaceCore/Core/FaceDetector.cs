@@ -14,13 +14,13 @@ public sealed class FaceDetector : BaseViewFace<FaceDetectConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public FaceDetector(FaceDetectConfig config = null) : base(config ?? new FaceDetectConfig())
     {
         _handle = ViewFaceNative.GetFaceDetectorHandler(this.Config.FaceSize, this.Config.Threshold, this.Config.MaxWidth, this.Config.MaxHeight, (int)this.Config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get face detector handle failed.");
+            throw new ModuleInitializeException("Get face detector handle failed.");
         }
     }
 

@@ -14,14 +14,14 @@ public sealed class FaceAntiSpoofing : BaseViewFace<FaceAntiSpoofingConfig>
     private readonly static object _locker = new object();
 
     /// <inheritdoc/>
-    /// <exception cref="HandleInitException"></exception>
+    /// <exception cref="ModuleInitializeException"></exception>
     public FaceAntiSpoofing(FaceAntiSpoofingConfig config = null) : base(config ?? new FaceAntiSpoofingConfig())
     {
         _handle = ViewFaceNative.GetFaceAntiSpoofingHandler(Config.VideoFrameCount, Config.BoxThresh, Config.Threshold.Clarity, Config.Threshold.Reality, Config.Global
             , (int)this.Config.DeviceType);
         if (_handle == IntPtr.Zero)
         {
-            throw new HandleInitException("Get face anti spoofing handle failed.");
+            throw new ModuleInitializeException("Get face anti spoofing handle failed.");
         }
     }
 
