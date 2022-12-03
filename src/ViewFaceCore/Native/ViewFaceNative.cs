@@ -25,7 +25,7 @@ internal static partial class ViewFaceNative
 
     static ViewFaceNative()
     {
-        _loader = LoaderFactory.Create();
+        _loader = LibraryLoaderFactory.Create();
         //如果全局配置的路径解析器不为空，替换掉默认的解析器
         if (GlobalConfig.PathResolver != null)
         {

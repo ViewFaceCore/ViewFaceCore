@@ -3,7 +3,7 @@ using ViewFaceCore.Native.LibraryLoader.LibraryLoaders;
 
 namespace ViewFaceCore.Native.LibraryLoader
 {
-    internal class LoaderFactory
+    internal class LibraryLoaderFactory
     {
         public static ILibraryLoader Create()
         {
