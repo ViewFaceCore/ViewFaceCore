@@ -2,7 +2,7 @@
 
 namespace ViewFaceCore.Native.LibraryLoader.Interface
 {
-    internal abstract class BasePathResolver : IPathResolver
+    public abstract class BasePathResolver : IPathResolver
     {
         protected DeviceType DeviceType { get; private set; }
 

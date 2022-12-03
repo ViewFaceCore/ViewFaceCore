@@ -1,4 +1,6 @@
-﻿namespace ViewFaceCore.Configs;
+﻿using ViewFaceCore.Native.LibraryLoader.Interface;
+
+namespace ViewFaceCore.Configs;
 
 /// <summary>
 /// 全局配置
@@ -65,6 +67,28 @@ public static class GlobalConfig
             _isSetX86Instruction = true;
             X86Instruction = instruction;
         }
+    }
+
+    #endregion
+
+    #region 路径解析器
+
+    /// <summary>
+    /// 使用的路径解析器
+    /// </summary>
+    public static IPathResolver PathResolver { get; private set; } = null;
+
+    /// <summary>
+    /// 设置路径解析器
+    /// </summary>
+    /// <param name="pathResolver"></param>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static void SetPathResolver(IPathResolver pathResolver)
+    {
+        if (pathResolver == null)
+            throw new ArgumentNullException(nameof(pathResolver));
+
+        PathResolver = pathResolver;
     }
 
     #endregion

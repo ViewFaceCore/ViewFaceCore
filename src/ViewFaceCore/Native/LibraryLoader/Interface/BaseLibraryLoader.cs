@@ -6,6 +6,11 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
 {
     internal abstract class BaseLibraryLoader : ILibraryLoader
     {
+        public BaseLibraryLoader()
+        {
+            SetPathResolver(new DefaultPathResolver(DeviceType.CPU));
+        }
+
         /// <summary>
         /// ViewFaceBridge 的所有依赖库。(按照依赖顺序排列)
         /// </summary>
@@ -30,10 +35,12 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
             "ViewFaceBridge"
         };
 
+        private IPathResolver _pathResolver = null;
+
         /// <summary>
         /// 默认的路径解析器
         /// </summary>
-        protected virtual IPathResolver PathResolver => new DefaultPathResolver(DeviceType.CPU);
+        protected virtual IPathResolver PathResolver => _pathResolver;
 
         /// <summary>
         /// 加载静态库之前需要做的事
@@ -49,16 +56,53 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
         protected virtual void AfterLoad()
         {
             string defaultModelsPath = PathResolver.GetModelsPath();
+
             GlobalConfig.WriteLog($"Default models path is {defaultModelsPath}");
             SetModelsPath(defaultModelsPath);
         }
 
+        /// <summary>
+        /// 加载核心逻辑
+        /// </summary>
         public virtual void Load()
         {
             BeforeLoad();
             Loading();
             AfterLoad();
         }
+
+        /// <summary>
+        /// 获取静态库加载路径
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetLibraryPath()
+        {
+            return PathResolver.GetLibraryPath();
+        }
+
+        /// <summary>
+        /// 获取模型加载路径
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetModelsPath()
+        {
+            return PathResolver.GetModelsPath();
+        }
+
+        /// <summary>
+        /// 设置路径解析器
+        /// </summary>
+        /// <param name="pathResolver"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public virtual void SetPathResolver(IPathResolver pathResolver)
+        {
+            if(pathResolver == null)
+                throw new ArgumentNullException(nameof(pathResolver));
+
+            _pathResolver= pathResolver;
+        }
+
+        #region Abstract
 
         /// <summary>
         /// 设置模型路径
@@ -76,16 +120,11 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
         /// </summary>
         protected abstract void Loading();
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public abstract void Dispose();
 
-        public virtual string GetLibraryPath()
-        {
-            return PathResolver.GetLibraryPath();
-        }
-
-        public virtual string GetModelsPath()
-        {
-            return PathResolver.GetModelsPath();
-        }
+        #endregion
     }
 }

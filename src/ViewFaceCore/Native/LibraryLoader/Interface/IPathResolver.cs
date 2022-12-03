@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ViewFaceCore.Native.LibraryLoader.Interface
 {
-    internal interface IPathResolver
+    public interface IPathResolver
     {
         /// <summary>
         /// 获取静态库默认路径

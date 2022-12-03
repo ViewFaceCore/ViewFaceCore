@@ -9,6 +9,8 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
     /// </summary>
     internal interface ILibraryLoader : IDisposable
     {
+        void SetPathResolver(IPathResolver pathResolver);
+
         /// <summary>
         /// 加载静态库
         /// </summary>

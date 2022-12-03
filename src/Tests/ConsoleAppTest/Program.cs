@@ -24,6 +24,7 @@ namespace ConsoleAppTest
             {
                 Directory.Delete(logPath, true);
             }
+
             while (true)
             {
                 try

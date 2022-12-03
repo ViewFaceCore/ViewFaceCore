@@ -8,7 +8,7 @@ using ViewFaceCore.Native.LibraryLoader.LibraryLoaders.Platforms;
 
 namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
 {
-    internal class WinLibraryLoader : BaseLibraryLoader
+    internal sealed class WinLibraryLoader : BaseLibraryLoader
     {
         private readonly List<IntPtr> _ptrs = new List<IntPtr>();
 
@@ -41,17 +41,17 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                                 BaseLibraryNames.Remove(p);
                             }
                         });
-                        string supportTennisLibPath = PathResolver.GetLibraryFullName("tennis_sandy_bridge");
-                        if (!File.Exists(supportTennisLibPath))
-                        {
-                            return;
-                        }
-                        string baseTennisLibPath = PathResolver.GetLibraryFullName("tennis");
-                        if (File.Exists(supportTennisLibPath))
-                        {
-                            File.Delete(baseTennisLibPath);
-                        }
-                        File.Copy(supportTennisLibPath, baseTennisLibPath, true);
+                        //string supportTennisLibPath = PathResolver.GetLibraryFullName("tennis_sandy_bridge");
+                        //if (!File.Exists(supportTennisLibPath))
+                        //{
+                        //    return;
+                        //}
+                        //string baseTennisLibPath = PathResolver.GetLibraryFullName("tennis");
+                        //if (File.Exists(supportTennisLibPath))
+                        //{
+                        //    File.Delete(baseTennisLibPath);
+                        //}
+                        //File.Copy(supportTennisLibPath, baseTennisLibPath, true);
                     }
                     break;
                 case X86Instruction.SSE2:
@@ -67,17 +67,17 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                                 BaseLibraryNames.Remove(p);
                             }
                         });
-                        string supportTennisLibPath = PathResolver.GetLibraryFullName("tennis_pentium");
-                        if (!File.Exists(supportTennisLibPath))
-                        {
-                            return;
-                        }
-                        string baseTennisLibPath = PathResolver.GetLibraryFullName("tennis");
-                        if (File.Exists(supportTennisLibPath))
-                        {
-                            File.Delete(baseTennisLibPath);
-                        }
-                        File.Copy(supportTennisLibPath, baseTennisLibPath, true);
+                        //string supportTennisLibPath = PathResolver.GetLibraryFullName("tennis_pentium");
+                        //if (!File.Exists(supportTennisLibPath))
+                        //{
+                        //    return;
+                        //}
+                        //string baseTennisLibPath = PathResolver.GetLibraryFullName("tennis");
+                        //if (File.Exists(supportTennisLibPath))
+                        //{
+                        //    File.Delete(baseTennisLibPath);
+                        //}
+                        //File.Copy(supportTennisLibPath, baseTennisLibPath, true);
                     }
                     break;
             }
@@ -109,7 +109,6 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
         {
             foreach (var library in BaseLibraryNames)
             {
-                //Combine Library Path
                 string libraryPath = PathResolver.GetLibraryFullName(library);
                 if (!File.Exists(libraryPath))
                 {
@@ -120,7 +119,13 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                     throw new FileNotFoundException($"Can not found library {libraryPath}.");
                 }
 
-#if NETCOREAPP3_1_OR_GREATER
+                if (library.IndexOf(ViewFaceNative.BRIDGE_LIBRARY_NAME, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    LoadViewFaceBridge(libraryPath);
+                    continue;
+                }
+
+#if NETCOREAPP3_OR_GREATER
                 IntPtr ptr = NativeLibrary.Load(libraryPath);
                 if (ptr == IntPtr.Zero)
                 {
@@ -134,8 +139,23 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                 }
 #endif
                 _ptrs.Add(ptr);
-
             }
+        }
+
+        private void LoadViewFaceBridge(string libraryPath)
+        {
+#if NETCOREAPP3_OR_GREATER
+            NativeLibrary.SetDllImportResolver(Assembly.GetAssembly(typeof(ViewFaceNative)), (libraryName, assembly, searchPath) =>
+            {
+                return NativeLibrary.Load(libraryPath, assembly, searchPath ?? DllImportSearchPath.UseDllDirectoryForDependencies);
+            });
+#else
+            IntPtr ptr = Kernel32.LoadLibrary(libraryPath);
+            if (ptr == IntPtr.Zero)
+            {
+                throw new BadImageFormatException($"Can not load native library {libraryPath}.");
+            }
+#endif
         }
     }
 }

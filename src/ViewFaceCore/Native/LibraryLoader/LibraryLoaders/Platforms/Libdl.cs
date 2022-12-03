@@ -3,6 +3,10 @@ using System.Runtime.InteropServices;
 
 namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders.Platforms
 {
+    /// <summary>
+    /// 
+    /// sudo apt install -y --allow-unauthenticated libc6-dev libx11-dev
+    /// </summary>
     internal static class Libdl
     {
         private const string LibName = "libdl";
