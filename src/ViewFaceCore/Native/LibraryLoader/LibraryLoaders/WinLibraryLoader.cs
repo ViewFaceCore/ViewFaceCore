@@ -30,6 +30,8 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                 {
 #if NETCOREAPP3_OR_GREATER
                     NativeLibrary.Free(item);
+#else
+                    Kernel32.FreeLibrary(item);
 #endif
                 }
                 catch { }
