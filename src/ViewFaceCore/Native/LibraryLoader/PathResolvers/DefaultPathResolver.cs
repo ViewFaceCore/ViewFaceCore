@@ -63,22 +63,6 @@ namespace ViewFaceCore.Native.LibraryLoader.PathResolvers
             return _libraryPath;
         }
 
-        public override string GetLibraryFullName(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentNullException("name can not null", nameof(name));
-            }
-            string format;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                format = "{0}.dll";
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                format = "lib{0}.so";
-            else
-                throw new PlatformNotSupportedException($"Unsupported operating system type: {RuntimeInformation.OSDescription}");
-            return Path.Combine(GetLibraryPath(), string.Format(format, name));
-        }
-
         #region private
 
         private bool TryCombine(out string path, params string[] paths)

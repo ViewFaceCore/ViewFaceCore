@@ -3,6 +3,10 @@ using ViewFaceCore.Exceptions;
 using ViewFaceCore.Native.LibraryLoader.Interface;
 using ViewFaceCore.Native.LibraryLoader.LibraryLoaders.Platforms;
 
+#if NETCOREAPP3_1_OR_GREATER
+using System.Runtime.Intrinsics.X86;
+#endif
+
 namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
 {
     internal sealed class UnixLibraryLoader : BaseLibraryLoader
@@ -19,7 +23,7 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             {
                 try
                 {
-#if NETCOREAPP3_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
                     NativeLibrary.Free(item);
 #endif
                 }
@@ -35,7 +39,6 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             {
                 return;
             }
-            GlobalConfig.WriteLog($"Instruction set to {GlobalConfig.X86Instruction}");
             switch (GlobalConfig.X86Instruction)
             {
                 case X86Instruction.AVX2:
@@ -69,6 +72,32 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
                     }
                     break;
             }
+
+#if NETCOREAPP3_1_OR_GREATER
+            //不支持Avx2
+            if (!Avx2.IsSupported)
+            {
+                if (BaseLibraryNames.Contains("tennis_haswell"))
+                {
+                    GlobalConfig.WriteLog("Detected that the CPU instruction does not support AVX2, disable tennis_haswell.");
+                    BaseLibraryNames.Remove("tennis_haswell");
+                }
+                if (BaseLibraryNames.Contains("tennis_sandy_bridge"))
+                {
+                    GlobalConfig.WriteLog("Detected that the CPU instruction does not support AVX2, disable tennis_sandy_bridge.");
+                    BaseLibraryNames.Remove("tennis_sandy_bridge");
+                }
+            };
+            //不支持Fma
+            if (!Fma.IsSupported)
+            {
+                if (BaseLibraryNames.Contains("tennis_sandy_bridge"))
+                {
+                    GlobalConfig.WriteLog("Detected that the CPU instruction does not support FMA, disable tennis_sandy_bridge.");
+                    BaseLibraryNames.Remove("tennis_sandy_bridge");
+                }
+            };
+#endif
         }
 
         protected override void SetModelsPath(string path)
@@ -99,7 +128,7 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
 
         protected override void Loading()
         {
-#if NETCOREAPP3_OR_GREATER
+#if NETCOREAPP3_1_OR_GREATER
             foreach (var library in BaseLibraryNames)
             {
                 string libraryPath = PathResolver.GetLibraryFullName(library);

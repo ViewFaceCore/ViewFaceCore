@@ -8,7 +8,14 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
     {
         public BaseLibraryLoader()
         {
+            //Set default path resolver
             SetPathResolver(new DefaultPathResolver(DeviceType.CPU));
+            //Write log
+            GlobalConfig.WriteLog($"ViewFaceCore runtime environment: \t\nOS Description: {RuntimeInformation.OSDescription}\t\n" +
+                $"Process Architecture: {RuntimeInformation.ProcessArchitecture}\t\n" +
+                $"Framework Description: {RuntimeInformation.FrameworkDescription}\t\n" +
+                $"Models Path: {PathResolver.GetModelsPath()}\t\n" +
+                $"Library Path: {PathResolver.GetLibraryPath()}\t\n");
         }
 
         /// <summary>

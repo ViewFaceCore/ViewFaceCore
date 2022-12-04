@@ -4,6 +4,9 @@ using System.Text;
 
 namespace ViewFaceCore.Native.LibraryLoader.Interface
 {
+    /// <summary>
+    /// 路径解析器
+    /// </summary>
     public interface IPathResolver
     {
         /// <summary>
