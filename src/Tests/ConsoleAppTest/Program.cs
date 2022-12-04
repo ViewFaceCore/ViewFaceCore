@@ -24,7 +24,10 @@ namespace ConsoleAppTest
             {
                 Directory.Delete(logPath, true);
             }
-
+            GlobalConfig.SetLog(msg =>
+            {
+                Console.WriteLine(msg);
+            });
             while (true)
             {
                 try

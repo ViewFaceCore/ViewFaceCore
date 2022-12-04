@@ -106,19 +106,16 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             {
                 throw new PlatformNotSupportedException($"Unsupported system type: {RuntimeInformation.OSDescription}");
             }
-
             if (string.IsNullOrWhiteSpace(path))
             {
                 throw new ArgumentNullException(nameof(path), "Model path can not null.");
             }
-
+            GlobalConfig.WriteLog($"Loading models from {path}");
             byte[] pathUtf8Bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(path));
             if (pathUtf8Bytes.Length > ViewFaceNative.MAX_PATH_LENGTH)
             {
-                throw new NotSupportedException(
-                    $"The path is too long, not support path more than {ViewFaceNative.MAX_PATH_LENGTH} byte.");
+                throw new NotSupportedException($"The path is too long, not support path more than {ViewFaceNative.MAX_PATH_LENGTH} byte.");
             }
-
             ViewFaceNative.SetModelPathLinux(Encoding.UTF8.GetBytes(Encoding.UTF8.GetString(pathUtf8Bytes)));
             if (!path.Equals(ViewFaceNative.GetModelPath()))
             {
@@ -128,6 +125,7 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
 
         protected override void Loading()
         {
+            GlobalConfig.WriteLog($"Loading library from {PathResolver.GetLibraryPath()}");
 #if NETCOREAPP3_1_OR_GREATER
             foreach (var library in BaseLibraryNames)
             {

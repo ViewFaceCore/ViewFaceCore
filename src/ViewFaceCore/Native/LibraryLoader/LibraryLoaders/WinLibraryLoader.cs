@@ -115,6 +115,7 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             {
                 throw new ArgumentNullException(nameof(path), "Model path can not null.");
             }
+            GlobalConfig.WriteLog($"Loading models from {path}");
             byte[] pathUtf8Bytes = Encoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(path));
             if (pathUtf8Bytes.Length > ViewFaceNative.MAX_PATH_LENGTH)
             {
@@ -125,13 +126,11 @@ namespace ViewFaceCore.Native.LibraryLoader.LibraryLoaders
             {
                 throw new LoadModelException($"Set model path to '{path}' failed, failed to verify this path.");
             }
-            GlobalConfig.WriteLog($"Loading models from {path}");
         }
 
         protected override void Loading()
         {
             GlobalConfig.WriteLog($"Loading library from {PathResolver.GetLibraryPath()}");
-
             foreach (var library in BaseLibraryNames)
             {
                 string libraryPath = PathResolver.GetLibraryFullName(library);

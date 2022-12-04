@@ -11,11 +11,11 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
             //Set default path resolver
             SetPathResolver(new DefaultPathResolver(DeviceType.CPU));
             //Write log
-            GlobalConfig.WriteLog($"ViewFaceCore runtime environment: \t\nOS Description: {RuntimeInformation.OSDescription}\t\n" +
+            GlobalConfig.WriteLog($"ViewFaceCore runtime environment \t\nOS Description: {RuntimeInformation.OSDescription}\t\n" +
                 $"Process Architecture: {RuntimeInformation.ProcessArchitecture}\t\n" +
                 $"Framework Description: {RuntimeInformation.FrameworkDescription}\t\n" +
                 $"Models Path: {PathResolver.GetModelsPath()}\t\n" +
-                $"Library Path: {PathResolver.GetLibraryPath()}\t\n");
+                $"Library Path: {PathResolver.GetLibraryPath()}\t");
         }
 
         /// <summary>
@@ -63,8 +63,6 @@ namespace ViewFaceCore.Native.LibraryLoader.Interface
         protected virtual void AfterLoad()
         {
             string defaultModelsPath = PathResolver.GetModelsPath();
-
-            GlobalConfig.WriteLog($"Default models path is {defaultModelsPath}");
             SetModelsPath(defaultModelsPath);
         }
 
