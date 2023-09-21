@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="SkiaSharp" Version="2.88.0" />
+		<PackageReference Include="SkiaSharp" Version="2.88.6" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.0" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.0" />
 	</ItemGroup>
